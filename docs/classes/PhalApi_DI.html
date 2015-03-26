@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">358</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">298</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-449547332"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-757879176"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-449547332" class="accordion-body collapse in">
+            <div id="namespace-757879176" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -204,29 +204,32 @@
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
                     <h1><small>\</small>PhalApi_DI</h1>
-                    <p><em>PhalApi_DI 依赖注入类 Dependency Injection</em></p>
-                    <ul>
+                    <p><em>PhalApi_DI 依赖注入类</em></p>
+                    <p>Dependency Injection 依赖注入容器</p>
+<ul>
 <li>调用的方式有：set/get函数、魔法方法setX/getX、类变量$fdi-&gt;X、数组$fdi['X]</li>
-<li>
-<p>初始化的途径：直接赋值、类名、匿名函数</p>
-<p>$di = new Module_DI();</p>
-<h1>用的方式有：set/get函数  魔法方法setX/getX、类属性$di-&gt;X、数组$di['X']</h1>
-<p>$di-&gt;key = 'value';
-$di['key'] = 'value';
-$di-&gt;set('key', 'value');
-$di-&gt;setKey('value');</p>
-<p>echo $di-&gt;key;
-echo $di['key'];
-echo $di-&gt;get('key');
-echo $di-&gt;getKey();</p>
-<h1>初始化的途径：直接赋值、类名(会回调onInitialize函数)、匿名函数</h1>
-<p>$di-&gt;simpleKey = array('value');
-$di-&gt;classKey = 'Module_DI';
-$di-&gt;closureKey = function () {
-return 'sth heavy ...';
-};</p>
-</li>
+<li>初始化的途径：直接赋值、类名、匿名函数</li>
 </ul>
+<p><br>使用示例：<br></p>
+<pre><code>      $di = new Module_DI();
+
+      // 用的方式有：set/get函数  魔法方法setX/getX、类属性$di-&gt;X、数组$di['X']
+      $di-&gt;key = 'value';
+      $di['key'] = 'value';
+      $di-&gt;set('key', 'value');
+      $di-&gt;setKey('value');
+
+      echo $di-&gt;key;
+      echo $di['key'];
+      echo $di-&gt;get('key');
+      echo $di-&gt;getKey();
+
+      // 初始化的途径：直接赋值、类名(会回调onInitialize函数)、匿名函数
+      $di-&gt;simpleKey = array('value');
+      $di-&gt;classKey = 'Module_DI';
+      $di-&gt;closureKey = function () {
+           return 'sth heavy ...';
+      };</code></pre>
                     
                                         
                     <section id="summary">
@@ -259,7 +262,14 @@ return 'sth heavy ...';
                                                                     <a href="../classes/PhalApi_DI.html#method_offsetExists" class="">offsetExists()</a><br />
                                                             </section>
                             <section class="span4">
-                                                                    <em>No public properties found</em>
+                                                                    <a href="../classes/PhalApi_DI.html#property_request" class="">$request</a><br />
+                                                                    <a href="../classes/PhalApi_DI.html#property_response" class="">$response</a><br />
+                                                                    <a href="../classes/PhalApi_DI.html#property_cache" class="">$cache</a><br />
+                                                                    <a href="../classes/PhalApi_DI.html#property_crypt" class="">$crypt</a><br />
+                                                                    <a href="../classes/PhalApi_DI.html#property_config" class="">$config</a><br />
+                                                                    <a href="../classes/PhalApi_DI.html#property_logger" class="">$logger</a><br />
+                                                                    <a href="../classes/PhalApi_DI.html#property_notorm" class="">$notorm</a><br />
+                                                                    <a href="../classes/PhalApi_DI.html#property_loader" class="">$loader</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No constants found</em>
@@ -301,7 +311,7 @@ return 'sth heavy ...';
                         <dt>File</dt>
                             <dd><a href="../files/DI.html"><div class="path-wrapper">DI.php</div></a></dd>
                                                 <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">Default</div></dd>
+                            <dd><div class="namespace-wrapper">PhalApi\DI</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
                                                                                                                                                                     <div class="namespace-wrapper">\PhalApi_DI</div>
@@ -313,7 +323,7 @@ return 'sth heavy ...';
                         
                         
                                                                             <dt>See also</dt>
-                                                                                    <dd><a href=":"><div class="namespace-wrapper">http://docs.phalconphp.com/en/latest/reference/di.html，实现统一的资源设置、获取与管理，支持延时加载</div></a></dd>
+                                                                                    <dd><a href="http://docs.phalconphp.com/en/latest/reference/di.html"><div class="namespace-wrapper">实现统一的资源设置、获取与管理，支持延时加载</div></a></dd>
                                                     
                                                                         </dl>
                     <h2>Tags</h2>
@@ -323,7 +333,7 @@ return 'sth heavy ...';
                                 author
                             </th>
                             <td>
-                                                                    <p>: dogstar <a href="mailto:chanzonghuang@gmail.com">chanzonghuang@gmail.com</a> 2014-01-22</p>
+                                                                    <p>dogstar <a href="mailto:chanzonghuang@gmail.com">chanzonghuang@gmail.com</a> 2014-01-22</p>
                                                             </td>
                         </tr>
                                         </table>
@@ -339,18 +349,210 @@ return 'sth heavy ...';
                 <aside class="span4 detailsbar"></aside>
             </div>
 
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_request" name="property_request" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$request</h3>
+                <pre class="signature">$request : \PhalApi_Request</pre>
+                <p><em></em></p>
+                <p>请求</p>
+
+                                <h4>Type</h4>
+                \PhalApi_Request
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_response" name="property_response" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$response</h3>
+                <pre class="signature">$response : \PhalApi_Response_Json</pre>
+                <p><em></em></p>
+                <p>结果响应</p>
+
+                                <h4>Type</h4>
+                \PhalApi_Response_Json
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_cache" name="property_cache" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$cache</h3>
+                <pre class="signature">$cache : \PhalApi_Cache</pre>
+                <p><em></em></p>
+                <p>缓存</p>
+
+                                <h4>Type</h4>
+                \PhalApi_Cache
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_crypt" name="property_crypt" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$crypt</h3>
+                <pre class="signature">$crypt : \PhalApi_Crypt</pre>
+                <p><em></em></p>
+                <p>加密</p>
+
+                                <h4>Type</h4>
+                \PhalApi_Crypt
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_config" name="property_config" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$config</h3>
+                <pre class="signature">$config : \PhalApi_Config</pre>
+                <p><em></em></p>
+                <p>配置</p>
+
+                                <h4>Type</h4>
+                \PhalApi_Config
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_logger" name="property_logger" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$logger</h3>
+                <pre class="signature">$logger : \PhalApi_Logger</pre>
+                <p><em></em></p>
+                <p>日记</p>
+
+                                <h4>Type</h4>
+                \PhalApi_Logger
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_notorm" name="property_notorm" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$notorm</h3>
+                <pre class="signature">$notorm : \PhalApi_DB_NotORM</pre>
+                <p><em></em></p>
+                <p>数据库</p>
+
+                                <h4>Type</h4>
+                \PhalApi_DB_NotORM
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_loader" name="property_loader" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$loader</h3>
+                <pre class="signature">$loader : \PhalApi_Loader</pre>
+                <p><em></em></p>
+                <p>自动加载</p>
+
+                                <h4>Type</h4>
+                \PhalApi_Loader
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
                                                     <div class="row-fluid">
         <div class="span8 content class">
             <a id="property_instance" name="property_instance" class="anchor"></a>
             <article class="property">
                 <h3 class="protected ">$instance</h3>
-                <pre class="signature">$instance : </pre>
+                <pre class="signature">$instance : \PhalApi_DI</pre>
                 <p><em></em></p>
                 
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                <a href="../classes/PhalApi_DI.html">\PhalApi_DI</a>
+                &mdash; 单例                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -368,13 +570,13 @@ return 'sth heavy ...';
             <a id="property_hitTimes" name="property_hitTimes" class="anchor"></a>
             <article class="property">
                 <h3 class="protected ">$hitTimes</h3>
-                <pre class="signature">$hitTimes : </pre>
+                <pre class="signature">$hitTimes : array</pre>
                 <p><em></em></p>
                 
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                array
+                &mdash; 服务命中的次数                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -392,13 +594,13 @@ return 'sth heavy ...';
             <a id="property_data" name="property_data" class="anchor"></a>
             <article class="property">
                 <h3 class="protected ">$data</h3>
-                <pre class="signature">$data : </pre>
+                <pre class="signature">$data : array</pre>
                 <p><em></em></p>
                 
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                array
+                &mdash; 注册的服务池                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -452,8 +654,10 @@ return 'sth heavy ...';
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">one() </pre>
                 <p><em>获取DI单体实例</em></p>
-                <p>1、将进行service级的构造与初始化
-2、也可以通过new创建，但不能实现service的共享</p>
+                <ul>
+<li>1、将进行service级的构造与初始化</li>
+<li>2、也可以通过new创建，但不能实现service的共享</li>
+</ul>
 
                 
                 
@@ -480,8 +684,10 @@ return 'sth heavy ...';
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">onConstruct() </pre>
                 <p><em>service级的构造函数</em></p>
-                <p>1、可实现一些自定义业务的操作，如内置默认service
-2、首次创建时将会调用</p>
+                <ul>
+<li>1、可实现一些自定义业务的操作，如内置默认service</li>
+<li>2、首次创建时将会调用</li>
+</ul>
 
                 
                 
@@ -533,7 +739,9 @@ return 'sth heavy ...';
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">set(string  <span class="argument">$key</span>,   <span class="argument">$value</span>) </pre>
                 <p><em>统一setter</em></p>
-                <p>1、设置保存service的构造原型，延时创建</p>
+                <ul>
+<li>1、设置保存service的构造原型，延时创建</li>
+</ul>
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
@@ -579,9 +787,11 @@ return 'sth heavy ...';
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">get(string  <span class="argument">$key</span>, mixed  <span class="argument">$default = NULL</span>) : mixed</pre>
                 <p><em>统一getter</em></p>
-                <p>1、获取指定service的值，并根据其原型分不同情况创建
-2、首次创建时，如果service级的构造函数可调用，则调用
-3、每次获取时，如果非共享且service级的初始化函数可调用，则调用</p>
+                <ul>
+<li>1、获取指定service的值，并根据其原型分不同情况创建</li>
+<li>2、首次创建时，如果service级的构造函数可调用，则调用</li>
+<li>3、每次获取时，如果非共享且service级的初始化函数可调用，则调用</li>
+</ul>
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
@@ -600,6 +810,7 @@ return 'sth heavy ...';
                 
                                     <h4>Returns</h4>
                     mixed
+                                            &mdash; <p>没有此服务时返回NULL</p>
                                     				
                             </article>
         </div>
@@ -1052,7 +1263,7 @@ return 'sth heavy ...';
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on March 25th, 2015 at 14:22.
+                    on March 26th, 2015 at 13:59.
                 </section>
             </section>
         </section>

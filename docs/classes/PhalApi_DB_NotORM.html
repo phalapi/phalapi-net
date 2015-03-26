@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">358</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">298</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1190646979"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1304015462"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1190646979" class="accordion-body collapse in">
+            <div id="namespace-1304015462" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -204,8 +204,51 @@
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
                     <h1><small>\</small>PhalApi_DB_NotORM</h1>
-                    <p><em></em></p>
-                    
+                    <p><em>PhalApi_DB_NotORM 分布式的DB存储</em></p>
+                    <p>基于NotORM的数据库操作，支持分布式</p>
+<li>可定义每个表的存储路由和规则，匹配顺序：
+  自定义区间匹配 -> 自定义缺省匹配 -> 默认区间匹配 -> 默认缺省匹配</li>
+<li>底层依赖NotORM实现数据库的操作</li>
+<p><code>
+//需要提供以下格式的DB配置
+$config = array(
+//可用的DB服务器集群
+'servers' =&gt; array(
+'db_demo' =&gt; array(
+'host'      =&gt; 'localhost',                //数据库域名
+'name'      =&gt; 'test',                     //数据库名字
+'user'      =&gt; 'root',                     //数据库用户名
+'password'  =&gt; '123456',                  //数据库密码
+'port'      =&gt; '3306',                        //数据库端口
+),
+),</p>
+<pre><code>   //自定义表的存储路由
+  'tables' =&gt; array(
+      '__default__' =&gt; array(                                            //默认
+          'prefix' =&gt; 'tbl_',
+          'key' =&gt; 'id',
+          'map' =&gt; array(
+              array('db' =&gt; 'db_demo'),                                  //默认缺省
+              array('start' =&gt; 0, 'end' =&gt; 2, 'db' =&gt; 'db_demo'),        //默认区间
+          ),
+      ),
+      'demo' =&gt; array(                                                   //自定义
+          'prefix' =&gt; 'tbl_',
+          'key' =&gt; 'id',
+          'map' =&gt; array(
+              array('db' =&gt; 'db_demo'),                                  //自定义缺省
+              array('start' =&gt; 0, 'end' =&gt; 2, 'db' =&gt; 'db_demo'),        //定义区间
+          ),
+      ),
+  ),
+ );
+
+ $notorm = new PhalApi_DB_NotORM($config);
+
+ //根据ID对3取模的映射获取数据
+ $rs = $notorm-&gt;demo_0-&gt;select('*')-&gt;where('id = 10')-&gt;fetch();
+ $rs = $notorm-&gt;demo_1-&gt;select('*')-&gt;where('id = 11')-&gt;fetch();</code></pre>
+<p></code></p>
                     
                                         
                     <section id="summary">
@@ -271,7 +314,7 @@
                         <dt>File</dt>
                             <dd><a href="../files/DB.NotORM.html"><div class="path-wrapper">DB/NotORM.php</div></a></dd>
                                                 <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">Default</div></dd>
+                            <dd><div class="namespace-wrapper">PhalApi\DB</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
                                                                                                                                                                     <div class="namespace-wrapper">\PhalApi_DB_NotORM</div>
@@ -280,11 +323,20 @@
                         
                         
                         
-                        
+                                                                            <dt>See also</dt>
+                                                                                    <dd><a href="http://www.notorm.com/"><div class="namespace-wrapper">http://www.notorm.com/</div></a></dd>
+                                                    
                                                                         </dl>
                     <h2>Tags</h2>
                     <table class="table table-condensed">
-                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                            <tr>
+                            <th>
+                                author
+                            </th>
+                            <td>
+                                                                    <p>dogstar <a href="mailto:chanzonghuang@gmail.com">chanzonghuang@gmail.com</a> 2014-11-22</p>
+                                                            </td>
+                        </tr>
                                         </table>
                 </aside>
             </div>
@@ -703,7 +755,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on March 25th, 2015 at 14:22.
+                    on March 26th, 2015 at 13:59.
                 </section>
             </section>
         </section>

@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">358</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">298</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-36229597"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1933611185"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-36229597" class="accordion-body collapse in">
+            <div id="namespace-1933611185" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -316,13 +316,13 @@
             <a id="property_ret" name="property_ret" class="anchor"></a>
             <article class="property">
                 <h3 class="protected ">$ret</h3>
-                <pre class="signature">$ret : </pre>
+                <pre class="signature">$ret : integer</pre>
                 <p><em></em></p>
                 
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                integer
+                &mdash; 返回状态码，其中：200成功，400非法请求，500服务器错误                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -342,13 +342,13 @@
             <a id="property_data" name="property_data" class="anchor"></a>
             <article class="property">
                 <h3 class="protected ">$data</h3>
-                <pre class="signature">$data : </pre>
+                <pre class="signature">$data : array</pre>
                 <p><em></em></p>
                 
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                array
+                &mdash; 待返回给客户端的数据                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -368,13 +368,13 @@
             <a id="property_msg" name="property_msg" class="anchor"></a>
             <article class="property">
                 <h3 class="protected ">$msg</h3>
-                <pre class="signature">$msg : </pre>
+                <pre class="signature">$msg : string</pre>
                 <p><em></em></p>
                 
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                string
+                &mdash; 错误返回信息                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -394,13 +394,13 @@
             <a id="property_headers" name="property_headers" class="anchor"></a>
             <article class="property">
                 <h3 class="protected ">$headers</h3>
-                <pre class="signature">$headers : </pre>
+                <pre class="signature">$headers : array</pre>
                 <p><em></em></p>
                 
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                array
+                &mdash; 响应报文头部                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -428,21 +428,23 @@
             <article class="method">
                 <h3 class="public ">setRet()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">setRet(  <span class="argument">$ret</span>) </pre>
-                <p><em>------------------ setter ------------------ *</em></p>
+                <pre class="signature" style="margin-right: 54px;">setRet(integer  <span class="argument">$ret</span>) : \PhalApi_Response</pre>
+                <p><em>设置返回状态码</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>integer</td>
                                 <td>$ret </td>
-                                <td></td>
+                                <td><p>返回状态码，其中：200成功，400非法请求，500服务器错误</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/PhalApi_Response.html">\PhalApi_Response</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -464,21 +466,23 @@
             <article class="method">
                 <h3 class="public ">setData()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">setData(  <span class="argument">$data</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">setData(\array/string  <span class="argument">$data</span>) : \PhalApi_Response</pre>
+                <p><em>设置返回数据</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>\array/string</td>
                                 <td>$data </td>
-                                <td></td>
+                                <td><p>待返回给客户端的数据，建议使用数组，方便扩展升级</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/PhalApi_Response.html">\PhalApi_Response</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -500,21 +504,23 @@
             <article class="method">
                 <h3 class="public ">setMsg()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">setMsg(  <span class="argument">$msg</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">setMsg(string  <span class="argument">$msg</span>) : \PhalApi_Response</pre>
+                <p><em>设置错误信息</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$msg </td>
-                                <td></td>
+                                <td><p>错误信息</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/PhalApi_Response.html">\PhalApi_Response</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -536,21 +542,21 @@
             <article class="method">
                 <h3 class="public ">addHeaders()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">addHeaders(  <span class="argument">$key</span>,   <span class="argument">$content</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">addHeaders(string  <span class="argument">$key</span>, string  <span class="argument">$content</span>) </pre>
+                <p><em>添加报文头部</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$key </td>
-                                <td></td>
+                                <td><p>名称</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$content </td>
-                                <td></td>
+                                <td><p>内容</p></td>
                             </tr>
                                             </table>
                 
@@ -578,7 +584,7 @@
                 <h3 class="public ">output()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">output() </pre>
-                <p><em>------------------ 结果输出 ------------------ *</em></p>
+                <p><em>结果输出</em></p>
                 
 
                 
@@ -772,7 +778,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on March 25th, 2015 at 14:22.
+                    on March 26th, 2015 at 13:59.
                 </section>
             </section>
         </section>

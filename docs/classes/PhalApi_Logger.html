@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">358</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">298</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-800612852"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-666840154"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-800612852" class="accordion-body collapse in">
+            <div id="namespace-666840154" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -207,24 +207,27 @@
                     <p><em>PhalApi_Logger 日记抽象类</em></p>
                     <ul>
 <li>对系统的各种情况进行纪录，具体存储媒介由实现类定义</li>
-<li>
-<p>日志分类型，不分优先级，多种类型可按并组合</p>
-<p>class PhalApi_Logger_Mock extends PhalApi_Logger {
-public function log($type, $msg, $data) {
-//nothing to do here ...
-}
-}</p>
-<p>//保存全部类型的日记
-$logger = new PhalApi_Logger_Mock(
-PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</p>
-<p>//开发调试使用，且带更多信息
-$logger-&gt;debug('this is bebug test', array('name' =&gt; 'mock', 'ver' =&gt; '1.0.0'));</p>
-<p>//业务场景使用
-$logger-&gt;info('this is info test', 'and more detail here ...');</p>
-<p>//一些不该发生的事情
-$logger-&gt;error('this is error test');</p>
-</li>
+<li>日志分类型，不分优先级，多种类型可按并组合</li>
 </ul>
+<p><br>接口实现示例：<br></p>
+<pre><code>     class PhalApi_Logger_Mock extends PhalApi_Logger {
+         public function log($type, $msg, $data) {
+             //nothing to do here ...
+         }
+     }
+
+     //保存全部类型的日记
+     $logger = new PhalApi_Logger_Mock(
+         PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);
+
+     //开发调试使用，且带更多信息
+     $logger-&gt;debug('this is bebug test', array('name' =&gt; 'mock', 'ver' =&gt; '1.0.0'));
+
+     //业务场景使用
+     $logger-&gt;info('this is info test', 'and more detail here ...');
+
+     //一些不该发生的事情
+     $logger-&gt;error('this is error test');</code></pre>
                     
                                         
                     <section id="summary">
@@ -289,7 +292,7 @@ $logger-&gt;error('this is error test');</p>
                         <dt>File</dt>
                             <dd><a href="../files/Logger.html"><div class="path-wrapper">Logger.php</div></a></dd>
                                                 <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">Default</div></dd>
+                            <dd><div class="namespace-wrapper">PhalApi\Logger</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
                                                                                                                                                                     <div class="namespace-wrapper">\PhalApi_Logger</div>
@@ -298,7 +301,9 @@ $logger-&gt;error('this is error test');</p>
                         
                         
                         
-                        
+                                                                            <dt>See also</dt>
+                                                                                    <dd><a href="http://www.php-fig.org/psr/psr-3/"><div class="namespace-wrapper">Logger Interface</div></a></dd>
+                                                    
                                                                         </dl>
                     <h2>Tags</h2>
                     <table class="table table-condensed">
@@ -399,13 +404,13 @@ $logger-&gt;error('this is error test');</p>
             <a id="property_logLevel" name="property_logLevel" class="anchor"></a>
             <article class="property">
                 <h3 class="protected ">$logLevel</h3>
-                <pre class="signature">$logLevel : </pre>
+                <pre class="signature">$logLevel : integer</pre>
                 <p><em></em></p>
                 
 
                                 <h4>Type</h4>
-                
-                                            </article>
+                integer
+                &mdash; 多个日记级别                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -465,7 +470,7 @@ $logger-&gt;error('this is error test');</p>
             <article class="method">
                 <h3 class="public ">log()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">log(string  <span class="argument">$type</span>, string  <span class="argument">$msg</span>, \string/array  <span class="argument">$data</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">log(string  <span class="argument">$type</span>, string  <span class="argument">$msg</span>, \string/array  <span class="argument">$data</span>) : NULL</pre>
                 <p><em>日记纪录</em></p>
                 <p>可根据不同需要，将日记写入不同的媒介</p>
 
@@ -489,7 +494,9 @@ $logger-&gt;error('this is error test');</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    NULL
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -510,26 +517,28 @@ $logger-&gt;error('this is error test');</p>
             <article class="method">
                 <h3 class="public ">info()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">info(  <span class="argument">$msg</span>,   <span class="argument">$data = NULL</span>) </pre>
-                <p><em>产品应用级日记</em></p>
+                <pre class="signature" style="margin-right: 54px;">info(string  <span class="argument">$msg</span>, \string/array  <span class="argument">$data = NULL</span>) : NULL</pre>
+                <p><em>应用产品级日记</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$msg </td>
-                                <td></td>
+                                <td><p>日记关键描述</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>\string/array</td>
                                 <td>$data </td>
-                                <td></td>
+                                <td><p>场景上下文信息</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    NULL
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -549,26 +558,28 @@ $logger-&gt;error('this is error test');</p>
             <article class="method">
                 <h3 class="public ">debug()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">debug(  <span class="argument">$msg</span>,   <span class="argument">$data = NULL</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">debug(string  <span class="argument">$msg</span>, \string/array  <span class="argument">$data = NULL</span>) : NULL</pre>
                 <p><em>开发调试级日记</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$msg </td>
-                                <td></td>
+                                <td><p>日记关键描述</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>\string/array</td>
                                 <td>$data </td>
-                                <td></td>
+                                <td><p>场景上下文信息</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    NULL
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -588,26 +599,28 @@ $logger-&gt;error('this is error test');</p>
             <article class="method">
                 <h3 class="public ">error()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">error(  <span class="argument">$msg</span>,   <span class="argument">$data = NULL</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">error(string  <span class="argument">$msg</span>, \string/array  <span class="argument">$data = NULL</span>) : NULL</pre>
                 <p><em>系统错误级日记</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$msg </td>
-                                <td></td>
+                                <td><p>日记关键描述</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>\string/array</td>
                                 <td>$data </td>
-                                <td></td>
+                                <td><p>场景上下文信息</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    NULL
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -627,21 +640,23 @@ $logger-&gt;error('this is error test');</p>
             <article class="method">
                 <h3 class="protected ">isAllowToLog()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">isAllowToLog(  <span class="argument">$logLevel</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">isAllowToLog(integer  <span class="argument">$logLevel</span>) : boolean</pre>
+                <p><em>是否允许写入日记，或运算</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>integer</td>
                                 <td>$logLevel </td>
                                 <td></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -704,7 +719,7 @@ $logger-&gt;error('this is error test');</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on March 25th, 2015 at 14:22.
+                    on March 26th, 2015 at 13:59.
                 </section>
             </section>
         </section>

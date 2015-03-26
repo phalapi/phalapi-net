@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">358</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">298</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1849372295"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-966791595"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1849372295" class="accordion-body collapse in">
+            <div id="namespace-966791595" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -209,25 +209,23 @@
 <li>实现身份验证、按参数规则解析生成接口参数等操作</li>
 <li>提供给开发人员自宝义的接口服务具体类继承</li>
 </ul>
-<p>通常地，可以这样继承：</p>
-<p><br>
-<code>
-class Api_Demo extends PhalApi_Api {</p>
-<pre><code> public function getRules() {
-     return array(
+<p><br>通常地，可以这样继承：<br></p>
+<pre><code> class Api_Demo extends PhalApi_Api {
+
+     public function getRules() {
+         return array(
+             // ...
+         );
+     }
+
+     public function doSth() {
+         $rs = array();
+
          // ...
-     );
- }
 
- public function doSth() {
-     $rs = array();
-
-     // ...
-
-     return $rs;
+         return $rs;
+     }
  }</code></pre>
-<p>}
-</code></p>
                     
                                         
                     <section id="summary">
@@ -291,7 +289,7 @@ class Api_Demo extends PhalApi_Api {</p>
                         <dt>File</dt>
                             <dd><a href="../files/Api.html"><div class="path-wrapper">Api.php</div></a></dd>
                                                 <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">Default</div></dd>
+                            <dd><div class="namespace-wrapper">PhalApi\Api</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
                                                                                                                                                                     <div class="namespace-wrapper">\PhalApi_Api</div>
@@ -445,9 +443,11 @@ class Api_Demo extends PhalApi_Api {</p>
                 <pre class="signature" style="margin-right: 54px;">init() : null</pre>
                 <p><em>初始化</em></p>
                 <p>主要完成的初始化工作有：</p>
+<ul>
 <li>1、[必须]按参数规则解析生成接口参数</li>
 <li>2、[可选]过滤器调用，如：签名验证</li>
 <li>3、[可选]用户身份验证</li>
+</ul>
 
                 
                 
@@ -480,10 +480,12 @@ class Api_Demo extends PhalApi_Api {</p>
                 <pre class="signature" style="margin-right: 54px;">getApiRules() : array</pre>
                 <p><em>取接口参数规则</em></p>
                 <p>主要包括有：</p>
+<ul>
 <li>1、[固定]系统级的service参数</li>
 <li>2、应用级统一接口参数规则，在app.apiCommonRules中配置</li>
 <li>3、接口级通常参数规则，在子类的*中配置</li>
 <li>4、接口级当前操作参数规则</li>
+</ul>
 <p><b>当规则有冲突时，以后面为准。另外，被请求的函数名和配置的下标都转成小写再进行匹配。</b></p>
 
                 
@@ -571,22 +573,20 @@ class Api_Demo extends PhalApi_Api {</p>
                 <pre class="signature" style="margin-right: 54px;">filterCheck() </pre>
                 <p><em>过滤器调用</em></p>
                 <p>可由开发人员根据需要重载，以实现项目拦截处理，需要：</p>
+<ul>
 <li>1、实现PhalApi_Filter::check()接口</li>
-<li>2、注册的过滤器到DI()->filter</li>
-<p>以下是一个简单的示例：
-<br>
-<code>
-class My_Filter implements PhalApi_Filter {</p>
-<pre><code>    public function check() {
-        //TODO
+<li>2、注册的过滤器到DI()-&gt;filter</li>
+</ul>
+<p><br>以下是一个简单的示例：<br></p>
+<pre><code>    class My_Filter implements PhalApi_Filter {
+
+        public function check() {
+            //TODO
+        }
     }
-}</code></pre>
-<p></code>
-<br>
-<code>
-//在初始化文件 init.php 中注册过滤器
-DI()-&gt;filter = 'My_Filter';
-</code></p>
+
+ //在初始化文件 init.php 中注册过滤器
+ DI()-&gt;filter = 'My_Filter';</code></pre>
 
                 
                                     <h4>Throws</h4>
@@ -691,7 +691,7 @@ DI()-&gt;filter = 'My_Filter';
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on March 25th, 2015 at 14:22.
+                    on March 26th, 2015 at 13:59.
                 </section>
             </section>
         </section>

@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">358</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">298</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2125101512"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-758306987"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-2125101512" class="accordion-body collapse in">
+            <div id="namespace-758306987" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -205,17 +205,16 @@
 
                     <h1><small>\</small>PhalApi_CUrl</h1>
                     <p><em>CURL请求类</em></p>
-                    <li>通过curl实现的快捷方便的接口请求类</li>
-<p>示例：
-<br>
-<code>
-$curl = new PhalApi_CUrl();</p>
-<p>// GET
-$rs = $curl-&gt;get('<a href="http://phalapi.oschina.mopaas.com/Public/demo/?service=Default.Index">http://phalapi.oschina.mopaas.com/Public/demo/?service=Default.Index</a>');</p>
-<p>// POST
-$data = array('username' =&gt; 'dogstar');
-$rs = $curl-&gt;post('<a href="http://phalapi.oschina.mopaas.com/Public/demo/?service=Default.Index">http://phalapi.oschina.mopaas.com/Public/demo/?service=Default.Index</a>', $data);
-</code></p>
+                    <p>通过curl实现的快捷方便的接口请求类</p>
+<p><br>示例：<br></p>
+<pre><code> $curl = new PhalApi_CUrl();
+
+ // GET
+ $rs = $curl-&gt;get('http://phalapi.oschina.mopaas.com/Public/demo/?service=Default.Index');
+
+ // POST
+ $data = array('username' =&gt; 'dogstar');
+ $rs = $curl-&gt;post('http://phalapi.oschina.mopaas.com/Public/demo/?service=Default.Index', $data);</code></pre>
                     
                                         
                     <section id="summary">
@@ -274,7 +273,7 @@ $rs = $curl-&gt;post('<a href="http://phalapi.oschina.mopaas.com/Public/demo/?se
                         <dt>File</dt>
                             <dd><a href="../files/CUrl.html"><div class="path-wrapper">CUrl.php</div></a></dd>
                                                 <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">Default</div></dd>
+                            <dd><div class="namespace-wrapper">PhalApi\CUrl</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
                                                                                                                                                                     <div class="namespace-wrapper">\PhalApi_CUrl</div>
@@ -313,26 +312,29 @@ $rs = $curl-&gt;post('<a href="http://phalapi.oschina.mopaas.com/Public/demo/?se
             <article class="method">
                 <h3 class="public ">get()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get(  <span class="argument">$url</span>,   <span class="argument">$timeoutMs = 3000</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">get(string  <span class="argument">$url</span>, integer  <span class="argument">$timeoutMs = 3000</span>) : string</pre>
+                <p><em>GET方式的请求</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$url </td>
-                                <td></td>
+                                <td><p>请求的链接</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>integer</td>
                                 <td>$timeoutMs </td>
-                                <td></td>
+                                <td><p>超时设置，单位：毫秒</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>接口返回的内容，超时返回false</p>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -352,31 +354,34 @@ $rs = $curl-&gt;post('<a href="http://phalapi.oschina.mopaas.com/Public/demo/?se
             <article class="method">
                 <h3 class="public ">post()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">post(  <span class="argument">$url</span>,   <span class="argument">$data</span>,   <span class="argument">$timeoutMs = 3000</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">post(string  <span class="argument">$url</span>, array  <span class="argument">$data</span>, integer  <span class="argument">$timeoutMs = 3000</span>) : string</pre>
+                <p><em>POST方式的请求</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$url </td>
-                                <td></td>
+                                <td><p>请求的链接</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>array</td>
                                 <td>$data </td>
-                                <td></td>
+                                <td><p>POST的数据</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>integer</td>
                                 <td>$timeoutMs </td>
-                                <td></td>
+                                <td><p>超时设置，单位：毫秒</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>接口返回的内容，超时返回false</p>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -396,31 +401,34 @@ $rs = $curl-&gt;post('<a href="http://phalapi.oschina.mopaas.com/Public/demo/?se
             <article class="method">
                 <h3 class="protected ">request()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">request(  <span class="argument">$url</span>,   <span class="argument">$data</span>,   <span class="argument">$timeoutMs = 3000</span>) </pre>
-                <p><em></em></p>
+                <pre class="signature" style="margin-right: 54px;">request(string  <span class="argument">$url</span>, array  <span class="argument">$data</span>, integer  <span class="argument">$timeoutMs = 3000</span>) : string</pre>
+                <p><em>统一接口请求</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
+                                <td>string</td>
                                 <td>$url </td>
-                                <td></td>
+                                <td><p>请求的链接</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>array</td>
                                 <td>$data </td>
-                                <td></td>
+                                <td><p>POST的数据</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>integer</td>
                                 <td>$timeoutMs </td>
-                                <td></td>
+                                <td><p>超时设置，单位：毫秒</p></td>
                             </tr>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>接口返回的内容，超时返回false</p>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -483,7 +491,7 @@ $rs = $curl-&gt;post('<a href="http://phalapi.oschina.mopaas.com/Public/demo/?se
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on March 25th, 2015 at 14:22.
+                    on March 26th, 2015 at 13:59.
                 </section>
             </section>
         </section>

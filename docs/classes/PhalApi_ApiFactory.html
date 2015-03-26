@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">358</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">298</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1019099031"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1256073004"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1019099031" class="accordion-body collapse in">
+            <div id="namespace-1256073004" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -205,11 +205,9 @@
 
                     <h1><small>\</small>PhalApi_ApiFactory</h1>
                     <p><em>PhalApi_ApiFactory 创建控制器类 工厂方法</em></p>
-                    <li>将创建与使用分离，简化客户调用，负责控制器复杂的创建过程</li>
-<p><code>
-//根据请求(?service=XXX.XXX)生成对应的接口服务，并进行初始化
-$api = PhalApi_ApiFactory::generateService();
-</code></p>
+                    <p>将创建与使用分离，简化客户调用，负责控制器复杂的创建过程</p>
+<pre><code>     //根据请求(?service=XXX.XXX)生成对应的接口服务，并进行初始化
+     $api = PhalApi_ApiFactory::generateService();</code></pre>
                     
                                         
                     <section id="summary">
@@ -267,7 +265,7 @@ $api = PhalApi_ApiFactory::generateService();
                         <dt>File</dt>
                             <dd><a href="../files/ApiFactory.html"><div class="path-wrapper">ApiFactory.php</div></a></dd>
                                                 <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">Default</div></dd>
+                            <dd><div class="namespace-wrapper">PhalApi\Api</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
                                                                                                                                                                     <div class="namespace-wrapper">\PhalApi_ApiFactory</div>
@@ -310,10 +308,12 @@ $api = PhalApi_ApiFactory::generateService();
                 <p><em>创建服务器
 根据客户端提供的接口服务名称和需要调用的方法进行创建工作，如果创建失败，则抛出相应的自定义异常</em></p>
                 <p>创建过程主要如下：</p>
+<ul>
 <li>1、 是否缺少控制器名称和需要调用的方法</li>
 <li>2、 控制器文件是否存在，并且控制器是否存在</li>
 <li>3、 方法是否可调用</li>
 <li>4、 控制器是否初始化成功</li>
+</ul>
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
@@ -399,7 +399,7 @@ $api = PhalApi_ApiFactory::generateService();
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on March 25th, 2015 at 14:22.
+                    on March 26th, 2015 at 13:59.
                 </section>
             </section>
         </section>
