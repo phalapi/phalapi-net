@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <p><em>设计软件有两种方法：一种是简单到明显没有缺陷，另外一种复杂到缺陷不那么明显。 --托尼.霍尔</em>  </p>
+<h2>5.1.1 前言</h2>
+<p>在软件工程这一学科和行业里，关于软件工程的解说有很多。有人说开发是一门艺术；有人说开发是一种技艺；也有人说开发是一门哲学。但个人认同从实用主义和理性的角度去理解。  </p>
+<p>例如一个框架，我们之所以认为它好是因为我们发现这个框架遵循了编程规范、适当地使用了设计模式、巧妙地结合了设计原则、有着稳定的依赖、代码复杂度低、并且有着很高代码覆盖率的单元测试等等。  </p>
+<p>也就是说，好的框架都是可以被解释的。既然可以被解释量化，也就可以学习、参考和借鉴。  </p>
+<h2>5.1.2 共性和可变性分析</h2>
+<p>关于共性和可变性分析，在《设计模式解析》一书中有着非常到位的讲解。  </p>
+<p>CVA是一种很容易的理念，按我的理解即： <strong>抽离共性、隔离变化</strong> 。有点类似易经里面的“变”与“不变”。  </p>
+<p>诚然，在过去的教育中（包括大学在内的），对于软件开发都着重谈论面向对象开发，即OOD，以致于很多人都对面向对象开发产生了很大的误解。而这种误解所带来的实际情况就是： <strong>我们都在进行面向对象开发，但却是标准呆板的面向对象开发，缺少生气，缺少活力</strong> 。  </p>
+<p>很多人，都没有把我们开发人员作为专业人士看待，甚至连我们自己都否认我们是专业的。所以很多时候当产品提出需求时，我们提供的开发周期往往会被外界以讲价的方式削减。何以？为什么医生给出的手术时间病人没有讨价呢？因为很简单，在病人的眼里，医生是专业的。  </p>
+<p>若我们也想达到专业的层次时，何以为？学习、思考和实践，我认为至少这三者是必不可少的。  </p>
+<p>所以，当我们在对PhalApi进行设计时，我们进行了一次又一次地酝酿、尝试、思考。我们在思考：这些功能是否真的会在实际项目中被使用？开发人员是否可能很好地进行扩展？此种决策是否便于单元测试、从思路上减少代码异味？。。。  </p>
+<p>我们谨记敏捷开发，不过度设计。但我们也确实需要一种思想上的指导。正好，我们看到了 <strong>共性和可变性的分析（commonality and variability analysis, CVA）</strong> 。 </p>
+<h2>5.1.3 CVA和三种视角、抽象类之间的关系</h2>
+<p>引用一下《设计模式解析》一书中的图表：</p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0208/161246_3f598211_121026.jpeg" alt="apic" />  </p>
+<p>在这种理念的指导下，我们会更愿意将接口开发过程的共性抽离统一起来，而可变性部分的则可以由开发人员根据不同的项目情况进行快速定制实现。</p>
+<h2>5.1.4 不稳定性与抽象度分布</h2>
+<p>除了常谈及到的“低耦合、高内聚”外，在对代码进行静态分析和衡量其可维护度时，还有一个值得注意的值，即：不稳定的度量。  </p>
+<p>不稳定的度量可以根据以下公式计算获得：</p>
+<pre><code>I = 离心耦合 / (离心耦合 + 向心耦合)</code></pre>
+<p>因此从宏观上，我们的代码结构，从上层到下层，应该向着稳定的方向递增，也就是说越底层越应稳定。对应 <strong><em>稳定依赖原则的规则（SDP），包之间的依赖应该朝着稳定的方向：不稳定的包应该依赖于更稳定的包。</em></strong>    </p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0208/163718_972e424e_121026.png" alt="1233112" />  </p>
+<p>又结合不稳定性与抽象分布图，我们PhalApi框架的代码 <strong>应该大部分分布在上图中的抽象稳定区以实现框架高层的建设、少部分分布在具体不稳定区以提供一些基础的功能</strong> 。</p>
+<h2>5.1.5 创建和使用分离</h2>
+<p>在框架的特性中，包括：可重用、IoC Container以及SOLID五条原则的运用等。这里就部分SOLID原则的运用简单说明一下。  </p>
+<h3>(1)S：单一职责原则</h3>
+<p>这是我们一直都坚持遵守的原则，因为，我们也坚持 <strong>短而美</strong> 的写法， <strong>致力于编写优雅的代码、编写人容易理解的代码</strong> 。</p>
+<h3>(2)O：开放-封闭原则</h3>
+<p>我们首先希望的是在进行接口开发过程中，当需要新增一个接口时是开放的，对已有的响应调用流程是封闭的。即我们只需要实现新接口逻辑即可，不需要改动其他过程的调用。因此在OCP原则的指导下，我们通过结合工厂方法封装了对接口的初始化和调用。</p>
+<h3>(3)D：依赖倒置原则</h3>
+<p>PhalApi框架，最大的特色莫过于 <strong>它提供了一种如何快速进行接口开发的机制，但它不强制你使用不必要的功能，甚至它还鼓励你通过它来尝试研发自己的框架</strong> 。更进一步，PhalApi引入了新颖明确的概念，一如服务。我们把客户端调用的接口称之为接口服务，把服务端用到的资源称之为资源服务。对于后者，PhalApi提供了灵活的DI机制，以支持各项目定制化的开发。</p>
+<h2>5.1.6 PhalApi核心架构图</h2>
+<p><img src="http://git.oschina.net/uploads/images/2015/0208/172848_a71943f1_121026.jpeg" alt="PhalApi-20150208" />  </p>
+<p>显然，到目前为止，从核心架构图所折射出PhalApi的结构和代码是如此的 <strong>简单明了、统一规范</strong>。至少我是这么认为的，也是一直这样努力的。  </p>
+<p>从上图的核心架构图可以看出，中间红色部分的DI处于汇点位置，提供各种资源服务的定位、创建、管理和提供。  </p>
+<p>而左上角的代码示例则表达本系统框架运行的主流程： <strong>创建一个接口实例，运行响应</strong>。  </p>
+<p>右上解黄色部分则为多变的接口应用开发的代码，这里特意罗列了两组接口，意在表明可以在此框架下挂靠多套接口。  </p>
+<p>最下面是接口开发过程中所用到的各种基础设施和技术，如日记、配置读取、缓存、加密、请求和响应等。同样，除各应用项目中形式多变的接口开发外，这块的底层技术亦支撑不一而足的需求。因为，PhalApi只是作了共性的抽离，即提供一级抽象且稳定的接口或者抽象类，以约定规约视角中接口的函数签名，不作过多的具体实现。同时以DI作为辅助，支持快速扩展。</p>
+<h2>5.1.7 PhalApi核心执行流程</h2>
+<p>和其他框架不同，除了有文档对基本使用有说明外，我们还提供了我们框架核心的设计和思想，以便大家洞明其中的原理从而进一步优化扩展。  </p>
+<p>这里，扼要说明一下PhalApi框架中接口请求背后的核心执行流程。  </p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0227/155416_29e8717f_121026.jpeg" alt="PhalApi-接口处理主流程 - 0227" /></p>
+<p>从上图的时序图中可以看出，在PhalApi中，一个接口的请求处理，只要分为两个环节： <strong>接口服务初始化</strong> 和 <strong>接口服务调用</strong> 。  </p>
+<h3>(1)接口服务初始化</h3>
+<p>在Web Service中，往往需要对服务进行注册发布后，才能开放请求。这里免去这一层，但遵循 <strong>创建和使用分离</strong> 的原则，我们将接口服务的初始化进行了封装，以便可以统一进行初始化、异常处理和一些权限ACL的控制</p>
+<p>，甚至接口访问的统计等操作，更为重要的是接口开发人员可以进行无绪开发，而不需要过多知道如何合法创建接口服务。  </p>
+<p>在1.2. 步骤中，UML时序图中的::generateService()表示对静态函数的调用，即对应代码：</p>
+<pre><code>PhalApi_ApiFactory::generateService();</code></pre>
+<p>随后，可以看到（假设我们这次请求的服务为：?service=Demo.DoSth），我们创建了一个指定接口的实例（此接口类须继承于PhalApi_Api基类），并以变量a返回实例。  </p>
+<p>如果请求的服务非法，则会以 <strong>400非法请求</strong> 返回给客户端。而正确创建接口服务a后，则会进行接口的初始化，其中有接口参数规则的解析和注册了过滤器服务后的检测操作。  </p>
+<p>当这一系列的操作都成功执行后，我们将会得到一个接口服务实例a返回。<br />
+因此，在接口服务的创建过程中，我们没有过多地限制，而是预留了很大的空间给到接口项目定制开发。</p>
+<p>至此，接口服务的创建完成。</p>
+<h3>(2)接口服务调用</h3>
+<p>在完成复杂的创建工作后，客户端（备注：这里指的是服务端开发的开发客户端）只需要简单调用需要进行的操作即可。  </p>
+<p>而这一块，则需要接口项目具体开发实现，也是我们项目级的核心部分。  </p>
+<p>在获取接口服务的背后，我们建议结合领域驱动设计的理念，对项目代码进行这样的层级划分：  </p>
+<ul>
+<li>Api接口层：用于接收参数并响应接口的请求；</li>
+<li>Domain领域层：用于处理复杂的领域业务逻辑，保证规则只出现一次；</li>
+<li>Model数据源层：更广义上的Model层，提供数据来源，不限于DB；</li>
+</ul>
+<p>最后，是我们客户端关心的返回格式。  默认情况下，我们都是以JSON格式返回的，但仍然可以轻松支持其他格式的返回，如JSONP、XML等。只需要简单地开发实现，然后重新注册即可。  </p>
+<p>至此，接口服务的调用完毕。</p>
+<h2>5.1.8 DI支持下的轻松扩展</h2>
+<p>当使用一个开源框架时，我们既喜欢其强大的一面，但矛盾的同时我们又害怕其中的复杂性，原因莫过于：学习成本高、出现问题时怕驾驭不了。  </p>
+<p>而在这里，在PhalApi这里，这一切都是这么简单，简单地又如此明了。  </p>
+<p>当需要进行资源服务的扩展时，我们可以：</p>
+<h3>实现自己需要的服务</h3>
+<p>实现指定资源服务在规约视角约定的接口，假设我们需要用文件来当作新的缓存存储。则需：</p>
+<pre><code>class MyCache_File implements PhalApi_Cache {
+    public function set($key, $value, $expire = 600) {
+        //...
+    }
+
+    public function get($key) {
+        //...
+    }
+
+    public function delete($key) {
+        //...
+    }
+}</code></pre>
+<h3>在入口重新注册</h3>
+<p>当实现自己的功能后，只需要简单地在入口文件重新注册即可。如：</p>
+<pre><code>DI()-&gt;cache = new MyCache_File();</code></pre>
+<p>最后，另人兴奋的是，原来全部的调用代码都不需要改动，即可享受后期调整升级后的新功能！完全避免了曾经那种“牵一发而动全身”的痛苦。并且，定制开发出来的实现类，还可以跨越业务在其他项目中共用。  </p>
+<p>这不正是我们常常所说的代码重用吗？而如今，我们很优雅地做到了！  </p>
+<p>然而，我们在实际开发中收获到的远远不是代码重用这么简单，而是一种更好的开发实践。因为通过DI使得创建和使用分离，所以我们可以让高级的开发同学实现服务功能的开发，然后再提供给普通的开发同学使用，新手亦然，因为对他们来说：会用就行。当然，对于高级的同学，还应该遵循开发的最佳实践，坚持单元测试，以保证我们提供了可靠的接口（广义上的接口，非HTTP请求的接口）给我们的“客户端”使用。  </p>
+<p>若如此，我们的开发合作岂不是很更合理、更明朗、更愉快？哈哈，我想是的。</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

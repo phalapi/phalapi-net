@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <p><em>“播下一种思想，收获一种行为；播下一种行为，收获一种习惯；播下一种习惯，收获一种性格；播下一种性格，收获一种命运。”  --《成君忆：水煮三国》</em>  </p>
+<h2>1.12.1 参数解析</h2>
+<p>参数，对于接口来说，是非常重要的输入。对于外部调用来说，同等重要。</p>
+<p>因此，对于参数这块，我们是希望能够既减轻后台开发对接口参数获取、判断、验证、文档编写的痛苦；又便于客户端方便的、自由的调用；既利已又利他。</p>
+<p>由此，我们引入了 <strong>参数解析</strong> 这一概念，即：通过配置参数的规则，即可自动实现参数的获取和验证。</p>
+<h2>1.12.2 参数解析的配置规则</h2>
+<p>熟悉Yii的同学，对于以下的规则配置应该倍感亲切，但是不熟悉的同学也可以同样快速上手。因为，你会慢慢发现，这样的规则很符合我们PHP开发的规范，如果没有，我们继续努力改进。</p>
+<p>格式如下：</p>
+<pre><code>array(
+    '参数名' =&gt; array('name' =&gt; '接口参数名称', 'type' =&gt; '类型', 'default' =&gt; '默认值', ...),
+    ... ...
+)</code></pre>
+<h2>1.12.3 示例</h2>
+<h3>(1)简单的示例</h3>
+<p>假设这样的业务场景，我们需要提供一个用户登录的接口，其中需要用户名和密码，因此：</p>
+<pre><code>&lt;?php
+
+class Api_User extends Core_Api
+{
+    public function getRules()
+    {
+        return array(
+            'login' =&gt; array(
+                'username' =&gt; array('name' =&gt; 'username'),
+                'password' =&gt; array('name' =&gt; 'password'),
+            ),
+        );
+    }
+
+    public function login()
+    {
+        return array('username' =&gt; $this-&gt;username, 'password' =&gt; $this-&gt;password);
+    }                                    
+}</code></pre>
+<p>当我们这样调用接口时：</p>
+<pre><code>/?service=User.Login&amp;username=test&amp;password=123456</code></pre>
+<p>就可以获取到需要的参数：</p>
+<pre><code>{"ret":0,"data":{"username":"test","password":"123456"},"msg":""}</code></pre>
+<p>从中，可以很容易理解：参数规则需要统一配置在接口实现类里面的 <strong>getRules()</strong> 函数，随后即可以通过类成员属性方式获取，如： <strong>$this-&gt;username</strong> 。</p>
+<h3>(2)更完善的示例</h3>
+<p>很多时候我们都会对用户名和密码作一些验证，如是否必须、长度、最值，以及默认值等。  </p>
+<p>继续上面的业务场景，我们登录下用户名和密码必须，且密码长度至少为6个字符，则可以调整参数规则：</p>
+<pre><code>'login' =&gt; array(
+   'username' =&gt; array('name' =&gt; 'username', 'require' =&gt; true),
+   'password' =&gt; array('name' =&gt; 'password', 'require' =&gt; true, 'min' =&gt; 6),
+),</code></pre>
+<p>尝试一下非法的参数请求，如无任何参数的情况下，访问/?service=User.Login，返回：</p>
+<pre><code>{"ret":1200,"data":[],"msg":"Illegal Param: wrong param: username"}</code></pre>
+<p>再尝试一下密码长不对的情况，访问/?service=User.Login&amp;username=test&amp;password=123，返回：</p>
+<pre><code>{"ret":1200,"data":[],"msg":"Illegal Param: password.len should &gt;= 6, but now password.len = 3"}</code></pre>
+<h2>1.12.4 三级参数</h2>
+<h3>(1)系统参数</h3>
+<p>已被系统固定占有的参数，目前只有一个，即：service，为需要调用的服务，类型为字符串，格式为：XXX.XXX，首字母不区分大小写，建议统一以大写开头。</p>
+<h3>(2)应用参数</h3>
+<p>应用参数是指在一个项目中，全部接口都需要的参数，或者通用的参数规则。假如我们的项目中全部需要签名sign参数，且必须；以及非必须的版本号，则可以在./Config/app.php中的apiCommonRules配置：</p>
+<pre><code>//$vim ./Config/app.php
+&lt;?php
+
+return array(
+    /**
+     * 应用接口层的统一参数
+     */
+    'apiCommonRules' =&gt; array(
+        //签名
+        'sign' =&gt; array(
+            'name' =&gt; 'sign', 'require' =&gt; true,
+        ),
+        //客户端App版本号，如：1.0.1
+        'version' =&gt; array(
+            'name' =&gt; 'version', 'default' =&gt; '', 
+        ),
+    ),
+
+    ... ...</code></pre>
+<h3>(3)接口参数</h3>
+<p>接口参数即为上面在各个接口子类中配置的规则，为特定接口所持有。同时，为了方便同一套接口的规则重用，可以使用下标为 '*' 表示是本接口通用规则，如我们为了加强安全性，为全部的用户接口操作都加上4位的验证码：</p>
+<pre><code>    public function getRules()
+    {
+        return array(
+            '*' =&gt; array(
+                'code' =&gt; array('name' =&gt; 'code', 'require' =&gt; true, 'min' =&gt; 4, 'max' =&gt; 4),
+                ),
+            'login' =&gt; array(
+                'username' =&gt; array('name' =&gt; 'username', 'require' =&gt; true),
+                'password' =&gt; array('name' =&gt; 'password', 'require' =&gt; true, 'min' =&gt; 6),
+            ),
+        );
+    }</code></pre>
+<p>在完成对上面的应用参数规则、接口通用规则和指定规则的参数进行配置后，对用户登录的接口进行请求时就需要这样访问：</p>
+<pre><code>/?service=User.login&amp;sign=77f81c17d512302383e5f26b99dae4d9&amp;username=test&amp;password=123456&amp;code=abcd</code></pre>
+<blockquote>
+<p>温馨提示：
+在Api类里面配置规则时，下标不区分大小写。因为框架会自动将请求的函数名和全部的规则下标转换成小写进行匹配。</p>
+</blockquote>
+<p>另外，当同一个参数规则分别在应用参数、接口通用参数及特定接口参数出现时，后面的规则会覆盖前面的，即具体化的规则和替换通用的规则，以保证接口在特定场合的定制性。</p>
+<h2>1.12.5 在线接口参数查询工具</h2>
+<p>为了便于理解上面全部的参数规则，对于具体接口调用的要求，这里可以使用在线接口参数查询工具在浏览器访问查看：</p>
+<pre><code>/demo/checkApiParams.php?service=User.Login</code></pre>
+<p>可以看到：
+<img src="http://static.oschina.net/uploads/space/2015/0131/101825_BIls_256338.png" alt="show" />
+此工具同时也可以方便客户端实时查看接口文档时，进行辅助的接口规则说明。</p>
+<h2>1.12.6 参数传递的方式</h2>
+<p>系统下GET和POST皆可，但是推荐：</p>
+<ul>
+<li>
+<p>1、service参数以GET方式传递，接口统一以/?service=XXX.XXX链接请求，便于交流，更重要的是当接口发生问题时，可以快速在服务器上通过nginx日记定位问题；</p>
+</li>
+<li>
+<p>2、其他参数以POST方式传递，特别对于敏感数据，如密码，以相对保护数据安全；</p>
+</li>
+<li>
+<p>3、在编写文档，或者进行调试时，可以全部临时使用GET方式，如本文档的写法，同时在浏览器时也可以使用GET；</p>
+</li>
+<li>4、如果需要对数据包进行加密或者压缩、自定义参数格式，可以重载PhalApi_Request::genData()，然后再继续使用参数规则解析；</li>
+</ul>
+<h2>1.12.7 参数规则</h2>
+<table>
+<thead>
+<tr>
+<th>类型type</th>
+<th>参数名称 name</th>
+<th>是否必须require</th>
+<th>默认值default</th>
+<th>最小值&amp;最大值min&amp;max</th>
+<th>更多</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>string</td>
+<td>必须</td>
+<td>可选</td>
+<td>true/false，默认false</td>
+<td>可选</td>
+<td>---</td>
+</tr>
+<tr>
+<td>int</td>
+<td>必须</td>
+<td>可选</td>
+<td>true/false，默认false</td>
+<td>可选</td>
+<td>---</td>
+</tr>
+<tr>
+<td>float</td>
+<td>必须</td>
+<td>可选</td>
+<td>true/false，默认false</td>
+<td>可选</td>
+<td>---</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>必须</td>
+<td>可选</td>
+<td>true/false，默认false</td>
+<td>可选</td>
+<td>以下值会转换为true： ok, true, success, on, yes, 1</td>
+</tr>
+<tr>
+<td>date</td>
+<td>必须</td>
+<td>可选</td>
+<td>true/false，默认false</td>
+<td>可选</td>
+<td>格式：format 为timestamp时会将字符串的日期转换</td>
+</tr>
+<tr>
+<td>array</td>
+<td>必须</td>
+<td>可选</td>
+<td>true/false，默认false</td>
+<td>可选</td>
+<td>格式：format 为explode时，会根据separator将字符串分割成数组, 为json时，会json解析</td>
+</tr>
+<tr>
+<td>enum</td>
+<td>必须</td>
+<td>可选</td>
+<td>true/false，默认false</td>
+<td>可选</td>
+<td>必须，range,以数组指定枚举的范围</td>
+</tr>
+</tbody>
+</table>
+<p>下面是对各类型的示例说明。</p>
+<h3>(1)字符串 string</h3>
+<p>当一个参数规则 未指定类型时，默认为string。一个完整的写法可以为：</p>
+<pre><code>array('name' =&gt; 'username', 'type' =&gt; 'string', 'require' =&gt; true, 'default' =&gt; 'nobody', 'min' =&gt; 1, 'max' =&gt; 10)</code></pre>
+<p>若传递的参数长度过长，如&amp;username=alonglonglonglongname，则会异常失败返回：</p>
+<pre><code>{"ret":1200,"data":[],"msg":"Illegal Param: username.len should &lt;= 10, but now username.len = 21"}</code></pre>
+<h3>(2)整型 int</h3>
+<p>如通常数据库中的id，即可配置成：</p>
+<pre><code>array('name' =&gt; 'id', 'type' =&gt; 'int', 'require' =&gt; true, 'min' =&gt; 1 )</code></pre>
+<p>当传递的参数，不在其配置的范围内时，如&amp;id=0，则会异常失败返回：</p>
+<pre><code>{"ret":1200,"data":[],"msg":"Illegal Param: id should &gt;= 1, but now id = 0"}</code></pre>
+<h3>(3)浮点 float</h3>
+<p>浮点型，类似整型的配置，此处略。</p>
+<h3>(4)布尔值 boolean</h3>
+<p>布尔值，主要是可以对一些字符串转换成布尔值，如ok, true, success, on, yes, 以及会被PHP解析成true的字符串，都会转换成true，方便调用。如通常的是否记住我：</p>
+<pre><code>array('name' =&gt; 'isRememberMe', 'type' =&gt; 'boolean', 'default' =&gt; true)</code></pre>
+<h3>(5)日期 date</h3>
+<p>日期可以按自己约定的格式传递，当需要将字符串的日期转换成timestamp时，可以这样配置：</p>
+<pre><code>array('name' =&gt; 'registerData', 'type' =&gt; 'date')</code></pre>
+<p>对应®isterData=2015-01-31%2010:00:00则会被获取到为：&quot;2015-01-31 10:00:00&quot;。</p>
+<p>如果是配置成：</p>
+<pre><code>array('name' =&gt; 'registerData', 'type' =&gt; 'date', 'format' =&gt; 'timestamp')</code></pre>
+<p>则上面的参数再请求时，则会被转换成：1422669600。</p>
+<h3>(6)数组 array</h3>
+<p>很多时候在接口进行批量获取时，都需要提供一组参数，所以这时可以使用数组来进行配置。如：</p>
+<pre><code>array('name' =&gt; 'uids', 'type' =&gt; 'array', 'format' =&gt; 'explode', 'separator' =&gt; ',')</code></pre>
+<p>对应&amp;uids=1,2,3则会被转换成：</p>
+<pre><code>array ( 0 =&gt; '1', 1 =&gt; '2', 2 =&gt; '3', )</code></pre>
+<p>又如接口需要使用JSON来传递整块参数时，可以这样配置：</p>
+<pre><code>array('name' =&gt; 'params', 'type' =&gt; 'array', 'format' =&gt; 'json')</code></pre>
+<p>对应¶ms={&quot;username&quot;:&quot;test&quot;,&quot;password&quot;:&quot;123456&quot;}则会被转换成：</p>
+<pre><code>array ( 'username' =&gt; 'test', 'password' =&gt; '123456', )</code></pre>
+<p>特别地，当配置成了数组，却未指定格式format时，会转换成一个元素的数组，如：&amp;name=test，会转换成：array('test')。</p>
+<h3>(7)枚举 enum</h3>
+<p>在需要对接口参数进行范围限制时，可以使用此枚举型。如对于性别的参数，可以这样配置：</p>
+<pre><code>array('name' =&gt; 'sex', 'type' =&gt; 'enum', 'range' =&gt; array('female', 'male'))</code></pre>
+<p>当传递的参数不合法时，如&amp;sex=unknow，则会被拦截，返回失败：</p>
+<pre><code>{"ret":1200,"data":[],"msg":"Illegal Param: sex should be in female\/male, but now sex = unknow"}</code></pre>
+<h2>1.12.8 关于参数设计的原则</h2>
+<h3>(1)通配的$_REQUEST</h3>
+<p>使用$_REQUEST获取参数，便于在不同场合下GET/POST之间的切换，同时在初始化DI()-&gt;request服务时，可以指定传递的参数，以便于灵活的单元测试；</p>
+<h3>(2)更自由的名称映射</h3>
+<p>之所以没把规则配置的下标默认成与客户端传递的name一致，是为了更自由的名称映射；<br />
+如可能我们PHP后台开发喜欢用驼峰法来表示，但客户端想用下划线来分割，则通过这样配置：</p>
+<pre><code>array(
+    'isRememberMe' =&gt; array('name' =&gt; 'is_remember_me', 'type' =&gt; 'boolean', 'default' =&gt; true),
+)</code></pre>
+<p>更重要的是，有时我们希望能缩短客户端请求的参数名称以节省流量时，可以这样配置：</p>
+<pre><code>array(
+    'isRememberMe' =&gt; array('name' =&gt; 're', 'type' =&gt; 'boolean', 'default' =&gt; true),
+)</code></pre>
+<h3>(3)异常返回</h3>
+<p>对于客户端参数不合法时，以异常失败返回，而不是隐性地转换，是因为后台接口往往需要手动对传递的参数进行人工的验证，而不是希望得到隐性转换的值。即当客户端参数对时，我们需要明确提示说：参数非法。</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>1.23.1 请求</h2>
+<p>把我们后台的API想象成一个函数，那么请求的参数就是我们的参数列表；而接口响应的数据则对应函数返回的结果。  </p>
+<p>对于请求，正如前面所看到的，我们可以使用$_GET，也可以使用$_POST，也可以两者都使用，还可以在测试时自己指定模拟的请求数据包。  </p>
+<p>或者，在实际项目开发中，我们还需要根据自身的需求，跟我们自己的客户端作一些约定。如通常地，我们会要求客户端 <strong>service参数必须用GET方式</strong> ，以便服务器返回500时定位接口服务位置。对此，简单的我们把$_POST['service']去掉即可，如在入口文件前面添加：</p>
+<pre><code>unset($_POST['service']);   //只接收GET方式的service参数</code></pre>
+<h2>1.23.2 响应</h2>
+<p>当前默认使用JSON的格式返回，但项目需要其他返回格式也是可以的。只需要实现PhalApi_Response抽象中的formatResult($result)格式化返回结果，然后也是重新注册DI()-&gt;response服务即可。如：  </p>
+<h3>(1)JSONP的返回</h3>
+<p>在H5页面中，我们可能会需要用到JSONP的返回，所以这里默认提供了这种格式的支持。  </p>
+<p>在入口文件中，添加：</p>
+<pre><code>//支持JsonP的返回
+if (!empty($_GET['callback'])) {
+    DI()-&gt;response = new PhalApi_Response_JsonP($_GET['callback']);
+}</code></pre>
+<p>在接口访问时再带上&amp;callback=XXX参数即可。  </p>
+<p>这里在创建响应服务时，可以看到是用了回调函数的名字进行初始化。考虑到会存在XSS（跨站脚本攻击），对回调函数要进行相应的过滤，可以用黑名单或者白名单的方式。黑名单方式暂时还没提供，白名单相对简单但需要项目自己实现，如：</p>
+<pre><code>class MyResponse_JsonP extends PhalApi_Response_JsonP {
+
+    protected function clearXss($callback) {
+        return in_array($callback, array('fun1', 'func2', 'func3')) ? $callback : '';
+    }
+}</code></pre>
+<h3>(2)其他格式返回</h3>
+<p>如上面所述，当需要返回一种当前PhalApi没提供的格式时，可以：</p>
+<ul>
+<li>1、实现PhalApi_Response抽象中的formatResult($result)格式化返回结果</li>
+<li>2、重新注册DI()-&gt;response服务  </li>
+</ul>
+<p>这里以扩展XML返回格式为例，简单说明。  </p>
+<p>首先，添加实现一个XML响应子类：</p>
+<pre><code>class MyResponse_XML extends PhalApi_Response {
+
+    protected function formatResult($result) {
+        return ArrayToXML::toXml($result);
+    }
+}</code></pre>
+<p>关于ArrayToXML，请查看： <a href="http://www.oschina.net/code/snippet_54100_1548">将PHP数组转成XML</a>  </p>
+<p>然后，重新注册：</p>
+<pre><code>DI()-&gt;response = new MyResponse_XML();</code></pre>
+<p>done!</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

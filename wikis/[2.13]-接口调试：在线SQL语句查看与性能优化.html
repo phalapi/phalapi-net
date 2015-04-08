@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <p>后台接口绝大数情况下，都需要与数据库进行交互，以获取业务数据或者接收保存客户端上报的数据。为方便后台开发同学进行调试，以及实时查看全部执行的SQL语句，这里简单地对全部执行的SQL语句进行调试模式下输出。</p>
+<h2>2.13.1 开启SQL调试</h2>
+<p>开启调试模式很简单，但这里和通常的框架不一样，我们不是全部统一地开启调试模式，因为在接口正常调用情况下返回非法的JSON会导致接口结果解析失败。故我们通过添加调试参数来控制是否开启SQL调试。如下：</p>
+<pre><code>//$vim ./Public/init.php
+
+//数据操作 - 基于NotORM
+DI()-&gt;notorm = function() {
+    $debug = isset($_GET['debug']) ? true : false;
+    return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), $debug);
+};</code></pre>
+<blockquote>
+<p>特别注意：
+通常，我们的调试参数不应都简单地使用&amp;debug=1，而是各自定义，如  <strong>复杂一点：&amp;__phalapi_debug__=1</strong> ，或者再添加一个简单的验签，额外带个参数校验，如：&amp;<strong>phalapi</strong>sign__=202cb962ac59075b964b07152d234b70。减少暴露SQL的风险。</p>
+</blockquote>
+<h2>2.13.2 调试示例</h2>
+<p>回到前面获取用户基本信息接口 /demo/?service=User.GetBaseInfo 的示例。</p>
+<h3>(1)正常情况下</h3>
+<p>请求：  </p>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;userId=1</code></pre>
+<p>返回： </p>
+<pre><code>{"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","from":"oschina"}},"msg":""}</code></pre>
+<h3>(2)带&amp;debug=1调试下</h3>
+<p>请求：</p>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;userId=1&amp;debug=1</code></pre>
+<p>返回：</p>
+<pre><code>[1 - 0.00057s]SELECT * FROM tbl_user WHERE (id = ?); -- 1
+{"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","from":"oschina"}},"msg":""}</code></pre>
+<h2>2.13.3 一个错误的接口开发</h2>
+<p>有时，在进行接口开发时，会需要进行批量获取的功能，如列表。但很多开发的同学可能会因为时间赶或者没有意识去对SQL查询进行优化，或者甚至不知道自己的接口背后隐藏着多少问题。下面是一个错误的开发示例。  </p>
+<h3>(1)新增的批量获取接口</h3>
+<p>假设我们在开发一个国际的项目，并且运行良好，BOSS说因业务需要，要加多一个接口以支持批量获取用户的基本信息，提供给国外某知名的社交平台调用。</p>
+<p>于是乎，我们很快就根据原来的单个获取接口实现了新的接口：</p>
+<pre><code>//$vim ./Demo/Api/User.php
+&lt;?php
+
+class Api_User extends PhalApi_Api {
+
+    public function getRules() {
+        return array(
+            //...
+            'getMultiBaseInfo' =&gt; array(
+                'userIds' =&gt; array('name' =&gt; 'userIds', 'type' =&gt; 'array', 'format' =&gt; 'explode', 'require' =&gt; true),
+            ),
+        );
+    }
+
+    //...
+
+    public function getMultiBaseInfo() {
+        $rs = array('code' =&gt; 0, 'msg' =&gt; '', 'list' =&gt; array());
+
+        $domain = new Domain_User();
+        foreach ($this-&gt;userIds as $userId) {
+            $rs['list'][] = $domain-&gt;getBaseInfo($userId);
+        }
+
+        return $rs;
+    }
+}
+</code></pre>
+<h3>(2)运行调用一下</h3>
+<p>显然，我们可以很清楚地调用新增的接口：</p>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetMultiBaseInfo&amp;userIds=1,2,3</code></pre>
+<p>可返回：</p>
+<pre><code>{
+    "ret": 200,
+    "data": {
+        "code": 0,
+        "msg": "",
+        "list": [
+            {
+                "id": "1",
+                "name": "dogstar",
+                "from": "oschina"
+            },
+            {
+                "id": "2",
+                "name": "Tom",
+                "from": "USA"
+            },
+            {
+                "id": "3",
+                "name": "King",
+                "from": "game"
+            }
+        ]
+    },
+    "msg": ""
+}</code></pre>
+<p>假设我们已经有了这样的数据库表数据：</p>
+<pre><code>INSERT INTO `tbl_user` VALUES ('1', 'dogstar', 'oschina');
+INSERT INTO `tbl_user` VALUES ('2', 'Tom', 'USA');
+INSERT INTO `tbl_user` VALUES ('3', 'King', 'game');</code></pre>
+<h3>(3)这样的问题？</h3>
+<p>这样的问题，在对外黑盒调用的客户端同学是发现不了的，对于测试人员来说也是无法感知的。但所犯的错误也是显然易见的，就是没有进行SQL的批量查询优化，造成了很多不必要的重复查询。<br />
+这里，根据后台接口开发人员提供的调试参数（假设为：&amp;debug=1），则我们可以快速发现存在的问题：</p>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetMultiBaseInfo&amp;userIds=1,2,3&amp;debug=1</code></pre>
+<p>如下返回，我们看到了很多重复类似的查询语句。</p>
+<pre><code>[1 - 0.0005s]SELECT * FROM tbl_user WHERE (id = ?); -- 1
+[2 - 0.00042s]SELECT * FROM tbl_user WHERE (id = ?); -- 2
+[3 - 0.00038s]SELECT * FROM tbl_user WHERE (id = ?); -- 3
+{"ret":200,"data":{"code":0,"msg":"","list":[{"id":"1","name":"dogstar","from":"oschina"},{"id":"2","name":"Tom","from":"USA"},{"id":"3","name":"King","from":"game"}]},"msg":""}</code></pre>
+<p>上面输出的调试信息，简单补充一个格式：</p>
+<pre><code>[序号 - 所耗时间]SQl语句 -- [参数1, 参数2]</code></pre>
+<h3>(4)如何改进？</h3>
+<p>这是一个很基本的问题，当然在实际项目中不会普通存在，这里只是作为一个示例加以说明。但让人失望的是，实际项目确实存在为数不少的这样的情况。可能是新人的技术和意识问题，也有可能是老同学的态度问题。所以，优化这么一个接口的批量SQL查询不难，难的是如何才能让新、老同学都注重这块的SQL查询优化呢？而不是等到线上服务器异常崩溃后再来推托责任。<br />
+具体的代码改进，留给读者自己实践了。毕竟，看了，实践了，才会真正深刻地掌握。^_^</p>
+<h2>2.13.4 由此引申</h2>
+<ul>
+<li>这里不专门讲述SQL的优化，但也顺便提供一些SQL查询优化的建议：</li>
+<li>使用批量查询，而不是N次循环查询！</li>
+<li>重复的数据，不要重复获取；</li>
+<li>根据需要，按需要获取表字段，而不是SELECT *；</li>
+<li>针对频繁的搜索字段，建立必要的索引，以加快查询速度；</li>
+<li>使用关联查询，而不是粗暴地类似：were uid IN (... 这里是成千上W个用户ID ...)；</li>
+<li>针对单条SQL语句执行时间超过1秒的，重点优化；</li>
+</ul>
+<h2>2.13.5 最后最后</h2>
+<p>奉上我们坚持TDD开发下的单元测试代码：</p>
+<pre><code>    public function testGetMultiBaseInfo()
+    {
+        $str = 'service=User.GetMultiBaseInfo&amp;userIds=1,2,3';
+        parse_str($str, $params);
+
+        DI()-&gt;request = new PhalApi_Request($params);
+
+        $api = new Api_User();
+        //自己进行初始化
+        $api-&gt;init();
+        $rs = $api-&gt;getMultiBaseInfo();
+
+        $this-&gt;assertNotEmpty($rs);
+        $this-&gt;assertArrayHasKey('code', $rs);
+        $this-&gt;assertArrayHasKey('msg', $rs);
+        $this-&gt;assertArrayHasKey('list', $rs);
+
+        foreach ($rs['list'] as $item) {
+            $this-&gt;assertArrayHasKey('id', $item);
+            $this-&gt;assertArrayHasKey('name', $item);
+            $this-&gt;assertArrayHasKey('from', $item);
+        }
+    }</code></pre>
+<p>执行单元测试的效果：</p>
+<pre><code>dogstar@ubuntu:Tests$ phpunit --filter testGetMultiBaseInfo ./Api/Api_User_Test.php 
+PHPUnit 4.3.4 by Sebastian Bergmann.
+
+.
+
+Time: 23 ms, Memory: 6.25Mb
+
+OK (1 test, 13 assertions)</code></pre>
+<p>搞定，收工，开饭！</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

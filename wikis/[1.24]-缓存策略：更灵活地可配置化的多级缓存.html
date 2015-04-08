@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>1.24.1 论缓存的重要性</h2>
+<p>在很多情况下，我们都需要缓存。如对重复获取但变化不大的数据进行缓存以提供服务器的响应能力，又如当需要为数据库服务器减少QPS时等等。但同时缓存也因为有延时导致数据不能实时更新，或者在需要更新时不能被更新。如在接口调试、单元测试或者预览时，但这些都可以通过一些技巧来获得。这里，将从简单的缓存、再到高速缓存、多级缓存逐步进行说明。</p>
+<h2>1.24.2 简单缓存</h2>
+<p>这里所指的简单缓存，是指文件缓存。因为实现简单，且部署方便。但其缺点也是明显的，如文件I/O读写导致性能低，不能支持分布式。所以在没有集群服务器下是适用的。</p>
+<p>当需要使用文件缓存时，先对文件缓存进行DI注册，便可使用。</p>
+<pre><code>//$ vim ./Public/init.php 
+DI()-&gt;cache = new PhalApi_Cache_File(array('path' =&gt; API_ROOT . '/Runtime', 'prefix' =&gt; 'demo'));
+
+// 设置
+DI()-&gt;cache-&gt;set('thisYear', 2015, 600);
+
+// 获取
+echo DI()-&gt;cache-&gt;get('thisYear');
+
+// 删除
+DI()-&gt;cache-&gt;delete('thisYear');</code></pre>
+<h2>1.24.3 高速缓存</h2>
+<p>高速缓存通常具备分布式的能力，并能进驻内存，因此性能高。但同样此优点所带来的则是需要另外部署缓存扩展，如常见的Memcached、Redis。若需要考虑缓存落地，还要进一点筛选和配置。  </p>
+<p>如使用Memcached：</p>
+<pre><code>DI()-&gt;cache = new PhalApi_Cache_Memecahced(array('host' =&gt; '127.0.0.1', 'port' =&gt; 11211, 'prefix' =&gt; 'demo_'));
+
+// 设置
+DI()-&gt;cache-&gt;set('thisYear', 2015, 600);
+
+// 获取
+echo DI()-&gt;cache-&gt;get('thisYear');
+
+// 删除
+DI()-&gt;cache-&gt;delete('thisYear');</code></pre>
+<p>从上面示例代码注意到，我们使用了前缀配置，以防同一台MC服务器同一端口下key名冲突。当然，更好是使用配置文件来配置缓存的地址和端口，以及前缀。</p>
+<h2>1.24.4 多级缓存</h2>
+<p>然而，很多时候，我们需要多级缓存来承载更大的访问量。以便结合本地低速缓存和分布式高速缓存来获得更好的用户体验和服务器吞吐率。这时，则可以使用多级缓存策略。  </p>
+<p>在切换到多级缓存时，我们明显希望原有的代码调用不需要同步调整便能获得升级后的多级缓存，并且我们后台开发人员也希望可以轻便在原有的单点缓存的基础上进行扩展。所以这就引出了一个有趣的问题：我们该如何组织多级缓存？  </p>
+<p>作为一个框架，除了考虑上述的原有调用、单点缓存复用外，还需要考虑到多级缓存的组装。部分框架，一如我最喜欢的Phalcon则是使用了配置的形式来实现。但仍然，我们需要了解其配置的各个格式要求才能更好掌握和使用，这点带来了学习的成本。因此，PhalApi则是使用了简单的组合模式来实现。  </p>
+<p>正如你在源代码中看到的PhalApi_Cache_Multi类，通过此类的实例可以利用PhalApi_Cache_Multi::addCache()快速添加一个缓存节点，而节点的优先级则按开发同学添加的顺序来确定。显然在添加时，我们应该先添加分布式的高速缓存，再添加本地的低速缓存（希望不会有人先添加文件缓存再添加MC缓存）。而各个节点的初始化，则是我们之前所熟悉的。只是简单添加即可。</p>
+<p>以下是结合文件缓存和MC缓存的多级缓存示例：</p>
+<pre><code>$cache = PhalApi_Cache_Multi();
+
+$mcCache = new PhalApi_Cache_Memecahced(array('host' =&gt; '127.0.0.1', 'port' =&gt; 11211, 'prefix' =&gt; 'demo_'));
+$cache-&gt;addCache($mcCache);
+
+$fileCache = new PhalApi_Cache_File(array('path' =&gt; API_ROOT . '/Runtime', 'prefix' =&gt; 'demo'));
+$cache-&gt;addCache($fileCache);
+
+DI()-&gt;cache = $cache;</code></pre>
+<p>然后，就可像之前那样设置、获取和删除缓存，而不需考虑是单点缓存，还是多级缓存：</p>
+<pre><code>// 设置
+DI()-&gt;cache-&gt;set('thisYear', 2015, 600);
+
+// 获取
+echo DI()-&gt;cache-&gt;get('thisYear');
+
+// 删除
+DI()-&gt;cache-&gt;delete('thisYear');</code></pre>
+<h2>1.24.5 静态结构图</h2>
+<p>对应地，我们可以得出清晰明了的UML静态结构图：</p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0226/164320_da31be4b_121026.jpeg" alt="多级缓存静态结构图" /></p>
+<p>结构层次非常简单，但主要分为三大类：左边是多级缓存；中间突出的是特殊情况，即：空对象模式下的空缓存；右边是目前已提供或者后期扩展的具体缓存实现。</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>PHP日记接口规范</h2>
+<p>关于日记系统，PHP规范给出了相当好的说明和定义，请见： <a href="http://www.php-fig.org/psr/psr-3/">Logger Interface</a>  </p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0128/235013_F20E_256338.png" alt="apic" />  </p>
+<h2>1.17.1 简化版</h2>
+<p>但在用过这么多开源框架进行各种项目开发，以及内部框架的开发后，发现实际上日记的分类并没有使用得这么丰富，而通常只是频繁地几类。因此，为了减少不必要的复杂性，这里特地进行了精简，只要有：</p>
+<ul>
+<li>error 系统异常类</li>
+<li>info 业务纪录类</li>
+<li>debug 开发调试类</li>
+</ul>
+<p>现分说如下。</p>
+<h3>(1)error 系统异常类</h3>
+<p>此类是后台开发同学认为 <strong>不应该发生却发生的事情 </strong> ，即我们通常所说的系统异常。<br />
+如：调用app store支付的接口失败了，我们需要纪录一下当时的场景，以便复杂和给用户补尝其损失。<br />
+又如：写入一条纪录到数据纪录，但失败了，我们需要纪录一下，以便排查。  </p>
+<p>用法很简单，如：</p>
+<pre><code>//只有描述
+DI()-&gt;logger-&gt;error('fail to insert DB');
+
+//描述 + 简单的信息
+DI()-&gt;logger-&gt;error('fail to insert DB', 'try to register user dogstar');
+
+//描述 + 当时的上下文数据
+$data = array('name' =&gt; 'dogstar', 'password' =&gt; '123456');
+DI()-&gt;logger-&gt;error('fail to insert DB', $data);</code></pre>
+<p>上面三条纪录，效果类如：</p>
+<pre><code>dogstar@ubuntu:dev.phalapi.com$ tailf ./Runtime/log/201502/20150207.log 
+2015-02-07 20:37:55|ERROR|fail to insert DB
+2015-02-07 20:37:55|ERROR|fail to insert DB|try to register user dogstar
+2015-02-07 20:37:55|ERROR|fail to insert DB|{"name":"dogstar","password":"123456"}</code></pre>
+<p>截图效果：
+<img src="http://git.oschina.net/uploads/images/2015/0207/204303_7cfa86aa_121026.jpeg" alt="apic" />  </p>
+<h3>(2)info 业务纪录类</h3>
+<p>此类通常为业务需要进行必要的操作纪录，以便发生系统问题后的回滚处理、问题排查以及数据统计。<br />
+如在有缓存的情况下，可能数据没及时写入数据库而导致数据丢失或者回档，这里可以通过日记简单查看是否可以恢复。以及说明一下操作发生的背景或原由，如通常游戏中用户的经验值添加：  </p>
+<pre><code>//假设：10 + 2 = 12
+DI()-&gt;logger-&gt;info('add user exp', array('name' =&gt; 'dogstar', 'before' =&gt; 10, 'addExp' =&gt; 2, 'after' =&gt; 12, 'reason' =&gt; 'help one more phper'));
+
+//对应的LOG
+2015-02-07 20:48:51|INFO|add user exp|{"name":"dogstar","before":10,"addExp":2,"after":12,"reason":"help one more phper"}</code></pre>
+<p>但当哪天我们看到以下的LOG是就会发现系统存在隐藏的BUG：  </p>
+<pre><code>//WTF? 10 + 2 = 11 ???
+2015-02-07 20:48:51|INFO|add user exp|{"name":"dogstar","before":10,"addExp":2,"after":11,"reason":"help one more phper"}</code></pre>
+<p>而当用户玩家来投诉客服时，客服妹子来找到我们后台开发时，我们可以证明得了是系统原因造成了用户丢失1点经验值。<br />
+特别地，若我们看到以下的LOG时，不难看出有人在用非法的渠道刷经验：</p>
+<pre><code>2015-02-07 20:52:35|INFO|add user exp|{"name":"dogstar","before":10,"addExp":2,"after":12,"reason":"help one more phper"}
+2015-02-07 20:52:35|INFO|add user exp|{"name":"dogstar","before":12,"addExp":2,"after":14,"reason":"help one more phper"}
+
+....
+
+2015-02-07 20:52:35|INFO|add user exp|{"name":"dogstar","before":998,"addExp":2,"after":1000,"reason":"help one more phper"}</code></pre>
+<p>所幸我们有日记并及时发现了，随后如何处理就视具体的项目而定了。但当产品来追问时，我们可以及时给出反馈和做出处理。  </p>
+<p>还有更为重要的是 <strong>数据统计</strong> 。这块就App数据分析和统计这块已经有了很好的第三方服务支持，一如：友盟。但我们仍然可以轻松实现自己的数据统计，以便二次确认和定制化。毕竟，总是依赖第三方不是那么轻便，而且存在敏感数据安全问题。<br />
+这里简单提供一个上报接口，如：</p>
+<pre><code>    public function getRules() {
+        return array(
+            'report' =&gt; array(
+                'username' =&gt; array('name' =&gt; 'username', 'require' =&gt; true),
+                'msg' =&gt; array('name' =&gt; 'msg', 'require' =&gt; true),
+            ),
+        );
+    }
+
+    public function report() {
+        DI()-&gt;logger-&gt;info($this-&gt;username, $this-&gt;msg);
+    }
+</code></pre>
+<p>客户端在需要的场景，如用户打开应用，请求：</p>
+<pre><code>http://dev.phalapi.com/demo/?service=DogstarTest.Report&amp;username=dogstar&amp;msg=enter%20app</code></pre>
+<p>即可看到：</p>
+<pre><code>2015-02-07 21:01:13|INFO|dogstar|enter app</code></pre>
+<p>到后期，若我们需要统计用户的登录情况时，可以这样统计：</p>
+<pre><code>$ cat ./Runtime/log/201502/20150207.log | grep "enter app" | awk -F '|' '{print $3}' | sort | uniq -c
+     11 dogstar
+      5 King
+      2 Tom</code></pre>
+<h3>(3)debug 开发调试类</h3>
+<p>此类为开发调试用，用法如下，这里不再赘述。</p>
+<pre><code>DI()-&gt;logger-&gt;debug('just for test');</code></pre>
+<h2>1.17.2 更灵活的分类</h2>
+<p>若上面的error/info/debug都不能满足项目的需求时，可以这样更灵活地进行日记纪录：</p>
+<pre><code>DI()-&gt;logger-&gt;log('demo', 'add user exp', array('name' =&gt; 'dogstar', 'after' =&gt; 12));
+DI()-&gt;logger-&gt;log('test', 'add user exp', array('name' =&gt; 'dogstar', 'after' =&gt; 12));
+
+//对应的日记
+2015-02-07 21:13:27|DEMO|add user exp|{"name":"dogstar","before":10,"addExp":2,"after":12,"reason":"help one more phper"}
+2015-02-07 21:15:39|TEST|add user exp|{"name":"dogstar","after":12}
+</code></pre>
+<h2>1.17.3 别忘记了日记的级别设置</h2>
+<p>上面的三类日记分别对应的标识为：</p>
+<ul>
+<li>error 系统异常类：PhalApi_Logger::LOG_LEVEL_ERROR</li>
+<li>info 业务纪录类：PhalApi_Logger::LOG_LEVEL_INFO</li>
+<li>debug 开发调试类：PhalApi_Logger::LOG_LEVEL_DEBUG</li>
+</ul>
+<p>根据不同的项目在不同环境下的需要，我们可以这样有选择性地将需要的日记分类写入保存：</p>
+<pre><code>//日记纪录
+DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime',
+    PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</code></pre>
+<h2>1.17.4 扩展你的日记存储</h2>
+<p>普遍情况下，我们认为将日记存放在文件是比较合理的，因为便于查看、管理和统计。当然，如果你的项目需要将日记纪录在数据中，也可以快速扩展实现。如实现数据库的存储思路：  </p>
+<pre><code>class MyLogger_DB extends PhalApi_Logger {
+
+    public function function log($type, $msg, $data) {
+        //TODO ...
+    } </code></pre>
+<p>随后，利用DI注册一下即可：</p>
+<pre><code>//日记纪录 - DB
+DI()-&gt;logger = new MyLogger_DB($dbConfig,
+    PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</code></pre>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

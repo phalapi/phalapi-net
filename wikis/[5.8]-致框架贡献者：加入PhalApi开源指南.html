@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>5.8.1 感谢加入！</h2>
+<p>首先，非常感谢您的加入！  </p>
+<p>(此处应该有掌声~~~)   </p>
+<p>其次，对于加入后，可以做的事情有很多，下面是其中一部分。你可以选择或者new一个idea出来贡献。</p>
+<h2>5.8.2 <a href="http://git.oschina.net/dogstar/PhalApi">开发PhalApi核心框架 - PhalApi</a></h2>
+<p>此部分为PhalApi核心的框架代码的开发和维护，对于此部分，我们要求会高一点，因为这块将需要为各个将即使用PhalApi或者正在使用PhalApi一发的项目负责任。此外，也要考虑到框架的维护和学习成本，以及代码质量（请原谅程序员那一点点代码洁癖）、相关文档的编写和维护等。当然，还要面对各种用户的咨询、各样问题的应对等。  </p>
+<h3>(1)基本的要求</h3>
+<p>所以，对于此块，建议是资源PHP或者有经验的同学来加入。下面是一些基本的要求：</p>
+<ul>
+<li>熟悉Linux系统的基本操作</li>
+<li>有丰富的PHP开发经验</li>
+<li>架构师或对框架有浓厚的兴趣</li>
+</ul>
+<h3>(2)简单的引导</h3>
+<p>如果你决定加入核心框架的开发，以下则是一些简单的引导。  </p>
+<ul>
+<li>1、下载安装PhalApi</li>
+<li>2、翻看WIKI，并可根据文档的说明在本地试运行</li>
+<li>3、浏览框架源代码和在线类参考手册</li>
+<li>4、更多交流与启程</li>
+</ul>
+<p>此过程中，有任何疑问，欢迎随时和我们交流。  </p>
+<h2>5.8.3 <a href="http://git.oschina.net/dogstar/PhalApi-Library">开源扩展类库 - PhalApi Library</a></h2>
+<p>此部分开放的用户群体包括个人、项目团队、或者其他同学，即只需要扩展是未重复且有实际使用意义的，都可以来分享给大家。因此此块要求比较宽松，不需要像PhalApi核心框架那样和我们有紧密的联系。  </p>
+<p>如果你决定或者想对此块扩展类库开源，可以：  </p>
+<ul>
+<li>1、下载安装PhalApi</li>
+<li>2、下载安装一个你喜欢的扩展类库</li>
+<li>3、查看扩展类型的WIKI</li>
+<li>4、开源你的扩展类库</li>
+</ul>
+<p>此过程中，有任何疑问，也欢迎随时和我们交流。  </p>
+<h2>5.8.4 基于PhalApi应用框架的开源</h2>
+<p>因为PhalApi是一个开发框架，而不是一个应用框架，所以你可以在它的基础上再作应用框架的研发。如果可以，我们也希望你能与大家分享你美丽动人的应用框架。  </p>
+<p>如果是此路径，你可以自己建立项目，自己维护。但请注明或保留PhalApi本来已有的版权信息，谢谢。  </p>
+<h2>5.8.5 不用写代码的开源工作</h2>
+<p>上面都是针对开发同学的开源选择，当然，对于萌妹子或者文艺青年，我们也有相关的工作适合你。比如：运营、开源团队的建设等等。  </p>
+<h2>5.8.6 捐赠</h2>
+<p>最后，但不是最重要的。  </p>
+<p>你也可以通过捐赠来支持我们，从而为开源工作提供强大而有力的保障。</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

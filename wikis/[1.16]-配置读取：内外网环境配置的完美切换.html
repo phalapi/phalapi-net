@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <p><em>Experience by itself teaches nothing... Without theory, experience has no meaning. Without theory, one has no questions to ask. Hence, without theory, there is no learning. – Edwards Deming</em>  </p>
+<h2>1.16.1 配置的简单读取</h2>
+<p>通常，我们会有以下三个配置文件：  </p>
+<pre><code>dogstar@ubuntu:Config$ tree
+.
+├── app.php
+├── dbs.php
+└── sys.php
+</code></pre>
+<p>其中app.php为项目应用配置；dbs.php为分布式存储的数据库配置；sys.php为不同环境下的系统配置。  </p>
+<p>在入口文件，注册配置组件服务后：</p>
+<pre><code>//$ vim ./Public/init.php
+
+//配置
+DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');</code></pre>
+<p>假设有这样的app.php配置：</p>
+<pre><code>return array(
+
+    'version' =&gt; '1.1.1',
+
+    'email' =&gt; array(
+        'address' =&gt; 'chanzonghuang@gmail.com',
+    );
+);
+</code></pre>
+<p>我们就可以分别这样根据需要获取配置：</p>
+<pre><code>//app.php里面的全部配置
+DI()-&gt;config-&gt;get('app');
+
+//app.php里面的单个配置
+DI()-&gt;config-&gt;get('app.version');  //返回：1.1.1
+
+//app.php里面的多级配置
+DI()-&gt;config-&gt;get('app.version');  //返回：chanzonghuang@gmail.com</code></pre>
+<p>其他配置文件类似，你也可以随意添加新的配置文件。</p>
+<h2>1.16.2 内外环境配置管理的策略</h2>
+<p>可以说，在项目开发中，除了我们的代码、数据和文档外，配置也是一块相当重要的组成部分，而且占据着非常重要的位置。最为明显的是，如果配置一旦出错，就很可能影响到整个系统的运行，并且远比修改代码再上线发布速度快（假设我们不用文件存储配置而是以分布式存储在各服务器内存中）。  </p>
+<p>但这里将讨论另外一个同样重要的问题，即： <strong>不同环境下不同配置的管理和切换</strong> 。  </p>
+<p>现在将不同的策略分说如下。</p>
+<h3>(1)支持整包发布的环境变量配置</h3>
+<p>此种策略的主要方法就是在PHP代码中读取php-fpm中的ENV环境配置，再对应到linux环境下的profile环境变量，即：</p>
+<pre><code>PHP代码  --&gt;    $_ENV环境配置  --&gt;   Linux服务器环境变量/etc/profile</code></pre>
+<p>这样的好处莫过于可以支持项目代码的整包发布，而不需要在各个环境（开发环境、测试环境、回归环境、预发布环境、生产环境）来回修改切换配置，同时运维可以更好地保护服务器的账号和密码而不让开发知道。</p>
+<p>而这样的不足则是，在对项目进行初次部署时，需要添加以上一系列的配置，而且后期维护也比较复杂麻烦，特别当机器多时。这时可以通过pupple/stacksalt这些运维工具进行自动化管理。但对于开发来说，依然会觉得有点烦锁。</p>
+<h3>(2)不同环境，不同入口</h3>
+<p>当服务器的账号和密码也是由开发来掌控时，则可以使用这种在代码层次控制的策略。  </p>
+<p>我们可以在Public下提供不同的入口，一如：</p>
+<pre><code>$ mkdir ./Public/myapi
+$ myapi$ tree
+.
+├── index.php
+└── test.php
+</code></pre>
+<p>我们有这样不同的入口，客户端在测试时，只需要将入口路径改成：/myapi/test.php?service=XXX.XXX，而在打包发布时只需要将入口路径改成：/myapi/?service=XXX.XXX 即可。也就是将test.php去掉。  </p>
+<p>而在服务端，仅需要在这些不同的入口文件，修改一下配置文件目录路径即可：</p>
+<pre><code>//$ vim ./Public/myapi/test.php
+DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/ConfigTest');</code></pre>
+<p>另外，也可以通过客户端在请求时带参数来作区分，如带上&amp;env=test或者&amp;env=prod。</p>
+<h3>(3)持续集成下的配置管理</h3>
+<p>但个人最为建议的还是在 <strong>持续集成</strong> 下作配置管理。  </p>
+<p>因为首先，持续集成中的发布应该是经常性的，且应该是自动化的。所以，既然有自动化的支持，我们也应该及早地将配置纳入其中管理。</p>
+<p>配置文件不同只要是环境不同，而环境不同所影响的配置文件通常只有sys.php和dbs.php；为此，我们为测试环境和生产环境准备了各自的配置文件，而在发布时自动选择所需要的配置文件。一般地，我们建议生产环境的配置文件以 <strong>.prod</strong> 结尾。所以，这时我们的配置文件可能会是这样：</p>
+<pre><code>dogstar@ubuntu:Config$ tree
+.
+├── app.php
+├── dbs.php
+├── dbs.php.prod
+├── sys.php
+└── sys.php.prod</code></pre>
+<p>多了生产环境的配置文件：dbs.php.prod和sys.php.prod。  </p>
+<p>再通过发布工具，我们就可以对不同环境的配置文件进行快速选择了。这里以phing为例，说明一下相关的配置和效果。  </p>
+<p>如下，在Phing的配置文件build.xml中，在生产环境发布过程中，我们将配置文件进行了替换。</p>
+<pre><code>//$ vim ./build.xml 
+
+        &lt;copy 
+            file="./Config/dbs.php.prod" 
+            tofile="./Config/dbs.php" 
+            overwrite="true" /&gt;
+        &lt;copy 
+            file="./Config/sys.php.prod" 
+            tofile="./Config/sys.php" 
+            overwrite="true" /&gt;</code></pre>
+<p>执行phing发布后，将会看到对应的这样提示：</p>
+<pre><code>     [copy] Copying 1 file to /home/phapapi/Config
+     [copy] Copying 1 file to /home/phapapi/Config</code></pre>
+<h2>1.16.3 扩展你的配置读取</h2>
+<p>虽然上面有不同的配置文件管理策略，但很多实际情况下，我们的配置需要可以随时更改、下发和调整。并且在海量访问，性能要求高的情况下快速读取配置。  </p>
+<p>这就要求我们的项目既可以方便维护即时修改，又需要能够快速同步一致更新下发和读取。这样就涉及到了配置更高层的管理：  统一集中式的配置管理，还是分布式的配置管理？  文件存储，还是DB存储，还是MC缓存，还是进驻内存？    </p>
+<p>个人认为，性能最优的莫过于配置进驻内存并分布式存储。毕竟作为前端机的PHP内存这块还是相对充裕且可以利用的。但需要把这一条线打通，有点难度。  </p>
+<p>这里不过多地谈论配置更多的内容，但在PhalApi框架中，当你根据自己项目的需要实现了自己的配置读取方式后，再次简单的在入口文件重新注册即可。</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

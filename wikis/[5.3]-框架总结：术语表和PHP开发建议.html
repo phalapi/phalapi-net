@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>5.3.1 术语表</h2>
+<p>我们并不想“制造”一些新的术语来增加大家的学习成本，但为了更高效地进行专业交流，我们将PhalApi框架中所用到的一些概念进行提炼并罗列如下。</p>
+<h3>(1)接口服务</h3>
+<p>通常，我们把远程第三方提供的接口称为API。但秉承Web Service的概念，我们更愿称接口为服务。为了同时保留这两者的意思，我们在这里统一将API称为 <strong>接口服务</strong> 。也就是我们对应的?service=XXX.XXX 。  </p>
+<h3>(2)资源服务</h3>
+<p>在使用DI依赖注入进行注册的组件，我们也倾向称之为服务，同时也是一些服务端上可用的资源，如数据库、缓存、加解密等。因此统称为 <strong>资源服务</strong> 。</p>
+<h2>5.3.2 PHP开发建议</h2>
+<p>在实际项目开发过程中，通过观察不同开发人员编写的PHP代码，会很趣。因为你会发现每个人的编程风格都不尽相同，但我们更提倡约定编程、规范的代码和编写人容易理解的代码。所以，下面就发现的问题进行说明。  </p>
+<h3>(1)滥用的静态方法</h3>
+<p>很多框架和很多项目都说自己在使用面向对象编程，但其实很多时候是在类中全部使用静态方法的伪面向对象。这里可能会引发争议，因为有些同学会认为静态类方法比成员函数更快速，而且也确实有相关的数据表明是快了一点点（严格上来讲，很微小）。但作为代价，我们失去的更多。如我们没能使用动态，也不能方面地在单元测试时使用桩、短件、模拟等技巧。更为重要的是，失去了高层的概念提炼和规约层的约定，不利于接口和实现地分离。  </p>
+<p>所以，请只有在需要的时候才使用静态static方法，如工具类或实用操作。</p>
+<h3>(2)非真正意义上的单元测试</h3>
+<p>很多时候，我看到很多框架和项目中没有单元测试的代码，就算有也不是真正意义上的单元测试。可测试的代码是美的，因为可测试的代码表明职责单一明了，有低耦合度，可以进行快速模拟和替换。关于单元测试，前面已有文档详细说明。  </p>
+<p>所以，请尽量尝试和坚持PHPUnit单元测试，体验测试驱动开发的乐趣，体验浮现式设计的激动。</p>
+<h3>(3)无处不在的单例模式</h3>
+<p>很多同学在学习了设计模式后，都很想试用一把，所以往往在很多时候是为了“用设计模式”而用设计模式，而不考虑是否合适，是否真的需要。尤其对于单例模式，这种情况更为普遍。  </p>
+<p>使用单例模式的时机包括有：提高系统性能、全局只能有且只有一个实例否则会导致问题发生、提供一个全局的公共访问点等。  </p>
+<p>然则其他很多情况则不需要。例如很多情况，实例为某容器所持有，则只需要在容器内做数量控制即可，不需要被持有的实例再作单例控制。  </p>
+<p>所以，请只有确切需要使用单例时才使用。</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

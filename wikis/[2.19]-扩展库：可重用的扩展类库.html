@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>2.19.1 PhalApi框架扩展类库</h2>
+<p>此部分类库为 <a href="http://git.oschina.net/dogstar/PhalApi">PhalAPi框架</a> 下的扩展类库包，各个扩展包各自独立，可以根据需要自动下载安装。</p>
+<p>虽然此部分的扩展很多都是基于已有的第三方开源实现，或者开发同学自己实现分享的，但我们所做的不只是代码的搬运工，更多的是在系统架构上的组件库重用，以及在此引入 <strong>防腐层</strong> ，避免进入 <strong>供应商锁定（Vendor Lock-In）</strong> 。  </p>
+<p>除此之外，可以在PhalApi框架的基础上，快速引入符合我们国内实际项目开发需要的各种扩展。如时，您会发现，原来编程本来就是一件如此简单的事情，就像搭积木一样。  </p>
+<p>正如我们一直推荐的：</p>
+<pre><code>接口，从简单开始！</code></pre>
+<h2>2.19.2 目前已提供的扩展类库 - 针对使用者</h2>
+<h3>(1)微信开发</h3>
+<p>此扩展可用于微信的服务号、订阅号、设备号等功能开发，则PhalApi框架下简单配置即可开发使用。  </p>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.1%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91">更多请点这里查看使用文档</a></p>
+<h3>(2)代理模式下phprpc协议的轻松支持</h3>
+<p>此扩展可用于phprpc协议的调用，服务端只需要简单添加入口即可完美切换。  </p>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.2%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E4%B8%8Bphprpc%E5%8D%8F%E8%AE%AE%E7%9A%84%E8%BD%BB%E6%9D%BE%E6%94%AF%E6%8C%81">更多请点这里查看使用文档</a></p>
+<h3>(3)基于PHPMailer的邮件发送</h3>
+<p>此扩展可用于发送邮件。  </p>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.3%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%9F%BA%E4%BA%8EPHPMailer%E7%9A%84%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81">更多请点这里查看使用文档</a>  </p>
+<h3>(4)优酷开放平台接口调用</h3>
+<p>此扩展可用于调用优酷开放平台的接口。</p>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.4%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%BC%98%E9%85%B7%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8">更多请点这里查看使用文档</a>  </p>
+<h3>(5)七牛云存储接口调用</h3>
+<p>此扩展可以用于将图片上传到七牛CDN，或者其他七牛接口的调用。  </p>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.5%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%B8%83%E7%89%9B%E4%BA%91%E5%AD%98%E5%82%A8%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8">更多请点这里查看使用文档</a></p>
+<h2>1.19.3 扩展开发指南 - 针对开发者</h2>
+<p>为了统一扩展类库的风格、便于用户更容易使用，这里建议：  </p>
+<ul>
+<li>代码：统一放置在Library目录下，各扩展包各自一个目录，尽量Lite.php入口类，遵循PEAR包命名规范；</li>
+<li>配置：统一放置在DI()-&gt;config-&gt;get('app.扩展包名')中，避免配置冲突；</li>
+<li>文档：统一提供WIKI文件对扩展类库的功能、安装和配置、使用示例以及运行效果进行说明；</li>
+</ul>
+<h2>1.19.4 从微架构到扩展类库的演进</h2>
+<p>在应用项目的实际开发，我们也可以有意识地将一些通用的工具和操作与业务分离，以便可以在项目内更好地重用。当抽离成工具或者通用类后，则可以进一步推广到公司内其他项目，即组件复用。如果觉得可以，则发扬开源精神，分享给社区。这也是符合从微架构到应用构架、系统架构、乃至企业架构的演进之路。</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

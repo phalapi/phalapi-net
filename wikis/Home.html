@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>目录</h1>
+<p><em>温馨提示：客官莫急，文档正在努力编写整理中，或者您可以告诉我们希望先看到哪篇TODO。</em>  </p>
+<h2>前言</h2>
+<ul>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi">首页</a></p>
+</li>
+<li><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%E6%8E%A5%E5%8F%A3%EF%BC%8C%E4%BB%8E%E7%AE%80%E5%8D%95%E5%BC%80%E5%A7%8B%EF%BC%81">接口，从简单开始！</a></li>
+</ul>
+<h2>基础入门</h2>
+<h3>开篇</h3>
+<ul>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.1%5D-%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85">[1.1] 下载与安装</a> </p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.2%5D-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84%E9%A1%B9%E7%9B%AE">[1.2] 创建一个自己的项目</a>  </p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.3%5D-%E5%9C%A8%E7%BA%BF%E4%BD%93%E9%AA%8C">[1.3] 在线体验</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.4%5D-%E6%96%87%E6%A1%A3%E3%80%81%E5%B8%AE%E5%8A%A9%E5%92%8C%E5%AE%98%E7%BD%91">[1.4] 文档、帮助和官网</a></p>
+</li>
+<li><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.10%5D-%E5%AF%B9PhalApi%E6%A1%86%E6%9E%B6%E7%9A%84%E6%8A%89%E6%8B%A9">[1.5] 对PhalApi框架的抉择</a></li>
+</ul>
+<h3>开发手册</h3>
+<ul>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.11%5D-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%3A-%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91%E7%A4%BA%E4%BE%8B-%E6%BA%90%E7%A0%81-%E5%9B%BE%E6%96%87">[1.11] 快速入门: 接口开发示例(源码+图文)</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.12%5D-%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99%EF%BC%9A%E6%8E%A5%E5%8F%A3%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE">[1.12] 参数规则：接口参数规则配置</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.13%5D-%E7%BB%9F%E4%B8%80%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%EF%BC%9A%3Fsevice%3DXXX.XXX">[1.13] 统一的接口请求方式：?sevice=XXX.XXX</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.14%5D-%E7%BB%9F%E4%B8%80%E7%9A%84%E8%BF%94%E5%9B%9E%E6%A0%BC%E5%BC%8F%E5%92%8C%E7%BB%93%E6%9E%84%EF%BC%9Aret-data-msg">[1.14] 统一的返回格式和结构：ret data msg</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.15%5D-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%EF%BC%9A%E5%9F%BA%E4%BA%8ENotORM%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E4%BC%98%E5%8C%96">[1.15] 数据库操作：基于NotORM的使用及优化</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.16%5D-%E9%85%8D%E7%BD%AE%E8%AF%BB%E5%8F%96%EF%BC%9A%E5%86%85%E5%A4%96%E7%BD%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%9A%84%E5%AE%8C%E7%BE%8E%E5%88%87%E6%8D%A2">[1.16] 配置读取：内外网环境配置的完美切换</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.17%5D-%E6%97%A5%E8%AE%B0%E7%BA%AA%E5%BD%95%EF%BC%9A%E7%AE%80%E5%8C%96%E7%89%88%E7%9A%84%E6%97%A5%E8%AE%B0%E6%8E%A5%E5%8F%A3">[1.17] 日记纪录：简化版的日记接口</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.18%5D-%E5%BF%AB%E9%80%9F%E5%87%BD%E6%95%B0%EF%BC%9A%E4%BA%BA%E6%80%A7%E5%8C%96%E7%9A%84%E5%85%B3%E6%80%80">[1.18] 快速函数：人性化的关怀</a></p>
+</li>
+<li><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.19%5D-DI%E6%9C%8D%E5%8A%A1%E9%80%9F%E6%9F%A5%EF%BC%9A%E5%90%84%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E4%B8%80%E8%A7%88%E8%A1%A8">[1.19] DI服务速查：各资源服务一览表 </a></li>
+</ul>
+<h3>更多技艺</h3>
+<ul>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.21%5D-%E7%B1%BB%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%BD%BD%EF%BC%9A%E9%81%B5%E5%BE%AAPEAR%E5%8C%85%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83">[1.21] 类的自动加载：遵循PEAR包的命名规范</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.22%5D-%E7%AD%BE%E5%90%8D%E9%AA%8C%E8%AF%81%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AD%BE%E5%90%8D%E8%A7%84%E5%88%99">[1.22] 签名验证：自定义签名规则</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.23%5D-%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%EF%BC%9AGET%E5%92%8CPOST%E4%B8%A4%E8%80%85%E7%9A%86%E5%8F%AF%E5%BE%97%E5%8F%8A%E8%B6%85%E8%B6%8AJSON%E6%A0%BC%E5%BC%8F%E8%BF%94%E5%9B%9E">[1.23] 请求和响应：GET和POST两者皆可得及超越JSON格式返回</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.24%5D-%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5%EF%BC%9A%E6%9B%B4%E7%81%B5%E6%B4%BB%E5%9C%B0%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%8C%96%E7%9A%84%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98">[1.24] 缓存策略：更灵活地可配置化的多级缓存</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.25%5D-%E5%9B%BD%E9%99%85%E5%8C%96%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E8%B5%B0%E5%90%91%E5%9B%BD%E9%99%85%E5%8C%96%E6%8F%90%E5%89%8D%E5%81%9A%E5%A5%BD%E7%BF%BB%E8%AF%91%E5%87%86%E5%A4%87">[1.25] 国际化翻译：为走向国际化提前做好翻译准备</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.26%5D-%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E6%96%B9%E6%A1%88">[1.26] 数据安全：数据对称加密方案</a></p>
+</li>
+<li><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.27%5D-%E7%B2%BE%E7%9B%8A%E5%BC%80%E5%8F%91%EF%BC%9A%E6%9B%B4%E5%AF%8C%E8%A1%A8%E7%8E%B0%E5%8A%9B%E7%9A%84Model%E5%B1%82%E5%92%8C%E9%87%8D%E9%87%8F%E7%BA%A7%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E7%9A%84%E5%BA%94%E5%AF%B9%E6%96%B9%E6%A1%88">[1.27] 精益开发：更富表现力的Model层和重量级数据获取的应对方案</a> </li>
+</ul>
+<h2>高级专题</h2>
+<h3>思想与应用</h3>
+<ul>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B2.11%5D-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9ADI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-%E8%AE%A9%E8%B5%84%E6%BA%90%E6%9B%B4%E5%8F%AF%E6%8E%A7">[2.11] 核心思想：Di依赖注入 让资源更可控</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B2.12%5D-%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%EF%BC%9A%E5%8F%AF%E9%85%8D%E7%BD%AE%E7%9A%84%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8">[2.12] 海量数据：可配置的分库分表</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B2.13%5D-%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95%EF%BC%9A%E5%9C%A8%E7%BA%BFSQL%E8%AF%AD%E5%8F%A5%E6%9F%A5%E7%9C%8B%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">[2.13] 接口调试：在线sql语句查看与性能优化</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B2.14%5D-%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%EF%BC%9A%E6%84%8F%E5%9B%BE%E5%AF%BC%E5%90%91%E7%BC%96%E7%A8%8B%E4%B8%8B%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91">[2.14] 测试驱动开发：意图导向编程下的接口开发</a></p>
+</li>
+<li>
+<p>[2.15] 计划任务：异步的后台定时计划任务  //TODO</p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B2.16%5D-%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%BA%94%E5%AF%B9%E5%A4%8D%E6%9D%82%E9%A2%86%E5%9F%9F%E4%B8%9A%E5%8A%A1%E7%9A%84Domain%E5%B1%82-">[2.16] 领域驱动设计：应对复杂领域业务的Domain层</a></p>
+</li>
+<li>
+<p>[2.17] 远程外观模式：Web Service和接口批量请求  //TODO</p>
+</li>
+<li>
+<p>[2.18] 定制化：资源服务的再实现  //TODO</p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B2.19%5D-%E6%89%A9%E5%B1%95%E5%BA%93%EF%BC%9A%E5%8F%AF%E9%87%8D%E7%94%A8%E7%9A%84%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93">[2.19] 扩展库：可重用的扩展类库 </a></p>
+</li>
+<li><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B2.20%5D%20%E7%BA%A6%E5%AE%9A%E7%BC%96%E7%A8%8B%EF%BC%9A%E6%9E%B6%E6%9E%84%E6%98%8E%E6%98%BE%E7%9A%84%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC">[2.20] 约定编程：架构明显的编程风格</a></li>
+</ul>
+<h3>工具与实践</h3>
+<ul>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B2.21%5D-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BB%9F%E4%B8%80%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E7%AE%80%E6%98%8E%E7%89%88%EF%BC%9ACentOs---Nginx---php-fpm---MySql-%5B--Memcached%5D">[2.21] 服务器统一部署方案简明版：CentOs + Nginx + php-fpm + MySql [+ Memcached]</a></p>
+</li>
+<li><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B2.22%5D-%E6%9B%B4%E5%A4%9A%E5%B7%A5%E5%85%B7%EF%BC%9A%E7%B2%BE%E7%9B%8A%E9%A1%B9%E7%9B%AE%E5%92%8C%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE">[2.22] 更多工具：精英项目和团队建设</a></li>
+</ul>
+<h2>扩展类库</h2>
+<ul>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.1%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91">[3.1] 扩展类库：微信开发</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.2%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E4%B8%8Bphprpc%E5%8D%8F%E8%AE%AE%E7%9A%84%E8%BD%BB%E6%9D%BE%E6%94%AF%E6%8C%81">[3.2] 扩展类库：代理模式下phprpc协议的轻松支持</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.3%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%9F%BA%E4%BA%8EPHPMailer%E7%9A%84%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81">[3.3] 扩展类库：基于PHPMailer的邮件发送</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.4%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%BC%98%E9%85%B7%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8">[3.4] 扩展类库：优酷开放平台接口调用</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.5%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%B8%83%E7%89%9B%E4%BA%91%E5%AD%98%E5%82%A8%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8">[3.5] 扩展类库：七牛云存储接口调用</a></p>
+</li>
+<li>
+<p>[3.6] 扩展类库：后台计划任务 //TODO</p>
+</li>
+<li>
+<p>[3.7] 扩展类库：基于Service_Apns的苹果推送 //TODO</p>
+</li>
+<li>[3.8] 用户、会话和第三方登录集成 //TODO</li>
+</ul>
+<h2>项目实践</h2>
+<ul>
+<li>[4.1] 开发实战1：利用扩展库进行微信服务号开发  //TODO</li>
+<li>[4.2] 开发实战2：模拟优酷开放平台接口项目开发  //TODO</li>
+<li>[4.3] 开发实战3：模拟腾讯开放平台接口项目开发  //TODO</li>
+<li>[4.4] 开发实战4：一个可能的大型项目开发（多终端多版本）  //TODO</li>
+</ul>
+<h2>其他</h2>
+<ul>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B5.1%5D-%E6%9E%B6%E6%9E%84%E4%B8%8E%E6%80%9D%E6%83%B3%EF%BC%9APhalApi%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1%E5%92%8C%E6%80%9D%E6%83%B3%E8%A7%A3%E8%AF%BB">[5.1] 架构与思想：Phal Api核心设计和思想解读</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B5.2%5D-%E6%9D%82%E8%B0%88%EF%BC%9A%E6%89%AF%E4%B8%80%E4%BA%9BPhalApi%E7%9A%84%E5%89%8D%E4%B8%96%E5%92%8C%E4%BB%8A%E7%94%9F">[5.2] 杂谈：扯一些phal Api的前世和今生</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B5.3%5D-%E6%A1%86%E6%9E%B6%E6%80%BB%E7%BB%93%EF%BC%9A%E6%9C%AF%E8%AF%AD%E8%A1%A8%E5%92%8CPHP%E5%BC%80%E5%8F%91%E5%BB%BA%E8%AE%AE">[5.3] 框架总结：术语表和PHP开发建议</a></p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B5.4%5D-%E8%AE%B8%E5%8F%AF">[5.4] 许可</a>  </p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B5.5%5D-%E8%81%94%E7%B3%BB%E5%92%8C%E5%8A%A0%E5%85%A5%E6%88%91%E4%BB%AC">[5.5] 联系和加入我们</a>  </p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B5.6%5D-%E6%9B%B4%E6%96%B0%E6%97%A5%E8%AE%B0">[5.6] 更新日记 </a>  </p>
+</li>
+<li>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B5.8%5D-%E8%87%B4%E6%A1%86%E6%9E%B6%E8%B4%A1%E7%8C%AE%E8%80%85%EF%BC%9A%E5%8A%A0%E5%85%A5PhalApi%E5%BC%80%E6%BA%90%E6%8C%87%E5%8D%97">[5.8] 致框架贡献者：加入PhalApi开源指南</a> </p>
+</li>
+<li><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%E9%99%84%E5%BD%951%EF%BC%9A%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E5%8F%82%E8%80%83%E6%A8%A1%E6%9D%BF">附录1：接口文档参考模板</a>  </li>
+</ul>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>2.20.1 前言</h2>
+<p>我们一直强调推荐让后台接口开发更简单。  </p>
+<p>所以，我们提供了PhalApi开发框架和WIKI文档。然后，这仅仅是个开始。  </p>
+<p>因为，真正发挥作用，实现价值的还是来自项目实际开发中的源代码。  </p>
+<p>但纵使我们提供了好的框架作为基础，但不得不承认的一个事实是：架构模型和项目代码随着各自的演进逐渐产生分歧。而这种分歧，如果没有注意、管理和约束，则会产生越来越混乱的代码。  </p>
+<p>在说明如何编写简洁的项目代码之前，让我们先了解一下PhalApi的架构思想以及主要的设计意图。</p>
+<h2>2.20.2 开发-配置-使用 模式 (develop-config-use pattern)</h2>
+<p>开发-配置-使用 模式即：开发实现-配置注册-客户使用 模式。  </p>
+<p>现分说如下。  </p>
+<h3>(1)开发实现</h3>
+<p>开发实现的主要内容是组件、公共服务或者基础设施的功能实现，此部分主要针对高级开发工程师，或者有经验的PHP同学。  </p>
+<p>例如对项目的接口签名的验证拦截、一个完成了对七牛云存储接口调用的扩展、又或者是项目内部加密的方案等，这些以包或者接口提供，为外部使用提供了配置说明、使用示例和文档说明。更为重要的是，应该提供了配套的单元测试，并有着很高的代码覆盖率。  </p>
+<p>此类实现应该是稳定的，即没有明显或者隐藏的BUG。即使有，原作者也可以快速进行定位和解决，以及后期的扩展和升级。</p>
+<h3>(2)配置注册</h3>
+<p>一旦上面的接口被实现后，不同的项目都可以轻松引入和使用。这块通常由项目的负责人，或者主程来操作，因为在对项目进行构建部署、组件和环境装配时，需要考虑到哪些组件需要被用到，以何种方式进行初始化和装载。    </p>
+<p>但使用的方式，应该是简明的。如简明的安装，简明的配置。所以，这里自然而言，就涉及到了 <strong>依赖注入</strong> ，DI。  </p>
+<p>通过DI，项目的负责人，可以轻松地将已通过严格测试的组件/服务注册进来。完成此步骤后，一切都整装待发，剩下的就是使用的问题了。</p>
+<h3>(3)客户使用</h3>
+<p>项目会不断有新的需求出来，而团队也会因此同步增加吸纳新开发同学进来负责新模块新功能的开发。而新的同学，往往会是一些开发新手，他们需要使用已有的功能，快速实现一些具体的业务逻辑、规则和功能。  </p>
+<p>但如果他们还需要实现一些基础重要的功能，又要考虑如何与现在项目整合，会分散他们的关注点。而且，即使放手给他们去做，他们也会常常因为考虑不周或者编程风格各异而产出一些与项目期望不符的代码。  </p>
+<p>若换一种工作的方式，即如果新手使用已有的组件进行一些特定领域业务的开发，会是怎样？ </p>
+<p>我想，会有很大的改观。  </p>
+<p>比如，我们对新来的同学说，你使用DI()-&gt;logger就可以写一条日记了，如：</p>
+<pre><code>DI()-&gt;logger-&gt;debug('app enter');</code></pre>
+<p>新手可能很喜欢追问一些问题，他可能会问及到，那怎么将一些参数（当时日记的上下文）也进行纪录呢？你可以很骄傲地说：也是可以的，你只需要这样写就可以了：</p>
+<pre><code>DI()-&gt;logger-&gt;debug('app enter', array('device' =&gt; 'iOS', 'version' =&gt; '1.1.0'));</code></pre>
+<h3>(4)创建和使用分离</h3>
+<p><strong>开发-配置-使用 模式</strong> 也符合了创建和使用分离的思想。  </p>
+<p>不同的项目，不同的应用，需要的初始化服务不一样；不同的规模，对不同的技术解决方案也不一样；不同的环境，配置也不一样。  </p>
+<p>但即使是这样，新手还是可以一如既往地使用之前注册的服务（也就是不需要修改任何调用代码）。也就是上层的调整或者环境变更这些，对新手的使用都是透明的。为了更好地理解这些概念，这里补充一些案例场景。    </p>
+<h4>以日记为例</h4>
+<p>假设我们有个项目A，分别部署到内网测试环境和外网生产环境，显然内外网环境的配置是不一样的。我们希望在内网环境为日记开启debug模式以方便开发人员进行调试，在外网则希望将其关闭以减少系统的性能开销。在一开始使用文件作为日记存储方案时，对应的内网环境初始化代码如下：  </p>
+<pre><code>//日记纪录
+DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime', 
+    PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</code></pre>
+<p>在外网，我们只需要去掉PhalApi_Logger::LOG_LEVEL_DEBUG即可：</p>
+<pre><code>//日记纪录
+DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime', 
+    PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</code></pre>
+<p>随着项目的不断发展，我们有了一批又一批的新用户。产品经理为此很开心，也请我们开发吃了好几顿大餐。但谨慎的我们发现了现在文件日记的一些限制。如即时文件读写带来了I/O瓶颈，而且不能将分布式的日记文件自动收集起来。所以，我们决定对logger进行更深层次的探索。。。  </p>
+<p>至于最后是使用了Hive还是Hadoop，还是MC异步后台队列的方式实现，我们这里不具体指定。假设新的logger研发成功后，我们便可以轻松对原有的文件日记组件进行升级，实现完美切换：</p>
+<pre><code>//升级后的日记纪录
+DI()-&gt;logger = new My_Logger(PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</code></pre>
+<p>这不仅是几行代码上的区别，而是针对不同问题不同技术解决方案的抉择。这也是有经验的开发和新手之间的区别，因为你选择的技术解决方案要和面临的风险相匹配。例如用牛刀来杀鸡，就是一个不匹配的做法，就如同使用高级的Hive来实现单一小项目的日记存储一样。  </p>
+<p>这是令人值得兴奋的。在很多旧的项目里面，当遇到瓶颈时，会请一些外部的专家来指导或优化。但即使拥有着各种“法宝”以及知道何时该使用哪种方案的专家，对于这种残留的代码也会步履维艰基于束手无策。因为，各种初始化和调用的代码，分遍在项目的“全国各地，四面八方”。即使你优化了，你会发现还要手动一个个地进行切换升级。更重要的是，很多时候不是你想优化就能优化的。  </p>
+<p>我曾经遇到过这样一个旧系统。它是在UcHome基础上做二次开发，但对于它的数据库使用，开发人员没有过多地优化，如：没有使用缓存，没有进行批量合并查询优化，重复查询相同的数据，没有建立索引等等，等等。这样的后果就是，请求一次接口，会触发150条到500条SQL语句不等。我后来，在底层添加了在线查看调试SQL语句的功能，尝试进行了一些合并查询，但当我想为数据库的表添加索引时，发现它用的却是虚拟表 -- 视图！</p>
+<h2>2.20.3 框架外延</h2>
+<p>框架外延是指跨项目，与业务无关的抽象特性与代码实现。  </p>
+<p>这些从简单到复杂，有：通用功能，定制，扩展类库和产品簇框架。  </p>
+<h3>(1)通用功能</h3>
+<p>有些功能是常用的，也是通用的。一般以函数或者工具类的形式提供，如一个生成随机数的方法。这些通用的功能，开发人员都可以在项目间流通使用。  </p>
+<h3>(2)定制</h3>
+<p>当发现PhalApi现在的框架不支持某些接口下具体方案的实现时，或者支持但不满足当前项目的开发需要时，可以进行一些定制化。  </p>
+<p>之前有一个项目的开发同学，给我提供了一个很好的建议。他说他的项目为了能够获得更高的安全性，对客户端传递的参数进行了整包加密，然后在服务商进行整包解密再通过getRules()获取。所以对应的定制大概实现可以是这样的：</p>
+<pre><code>&lt;?php
+class My_Request extends  PhalApi_Request {
+
+     protected function genData($data){
+         $needData = array();
+
+        if (!isset($data) || !is_array($data)) {
+            $data = $_POST;
+        }
+
+        $needData['service'] = isset($data['service']) ? $data['service'] : '';
+        //整包加密后的数据包
+        $params = isset($data['params']) ? $data['params'] : '';
+        //TODO: 对称解密 ...
+
+        $needData = array_merge($params, $needData);
+
+        return $needData;
+    } 
+}</code></pre>
+<h3>(3)扩展类库</h3>
+<p>有时候，我们在项目中需要使用到一组功能操作，这时可以结合外观模式，将这些需要用到的接口以包的形式都封装到一个扩展里面。因为扩展这个概念是容易理解的，也是开发人员所喜爱的。  </p>
+<p>在PhalApi的Issues里面，有位同学就提到了对新浪或者百度云空间的支持，就是对应的一个场景。  </p>
+<p>现在PhalApi提供了部分的扩展类库，但由于个人时间有限，而且也不可能知悉全部项目需要用到的全部扩展。所以当发现需要的扩展类库还没有提供时，简单的方法：自动写一个。  </p>
+<p>这也是对框架进行外延的一种途径。伴随着这种途径经历的次数越多，你会突然有一天发现你所搭建的这一切结合起来后，已经可以很好地应对了公司内的目前全部项目的开发。</p>
+<h3>(4)产品簇框架</h3>
+<p>这个时候，就来了产品簇框架这一阶段。  </p>
+<p>PhalApi只是提供了一个基础的框架，一个项目实际开发的基础框架，更是一个产品簇框架的铺垫。如果说我们关注项目的快速交付，不如说我们更关注 <strong>如何提供一个底层框架以支持不同项目的产品簇框架开发，从而最终支持项目的快速交付</strong> 。  </p>
+<p>也只有这样，你辛苦付出的代码，你才会更加珍惜和不断为之冥想、维护和改进。<br />
+也只有这样，你公司里面的其他项目才会更愿意和信赖使用，因为框架是你直接提供的。<br />
+也只有这样，代码才得以永恒，因为这种思想在你、我、各个项目团队间不断传递，共存在每个开发人员的脑里和心中，而不是为某个自私的人把持着。  </p>
+<h2>2.20.4 项目内涵</h2>
+<p><strong>框架外延</strong> 是针对特定领域项目以外的问题。然而，在使用PhalApi进行项目开发时，我们如果只关注这些是无用的，我们还要关注项目的实际开发，如何编写代码，即：项目内涵。  </p>
+<p>项目内涵是指完成特定领域功能所需要的前置条件、基础设施和工作流程。  </p>
+<p>这里面着重讲解复杂的领域和更广义的数据源这两方面。不是说其他的方面不重要，而是这两方既重要但又常常为人们所误解误用。  </p>
+<h3>(1)复杂的领域业务层</h3>
+<p>在一个项目架构里面，有三个主要模型：设计模型、领域模型和代码模型。设计模型在选择PhalApi时已大体确定，领域模式则需要项目干系人员消化、理解并表达出来。对于开发人员，代码模型则是他们表达的媒介。  </p>
+<p>这一层，主要关注的是领域业务规则的处理。所以，我们抛开外界客户端接口调用的签名验证、参数获取、安全性等问题，也不考虑数据从何而来、存放于何处，而是着重关注对领域业务数据的处理上。  </p>
+<p>根据这么年来的工作、项目开发和学习，这里有一些建议。</p>
+<h4>规则出现且出现一次</h4>
+<p>领域之所以复杂，在于规则众多。如果不能很好地把控这些规则，当规则发生变化时，就会出现很大的问题。在开发过程中，要注意对规则进行提炼并且放置在一个指定的位置。如对游戏玩家的经验计算等级时，这样一个规则就要统一好。不要到处都有类型相同的计算接口。</p>
+<h4>释意接口</h4>
+<p>领域的逻辑是对现实业务场景的再解释。现实的因素充满变数并且由人为指定，所以不能简单的在计算机中“推导”出领域逻辑。在开发过程中，要特别对这些领域逻辑准确并很好的解释，以便后面接手的同学可以更容易理解和明白这些流程、限制和规则。  </p>
+<p>其中一个有力的指导就是释意接口。对接口签名甚至是对变量命名的仔细推敲都是很有益处的，因为名字能正名份，不至于混淆或者含糊不清。</p>
+<h4>代码保持在同一高度</h4>
+<p>领域层关注的是流程、规则，所以当你进行用户个性化分流和排序时，不应该把底层网络接口请求的细节也放到这里流程里面。把底层技术实现的细节和业务规则的处理分开是很有好处的，这样便于更清晰领域逻辑的表达，也助于单元测试时的测试桩模拟。  </p>
+<h3>(2)更广义的数据源层</h3>
+<p>领域层固然重要，但如果没有数据源层，领域层就是一个空中楼阁。  </p>
+<p>但不应把数据源就理所当然地对等成数据库。因为这种观念很常见但也很狭隘。首先，很多项目在对数据存储时，不一定会落地存储，即使落地也不一定使用数据库。我曾经在一家游戏公司任职时，就看到他们使用了文件来存放。相信，你也看到过。其次，在现在多客户端多系统的交互背景下，很多系统都需要进行数据共享和通信，为了提高服务器的性能也会使用到缓存。这些场景下，会导致数据是通过接口来获取，或者来源于缓存。可以看出，如果把数据源就看作是MySql，是非常局限的。  </p>
+<p>我们在PhalApi中继续使用了Model层，因为受MVC模式的影响，大家都对Model层非常熟悉。但我们却为它赋予了新的诠释和活力。  </p>
+<p>Model导获取的数据，可以是来自数据库的读取，也可以是通过开放平台接口获取的数据，也可以是不落地直接存放于缓存的数据。</p>
+<h2>2.20.5 测试先行和真实的测试</h2>
+<p>框架外延和项目内涵，分别是对 <strong>开发-配置-使用 模式</strong> 前半部分和后半部分的诠释。  </p>
+<p>剩下的问题就在于，如何评判我们编写的代码是好的，是美的，并且能够按期望地工作？  </p>
+<p>如果只是主观地判断，显然是不可靠的也不是完全可信的。例如“我觉得我这样没问题啊！”，即使代码能够正常运行，也不并代表在其他临界或者极端的情况也能如期运行，也不代表这些代码就具备了一些好的品质，更不代表这些代码遵循了我们的架构明显的编程风格：编写人容易理解的代码。  </p>
+<p>既然主观不可靠，就应该转到客观上的标准。  </p>
+<p>静态的代码分析，是很有用的，但对于最终需要动态执行的代码，还是需要单元测试才能更好的探知代码内部每个角落的状况。  </p>
+<p>这里，我们强烈推荐测试先行，也就是测试驱动开发。可能你已对此耳目能详，也可能你略知一二。  </p>
+<p>但请相信，测试先行是值得的。关于真实的测试，即编写PHPUnit单元测试，关于PHPUnit的使用，请查看： <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html">PHPUnit Manual &#8211; 第 1 章 自动化测试</a> 。  </p>
+<h2>2.20.6 PhalApi架构的设计意图</h2>
+<h3>(1)设计意图</h3>
+<p>PhalApi是开放式的框架，这里不仅仅体现在源代码开放，产品开放，还表现在思想开放。  </p>
+<p>这样说，可能有些抽象。若落实到代码层次，你会发现PhalApi提供了接口上的约束，并为每块接口提供了很好的扩展机制。也就是说，一旦你发现已提供的功能不满足你项目的需要，你可以轻松定制、扩展和升级。  </p>
+<p>这就是我们的设计意图。  </p>
+<p>对于新手，你可以快速使用这个框架；对于老手，你则可以定制它。  </p>
+<h3>(2)协同合作和关注点</h3>
+<p><strong>开发-配置-使用 模式</strong> 并不是为了传递 “君君臣臣、父父子子”这样的封建等级观念。而是为了资源更好的调配，最终更好地完成项目的开发。  </p>
+<p>架构系统有分层的思想，这里也一样。通过高级开发、开发工程师和新手各尽其才、各施其职，能够更好的提高各自的关注点，并发挥他们应有的能力和价值。  </p>
+<p>比如对于高级开发，我们希望他们能够抽离业务，并且产出一些公司内可以使用的通用组件、核心技术甚至是产品簇开发框架。而对于他们来说，也许这也正是他们所喜爱的，因为他们在攻关一些技术难点，又或者在解决一些他们觉得有挑战的工作。  </p>
+<p>对于项目负责人，也就是开发工程师，他们更关注的是整个项目的运行和所能提供的功能。而这一些功能需要各业务规则在代码上的体现，最终又会直接或间接落到某些基础设施的支持上，一如数据库的查询操作。显然，他们不希望每次都为这样通用的技术支持重复开发。如果有已经能够直接拿来使用的代码，那该多好。网上虽然资源众多，但符合公司项目使用的，少之甚少，又或许会有这样那样的限制。如果有公司内部可重用的组件库，这种情况会大为改观。  </p>
+<p>对于新手，我们要求明显会低很多。简单来说，他们会使用就可以了。当然，我们也推荐新手在熟练使用的情况下，再深化到底层，慢慢过渡到大工。  </p>
+<h3>(3)这只是一个开始</h3>
+<p>尽管 我们提供了这样架构明显的编程风格，但仍然需要你以及你的团队来遵循。  </p>
+<p>正如前面所说的，项目的每一行代码和每一个命名都来自你的思考和双手的输入。也正如此，你的付出让你更深刻体会到编程的乐趣，特别是项目发挥和实现了有价值的业务功能时。这时，你会发现维护别人的代码不再是一件痛苦的事件，与团队的合作也变得更加融洽，因为和你一起奋斗努力的是一支精英团队。  </p>
+<p>请记住，这只是一个开始，一个起点。</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

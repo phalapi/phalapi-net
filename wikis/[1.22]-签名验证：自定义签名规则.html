@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>1.22.1 过滤器服务</h2>
+<p>正如我们核心思想DI里面所说的，我们把后台很多功能资源都称为服务，所以在PhalApi框架中我们已经系统规定了<strong>DI()-&gt;filter</strong>为过滤器服务，以实现接口请求时的一些拦截操作，一如现在要说明的签名验证。  </p>
+<p>在接口进行初始化时，会自动调用已注册的过滤器服务 <strong>DI()-&gt;filter</strong> ，关键的代码如下：</p>
+<pre><code>//$vim ./PhalApi/PhalApi/Api.php
+    public function init()
+    {
+        $this-&gt;createMemberValue();
+
+        $this-&gt;filterCheck();
+
+        $this-&gt;checkStatus();
+    }
+
+    protected function filterCheck()
+    {
+        $filter = DI()-&gt;filter;
+
+        if (isset($filter)) {
+            $filter-&gt;check();
+        }
+    }</code></pre>
+<p>所以，如果我们需要实现签名验证，只需要简单的两步即可：  </p>
+<ul>
+<li>
+<p>1、实现过滤器接口 <strong>PhalApi_Filter::check()</strong>；</p>
+</li>
+<li>2、注册过滤器服务 <strong>DI()-&gt;filter</strong>；</li>
+</ul>
+<h2>1.22.2 微信签名示例</h2>
+<p>下面以大家熟悉的 <a href="http://mp.weixin.qq.com/wiki/17/2d4265491f12608cd170a95559800f2d.html">微信验签</a> 为例，进行示例说明。</p>
+<h3>(1)实现过滤器接口 PhalApi_Filter::check()</h3>
+<p>通常我们约定返回ret = 402表示验证失败，所以当签名失败时，我们可以返回ret = 402以告知客户端签名不对。根据微信的检验signature的PHP示例代码，我们可以快速实现自定义签名规则，如：</p>
+<pre><code>//$ vim ./Demo/Common/SignFilter.php 
+&lt;?php
+
+class Common_SignFilter implements PhalApi_Filter
+{
+    public function check()
+    {
+        $signature = DI()-&gt;request-&gt;get('signature');
+        $timestamp = DI()-&gt;request-&gt;get('timestamp');
+        $nonce = DI()-&gt;request-&gt;get('nonce');  
+
+        $token = 'Your Token Here ...';
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+        if ($tmpStr != $signature) {
+            throw new PhalApi_Exception_BadRequest('wrong sign', 1);
+        }
+    }
+}</code></pre>
+<h3>(2)注册过滤器服务 DI()-&gt;filter</h3>
+<p>随后，我们只需要再简单地注册一下过滤器服务即可，在init.php初始化文件最后追加：</p>
+<p>//$ vim ./Public/init.php
+//签名验证服务
+DI()-&gt;filter = 'Common_SignFilter';</p>
+<h3>(3)运行效果</h3>
+<p>当我们再次请求接口时，如默认的服务：/demo/?service=Default.Index，即会出现以下的错误：
+<img src="http://static.oschina.net/uploads/space/2015/0204/210359_zGog_256338.png" alt="apic" />   </p>
+<p>即：</p>
+<pre><code>{
+    "ret": 401,
+    "data": [
+    ],
+    "msg": "非法请求：wrong sign"
+}</code></pre>
+<p>如果符合接口签名的验证，则会正常返回我们熟悉的内容，如：</p>
+<pre><code>/demo/?service=Default.Index&amp;signature=b75e0a1b574d4e111a1d6ed3c9cfbe2ccdc09404&amp;timestamp=123&amp;nonce=123</code></pre>
+<p>会返回：</p>
+<pre><code>{
+    "ret": 200,
+    "data": {
+        "title": "Default Api",
+        "content": "PHPer您好，欢迎使用PhalApi！",
+        "version": "1.1.0",
+        "time": 1423055188
+    },
+    "msg": ""
+}</code></pre>
+<h2>1.22.3 特殊的场景</h2>
+<h3>(1)个别接口不需要验签？</h3>
+<p>在注册好统一的接口验签的过滤器拦截服务后，是会存在这样一种情况：即个别的接口不需要签名。  </p>
+<p>而这种情况，我们也是有考虑到的。所以在提供了公共的功能的情况下，我们是可以快速灵活地进行定制化和扩展。  </p>
+<p>当我们个别的接口不需要签名验证时，只需要简单地在接口子类里面重定义过滤器的检测即可，如在我们熟悉的默认服务器取消签名验证：</p>
+<pre><code>//vim ./Demo/Api/Default.php 
+class Api_Default extends PhalApi_Api
+{
+    //....
+
+    protected function filterCheck()
+    {
+    }
+}</code></pre>
+<h2>1.22.4 更好地建议</h2>
+<p>通常关于接口签名这块，我们还需要：  </p>
+<ul>
+<li>
+<p>1、为不同的接入方定义不同的密钥和私钥；</p>
+</li>
+<li>
+<p>2、如果业务需要，为各个接口、各个接入方分配调用权限；</p>
+</li>
+<li>3、统一签名参数的规则，可以配置在./Config/app.php中的，如上面的签名需要的参数，我们可以追加统一的参数规则：
+<pre><code>/**
+ * 应用接口层的统一参数
+ */
+'apiCommonRules' =&gt; array(
+    'signature' =&gt; array('name' =&gt; 'signature', 'require' =&gt; true),
+    'timestamp' =&gt; array('name' =&gt; 'signature', 'require' =&gt; true),
+    'nonce' =&gt; array('name' =&gt; 'nonce', 'require' =&gt; true),
+),</code></pre></li>
+</ul>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

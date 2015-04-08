@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>3.2.1 扩展类库：代理模式下phprpc协议的轻松支持</h2>
+<p>我们一直都建议在我们的项目中使用设计模式以便让代码更优雅，但我们更推荐只在合适的场景才使用合适的设计模式，而不是为了“显学”而生硬套用。设计模式又需要更高层的设计原则和工程思想作指导，才能更正确被使用发挥其作用。  </p>
+<p>在PhalApi，正如前面所说的，我们引入并应用了很多设计原则，一如单一职责原则SPR、开放-封闭原则OCP等。因此，在这里我们可以在phprpc的基友上，利用代理模式优雅地扩展实现phpcpr协议。  </p>
+<p>在需要使用phprpc协议进行接口调用的项目中，我们可以快速利用此扩展类库。并且你会发现，服务端的接口已有的代码不需要做任何改动，只需要增加此扩展包和添加一个新入口便可完美切换。特别在项目中途BOSS说我们要提高接口调用的安全性而改用phprpc协议时。  </p>
+<h2>3.2.2 安装</h2>
+<h3>(1)扩展包下载</h3>
+<p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>PHPRPC</strong> 微信包，如使用：</p>
+<pre><code>git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<p>然后把 <strong>PHPRPC</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
+<pre><code>cp ./PhalApi-Library/PHPRPCt/ ./PhalApi/Library/ -R</code></pre>
+<p>到处安装完毕！</p>
+<h2>3.2.3 入门使用</h2>
+<h3>(1)phprpc协议入口</h3>
+<p>可以参考下面的入口代码编写：</p>
+<pre><code>//$ vim ./Public/phprpc/index.php
+
+&lt;?php
+
+require_once dirname(__FILE__) . '/../init.php';
+
+//装载你的接口
+DI()-&gt;loader-&gt;addDirs(array('Demo', 'Library'));
+
+$server = new PHPRPC_Lite();
+$server-&gt;response();</code></pre>
+<h2>3.2.4 示例</h2>
+<p>这里以?service=User.GetBaseInfo为例进行说明。</p>
+<h3>(1)浏览器访问失败</h3>
+<p>在使用了phprpc协议后，我们再以浏览器（HTTP协议）访问调用接口时，会预期地出现以下失败信息：</p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0214/001002_b8564c09_121026.png" alt="0214" />  </p>
+<h3>(2)通过phprpc协议调用</h3>
+<p>如果通过phprpc协议调用，我们则可以得到接口返回的 <strong>源数据</strong> 。<br />
+假设请求的接口为：?service=User.GetBaseInfo&amp;userId=1，则可以得到我们熟悉的：</p>
+<pre><code>array (
+  'ret' =&gt; 200,
+  'data' =&gt; 
+  array (
+    'code' =&gt; 0,
+    'msg' =&gt; '',
+    'info' =&gt; 
+    array (
+      'id' =&gt; '1',
+      'name' =&gt; 'dogstar',
+      'from' =&gt; 'oschina',
+    ),
+  ),
+  'msg' =&gt; '',
+)</code></pre>
+<h2>3.2.5 phprpc协议调试</h2>
+<p>同样，为了方便进行phprpc协议下接口调用的调试，我们提供了一个脚本，如上面的对?service=User.GetBaseInfo&amp;userId=1调用，使用脚本即为：</p>
+<pre><code>$ php ./Library/PHPRPC/check.php http://dev.phprpc.com/phprpc/?service=User.GetBaseInfo userId=1
+array(3) {
+  ["ret"]=&gt;
+  int(200)
+  ["data"]=&gt;
+  array(3) {
+    ["code"]=&gt;
+    int(0)
+    ["msg"]=&gt;
+    string(0) ""
+    ["info"]=&gt;
+    array(3) {
+      ["id"]=&gt;
+      string(1) "1"
+      ["name"]=&gt;
+      string(7) "dogstar"
+      ["from"]=&gt;
+      string(7) "oschina"
+    }
+  }
+  ["msg"]=&gt;
+  string(0) ""
+}</code></pre>
+<h2>3.2.6 对客户端的调整</h2>
+<p>虽然服务端不需要作出太多的改动，但对于客户端来说，仍然需要进行三方面的调整以进行phprpc协议的调用以及参数的传递和返回结果的获取。  </p>
+<p>现分说如下。</p>
+<h3>(1)调用方式的改变</h3>
+<p>首当其冲的就是调用方式的改变，但值得开心的是，phprpc对很多语言都有支持。具体可以查看phprpc官网。</p>
+<h3>(2)POST参数传递方式的改变</h3>
+<p>其实对POST参数传递的改变。考虑到phprpc协议中对POST的数据有一定的复杂性，这里统一作了简化。
+正如我们下面的代码所示：</p>
+<pre><code>    public function response($params = NULL) {
+        $paramsArr = json_decode($params, TRUE);
+        if ($paramsArr !== FALSE) {
+            DI()-&gt;request = new PhalApi_Request(array_merge($_GET, $paramsArr));
+        }
+</code></pre>
+<p>我们约定： <strong>通过第一个参数用JSON格式来传递全部原来需要POST的数据</strong> 。  </p>
+<p>当POST的数据和GET的数据冲突时，以POST为准。  </p>
+<p>所以，相应地，当需要传递POST参数时，客户需要这样调整（如PHP下）：</p>
+<pre><code>$client-&gt;response(json_encode($params)))</code></pre>
+<p>如无此POST参数，则可以忽略不传。</p>
+<h3>(3)返回结果格式的改变</h3>
+<p>最后，就是返回结果格式的改变。  </p>
+<p>在phprpc协议下，因为可以更轻松地获取接口返回的源数据，所以这里也同样不再通过字符串流式的序列返回（如原来的JSON或XML），而是直接返回接口的 <strong>源数据</strong> 。如上面示例中所看到的结果一样。  </p>
+<p>这点，需要特别注意。</p>
+<h2>3.2.7 参考</h2>
+<p>phprpc官网：<a href="http://www.phprpc.org/zh_CN/">http://www.phprpc.org/zh_CN/</a></p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

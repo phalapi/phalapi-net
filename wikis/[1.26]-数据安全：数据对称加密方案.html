@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>1.26.1 对称加密和非对称加密</h2>
+<p>关于数据加密和安全这一块，只作简单说明。  </p>
+<p>首先，对称加密是数据可以加密成密文也可以解密还原；而非对称加密则是不可逆的，如md5。而在对称加密里面，又数块算法加密的方式最为完善，随附图一张：</p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0215/170547_ad1e893c_121026.jpeg" alt="05152" /></p>
+<h2>1.26.2 PHP的mcrypt加密扩展</h2>
+<p>在PhalApi中，同样也是使用了mcrypt作为底层的数据加密技术方案。请查看： <a href="http://php.net/manual/zh/book.mcrypt.php">PHP 手册 函数参考 加密扩展</a>  </p>
+<h2>1.26.3 加解密的使用</h2>
+<p>在单元测试中，我们可以快速找到加密和解密的使用，这里再简单举一例：</p>
+<pre><code>$mcrypt = new PhalApi_Crypt_Mcrypt('12345678');
+
+$data = 'The Best Day of My Life';
+$key = 'phalapi';
+
+$encryptData = $mcrypt-&gt;encrypt($data, $key);
+var_dump($encryptData);
+
+$decryptData = $mcrypt-&gt;decrypt($encryptData, $key);
+var_dump($decryptData);</code></pre>
+<p>上面将会输出(有乱码)：</p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0215/170143_9c6c710f_121026.jpeg" alt="0215" /></p>
+<h2>1.26.4 更富弹性和便于存储的加密方案</h2>
+<p>上面看到，mcrypt下的加密在两点不足：</p>
+<ul>
+<li>1、有乱码，不能很好地永久化存储；</li>
+<li>2、只针对文本字符串的加密，不支持数组等，且无法还原类型；</li>
+</ul>
+<p>为此， 我们提供了更富弹性和便于存储的加密方案，即：序列化 + base64 + mcrypt的多重加密方案。  </p>
+<p>以下是上面的示例-多重加密版：</p>
+<pre><code>$mcrypt = new PhalApi_Crypt_MultiMcrypt('12345678');
+
+$data = 'The Best Day of My Life';
+$key = 'phalapi';
+
+$encryptData = $mcrypt-&gt;encrypt($data, $key);
+var_dump($encryptData);
+
+$decryptData = $mcrypt-&gt;decrypt($encryptData, $key);
+var_dump($decryptData);</code></pre>
+<p>对应的输出（这里使用了文字结果输出，是因为没了乱码）：</p>
+<pre><code>string(44) "rmFMdhvszAkHhOdzwt/APBACk/Mn/SqhV1Ahp1xT0Gk="
+string(23) "The Best Day of My Life"</code></pre>
+<h2>1.26.5 RSA的支持与超长字符串的应对方案</h2>
+<p>基于项目有使用RSA进行加密和解密的需求，这里特扩展对RSA的支持。同时针对到RSA对字符串长度的限制，提供了分段处理的方案。RSA加密模块的静态类结构UML如下：<br />
+<img src="http://git.oschina.net/uploads/images/2015/0315/095349_bfd8cbee_121026.jpeg" alt="rsa-PhalApi" /></p>
+<h3>(1)原生态的通信加密和解密</h3>
+<p>此部分只是简单地封装了openssl相关函数的操作，可以实现与其他语言和客户端下RSA的加密通信。<br />
+唯一需要注意的是，对于 <strong>“私钥加密，公钥解密”</strong> 和 <strong>“公钥加密，私钥解密”</strong> 这两种情况下key的互换和对应问题。不要混淆。  </p>
+<h3>(2)超长字符串的分段处理</h3>
+<p>这里重点说明一下超长字符串通信加密的问题。<br />
+解决方案主要涉及两点：一是分段的处理，二是中间层转换。分段是指将待加密的字符串分割成允许最大长度117（有用户反馈说是127）内的数组，再各自处理；中间层转换是为了稳定性、通用性和方便落地存储，使用了json和base64的结合编码。  </p>
+<p>虽然此方案解决了超长字符串的问题，但需要特别指出的是， <strong>不能与其他语言、或者PHP其他框架和客户端进行原生态的RSA通信</strong> 。<br />
+我们突破了长度的限制，但失去了通用性。这里罗列一下各个场景和对应的处理方式：</p>
+<h4>支持：PhalApi项目A  &lt;--&gt; PhalApi项目A</h4>
+<h4>支持：PhalApi项目A  &lt;--&gt; PhalApi项目B，PhalApi项目C，PhalApi项目D，...</h4>
+<h4>不支持：PhalApi项目 &lt;--&gt; 非PhalApi项目的PHP项目</h4>
+<p>解决方案：将以下RSA模块相关的代码以包的形式拷贝到需要的PHP项目。  </p>
+<pre><code>.
+├── Crypt
+│   └── RSA
+│       ├── KeyGenerator.php
+│       ├── MultiBase.php
+│       ├── MultiPri2Pub.php
+│       ├── MultiPub2Pri.php
+│       ├── Pri2Pub.php
+│       └── Pub2Pri.php
+└── Crypt.php
+</code></pre>
+<h4>不支持：PhalApi项目 &lt;--&gt; 非PHP语言的项目</h4>
+<p>解决方案：参考PhalApi对RSA超长字符串的处理，同步实现。  </p>
+<h4>不支持：PhalApi项目 &lt;--&gt; 客户端（iOS/Android/Windows Phone, etc）</h4>
+<p>解决方案：参考PhalApi对RSA超长字符串的处理，同步实现。  </p>
+<h3>(3)使用示例：2块2毛2和故事</h3>
+<p>这是一个有趣的故事，发生在我一个很好的朋友身上。   </p>
+<p>在去年暑假的时候，有位师妹通过几层关系找到我朋友，想他帮她支付回家的火车票。本着“调试”（调戏）的精神，我朋友爽快地答应了并让她把支付宝帐号发过来。然后，不一会，我朋友收到了一条有支付宝帐号的短信，立马打了2.22元过去，并附言： <strong>别问我是谁，请叫我雷锋！</strong> 后来证实师妹没发来过短信，原来收到的那条是诈骗的短信。。。。你能想象得到骗子收到这2.22元和看到这条留言时的表情么，哈哈~~      </p>
+<p>以下测试代码，以上面故事为背景，并演示了RSA的使用示例：</p>
+<pre><code>    public function testDecryptAfterEncrypt()
+    {
+        $keyG = new PhalApi_Crypt_RSA_KeyGenerator();
+        $privkey = $keyG-&gt;getPriKey();
+        $pubkey = $keyG-&gt;getPubKey();
+
+        DI()-&gt;crypt = new PhalApi_Crypt_RSA_MultiPri2Pub();
+
+        $data = 'AHA! I have $2.22 dollars!';
+
+        $encryptData = DI()-&gt;crypt-&gt;encrypt($data, $privkey);
+
+        $decryptData = DI()-&gt;crypt-&gt;decrypt($encryptData, $pubkey);
+
+        $this-&gt;assertEquals($data, $decryptData);
+    }</code></pre>
+<h2>1.26.6 建议</h2>
+<p>在上面的加密中，接口项目在开发时，需要自定义两个值：加密向量和私钥。  </p>
+<p>为了提高数据加密的安全度，建议：</p>
+<ul>
+<li>加密向量项目统一在./Config/app.php中配置；</li>
+<li>各模块业务数据加密所用的Key则由各业务点自定义；</li>
+</ul>
+<p>这样，可以对不同的数据使用不同的加密私钥，即使破解了某一个用户的数据，也难以破解其他用户的。</p>
+<h2>1.26.7 扩展你的对称加密</h2>
+<p>尤其对于加密方案和算法，我们在项目开发决策时，更应该优先考虑使用现在行业内成熟公认的加密方案和算法，而不是自己去从头研发。  </p>
+<p>但如果你项目确实有此需要，或者需要在mcrypt的基础上再作一些变通，也是可以很快地实现和注册使用。  </p>
+<p>首先，请先实现下面的加密接口：</p>
+<pre><code>// $vim ./PhalApi/PhalApi/Crypt.php
+
+interface PhalApi_Crypt {
+
+    public function encrypt($data, $key);
+
+    public function decrypt($data, $key);
+}</code></pre>
+<p>然后，重新注册加密服务即可。</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <p><em>有的时候宁愿付钱让你一周在床上待着，也不想让你用这周剩下的时间去调试你在周一所写的代码。 --丹·所罗门</em>  </p>
+<h2>2.14.1 测试驱动开发</h2>
+<p>做正确的事，比把事情做正确更为重要。  </p>
+<p>当明确需要做何事后，再通过事先编写单元测试来准确表达我们将要实现的功能，是相当具有指导意义的。你会发现接下来你的开发历程就是：单元测试-设计-重构，而且这种正向循环是很有创造性的，并且进行到一定程度后会慢慢体会到浮现式设计的乐趣。  </p>
+<p>关于测试驱动开发TDD，有很多资料已进行了说明，这里不再赘述。</p>
+<h2>2.14.2 意图导向编程</h2>
+<p><img src="http://static.oschina.net/uploads/space/2015/0122/151335_NTz5_256338.jpg" alt="apic" />  </p>
+<p>在编写代码前，先写测试代码，更容易提高 <strong>关注点</strong> 。  </p>
+<p>因为，在开发过程中， 大多时候会被外界打断（如需求沟通、线上问题处理、临时会议等），而通过单元测试则可以让你“几乎忘却需要做什么”的情况下重新让你回到之前的状态，特别在并行开发多个不同项目的需求时尤其重要。  </p>
+<p>除此之外，遵循“红-绿-重构”这样的流程，我们可以在更高的层面关注需要实现的功能需求，并自顶而下地进行设计优化，精益代码。  </p>
+<h2>2.14.3 编写测试的原则、模式和指导</h2>
+<p>首先应该意识到，测试代码和生产代码一样重要。其次，测试代码也应该和生产代码一样被同步维护更新，这样才能保持生气，更大地发挥作用。只有当不断地对测试的代码进行修修补被，我们才能保持自动化测试这张“安全网”常新。</p>
+<h2>2.14.4 F.I.R.S.T.原则</h2>
+<ul>
+<li>快速 Fast</li>
+<li>独立 Independent</li>
+<li>可重复 Repeatable</li>
+<li>自足验证 Self-validating</li>
+<li>及时 Timely</li>
+</ul>
+<h2>2.14.5 构造-操作-检验（BUILD-OPERATE-CHECK）模式</h2>
+<p>这个模式也可以理解成：“当... 做...应该...”。其中，构造包括测试环境的搭建、测试数据前期的准备；操作是指对被测试对象的调用， 以及被测试对象之间的通信和协助交互；最后检验则是对业务规则的断言、对功能需求的验证。</p>
+<h2>2.14.6 如何编写高效测试代码</h2>
+<ul>
+<li>1、与产品代码分开，与测试代码对齐</li>
+<li>2、利用测试骨架（phpunit-skelgen或者自定义生成器）自动生成测试代码</li>
+<li>3、使用测试替身、测试桩构建昂贵资源、制造异常情况</li>
+<li>4、每个测试一个概念</li>
+</ul>
+<h2>2.14.7 PhalApi开发下的单元测试</h2>
+<p>我们推荐在各自的项目代码中平行编写单元测试，并逐渐完善、保持同步。以下是进行单元测试的参考。</p>
+<h3>(1)Api接口层的单元测试</h3>
+<p>Api接口层，是我们后台开发的主要切入点，也是直接对外提供服务的入口，属于更高层次的概念并拥有指定的业务功能，更是后台开发的关注点。所以在对新接口进行开发前，编写单元测试是非常有意义的。  </p>
+<p>为了可以自动生成测试代码，我们可以先简单定义好接口的函数签名（以获取用户基本信息接口为例）：</p>
+<pre><code>//$ vim ./Demo/Api/User.php 
+&lt;?php
+
+class Api_User extends PhalApi_Api {
+
+    public function getBaseInfo() {
+    }
+
+}</code></pre>
+<p>随后，自动生成测试代码骨架：</p>
+<pre><code>$ mkdir ./Demo/Tests/Api -p
+$ cd ./Demo/Tests/Api
+$ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Public/init.php
+$ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Public/init.php &gt; ./Demo/Tests/Api/Api_User_Test.php</code></pre>
+<p>根据接口的需要，验证接口返回的格式，以及业务数据的正确性。</p>
+<pre><code>//$ vim ./Demo/Tests/Api/Api_User_Test.php
+    /**
+     * @group testGetBaseInfo
+     */
+    public function testGetBaseInfo()
+    {
+        //当。。。
+        $str = 'service=User.GetBaseInfo&amp;userId=1';
+
+        parse_str($str, $params);
+        DI()-&gt;request = new PhalApi_Request($params);
+
+        $api = new Api_User();
+        $api-&gt;init();
+
+        //做。。。
+        $rs = $api-&gt;getBaseInfo();
+
+        //应该。。。
+        $this-&gt;assertNotEmpty($rs);
+        $this-&gt;assertArrayHasKey('code', $rs);
+        $this-&gt;assertArrayHasKey('msg', $rs);
+        $this-&gt;assertArrayHasKey('info', $rs);
+
+        $this-&gt;assertEquals(0, $rs['code']);
+
+        $this-&gt;assertEquals('dogstar', $rs['info']['name']);
+        $this-&gt;assertEquals('oschina', $rs['info']['from']);
+    }</code></pre>
+<p>上面的验证意思简单明了，结合 <strong>构造-操作-检验（BUILD-OPERATE-CHECK）模式</strong> 加以说明一下。  </p>
+<h3>构造</h3>
+<pre><code>        $str = 'service=User.GetBaseInfo&amp;userId=1';</code></pre>
+<p>此参数即对应接口请求的URL参数，我们将此参数追加在接口入口并在浏览器打开可以得到同样的接口执行效果。但这样的好处更在于通过单元测试帮我们记住了各种接口测试的业务场景。而不再是像以前那样打开N个浏览器窗口人工进行调试，也不用像以前那样苦苦寻找浏览器记录。</p>
+<pre><code>        parse_str($str, $params);
+        DI()-&gt;request = new PhalApi_Request($params);</code></pre>
+<p>通过重新注册DI容器中的request服务，但可以轻松地利用测试数据来进行模拟接口请求。</p>
+<pre><code>        $api = new Api_User();
+        $api-&gt;init();</code></pre>
+<p>最后，我们再像上面这样进行接口实例的创建和手工创始化即可。但由于没有通过接口工厂方法来创建，所以我们需要注意两点：</p>
+<ul>
+<li>1、参数中的servcie须与将要测试的接口一致（service=User.GetBaseInfo），否则不能解析接口参数；</li>
+<li>2、需要手工调用初始化（$api-&gt;init()）；</li>
+</ul>
+<h4>操作</h4>
+<p>这里的操作，显然就是对应我们接口的调用。简单地如：</p>
+<pre><code>        //做。。。
+        $rs = $api-&gt;getBaseInfo();</code></pre>
+<h4>检验</h4>
+<p>在对接口返回的结果中，我们可以这样依次进行正确性的验证：</p>
+<ul>
+<li>1、先验证接口返回的格式是否正确，有无字段遗漏；</li>
+<li>2、返回的业务数据是否正确；</li>
+</ul>
+<pre><code>        //应该。。。
+        $this-&gt;assertNotEmpty($rs);
+        $this-&gt;assertArrayHasKey('code', $rs);
+        $this-&gt;assertArrayHasKey('msg', $rs);
+        $this-&gt;assertArrayHasKey('info', $rs);
+
+        $this-&gt;assertEquals(0, $rs['code']);
+
+        $this-&gt;assertEquals('dogstar', $rs['info']['name']);
+        $this-&gt;assertEquals('oschina', $rs['info']['from']);</code></pre>
+<p>由于测试环境的数据变动频繁，所以我们可以针对个别的接口进行更精确的验证，而对类似列表获取这样的大批量的数据，则校验其结构格式。<br />
+除此之外，还有一种情况也是需要纳入检验，即除了上面的正常请求情况下的 <strong>异常请求</strong> 。  </p>
+<p>接下来的即是之前文档里面所说的单元测试执行和接口开发，此处略。  </p>
+<h3>(2)Domain层和Model层的单元测试</h3>
+<p>下面继续简单补充一下之前没谈及到的Domain层和Model层的单元测试。   </p>
+<p>显然，这两层的开发，已经在前面的接口测试驱动开发的指导下很好地完成了。现在可以快速追加对这两层的单元测试。得益于我们的生成测试骨架的脚本，操作如下：</p>
+<pre><code>$ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Domain/User.php Domain_User &gt; ./Demo/Tests/Domain/Domain_User_Test.php
+$ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Model/User.php Model_User &gt; ./Demo/Tests/Model/Model_User_Test.php</code></pre>
+<p>接着，修改一下测试环境 <strong>test_env.php</strong>的引用路径：</p>
+<pre><code>//$ vim ./Demo/Tests/Domain/Domain_User_Test.php 
+//$ vim ./Demo/Tests/Model/Model_User_Test.php
+
+require_once dirname(__FILE__) . '/../test_env.php';</code></pre>
+<p>各自完善一下单元测试：</p>
+<pre><code>//$ vim ./Demo/Tests/Domain/Domain_User_Test.php
+
+    /**
+     * @group testGetBaseInfo
+     */
+    public function testGetBaseInfo()
+    {
+        $userId = '1';
+
+        $rs = $this-&gt;domainUser-&gt;getBaseInfo($userId);
+
+        $this-&gt;assertArrayHasKey('id', $rs);
+        $this-&gt;assertArrayHasKey('name', $rs);
+        $this-&gt;assertArrayHasKey('from', $rs);
+
+        $this-&gt;assertEquals('dogstar', $rs['name']);
+    }</code></pre>
+<p>执行一下：</p>
+<pre><code>$ phpunit ./Demo/Tests/Domain/Domain_User_Test.php 
+PHPUnit 4.3.4 by Sebastian Bergmann.
+
+.
+
+Time: 49 ms, Memory: 6.25Mb
+
+OK (1 test, 4 assertions)</code></pre>
+<h3>(3)Model层的单元测试</h3>
+<p>Model层的单元测试类似，不再赘述。</p>
+<h2>2.14.7 更进一步的单元测试套件</h2>
+<p>到目前为止，我们有了如下的产品代码：</p>
+<pre><code>dogstar@ubuntu:Demo$ tree
+.
+├── Api
+│   └── User.php
+├── Domain
+│   └── User.php
+├── Model
+│   └── User.php</code></pre>
+<p>并拥有了与之平行对应的单元测试：</p>
+<pre><code>dogstar@ubuntu:Tests$ tree
+.
+├── Api
+│   └── Api_User_Test.php
+├── Domain
+│   └── Domain_User_Test.php
+├── Model
+│   └── Model_User_Test.php
+└── test_env.php</code></pre>
+<p>这样是一个很好的开始，但若我们每次测试都分别调用三次这些不同层次的单元测试，显然有点不科学。所以，利用PHPUnit的配置文件，我们可以轻松管理我们的测试套件，如：</p>
+<pre><code>dogstar@ubuntu:Tests$ vim ./phpunit_user_getbaseinfo.xml 
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;phpunit backupGlobals="false"
+    ...
+
+    &lt;testsuites&gt;
+        &lt;testsuite name="Test Suite"&gt;
+            &lt;file&gt;./Api/Api_User_Test.php&lt;/file&gt;
+            &lt;file&gt;./Domain/Domain_User_Test.php&lt;/file&gt;
+            &lt;file&gt;./Model/Model_User_Test.php&lt;/file&gt;
+        &lt;/testsuite&gt;
+    &lt;/testsuites&gt;
+&lt;/phpunit&gt;</code></pre>
+<p>啊哈！终于，当需要调用这些分布在不同目录位置的单元测试时，只需要这么简单的一行命令：</p>
+<pre><code>dogstar@ubuntu:Tests$ phpunit -c ./phpunit_user_getbaseinfo.xml 
+PHPUnit 4.3.4 by Sebastian Bergmann.
+
+.....
+
+Time: 54 ms, Memory: 7.25Mb
+
+OK (5 tests, 28 assertions)</code></pre>
+<h2>2.14.8 这样的好处？</h2>
+<p>上面的过程，细节较多，而且需要实际操作的部分也比较多。对于之前没有接触过单元测试这块的同学，可能会有点迷茫，对于不愿意接受单元测试的同学来说更加枯燥。  </p>
+<p>然而，然而。  当我们把越痛苦的事情越早完成后，我们后面就顺畅多了。正如在某一次培训中的某一位敏捷开发的专家所说的： <em>要逐步对小问题做优化，而不是要等到大问题到来时再做变革</em> 。  </p>
+<h3>那这样的好处在于哪里呢？</h3>
+<p>这里不就理论回答，而是以我个人的经历来简单说明。  </p>
+<p>首先，正如上面所说的，单元测试帮你很好地记住并整理了各种接口测试的场景，而不用再像以前那样打开N个浏览器窗口逐个人工校对。<br />
+其次，在单元测试的论证下我们可以更有信心地跟测试说、跟产品说、跟发布说我们的代码没问题，因为我们通过严格的单元测试，而不是人为主观上的想当然应该不会有问题吧。<br />
+最后，也是最重要的，在后期的接口升级、改动和维护中，单元测试再一次为我们提供了保护，犹如一张安全网，涵盖我们改动的每一处代码。与此同时，对于重构也亦然。 </p>
+<p>但单元测试所带给你的，不仅仅是上面所说的简单这几点。更多地完全不一样的开发历程，而其中滋味和令人兴奋的体现，只有当你亲自去尝试才会明白其中滋味。So, try it by yourself.</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

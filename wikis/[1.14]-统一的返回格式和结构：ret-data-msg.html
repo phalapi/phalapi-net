@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <p><em>表达，从简单开始。--《Robin Williams：写给大家看的设计书》</em>  </p>
+<h2>1.14.1 统一返回的格式</h2>
+<p>很明显地，默认情况下，我们选择了 <strong>JSON</strong> 作为统一的格式返回接口结果。这里简单说明一下选取JSON统一返回的原因：  </p>
+<ul>
+<li>JSON当前很流行，且普通接口都采用此格式返回</li>
+<li>JSON在绝大部分开发语言中都支持，跨语言</li>
+<li>
+<p>JSON在浏览器浏览时，有可视化插件支持，如FF下：    </p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0205/212841_Adbv_256338.png" alt="apic" /></p>
+</li>
+</ul>
+<h2>1.14.2 统一返回结构</h2>
+<p>通常，我们正常情况下请求接口会返回类似：  </p>
+<pre><code>{
+    "ret": 200,
+    "data": {
+        "title": "Default Api",
+        "content": "PHPer您好，欢迎使用PhalApi！",
+        "version": "1.1.0",
+        "time": 1423142802
+    },
+    "msg": ""
+}</code></pre>
+<p>其中，ret表示为返回状态码，200表示成功；data为领域业务数据，由接口自定义；最后msg为错误的提示信息。下面分别解释之。</p>
+<h3>(1)返回状态码 ret</h3>
+<p>参照HTTP的状态码，特约定：  </p>
+<ul>
+<li>200：接口正常请求并返回</li>
+<li>4XX：客户端非法请求</li>
+<li>5XX：服务器运行错误</li>
+</ul>
+<h4>200 正常返回</h4>
+<p>当返回200时，需要同时返回data部分数据，以便客户端实现所需要的业务功能。  </p>
+<h4>4XX 客户端非法请求</h4>
+<p>此类请求是由客户端不正确调用引起的，如请求的接口服务不存在，或者接口参数不对，验证失败等等。当这种情况发生时，客户端同学只需要调整修正调用即可。  </p>
+<p>对于此系统的状态码，在进行接口开发时，可由项目自已定义约定。  通常地，我们需要告知客户端签名失败时，可以这样：  </p>
+<pre><code>throw new PhalApi_Exception_BadRequest('wrong sign', 1);</code></pre>
+<p>即抛出PhalApi_Exception_BadRequest异常即可，错误信息会返回客户端，对应msg字段；状态为1，系统对此类的异常会在400基础上相加的，即： <strong>401 = 400 + 1</strong> 。  </p>
+<h4>5XX 服务器运行错误</h4>
+<p>此类错误是应该避免的，但当客户端发现有这种情况时，应该知会后台接口开发人员进行修正。<br />
+如当配置的参数规则不符合要求时，或者获取了不存在的参数等即会触发此类异常错误，通常由框架抛出。  </p>
+<h3>(2)业务数据 data</h3>
+<p>data为接口和客户端主要沟通对接的数据部分，可以为任何类型，由接口自定义。但为了更好地扩展、向后兼容，建议都使用array。  </p>
+<h3>(3)错误信息 msg</h3>
+<p>当返回状态码不为200时，此字段不为空。即当有异常（如上面所说的客户端非法请求和服务端运行错误两大类）触发时，会自动将异常的错误信息作为错误信息msg返回。  </p>
+<p>但对于服务端的异常，出于对接口隐私的保护，框架在错误信息时没有过于具体地描述；相反，对于客户端的异常，由会进行必要的说明，以提醒客户端该如何进行调用调整。  </p>
+<p>此外，我们根据需要可以考虑是否需要进行国际化的翻译。如果项目在可预见的范围内需要部署到国外时，提前做好翻译的准备是很有帮助的。如下，开发时可以这样返回异常错误信息：</p>
+<pre><code>throw new PhalApi_Exception_BadRequest(T('wrong sign'), 1);</code></pre>
+<h2>1.14.3 关于Exception类异常没捕捉的原因</h2>
+<p>我们没有对Exception类的异常进行捕捉，封装返回非200的形式，是因为我们出于以下的考虑：</p>
+<ul>
+<li>一来为了方便开发过程中快速发现及定位具体出错的位置；</li>
+<li>二来为了便于线上环境中nginx服务器对错误的捕捉和纪录；</li>
+</ul>
+<h2>1.14.4 JsonP格式和其他的返回</h2>
+<p>在部分H5页面异步请求的情况下，客户端需要我们返回JSONP格式的结果，则可以这样在入口文件重新注册response：</p>
+<pre><code>if (!empty($_GET['callback'])) {
+    DI()-&gt;response = new PhalApi_Response_JsonP($_GET['callback']);
+}</code></pre>
+<p>但是在测试环境中，我们是不希望有内容输出的，所以我们可以测试时这样注册response：</p>
+<pre><code>DI()-&gt;response = 'PhalApi_Response_Explorer';</code></pre>
+<h2>1.14.5 扩展你的返回格式</h2>
+<p>当你的项目需要返回其他格式时，如返回XML，则可以先这样实现你的格式类：</p>
+<pre><code>class MyResponse_XML extends PhalApi_Response {
+
+    protected function formatResult($result) {
+        //TODO ...
+    }
+}</code></pre>
+<p>随后，也是简单重新注册一下即可：</p>
+<pre><code>DI()-&gt;response = 'MyResponse_XML';</code></pre>
+<h2>1.14.6 更好地建议</h2>
+<p>很多时候，很多业务场景，客户端在完成一个接口请求并获取到所需要的数据后，需要进行不同的处理的。 </p>
+<ul>
+<li>就登录来说，当登录失败时，可能需要知道：</li>
+<li>是否用户名不存在？</li>
+<li>是否密码错误？</li>
+<li>是否已被系统屏蔽？</li>
+<li>是否密码错误次数超过了最大的重试次数？</li>
+<li>...</li>
+</ul>
+<p>显然，这里也有一个返回状态码，更准备来说，是业务操作状态码。并且，此类的状态依接口不同而不同，很难做到统一。  </p>
+<p>SO？  </p>
+<p>我们建议的是，项目接口在业务数据data里面统一再定义一个状态码，通常为code字段，完整路径即： <strong>data.code</strong> ，同时为0时表示操作成功，非0时为不同的失败场景。如上面的登录：</p>
+<ul>
+<li>code = 0 登录成功</li>
+<li>code = 1 用户名不存在</li>
+<li>code = 2 密码错误</li>
+<li>code = 3 系统已屏蔽此账号</li>
+<li>code = 4 密码错误次数超过了最大的重试次数</li>
+<li>...</li>
+</ul>
+<p>最后，客户端在获取到接口返回的数据后，先统一判断ret是否正常请求并正常返回，即ret = 200；若是，则再各自判断操作状态码code是否为0，如果不为0，则提示相应的文案并进行相应的引导，如果为0，则走正常流程！</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

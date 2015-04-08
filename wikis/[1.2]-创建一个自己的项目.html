@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>1.2.1 手动创建</h2>
+<p>在Windowns系统下，可以手动创建一个新的项目。  </p>
+<p>假设目录为：  F:\xampp\htdocs\PhalApi<br />
+以下是简单的创建操作：</p>
+<h3>(1)新建项目目录</h3>
+<p>在./PhalApi目录新建一个自己的项目目录，通常以项目名称命名，如项目MyApp对应：  </p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0404/004304_6ee5f660_121026.jpeg" alt="QQ截图20150404004219" />  </p>
+<p>然后，再分别在里面添加接口目录Api、领域目录Domain、数据源目录Model和通用目录Common，即：  </p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0404/004534_99d01775_121026.jpeg" alt="QQ截图20150404004458" /></p>
+<h3>(2)创建访问入口</h3>
+<p>将./Public/demo目录复制一份为对应项目名称小写的目录，如这里的myapp：  </p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0404/004728_d7d95a43_121026.jpeg" alt="QQ截图20150404004653" /></p>
+<p>注意！这里需要修改./Public/myapp/index.php和./Public/myapp/checkApiParams.php中的目录：  </p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0404/004915_ab36e0d9_121026.jpeg" alt="QQ截图20150404004731" /></p>
+<h3>浏览器访问</h3>
+<p>在浏览器输入以下链接：</p>
+<pre><code>http://localhost/phalapi/public/myapp/</code></pre>
+<p>应该可以看到：  </p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0404/005038_b6ad5c1b_121026.jpeg" alt="QQ截图20150404004959" /></p>
+<h2>12.2 自动生成</h2>
+<p>在Linux系统下，我们可以使用脚本快速生成一个项目结构，此过程只需要1分钟左右。  </p>
+<p>简明操作如下：  </p>
+<h3>(1)使用phalapi-buildapp脚本</h3>
+<p>phalapi-buildapp脚本用于创建项目，进入 ./PhalApi/PhalApi/ 后，可以看到这个脚本。  </p>
+<p>不过，首先，需要为这个脚本添加执行权限：</p>
+<pre><code>$ chmod +x ./phalapi-buildapp</code></pre>
+<p>然后，调用脚本创建一个MyApp的项目：</p>
+<pre><code>$ ./phalapi-buildapp MyApp
+
+OK!
+</code></pre>
+<h3>(2)查看生成的项目及访问</h3>
+<p>回到 /path/to/PhalApi 目录，你会发现生成了一个MyApp目录，并且里面的文件如下：  </p>
+<pre><code>$ cd MyApp/
+$ tree
+.
+├── Api
+│   └── Default.php
+├── Common
+├── Domain
+├── Model
+└── Tests
+    ├── Api
+    │   └── Api_Default_Test.php
+    ├── Common
+    ├── Domain
+    ├── Model
+    ├── phpunit.xml
+    └── test_env.php
+
+9 directories, 4 files
+</code></pre>
+<p>在Public目录下，则会有myapp的访问入口：</p>
+<pre><code>└── myapp
+    ├── checkApiParams.php
+    └── index.php</code></pre>
+<p>在浏览器访问：</p>
+<pre><code>http://dev.phalapi.com/myapp/</code></pre>
+<p>可以看到接口结果输出。</p>
+<h3>(3)执行单元测试</h3>
+<p>如果安装了PHPUnit，执行一下单元测试，也是通过的！</p>
+<pre><code>$ phpunit ./Tests/
+PHPUnit 4.3.4 by Sebastian Bergmann.
+
+...
+
+Time: 7 ms, Memory: 5.75Mb
+
+OK (3 tests, 13 assertions)
+</code></pre>
+<h2>1.2.3 更多技巧</h2>
+<h3>(1)日记目录需要0777权限</h3>
+<p>请确保日记目录Runtime拥有写入的权限，可以给0777 。</p>
+<h3>(2)脚本加执行权限和软链</h3>
+<p>有本个脚本，需要添加执行权限和软链，便于日后使用：</p>
+<pre><code>$ cd /pah/to/PhalApi/PhalApi
+
+$ chmod +x ./phalapi-buildapp
+$ sudo ln -s /path/to/phalapi-buildapp /usr/bin/phalapi-buildapp
+
+$ chmod +x ./phalapi-buildsqls
+$ sudo ln -s /path/to/phalapi-buildsqls /usr/bin/phalapi-buildsqls
+
+$ chmod +x ./phalapi-buildtest
+$ sudo ln -s /path/to/phalapi-buildtest /usr/bin/phalapi-buildtest</code></pre>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

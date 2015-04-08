@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>2.21.1 前言</h2>
+<p>目前服务器架构通常采用：CentOs + Nginx + php-fpm + MySql [+ Memcached]，现将部署方案安装方法、遇到的问题和解决方法、启动方式总结如下，以便后期服务器快速部署。  </p>
+<pre><code>以下文档的是经过几个深夜整理并在阿里云服务器真实部署通过，运行良好，整个过程熟悉后约共半小时，可以进一步考虑做成自动化部署脚本。
+如是，请把脚本也邮件发我一份。^_^</code></pre>
+<h2>2.21.2 统一约定</h2>
+<ul>
+<li>全部使用编译安装</li>
+<li>安装路径路径：/usr/local/</li>
+<li>
+<p>安装包存放位置：/home/apps/web/</p>
+<p><strong>特别注意：请尽量不要使用root账号操作服务器，特别是对外服务器，谢谢。</strong>  </p>
+</li>
+</ul>
+<h2>2.21.3 依赖库和开发工具</h2>
+<pre><code>yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers
+
+# nginx
+yum -y install pcre-devel zlib-devel
+
+# php
+yum -y install gd-devel libjpeg-devel libpng-devel freetype-devel libxml2-devel curl-devel freetype-devel
+
+# mysql
+yum -y install bison gcc gcc-c++ autoconf automake zlib* libxml* ncurses-devel libtool-ltdl-devel* mysql-devel
+
+# sz rz
+yum install lrzsz</code></pre>
+<h2>2.21.4 安装Nginx 1.6.0</h2>
+<h3>参考官方网站</h3>
+<pre><code>http://wiki.nginx.org/Install</code></pre>
+<h3>(1)安装</h3>
+<pre><code>./configure --prefix=/usr/local/nginx
+make
+make install</code></pre>
+<h3>(2)启动</h3>
+<pre><code>/usr/local/nginx/sbin/nginx</code></pre>
+<h3>(3)重启</h3>
+<pre><code>/usr/local/nginx/sbin/nginx -t
+/usr/local/nginx/sbin/nginx -s reload</code></pre>
+<h3>(4)更多配置</h3>
+<pre><code>server {
+    listen 80;
+    server_name test.wetime.com;
+    root /home/apps/projects/test.wetime.com;
+    charset utf-8;
+    access_log logs/test.wetime.com.access.log;
+    error_log logs/test.wetime.com.error.log;
+    location / {
+        index index.html index.htm index.php;
+    }
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}</code></pre>
+<h2>2.21.5 安装PHP-FPM 5.3.5</h2>
+<h3>(1)参考</h3>
+<pre><code>http://blog.csdn.net/dc_726/article/details/9519619</code></pre>
+<h3>(2)安装</h3>
+<pre><code>./configure --prefix=/usr/local/php --with-mcrypt --with-zlib --with-curl --with-gd --disable-debug --enable-fpm --enable-mbstring --enable-sockets --enable-zip --enable-xml --enable-pdo</code></pre>
+<h4>温馨提示</h4>
+<p>如果提示以下错误：</p>
+<pre><code>If configure fails try --with-jpeg-dir=&lt;DIR&gt;
+configure: error: libpng.(a|so) not found.</code></pre>
+<p>则需要执行以下命令：</p>
+<pre><code>cp  -frp /usr/lib64/libjpeg.* /usr/lib/
+ln -s /usr/lib64/libpng.so /usr/lib/libpng.so
+
+yum install libmcrypt libmcrypt-devel mcrypt mhash
+yum install unixODBC-devel</code></pre>
+<h3>(3)启动</h3>
+<pre><code>/usr/local/php/sbin/php-fpm -y=/usr/local/php/etc/php-fpm.conf -c=/usr/local/php/etc/php.ini</code></pre>
+<h3>(4)重启</h3>
+<pre><code>/usr/local/php/sbin/php-fpm -y=/usr/local/php/etc/php-fpm.conf -c=/usr/local/php/etc/php.ini -t 
+killall php
+/usr/local/php/sbin/php-fpm -y=/usr/local/php/etc/php-fpm.conf -c=/usr/local/php/etc/php.ini</code></pre>
+<h3>(5)错误处理与依赖</h3>
+<pre><code>cp  -frp /usr/lib64/libjpeg.* /usr/lib/
+ln -s /usr/lib64/libpng.so /usr/lib/libpng.so
+yum install libmcrypt libmcrypt-devel mcrypt mhash
+yum install unixODBC-devel
+
+我们可以在命令下输入： 
+
+yum localinstall –nogpgcheck http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+yum localinstall –nogpgcheck http://download1.rpmfusion.org/free/el/updates/6/x86_64/rpmfusion-free-release-6-1.noarch.rpm
+yum localinstall –nogpgcheck http://download1.rpmfusion.org/nonfree/el/updates/6/x86_64/rpmfusion-nonfree-release-6-1.noarch.rpm
+
+安装这3个东东后，我们就可以直接使用yum install libmcrypt来安装啦～</code></pre>
+<h3>(6)php扩展安装</h3>
+<pre><code>#安装mysql扩展
+ ./configure --with-php-config=/usr/local/php/bin/php-config --with-mysql=/usr/local/mysql/
+make
+make install
+
+#安装mysqli扩展
+ ./configure --with-php-config=/usr/local/php/bin/php-config --with-mysqli=/usr/local/mysql/bin/mysql_config
+make
+make install</code></pre>
+<p><em>扩展包位置在./php-5.3.5/ext/mysql，需要使用到 /usr/local/php/bin/phpize，扩展so应该放到：/usr/lib/php/modules/</em>  </p>
+<p>此外，</p>
+<pre><code>#PHP之pdo_mysql扩展安装步骤
+
+# http://www.smallbigcake.com/2012/08/05/1572/ 
+# http://pecl.php.net/get/PDO_MYSQL-1.0.2.tgz 
+
+./configure --with-php-config=/usr/local/php/bin/php-config --with-pdo-mysql=/usr/local/mysql 
+
+如果提示“libmysqlclient.so.18: cannot open shared object file: No such file or directory in ”错误则参考 ：http://blog.itpub.net/26230597/viewspace-1161322/， 
+或进行软链： 
+ln -s /usr/local/mysql/lib/libmysqlclient.so.18 /usr/lib64/libmysqlclient.so.18 </code></pre>
+<h2>2.21.6 安装MYSQL 5.6.10</h2>
+<h3>(1)参考</h3>
+<pre><code>http://www.cnblogs.com/xiongpq/p/3384681.html</code></pre>
+<h3>(2)mysql-5.6.10.tar.gz下载</h3>
+<pre><code>http://pan.baidu.com/share/link?shareid=3729862999&amp;uk=1327790029</code></pre>
+<h3>(3)前期清理和依赖</h3>
+<pre><code>rpm -e mysql   //普通删除模式
+rpm -e --nodeps mysql    // 强力删除模式，如果使用上面命令删除时，提示有依赖的其它文件，则用该命令可以对其进行强力删除
+yum -y install make gcc-c++ cmake bison-devel  ncurses-devel</code></pre>
+<h3>(4)安装</h3>
+<pre><code>cmake \
+-DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+-DMYSQL_DATADIR=/usr/local/mysql/data \
+-DSYSCONFDIR=/etc \
+-DWITH_MYISAM_STORAGE_ENGINE=1 \
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+-DWITH_MEMORY_STORAGE_ENGINE=1 \
+-DWITH_READLINE=1 \
+-DMYSQL_UNIX_ADDR=/var/lib/mysql/mysql.sock \
+-DMYSQL_TCP_PORT=3306 \
+-DENABLED_LOCAL_INFILE=1 \
+-DWITH_PARTITION_STORAGE_ENGINE=1 \
+-DEXTRA_CHARSETS=all \
+-DDEFAULT_CHARSET=utf8 \
+-DDEFAULT_COLLATION=utf8_general_ci
+
+make &amp;&amp; make install</code></pre>
+<h3>(5)ERROR! The server quit without updating PID file</h3>
+<pre><code>#去掉干扰的配置
+mv /etc/my.cnf /etc/my.cnf.bak
+
+#添加日记纪录
+vim /usr/local/mysql/my.cnf
+log-error=/var/log/mysqld.log
+innodb_force_recovery=1</code></pre>
+<h2>2.21.7 [可选]MEMCACHE 1.4.20</h2>
+<h3>(1)参考官网</h3>
+<pre><code>http://www.memcached.org/downloads</code></pre>
+<h3>(2)更多参考</h3>
+<pre><code>http://crtlib.blog.163.com/blog/static/133158013201392661912837/</code></pre>
+<h3>(3)先安装依赖包</h3>
+<pre><code>./configure --prefix=/usr/local/libevent/
+make
+make install</code></pre>
+<h3>(4)安装</h3>
+<pre><code>wget http://memcached.org/latest tar -zxvf memcached-1.x.x.tar.gz cd memcached-1.x.x ./configure &amp;&amp; make &amp;&amp; make test &amp;&amp; sudo make install</code></pre>
+<h3>(5)最后成功安装后启动</h3>
+<pre><code>/usr/local/memcached/bin/memcached -d -m 64 -u root -l 127.0.0.1 -p 11211 -c 128 -P /tmp/memcached.pid</code></pre>
+<h3>(6)memcached 扩展</h3>
+<pre><code>#http://blog.sina.com.cn/s/blog_66ac09390101drxc.html
+#http://www.linuxidc.com/Linux/2013-07/87743.htm
+
+#准备依赖包
+./configure --prefix=/usr/local/libmemcached --with-memcached
+make 
+make install
+
+#安装 扩展
+/usr/local/php/bin/pecl install memcached
+接着输入
+libmemcached directory [no] : /usr/local/libmemcached</code></pre>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

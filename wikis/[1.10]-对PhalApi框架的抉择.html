@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <p><em>人类一思考，上帝就偷笑了。  --  《下一个倒下的会不会是华为》</em></p>
+<h2>对PhalApi框架的抉择</h2>
+<p>能使用框架来进行项目开发，和知道为何使用此框架进行项目开发明显不同。  </p>
+<p>对框架的选择，名义上是架构师的职责，但对于充满好奇心和有着更强求知欲的开发人员来说，同样应该给予关注。  </p>
+<p>之所以选择一个框架进行项目开发，明显可以减少很多不必要的重复编码，但更深层次，则是可以减少开发周期、统一开发规范、降低项目风险，不致于项目失控。  </p>
+<p>所以，在决定使用PhalApi框架前，对于此框架是否适用于即将启动的项目进行一番思索，是大有裨益的。通过 <strong>推定框架</strong> ，有助于避免因采用不当的框架而对项目造成不必要的阻力。  </p>
+<h3>1、适用的场景和项目</h3>
+<h4>海量数据和移动App</h4>
+<p>此框架特别适用于现在各种 <strong>移动App</strong>项目的后台接口开发，以及服务器间的后台接口开发，同时具有应对 <strong>海量数据</strong> 的能力。并且还可以挂靠多个项目，也可以很好地支持多个终端、开放不同的入口。    </p>
+<p>同时提供了可以很好应对海量数据的解决方案：如没有提供图片上传的代码或工具而希望开发人员将图片上传到CDN，支持大数据的存储，以及后台计划任务。  </p>
+<h4>HTTP协议和JSON格式</h4>
+<p>基于此，我们采用了主流设计，即将框架设计成使用HTTP协议并JSON格式返回结果的接口请求，因为这能为大众熟悉并潜意识接受。
+通过规范的接口调用和返回，有利于客户端和后台开发人员的关系融洽。</p>
+<h3>2、敏捷开发和快速交付</h3>
+<p>虽然框架和工程实践间没有必然的联系，但这其中有一些微妙的关系。  </p>
+<p><strong>一种代码编写的方式会形成一种开发的风格；一种开发风格会奠定一个团队的合作氛围；一个团队的合作氛围会决定项目交付的质量。</strong></p>
+<p>而PhalApi所提倡和希望做到的正是通过让后台接口开发更简单以让后台开发人员心情更愉悦，从而为客户端提供高质量稳定的接口以支撑更多优质App的开发。并且，结合重构、测试驱动开发和持续集成等，可以让你的项目如虎添翼，在快速交付的同时，体验编码开发的乐趣。  </p>
+<h3>3、约束和关注</h3>
+<p><strong>架构约束程序。</strong>  </p>
+<p>约束有时会让开发者处处受阻。但好的约束能够统一规范而不致于项目代码凌乱不堪，也不会轻易地允许低级开发新手犯下一些本可避免的BUG。正如，我们都讨厌等待红绿灯，但我们必须肯定它对交通和生命安全保障的作用。  </p>
+<h3>4、复杂领域业务的应对和解决方案</h3>
+<p>正如前面说到的，我们关注在海量数据下为移动App提供稳定的接口，我们提倡敏捷开发下的快速交付。所以我们去掉与接口开发无关的功能，没有提供视图渲染和模板解析的操作。  </p>
+<p>但只是这样而已吗？  </p>
+<p>不，我们还关注对复杂领域业务的应对和解决方案。  </p>
+<p>如果我们PhalApi框架所关注的，也是你们项目所关注的，那么我们有理由相信PhalApi能为你的项目带来很多友好的约束和贴心的帮助。</p>
+<h3>5、框架的性能</h3>
+<p>很多框架都要强调其能提供的性能，然后PHP本身就是动态的脚本语言，要想提高项目的运行速度，就是要进行减法，即减少不必要的PHP代码。但是前面强调性能的框架则做了与其承诺矛盾的做法：为框架增添了很多项目可能不需要用到的功能。明显地就是一系列既定的执行流程和侦听事件、回调、调度等等。  </p>
+<p>对于这一块，我们则提供了极大的空间。因为，入口的文件，由你指定。除了一些必要的加载外，很多都可以支持自定义和定制化。</p>
+<h3>6、PhalApi的成熟度、部署与学习成本</h3>
+<h3>成就度</h3>
+<p>不可否认，PhalApi还是太年轻了。  </p>
+<p>但是我们在努力完善中并致力于快速开发后台接口。我们“减少不必要的创新”，我们坚持恒星一般的接口并很好地支持框架升级， 我们尽量提供优秀的文档和及时的沟通帮助。  </p>
+<p>更为重要的是，这是一个不只为框架而框架的PhalApi框架。 </p>
+<p>如果在开发过程中对所遇到的问题而框架不能很好解决和支持时，可以考虑改写框架，将某一目标或属性提升至架构，团队成员则无须再写代码去实现它。因为，你会发现，在PhalApi下，你可以轻松做到这一点： <strong>小步快跑下的浮现式设计</strong> 。</p>
+<h4>部署</h4>
+<p>在Nginx下，你可以快速部署此框架。  </p>
+<p>以下是为初学者参考的Nginx配置：  </p>
+<pre><code>server {
+    listen       80;
+    server_name  demo.phalapi.com;
+
+    root   /home/apps/projects/demo.phalapi.com/Public;
+
+    charset utf-8;
+
+    access_log  logs/demo.phalapi.com.access.log;
+    error_log  logs/demo.phalapi.com.error.log;
+
+    location / {
+        index  index.html index.htm index.php;
+    }
+
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        include        fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}</code></pre>
+<p>除此之前，我们已经对框架的结构目录进行了很好地划分。包括配置文件、日记文件、框架代码、多个项目挂靠、不同的入口开放以及多App的支持等等。  </p>
+<p>在结合Phing进行一键发布时，你会发现，项目的部署发布同样方便快捷。</p>
+<h3>学习成本</h3>
+<p>这块学习成本是不可避免的，毕竟PhalApi是一个新的框架，很多开发同学之前都没有接触过。  </p>
+<p>但我们尽量站在后台开发同学的角度，用心地设计每一个接口，编写每一行代码。在源代码里面倾注了必要的注释和使用示例，并同步提供了详细的文档说明和实战代码，以便快速入门上手。</p>
+<h2>何时可以采用PhalApi？</h2>
+<p>我们致力于提供可以快速开发后台接口的框架，并希望能对你的项目有实际的帮助。所以，我们不会鼓吹PhalApi框架，因为没有可以适用于任何领域、任何实际项目的框架可用，起码你可能需要作一些调整。  </p>
+<p>而且，我们也不会赞同你不加考虑就采用PhalApi框架，因为如果此框架不利于你项目的开发，甚至有反作用，这显然 有悖于我们的实心：为你的项目提供实质的帮助。因此，在采用PhalApi框架前，你应该稍微查看一下我们的文档，和相关的源代码。以下是一些初步的建议。  </p>
+<pre><code> 1、架构无关：如果你的只是小项目，无需要过多考虑涉及大规模决策、各模块及元素、属性间的微妙关系，即架构无关时。
+PhalApi和其他 框架一样，也能满足小项目的开发需求。  
+
+ 2、专注架构：如果你需要专注框架，则更需要理解你项目将面临的约束、风险和需要满足的质量属性。
+然后评估PhalApi是否能统一这此约束、降低风险并满足这些质量属性。若能，则用之；若不能，则另取之。  
+
+ 3、提升架构：最后，如果你发现PhalApi拥有不断演进的能力并有助于浮现式设计（我们也正是如此设计和研发的），并且愿意
+将PhalApi框架提升到你们产品线的后台接口框架，那么你将能为你的团队、项目乃至公司提供一个更优质的框架，并会为之感到兴奋和骄傲。
+当然，权力越大，责任越大。但我们作为程序员，不正是希望能以已之所学，服务于人吗？</code></pre>
+<h2>何时不应该使用PhalApi？</h2>
+<ul>
+<li>需要开发网站项目，即有界面展示和视图渲染；</li>
+<li>对数据严谨性要求高，如金融行业的相关项目，因为PHP是弱类型语言；</li>
+</ul>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

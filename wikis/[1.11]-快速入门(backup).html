@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <p><em>一个真正的强者，不是摆平了多少人，而是他能帮助到多少人。  --开源中国源创会分享广州站 @海洋之心-悟空</em>  </p>
+<h2>1.11.1 模拟开发：获取开源中国用户信息接口</h2>
+<p>首次使用此接口开发框架时，可以先查看此开发示例。  </p>
+<p>假设，我们需要为开源中国打造一个平放平台，其中有一个接口是可以根据用户ID来获取用户的基本信息。  </p>
+<p>本文，就以模拟获取开源中国用户信息接口开发（即：从数据库获取用户的基本信息并以JSON格式返回给客户端）为例，简明的接口开发中的流程，以及用到的基本功能和操作，主要包括有：统一入口文件、参数规则配置、接口层/领域层/模型持久层、日记纪录、数据库操作、配置读取、国际化翻译等。  </p>
+<p>以给大家一个感观的认识。  </p>
+<p>最终接口的调用与返回结果如下：  </p>
+<pre><code>//接口请求格式
+http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;userId=帐号ID
+
+//返回结果格式
+{
+    "ret": 200,
+    "data": {           
+        "code": 0,    //状态码，0表示正常获取，1表示用户不存在
+        "msg": "",
+        "info": {      //用户信息
+            "id": "1",    //用户ID
+            "name": "dogstar",   //帐号
+            "from": "oschina"   //来源
+        }
+    },
+    "msg": ""
+}</code></pre>
+<h2>1.11.2 开发流程</h2>
+<h3>(1) 统一入口文件</h3>
+<p>为了更好保护我们的项目代码，建议将接口的访问路径设置在：./PhalApi/Pubic目录，并且各套接口（如按版本分：v1/v2/v3等等；按不同终端分：ios/android/pc等）各自独立入口。所以本示例中将./PhalApi/Pubic/demo/index.php下。  </p>
+<p>参数入口文件的写法，我们可以快速得到基本的入口文件如下：  </p>
+<pre><code>// $ vim ./Public/demo/index.php 
+
+&lt;?php
+/**
+ * Demo 统一入口
+ */
+
+require_once dirname(__FILE__) . '/../init.php';
+
+//装载你的接口
+DI()-&gt;loader-&gt;addDirs('Demo');
+
+/** ---------------- 响应接口请求 ---------------- **/
+
+$server = new PhalApi();
+$rs = $server-&gt;response();
+$rs-&gt;output();</code></pre>
+<p>此外，我们还需要一个公共的初始化文件：  </p>
+<pre><code>//$ vim ./Public/init.php 
+
+&lt;?php
+/**
+ * 统一初始化
+ */
+
+/** ---------------- 根目录定义，自动加载 ---------------- **/
+
+defined('API_ROOT') || define('API_ROOT', dirname(__FILE__) . '/..');
+
+require_once API_ROOT . '/PhalApi/PhalApi.php';
+$loader = new PhalApi_Loader(API_ROOT);
+
+date_default_timezone_set('Asia/Shanghai');
+
+PhalApi_Translator::setLanguage('zh_cn');
+
+/** ---------------- 注册&amp;初始化服务组件 ---------------- **/
+
+//自动加载
+DI()-&gt;loader = $loader;
+
+//配置
+DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');
+
+//参数请求
+DI()-&gt;request = new PhalApi_Request();
+
+//日记纪录
+DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime',
+    PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);
+
+//数据操作 - 基于NotORM
+DI()-&gt;notorm = function() {
+    return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), false);
+};
+</code></pre>
+<h3>(2)TDD测试驱动开发</h3>
+<p>遵循最佳实践，我们在编写代码前先编写单元测试。但同时为了减少编写测试代码的痛苦，我们可以先定义接口函数签名，再通过脚本自动生成测试代码骨架来提高我们的开发效率。  </p>
+<pre><code>//$vim ./Demo/Api/User.php
+
+&lt;?php
+
+class Api_User extends PhalApi_Api
+{   
+    public function getBaseInfo()
+    {
+    }
+}</code></pre>
+<p>通过脚本生成测试骨架：  </p>
+<pre><code>$ mkdir -p ./Demo/Tests/Api/
+$ cd ./Demo/Tests/Api
+$ php ../../../PhalApi/build_phpunit_test_tpl.php ../../Api/User.php Api_User ./../test_env.php</code></pre>
+<p>然后，根据/Public/demo/index.php入口文件，也搭建一个测试环境的入口文件：  </p>
+<pre><code>vim ./Demo/Tests/test_env.php</code></pre>
+<p>修正一下Api_Examples_User_Test.php里，测试环境test_env.php的包含路径：  </p>
+<pre><code>//手动调用test_env.php的路径
+require_once dirname(__FILE__) . '/../test_env.php';</code></pre>
+<p>并且，修改测试，以符合我们通过userId=1获取基本信息（名字为dogstar，来源为oschina）：</p>
+<pre><code>//$vim ./Demo/Tests/Api/Api_User_Test.php
+
+    /**
+     * @group testGetBaseInfo
+     */
+    public function testGetBaseInfo()
+    {
+        $str = 'service=User.GetBaseInfo&amp;userId=1';
+        parse_str($str, $params);
+
+        DI()-&gt;request = new PhalApi_Request($params);
+
+        $api = new Api_User(); 
+        //自己进行初始化
+        $api-&gt;init();
+        $rs = $api-&gt;getBaseInfo();
+
+        $this-&gt;assertNotEmpty($rs);
+        $this-&gt;assertArrayHasKey('code', $rs);
+        $this-&gt;assertArrayHasKey('msg', $rs);
+        $this-&gt;assertArrayHasKey('info', $rs);
+
+        $this-&gt;assertEquals(0, $rs['code']);
+
+        $this-&gt;assertEquals('dogstar', $rs['info']['name']);
+        $this-&gt;assertEquals('oschina', $rs['info']['from']);
+    }</code></pre>
+<p>此时，单元测试是预期失败的：  </p>
+<pre><code>$ phpunit ./Api_User_Test.php 
+PHPUnit 4.3.4 by Sebastian Bergmann.
+
+F
+
+Time: 3 ms, Memory: 5.25Mb
+
+There was 1 failure:
+
+1) PhpUnderControl_ApiUser_Test::testGetBaseInfo
+Failed asserting that a NULL is not empty.
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.</code></pre>
+<h3>(3)Api接口层</h3>
+<p>此接口层，主要是负责响应客户端的请求，调用需要的领域层进行必要的服务功能提供。</p>
+<h3>配置参数规则</h3>
+<p>为了获取到用户ID，我们可以在getRules()函数里面定义参数规则，以便框架自动帮我们过滤获取需要的参数。</p>
+<blockquote>
+<p>温馨提示：<br />
+接口层的全部类成员函数都应以小写开头。<br />
+但对外，函数首字母不区分大小写，因为框架会将请求的函数强制转换成小写再执行。  </p>
+<p>原因在于：<br />
+1、我们坚持驼峰法的代码风格；<br />
+2、对外界我们可以统一使用大写来提供服务名称，如：User.Login，这样更显专业。  </p>
+</blockquote>
+<pre><code>//$vim ./Demo/Api/User.php
+
+&lt;?php
+
+class Api_User extends PhalApi_Api
+{
+    public function getRules()
+    {
+        return array(
+            'getBaseInfo' =&gt; array(
+                'userId' =&gt; array('name' =&gt; 'userId', 'type' =&gt; 'int', 'min' =&gt; 1, 'require' =&gt; true),
+            ),
+        );
+    }
+
+    //...</code></pre>
+<p>如上，我们就定义了getBaseInfo接口中的userId参数，名字也为userId，整型，最小值为1，必须。</p>
+<h4>接口实现</h4>
+<pre><code>//$vim ./Demo/Api/User.php
+
+    public function getBaseInfo()
+    {
+        $rs = array('code' =&gt; 0, 'msg' =&gt; '', 'info' =&gt; array());
+
+        $domain = new Domain_User();
+        $info = $domain-&gt;getBaseInfo($this-&gt;userId);
+
+        if (empty($info)) {
+            DI()-&gt;logger-&gt;debug('user not found', $this-&gt;userId);
+
+            $rs['code'] = 1;
+            $rs['msg'] = T('user not exists');
+            return $rs;
+        }
+
+        $rs['info'] = $info;
+
+        return $rs;
+    }</code></pre>
+<h3>(4)Domain领域层</h3>
+<p>领域层主要是关注复杂业务的处理，以及缓存的处理、耗时操作后台异步处理等，并调用Model持久层获取需要的数据。因此，是Api与Model层之间的桥梁。  </p>
+<p>在此示例中，我们只需要简单地调用Model层获取用户的信息即可，再加强一下用户ID的合法性判断。  </p>
+<pre><code>//$ vim ./Demo/Domain/User.php 
+
+&lt;?php
+
+class Domain_User
+{
+    public function getBaseInfo($userId)
+    {
+        $rs = array();
+
+        $userId = intval($userId);
+        if ($userId &lt;= 0) {
+            return $rs;
+        }
+
+        $model = new Model_User();
+        $rs = $model-&gt;getByUserId($userId);
+
+        return $rs;
+    }
+}</code></pre>
+<h3>(5)Model持久层</h3>
+<p>此一层主要关注数据从持久存储的获取，特别是针对数据库的操作，但不排除其他媒介，如文件、缓存等。  </p>
+<p>首先，先准备一下我们需要的表和数据：</p>
+<pre><code>CREATE TABLE `phalapi_test`.`tbl_user` (
+  `id` INT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `from` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`));
+
+INSERT INTO `phalapi_test`.`tbl_user` (`id`, `name`, `from`) VALUES ('1', 'dogstar', 'oschina');</code></pre>
+<p>然后，编写需要的Model代码，即利用NotORm实现对数据的操作：</p>
+<pre><code>//$ vim ./Demo/Model/User.php 
+
+&lt;?php
+
+class Model_User
+{
+    public function getByUserId($userId)
+    {
+        return DI()-&gt;notorm-&gt;user-&gt;select('*')-&gt;where('id = ?', $userId)-&gt;fetch();
+    }
+}</code></pre>
+<h3>(6)单元测试通过啦！</h3>
+<p>在完成上面简单的开发后，我们即可以实现接口的开发，运行一下刚才的单元测试，完美通过！</p>
+<pre><code>$ phpunit ./Api_User_Test.php 
+PHPUnit 4.3.4 by Sebastian Bergmann.
+
+SELECT * FROM tbl_user WHERE (id = ?); -- 1
+
+.SELECT * FROM tbl_user WHERE (id = ?); -- 1&lt;br /&gt;
+
+Time: 34 ms, Memory: 6.50Mb
+
+OK (2 tests, 7 assertions)</code></pre>
+<p>在单元测试的保证下，我们便可以放心大胆地将我们的代码发布到外网，提供给更多的开发者，和终端用户使用。  </p>
+<h3>(7)数据库配置</h3>
+<p>因为是单元测试，所以我们配置搭建了新的一个测试环境，特别对于数据库的配置，如下：</p>
+<pre><code>//$ vim ./Config/dbs.php
+
+&lt;?php
+/**
+ * examples配置
+ */
+
+return array(
+    /**
+     * DB数据库服务器集群
+     */
+    'servers' =&gt; array(
+        'db_demo' =&gt; array(
+            'host'      =&gt; '192.168.0.104',         //数据库域名
+            'name'      =&gt; 'phalapi_test',          //数据库名字
+            'user'      =&gt; 'root',                  //数据库用户名
+            'password'  =&gt; '123456',                //数据库密码
+            'port'      =&gt; '3306',                  //数据库端口
+        ),
+    ),
+
+    /**
+     * 自定义路由表
+     */
+    'tables' =&gt; array(
+        '__default__' =&gt; array(
+            'prefix' =&gt; 'tbl_',
+            'key' =&gt; 'id',
+            'map' =&gt; array(
+                array('db' =&gt; 'db_demo'),
+            ),
+        ),
+    ),
+);</code></pre>
+<blockquote>
+<p>温馨提示：<br />
+为了方便在单元测试时进行调试，和查看日记，对于全部查询、执行的SQL语句都会显示出来，全部的日记改用控制台输出。    </p>
+</blockquote>
+<h3>(8)最终接口调用</h3>
+<p>接口调用的链接，这时已经相当明了了，即：域名 + 路径（/demo） + 参数（可从单元测试那直接获取）</p>
+<p>如本示例的是：</p>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;userId=1</code></pre>
+<p>返回的结果是：</p>
+<pre><code>{
+    "ret": 200,
+    "data": {
+        "code": 0,
+        "msg": "",
+        "info": {
+            "id": "1",
+            "name": "dogstar",
+            "from": "oschina"
+        }
+    },
+    "msg": ""
+}</code></pre>
+<p>截图效果：<br />
+<img src="http://static.oschina.net/uploads/space/2015/0201/180736_SRzq_256338.png" alt="show" />  </p>
+<blockquote>
+<p>温馨提示：<br />
+如果提示日记写入失败，请确保./Runtime目录具有写入权限，即0777。  </p>
+</blockquote>
+<h2>1.11.3 更多简明的使用</h2>
+<h3>(1)日记纪录</h3>
+<p>当我们访问一个不存在的用户时，将会触发日记纪录：</p>
+<pre><code>DI()-&gt;logger-&gt;debug('user not found', $this-&gt;userId);</code></pre>
+<p>如访问：</p>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;userId=2</code></pre>
+<p>然后，可以在Runtime下看到按天分目录的日记：</p>
+<pre><code>$ tailf ./Runtime/log/201501/20150128.log 
+2015-01-28 00:37:34|DEBUG|user not found|2</code></pre>
+<blockquote>
+<p>温馨提示：<br />
+外网环境上，请把Runtime目录软链到磁盘空间很大的路径。  </p>
+</blockquote>
+<h3>(2)国际化翻译</h3>
+<p>当需要翻译时，可以使用人性化的函数T()，如：</p>
+<pre><code>$rs['msg'] = T('user not exists');</code></pre>
+<p>对应地需要补充翻译的内容：</p>
+<pre><code>//$ vim ./Language/zh_cn/common.php 
+
+    'user not exists' =&gt; '用户不存在',</code></pre>
+<p>还是以上面的用户不存在为例，看下运行的截图效果：
+<img src="http://static.oschina.net/uploads/space/2015/0201/180918_tP90_256338.png" alt="show" /></p>
+<h3>(3)配置读取</h3>
+<p>配置的读取，使用方便，直接通过以下方式便可以获取，以点号分割：</p>
+<pre><code>DI()-&gt;config-&gt;get('dbs')</code></pre>
+<p>第一段，必须为文件名，后面的为用点号相连的数组下标，不限级。</p>
+<h3>(4)[酷！]接口参数在线查询</h3>
+<p>为了方便客户端实时查看最新的接口参数，这里提供了一个快速的在线工具：</p>
+<pre><code>http://dev.phalapi.com/demo/checkApiParams.php?service=User.GetBaseInfo</code></pre>
+<p>用浏览器打开后，即可以看到最新的接口参数说明， 不需要后台接口开发人员编写文档维护，直接从代码中生成参数报表：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0201/181101_STlw_256338.jpg" alt="show" /></p>
+<h2>1.11.4 Demo相关代码文件</h2>
+<p>从上面可以得到，此示例相关的代码如下：</p>
+<pre><code>Demo$ tree
+.
+├── Api
+│   ├── Default.php
+│   └── User.php
+├── Domain
+│   └── User.php
+├── Model
+│   └── User.php
+└── Tests
+    ├── Api
+    │   ├── Api_Default_Test.php
+    │   └── Api_User_Test.php
+    └── test_env.php</code></pre>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

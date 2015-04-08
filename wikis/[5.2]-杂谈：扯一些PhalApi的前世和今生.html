@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/wikis/home" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="./docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <p><em>此篇章与框架技术无关，为课外读物，感兴趣的可以略读一下。</em></p>
+<h2>5.2.1 写在前面的话</h2>
+<p>记得曾经有一位大主教在自己的墓志铭上写道：</p>
+<pre><code>“小时候，我发誓要改变整个世界；
+大些了，我努力改变我的祖国；
+后来，我想我能改变我居住的这个城市；
+直到临死之前才发现，我只能改变自己，从而影响他人，乃至影响整个世界”。</code></pre>
+<p>当然，我没有想过要去影响整个世界，我只想尽我自己的所学，为自己，为他人做一些有用的事情。  </p>
+<p>正如，最近在thephp.cc站点上面看到的这样一张PPT：</p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0205/224723_039659a5_121026.jpeg" alt="-1" /></p>
+<p>我不一定能记住这位国际出名的前辈的名字，但我记住了他的这句话：  </p>
+<pre><code>Driven by his passion to help developers build better software.</code></pre>
+<h2>5.2.2 然而，要布道，先要践道。</h2>
+<p>所以，当我希望把PhalApi框架开源出去时，我这个框架应该是初步完善并可以应用于实际项目开发的，至少我已经切身用过它来进行后台接口项目开发并不断优化重构之。  </p>
+<h2>5.2.3 最初框架源于毕业论文的需要</h2>
+<p>当年，在进行毕业论文的项目开发时，因为需要用到后台接口。于是乎，便到图书馆和网上查阅整理了很多资料，知识理论包括RESTFull、phprpc、SOAP协议、Aamzon接口服务、WSDL、Web Service等等。  </p>
+<p>然而，在实际中我却发现很多人在用PHP开发接口是很简单的，或者说是很粗爆的，如直接使用fopen()函数进行获取接口结果。并且，当我需要去寻找一个可以进行后台接口开发的框架时，居然没找到很好框架支持。基于此，最初的接口框架就在这样的背景和研究下出来了。  </p>
+<p>附一下当前毕业论文的相关资料：</p>
+<ul>
+<li>PhalApi前世： 毕业论文答辩汇报 - 精简版.ppt</li>
+<li>PhalApiu前世：毕业论文 - 暗夜在火星 - 修改版.pdf</li>
+<li>PhalApi前世文档：zenWS3完全开发手册 - 初稿 - 20130317.pdf</li>
+</ul>
+<p>可以在  <a href="http://git.oschina.net/dogstar/PhalApi/attach_files">附件</a>  下载上面的资料。  </p>
+<h2>5.2.4 最初框架的首次商用和实站</h2>
+<p>在毕业后就职的第一家公司中，由于也有接口开发的需要，正好是管理后台 内部系统调用，所以在征得领导同意后，我将我毕业论文所研发的接口框架进行了部署和开发。首次投入了商业用途。^_^  </p>
+<p>并同时整理出了初步的接口框架，也就是PhalApi的前世。</p>
+<h2>5.2.5 PhalApi的前世</h2>
+<p>最初的框架命名是：zenphpWS3。<br />
+原因是zen表示开源、php表示用PHP开发、WS表示Web Service、3表示支持SOAP/HTTP/RPC三种协议以及JSON/XML/ARRAY等多种格式的返回。<br />
+更多可以访问我之前的博客： <a href="http://my.oschina.net/u/256338/blog/285184">zenphpWS3：文档&amp;示例&amp;设计&amp;源码</a>  </p>
+<h2>5.2.6 又一年的全职接口开发和开源框架学习</h2>
+<p>曾经有一年，我负责某个大型游戏项目的后台接口开发，同时提供接口供安卓版、iOS版和PC使用，对后台接口的开发有了更多的实战经验。  </p>
+<p>并且，在对很多国外优秀的开源框架的学习和研究后，有了很多的领会，如我个人最为推荐的Phalcon。Phalcon不仅仅在框架方面做得非常优秀，在文档编写方面也是不遗余力的，即使我们不用这个框架，也能从这个框架的文档上吸引很多有用的思想。  </p>
+<p>才发现最初提供的接口框架还有很多不成熟的地方。。。</p>
+<h2>5.2.7 PhalApi框架开源的前奏</h2>
+<p>到后来，在越来越多项目开发的需要下，出于仍然没有很好的接口框架支持（这里补充说明一下：一搜索“php接口开发框架”没有好的结果；二所接触到的框架虽然有支持接口开发，但只是其中一部分）。更为重要的是，项目往往又是如此重要，很担忧所选的框架进行接口开发后遇到问题不知如果在底层修正。  </p>
+<p>所以，还是用回了自己的接口开发框架。  </p>
+<p>当然，在做项目接口开发的同时，我也有意识地在对接口框架进行完善和重构，并融入框架所需要的特性、原则和模式。如可重用、IoC、5条设计原则、组件等。  </p>
+<p>至此，PhalApi接口框架也就慢慢地明朗了。接下来就是：</p>
+<h2>5.2.8 PhalApi正式走向开源</h2>
+<p>如今，很多大的企业都提供了开放平台，如腾讯开放平台、新浪微博开放平台、优酷开放平台等。与此相比，虽然小应用轻量级App项目的后台接口没有这么大的规模，但也是很有量级上的需求的，正如下面这张图所展示的。 </p>
+<p><img src="http://git.oschina.net/uploads/images/2015/0205/234553_e4ac8c84_121026.png" alt="222" /></p>
+<p>在此大背景下，显然会有更多的应用需要后台接口的支撑，需要进行后台接口的开发，乃至对海量数据和访问的支持、快速扩容升级、一键发布、多端支持等。即使这样，PHP开发人员在接口开发时，仍然会显得有点“随心所欲”，缺少规范和统一，更为重要的是仍然没有发现好的PHP接口开发框架。 </p>
+<pre><code>古云此日足可惜，吾辈更应惜秒阴。</code></pre>
+<p>所以，此框架通过我多个实际项目应用后，在不断整理重构、精益迭代下走向了开源。^_^  </p>
+<p>希望对你们有所帮助，谢谢。</p>
+<p>我们通过这个框架，希望可以（正如文档里面所说的）：</p>
+<pre><code>一来，支撑轻量级项目后台接口的快速开发；
+二来，阐明如何进行接口开发、设计和维护，以很好支持海量访问、大数据、向前向后兼容等；
+三来，顺便分享一些好的思想、技巧和有用的工具、最佳实践。</code></pre>
+<p>其中，第一点是直接的也是最表面的，即你通过这个接口框架就可以快速开发了；第二点是更通用的接口开发中的一些好的或者必要的技术支撑和策略；第三点是面向框架级别的，即使你不用这个接口框架，也可以设计研发自己的开发框架，同时也是突破接口开发、超越PHP语言的。  </p>
+<p>书不尽言，欢迎多交流，再次谢谢！</p>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>
