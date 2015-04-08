@@ -30,6 +30,7 @@ if (!is_dir($folder)) {
 $info = pathinfo($file);
 
 $header = file_get_contents(dirname(__FILE__) . '/header.html');
+$header = str_replace('<title>', '<title>' . $info['filename'] . ' | ', $header);
 $footer = file_get_contents(dirname(__FILE__) . '/footer.html');
 
 $content = sprintf(
