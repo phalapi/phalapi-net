@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+# ./build_wikis.sh /mnt/hgfs/F/PHP/PhalApi.wiki/
+#
 # @author dogstar 20150408
 #
 
