@@ -53,7 +53,9 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                <h2>1.18.1 提供快速函数的缘由</h2>
+                <h4><a href="/wikis/%5B1.17%5D-%E6%97%A5%E8%AE%B0%E7%BA%AA%E5%BD%95%EF%BC%9A%E7%AE%80%E5%8C%96%E7%89%88%E7%9A%84%E6%97%A5%E8%AE%B0%E6%8E%A5%E5%8F%A3.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.19%5D-DI%E6%9C%8D%E5%8A%A1%E9%80%9F%E6%9F%A5%EF%BC%9A%E5%90%84%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E4%B8%80%E8%A7%88%E8%A1%A8.html">下一章</a></h4>
+<hr />
+<h2>1.18.1 提供快速函数的缘由</h2>
 <p>很多人，很多框架都在说遵循的是OO开发，实际上很多都是面向过程的开发，或者是很呆板的面向对象。  </p>
 <p>而且你也会发现，面向对象和面向过程在某方面是相互补充的。而且，面向对象里面很痛苦的改动在面向过程中可以很容易实现，反之亦然。如面积对象中添加一个类成员变量（新数据）很简单，但在抽象父类中添加一个抽象方法（新方法）却很痛苦；而在面向过程中添加一个全局变量（新数据）很痛苦，但要添加一个新方法却很简单。  </p>
 <p>所以，没有绝对的好与不好，关键在于如何设计和如何使用。而PhalApi则遵循敏捷开发的思想，为了更多的接口开发人员减少代码编写和记忆的痛苦、体验开发的乐趣，我们思虑衡量再三，提供了以下的快速函数。</p>
@@ -77,6 +79,8 @@ $msg = T('hello {name}', array('name' =&gt; 'dogstar'));</code></pre>
 <pre><code>function T($msg, $params = array()) {
     return PhalApi_Translator::get($msg, $params);
 }</code></pre>
+<hr />
+<h4><a href="/wikis/%5B1.17%5D-%E6%97%A5%E8%AE%B0%E7%BA%AA%E5%BD%95%EF%BC%9A%E7%AE%80%E5%8C%96%E7%89%88%E7%9A%84%E6%97%A5%E8%AE%B0%E6%8E%A5%E5%8F%A3.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.19%5D-DI%E6%9C%8D%E5%8A%A1%E9%80%9F%E6%9F%A5%EF%BC%9A%E5%90%84%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E4%B8%80%E8%A7%88%E8%A1%A8.html">下一章</a></h4>
             </div>
         </div>
     </div>

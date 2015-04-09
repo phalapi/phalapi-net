@@ -53,7 +53,9 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                <p>后台接口绝大数情况下，都需要与数据库进行交互，以获取业务数据或者接收保存客户端上报的数据。为方便后台开发同学进行调试，以及实时查看全部执行的SQL语句，这里简单地对全部执行的SQL语句进行调试模式下输出。</p>
+                <h4><a href="/wikis/%5B2.12%5D-%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%EF%BC%9A%E5%8F%AF%E9%85%8D%E7%BD%AE%E7%9A%84%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.14%5D-%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%EF%BC%9A%E6%84%8F%E5%9B%BE%E5%AF%BC%E5%90%91%E7%BC%96%E7%A8%8B%E4%B8%8B%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91.html">下一章</a></h4>
+<hr />
+<p>后台接口绝大数情况下，都需要与数据库进行交互，以获取业务数据或者接收保存客户端上报的数据。为方便后台开发同学进行调试，以及实时查看全部执行的SQL语句，这里简单地对全部执行的SQL语句进行调试模式下输出。</p>
 <h2>2.13.1 开启SQL调试</h2>
 <p>开启调试模式很简单，但这里和通常的框架不一样，我们不是全部统一地开启调试模式，因为在接口正常调用情况下返回非法的JSON会导致接口结果解析失败。故我们通过添加调试参数来控制是否开启SQL调试。如下：</p>
 <pre><code>//$vim ./Public/init.php
@@ -205,6 +207,8 @@ Time: 23 ms, Memory: 6.25Mb
 
 OK (1 test, 13 assertions)</code></pre>
 <p>搞定，收工，开饭！</p>
+<hr />
+<h4><a href="/wikis/%5B2.12%5D-%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%EF%BC%9A%E5%8F%AF%E9%85%8D%E7%BD%AE%E7%9A%84%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.14%5D-%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%EF%BC%9A%E6%84%8F%E5%9B%BE%E5%AF%BC%E5%90%91%E7%BC%96%E7%A8%8B%E4%B8%8B%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91.html">下一章</a></h4>
             </div>
         </div>
     </div>

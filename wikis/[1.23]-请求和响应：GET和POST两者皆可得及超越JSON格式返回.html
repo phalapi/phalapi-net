@@ -53,7 +53,9 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                <h2>1.23.1 请求</h2>
+                <h4><a href="/wikis/%5B1.22%5D-%E7%AD%BE%E5%90%8D%E9%AA%8C%E8%AF%81%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AD%BE%E5%90%8D%E8%A7%84%E5%88%99.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.24%5D-%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5%EF%BC%9A%E6%9B%B4%E7%81%B5%E6%B4%BB%E5%9C%B0%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%8C%96%E7%9A%84%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98.html">下一章</a></h4>
+<hr />
+<h2>1.23.1 请求</h2>
 <p>把我们后台的API想象成一个函数，那么请求的参数就是我们的参数列表；而接口响应的数据则对应函数返回的结果。  </p>
 <p>对于请求，正如前面所看到的，我们可以使用$_GET，也可以使用$_POST，也可以两者都使用，还可以在测试时自己指定模拟的请求数据包。  </p>
 <p>或者，在实际项目开发中，我们还需要根据自身的需求，跟我们自己的客户端作一些约定。如通常地，我们会要求客户端 <strong>service参数必须用GET方式</strong> ，以便服务器返回500时定位接口服务位置。对此，简单的我们把$_POST['service']去掉即可，如在入口文件前面添加：</p>
@@ -93,6 +95,8 @@ if (!empty($_GET['callback'])) {
 <p>然后，重新注册：</p>
 <pre><code>DI()-&gt;response = new MyResponse_XML();</code></pre>
 <p>done!</p>
+<hr />
+<h4><a href="/wikis/%5B1.22%5D-%E7%AD%BE%E5%90%8D%E9%AA%8C%E8%AF%81%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AD%BE%E5%90%8D%E8%A7%84%E5%88%99.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.24%5D-%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5%EF%BC%9A%E6%9B%B4%E7%81%B5%E6%B4%BB%E5%9C%B0%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%8C%96%E7%9A%84%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98.html">下一章</a></h4>
             </div>
         </div>
     </div>

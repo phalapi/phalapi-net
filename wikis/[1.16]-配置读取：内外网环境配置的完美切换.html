@@ -53,7 +53,9 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                <p><em>Experience by itself teaches nothing... Without theory, experience has no meaning. Without theory, one has no questions to ask. Hence, without theory, there is no learning. – Edwards Deming</em>  </p>
+                <h4><a href="/wikis/%5B1.15%5D-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%EF%BC%9A%E5%9F%BA%E4%BA%8ENotORM%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E4%BC%98%E5%8C%96.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.17%5D-%E6%97%A5%E8%AE%B0%E7%BA%AA%E5%BD%95%EF%BC%9A%E7%AE%80%E5%8C%96%E7%89%88%E7%9A%84%E6%97%A5%E8%AE%B0%E6%8E%A5%E5%8F%A3.html">下一章</a></h4>
+<hr />
+<p><em>Experience by itself teaches nothing... Without theory, experience has no meaning. Without theory, one has no questions to ask. Hence, without theory, there is no learning. – Edwards Deming</em>  </p>
 <h2>1.16.1 配置的简单读取</h2>
 <p>通常，我们会有以下三个配置文件：  </p>
 <pre><code>dogstar@ubuntu:Config$ tree
@@ -143,6 +145,8 @@ DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/ConfigTest');</code></pre
 <p>这就要求我们的项目既可以方便维护即时修改，又需要能够快速同步一致更新下发和读取。这样就涉及到了配置更高层的管理：  统一集中式的配置管理，还是分布式的配置管理？  文件存储，还是DB存储，还是MC缓存，还是进驻内存？    </p>
 <p>个人认为，性能最优的莫过于配置进驻内存并分布式存储。毕竟作为前端机的PHP内存这块还是相对充裕且可以利用的。但需要把这一条线打通，有点难度。  </p>
 <p>这里不过多地谈论配置更多的内容，但在PhalApi框架中，当你根据自己项目的需要实现了自己的配置读取方式后，再次简单的在入口文件重新注册即可。</p>
+<hr />
+<h4><a href="/wikis/%5B1.15%5D-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%EF%BC%9A%E5%9F%BA%E4%BA%8ENotORM%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E4%BC%98%E5%8C%96.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.17%5D-%E6%97%A5%E8%AE%B0%E7%BA%AA%E5%BD%95%EF%BC%9A%E7%AE%80%E5%8C%96%E7%89%88%E7%9A%84%E6%97%A5%E8%AE%B0%E6%8E%A5%E5%8F%A3.html">下一章</a></h4>
             </div>
         </div>
     </div>

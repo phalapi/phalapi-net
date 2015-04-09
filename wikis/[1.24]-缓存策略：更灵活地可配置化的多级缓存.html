@@ -53,7 +53,9 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                <h2>1.24.1 论缓存的重要性</h2>
+                <h4><a href="/wikis/%5B1.23%5D-%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%EF%BC%9AGET%E5%92%8CPOST%E4%B8%A4%E8%80%85%E7%9A%86%E5%8F%AF%E5%BE%97%E5%8F%8A%E8%B6%85%E8%B6%8AJSON%E6%A0%BC%E5%BC%8F%E8%BF%94%E5%9B%9E.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.25%5D-%E5%9B%BD%E9%99%85%E5%8C%96%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E8%B5%B0%E5%90%91%E5%9B%BD%E9%99%85%E5%8C%96%E6%8F%90%E5%89%8D%E5%81%9A%E5%A5%BD%E7%BF%BB%E8%AF%91%E5%87%86%E5%A4%87.html">下一章</a></h4>
+<hr />
+<h2>1.24.1 论缓存的重要性</h2>
 <p>在很多情况下，我们都需要缓存。如对重复获取但变化不大的数据进行缓存以提供服务器的响应能力，又如当需要为数据库服务器减少QPS时等等。但同时缓存也因为有延时导致数据不能实时更新，或者在需要更新时不能被更新。如在接口调试、单元测试或者预览时，但这些都可以通过一些技巧来获得。这里，将从简单的缓存、再到高速缓存、多级缓存逐步进行说明。</p>
 <h2>1.24.2 简单缓存</h2>
 <p>这里所指的简单缓存，是指文件缓存。因为实现简单，且部署方便。但其缺点也是明显的，如文件I/O读写导致性能低，不能支持分布式。所以在没有集群服务器下是适用的。</p>
@@ -111,6 +113,8 @@ DI()-&gt;cache-&gt;delete('thisYear');</code></pre>
 <p>对应地，我们可以得出清晰明了的UML静态结构图：</p>
 <p><img src="http://git.oschina.net/uploads/images/2015/0226/164320_da31be4b_121026.jpeg" alt="多级缓存静态结构图" /></p>
 <p>结构层次非常简单，但主要分为三大类：左边是多级缓存；中间突出的是特殊情况，即：空对象模式下的空缓存；右边是目前已提供或者后期扩展的具体缓存实现。</p>
+<hr />
+<h4><a href="/wikis/%5B1.23%5D-%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%EF%BC%9AGET%E5%92%8CPOST%E4%B8%A4%E8%80%85%E7%9A%86%E5%8F%AF%E5%BE%97%E5%8F%8A%E8%B6%85%E8%B6%8AJSON%E6%A0%BC%E5%BC%8F%E8%BF%94%E5%9B%9E.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.25%5D-%E5%9B%BD%E9%99%85%E5%8C%96%E7%BF%BB%E8%AF%91%EF%BC%9A%E4%B8%BA%E8%B5%B0%E5%90%91%E5%9B%BD%E9%99%85%E5%8C%96%E6%8F%90%E5%89%8D%E5%81%9A%E5%A5%BD%E7%BF%BB%E8%AF%91%E5%87%86%E5%A4%87.html">下一章</a></h4>
             </div>
         </div>
     </div>
