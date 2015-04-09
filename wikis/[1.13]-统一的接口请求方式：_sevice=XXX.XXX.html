@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[1.13]-统一的接口请求方式：_sevice=XXX.XXX | PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/phalapi-logo-2-33.png" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="/wikis/%5B1.12%5D-%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99%EF%BC%9A%E6%8E%A5%E5%8F%A3%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.14%5D-%E7%BB%9F%E4%B8%80%E7%9A%84%E8%BF%94%E5%9B%9E%E6%A0%BC%E5%BC%8F%E5%92%8C%E7%BB%93%E6%9E%84%EF%BC%9Aret-data-msg.html">下一章</a></h4>
+<hr />
+<p><em>有句话说得好，最可怕的事情不是别人比你优秀，而是优秀的人竟然还比你更努力。  --《考拉小巫的留学成长日记》</em>  </p>
+<p>此篇章主要是讲述接口统一请求的方式，以及提供一个PHP实现的简单客户端。</p>
+<h2>1.13.1 指定接口服务：?service=XXX.XXX</h2>
+<p>我们统一固定用service参数来表示需要请求获得的服务，并通过GET方式传递，即请求的URI格式为：</p>
+<pre><code>接口域名 + 入口路径 + ?service=XXX.XXX
+
+如：
+http://dev.phalapi.com   +   /demo/  +  ?service=User.GetBaseInfo</code></pre>
+<p>当我们在浏览器以GET方式请求时，可以在nignx看到这样的日记：</p>
+<pre><code>127.0.0.1 - - [07/Feb/2015:22:46:46 -0800] "GET /demo/?service=User.GetBaseInfo&amp;sign=&amp;userId=1 HTTP/1.1" 200 107 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:11.0) Gecko/20100101 Firefox/11.0"</code></pre>
+<p>如果通过接口用POST方式请求，则会看到：</p>
+<pre><code>127.0.0.1 - - [07/Feb/2015:19:32:05 -0800] "POST /demo/?service=User.GetBaseInfo&amp;sign= HTTP/1.1" 200 135 "-" "-"</code></pre>
+<p>这里service的名称，开头不区分大小写，建议统一以大写开头，以显得专业。对应的接口是：</p>
+<pre><code>class Api_User extends PhalApi_Api {
+
+    public function getBaseInfo() {
+    }
+}</code></pre>
+<h2>1.12.2 统一参数用GET</h2>
+<p>在一个项目中，会有很多公共的接口参数，如客户端、版本号、密钥等。这些同样可以纳入GET参数里面，或者也可以放到POST里面。  </p>
+<blockquote>
+<p>温馨提示：<br />
+这样要求是有目的的，因为这样的话可以在nginx的access日记里面查看来自客户端的快照信息，以便统计或者定位问题。  </p>
+</blockquote>
+<h2>1.12.3 接口参数用POST</h2>
+<p>特别地，接口参数我们建议统一使用POST方式传递，理由很简单：  </p>
+<ul>
+<li>1、相对保护上传的数据，一如密码；</li>
+<li>2、避免特殊字符或者过大数据包在GET下的限制；</li>
+</ul>
+<h2>1.12.4 测试下的模拟参数</h2>
+<p>默认地，PhalApi框架会将$_REQUEST作为接口参数的来源：</p>
+<pre><code>$this-&gt;request = 'PhalApi_Request';</code></pre>
+<p>当我们需要统一强制用$_GET，可以这样简单定制：</p>
+<pre><code>$this-&gt;request = new PhalApi_Request($_GET);</code></pre>
+<p>同样，也可以强制用$_POST：</p>
+<pre><code>$this-&gt;request = new PhalApi_Request($_POST);</code></pre>
+<p>在测试环境下，为了模拟接口请求，我们需要人工提供接口参数，因此可以这样轻松模拟：</p>
+<pre><code>$str = 'service=User.GetBaseInfo&amp;userId=1';
+
+parse_str($str, $params);
+DI()-&gt;request = new PhalApi_Request($params);</code></pre>
+<h2>1.12.5 PHP接口客户端示例</h2>
+<p>先看下调用和使用的代码示例：</p>
+<pre><code>&lt;?php
+require_once './PhalApiClient.php';
+
+$config = array(
+    'host' =&gt; 'http://dev.phalapi.com/demo',
+    'secrect' =&gt; '******'
+);
+
+$client = new PhalApiClient($config);
+$rs = $client-&gt;request('User.GetBaseInfo', array('userId' =&gt; 1));
+
+if ($client-&gt;getRet() == PhalApiClient::RET_OK) {
+    var_dump($rs);
+} else {
+    var_dump($client-&gt;getMsg());
+    var_dump($client-&gt;getUrl());
+}</code></pre>
+<p>附调用接口的客户端源代码：</p>
+<pre><code>//$ vim ./PhalApiClient.php
+&lt;?php
+
+class PhalApiClient
+{
+    protected $host;
+    protected $secrect = '';
+
+    protected $params = array();
+
+    protected $moreParams = array();
+
+    protected $url;
+    protected $ret;
+    protected $msg;
+    protected $data = array();
+
+    const RET_OK = 'OK';
+    const RET_WRONG = 'WRONG';
+    const RET_ERROR = 'ERROR';
+
+    public function __construct($config)
+    {
+        $this-&gt;host = rtrim($config['host'], '/') . '/';
+        $this-&gt;secrect = $config['secrect'];
+    }
+
+    public function request($service, $params = array(), $timeoutMs = 3000)
+    {
+        if (!empty($service)) {
+            $this-&gt;params['service'] = $service;
+        }
+        $this-&gt;params['sign'] = $this-&gt;encryptAppKey($params, $this-&gt;secrect);
+        $this-&gt;url = $this-&gt;host . '?' . http_build_query($this-&gt;params);
+        $this-&gt;moreParams = $params;
+
+        $rs = $this-&gt;doRequest($this-&gt;url, $params, $timeoutMs);
+
+        if ($rs === false) {
+            $this-&gt;ret = self::RET_ERROR;
+            $this-&gt;msg = '后台接口请求超时';
+            return $this-&gt;getData();
+        }
+
+        $rs = json_decode($rs, true);
+
+        if (isset($rs['data']['code']) &amp;&amp; $rs['data']['code'] != 0) {
+            $this-&gt;ret = self::RET_WRONG;
+            $this-&gt;msg = '接口调用失败[code =' . $rs['data']['code'] . ']' . ', 错误&gt;信息：' . isset($rs['data']['msg']) ? $rs['data']['msg'] : '无';
+            return $this-&gt;getData();
+        }
+
+        $this-&gt;ret = intval($rs['ret']) == 200 ? self::RET_OK : self::RET_WRONG;
+        $this-&gt;data = $rs['data'];
+        $this-&gt;msg = $rs['msg'];
+
+        return $this-&gt;getData();
+    }
+
+    public function getRet()
+    {
+        return $this-&gt;ret;
+    }
+
+    public function getData()
+    {
+        return $this-&gt;data;
+    }
+
+    public function getMsg()
+    {
+        return $this-&gt;msg;
+    }
+
+    public function getUrl()
+    {
+        return $this-&gt;url . '&amp;' . http_build_query($this-&gt;moreParams);
+    }
+
+    protected function encryptAppKey($params, $secrect)
+    {
+        return '';
+    }
+
+    protected function doRequest($url, $data, $timeoutMs = 3000)
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $timeoutMs);
+
+        if (!empty($data)) {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        }
+
+        $rs = curl_exec($ch);
+
+        curl_close($ch);
+
+        return $rs;
+    }
+}</code></pre>
+<hr />
+<h4><a href="/wikis/%5B1.12%5D-%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99%EF%BC%9A%E6%8E%A5%E5%8F%A3%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.14%5D-%E7%BB%9F%E4%B8%80%E7%9A%84%E8%BF%94%E5%9B%9E%E6%A0%BC%E5%BC%8F%E5%92%8C%E7%BB%93%E6%9E%84%EF%BC%9Aret-data-msg.html">下一章</a></h4>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/phalapi-logo-2-200.png" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>
