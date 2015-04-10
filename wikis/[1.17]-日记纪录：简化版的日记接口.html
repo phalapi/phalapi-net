@@ -57,7 +57,7 @@
 <hr />
 <h2>PHP日记接口规范</h2>
 <p>关于日记系统，PHP规范给出了相当好的说明和定义，请见： <a href="http://www.php-fig.org/psr/psr-3/">Logger Interface</a>  </p>
-<p><img src="http://static.oschina.net/uploads/space/2015/0128/235013_F20E_256338.png" alt="apic" />  </p>
+<p><img src="http://webtools.qiniudn.com/20150411005257_2caf170c179348eca546ba5332837d09" alt="apic" />  </p>
 <h2>1.17.1 简化版</h2>
 <p>但在用过这么多开源框架进行各种项目开发，以及内部框架的开发后，发现实际上日记的分类并没有使用得这么丰富，而通常只是频繁地几类。因此，为了减少不必要的复杂性，这里特地进行了精简，只要有：</p>
 <ul>
@@ -86,7 +86,7 @@ DI()-&gt;logger-&gt;error('fail to insert DB', $data);</code></pre>
 2015-02-07 20:37:55|ERROR|fail to insert DB|try to register user dogstar
 2015-02-07 20:37:55|ERROR|fail to insert DB|{"name":"dogstar","password":"123456"}</code></pre>
 <p>截图效果：
-<img src="http://git.oschina.net/uploads/images/2015/0207/204303_7cfa86aa_121026.jpeg" alt="apic" />  </p>
+<img src="http://webtools.qiniudn.com/20150411005257_37a0566c79a78c8958d8d00a83c7f840" alt="apic" />  </p>
 <h3>(2)info 业务纪录类</h3>
 <p>此类通常为业务需要进行必要的操作纪录，以便发生系统问题后的回滚处理、问题排查以及数据统计。<br />
 如在有缓存的情况下，可能数据没及时写入数据库而导致数据丢失或者回档，这里可以通过日记简单查看是否可以恢复。以及说明一下操作发生的背景或原由，如通常游戏中用户的经验值添加：  </p>

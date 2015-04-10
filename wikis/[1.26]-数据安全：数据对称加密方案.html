@@ -58,7 +58,7 @@
 <h2>1.26.1 对称加密和非对称加密</h2>
 <p>关于数据加密和安全这一块，只作简单说明。  </p>
 <p>首先，对称加密是数据可以加密成密文也可以解密还原；而非对称加密则是不可逆的，如md5。而在对称加密里面，又数块算法加密的方式最为完善，随附图一张：</p>
-<p><img src="http://git.oschina.net/uploads/images/2015/0215/170547_ad1e893c_121026.jpeg" alt="05152" /></p>
+<p><img src="http://webtools.qiniudn.com/20150411005257_f66cbee3d910a092bfee33dd72a2f3cd" alt="05152" /></p>
 <h2>1.26.2 PHP的mcrypt加密扩展</h2>
 <p>在PhalApi中，同样也是使用了mcrypt作为底层的数据加密技术方案。请查看： <a href="http://php.net/manual/zh/book.mcrypt.php">PHP 手册 函数参考 加密扩展</a>  </p>
 <h2>1.26.3 加解密的使用</h2>
@@ -74,7 +74,7 @@ var_dump($encryptData);
 $decryptData = $mcrypt-&gt;decrypt($encryptData, $key);
 var_dump($decryptData);</code></pre>
 <p>上面将会输出(有乱码)：</p>
-<p><img src="http://git.oschina.net/uploads/images/2015/0215/170143_9c6c710f_121026.jpeg" alt="0215" /></p>
+<p><img src="http://webtools.qiniudn.com/20150411005257_f8e1f72b08a9520c391295ca428a9ac5" alt="0215" /></p>
 <h2>1.26.4 更富弹性和便于存储的加密方案</h2>
 <p>上面看到，mcrypt下的加密在两点不足：</p>
 <ul>
@@ -98,7 +98,7 @@ var_dump($decryptData);</code></pre>
 string(23) "The Best Day of My Life"</code></pre>
 <h2>1.26.5 RSA的支持与超长字符串的应对方案</h2>
 <p>基于项目有使用RSA进行加密和解密的需求，这里特扩展对RSA的支持。同时针对到RSA对字符串长度的限制，提供了分段处理的方案。RSA加密模块的静态类结构UML如下：<br />
-<img src="http://git.oschina.net/uploads/images/2015/0315/095349_bfd8cbee_121026.jpeg" alt="rsa-PhalApi" /></p>
+<img src="http://webtools.qiniudn.com/20150411005257_e38fc8af28ac9c382e0e3ef8efbb2b86" alt="rsa-PhalApi" /></p>
 <h3>(1)原生态的通信加密和解密</h3>
 <p>此部分只是简单地封装了openssl相关函数的操作，可以实现与其他语言和客户端下RSA的加密通信。<br />
 唯一需要注意的是，对于 <strong>“私钥加密，公钥解密”</strong> 和 <strong>“公钥加密，私钥解密”</strong> 这两种情况下key的互换和对应问题。不要混淆。  </p>

@@ -131,14 +131,14 @@ class Plugin_Money implements Wechat_Plugin_Text {
         $item = new Wechat_OutMessage_News_Item();
         $item-&gt;setTitle('让红包飞~')
             -&gt;setDescription(sprintf('您已领取到一个%d元红包~', rand(1, 100)))
-            -&gt;setPicUrl('http://git.oschina.net/uploads/images/2015/0213/172906_61c8663a_121026.jpeg')
+            -&gt;setPicUrl('http://webtools.qiniudn.com/172906_61c8663a_121026.jpeg')
             -&gt;setUrl('http://git.oschina.net/dogstar/PhalApi-Library');
 
         $outMessage-&gt;addItem($item);
     }
 }</code></pre>
 <p>运行效果：  </p>
-<p><img src="http://git.oschina.net/uploads/images/2015/0213/175402_4b0d5e83_121026.jpeg" alt="webwxgetmsgimg" />  </p>
+<p><img src="http://webtools.qiniudn.com/20150411005257_976929b37873ae51ca54d5cb24a61ff0" alt="webwxgetmsgimg" />  </p>
 <h2>3.1.5 微信开发调试</h2>
 <p>为了便于进行微信开发的调试，我们专门提供了一个快速模拟微信请求的脚本。以下是对上面发红包的模拟请求：</p>
 <pre><code>$php ./Library/Wechat/Tests/send_wechat_text.php http://dev.wechat.com/weixin/ demo
@@ -153,7 +153,7 @@ class Plugin_Money implements Wechat_Plugin_Text {
 &lt;item&gt;
 &lt;Title&gt;&lt;![CDATA[让红包飞~]]&gt;&lt;/Title&gt;
 &lt;Description&gt;&lt;![CDATA[您已领取到一个85元红包~]]&gt;&lt;/Description&gt;
-&lt;PicUrl&gt;&lt;![CDATA[http://git.oschina.net/uploads/images/2015/0213/172906_61c8663a_121026.jpeg]]&gt;&lt;/PicUrl&gt;
+&lt;PicUrl&gt;&lt;![CDATA[http://webtools.qiniudn.com/172906_61c8663a_121026.jpeg]]&gt;&lt;/PicUrl&gt;
 &lt;Url&gt;&lt;![CDATA[http://git.oschina.net/dogstar/PhalApi-Library]]&gt;&lt;/Url&gt;
 &lt;/item&gt;
 &lt;/Articles&gt;
