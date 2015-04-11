@@ -10,11 +10,12 @@ if [ $# -lt 1 ]
 then
     echo "Usage: $0 <PhalApi.wiki>"
     echo ""
-    exit 1
+    #exit 1
 fi
 
 ## Env
-WIKI_PATH=$1
+#WIKI_PATH=$1
+WIKI_PATH="/mnt/hgfs/F/PHP/PhalApi.wiki"
 BASE_PATH=$(cd `dirname $0`; pwd)
 PHP_PATH="/usr/bin/php"
 
