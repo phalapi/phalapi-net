@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[1.28]-COOKIE：对COOKIE原生态的支持及记忆加密升级版 | PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,phalapi文档,phalapi wiki,PhalApi文档,phalapi在线文档,phalapi官方文档">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">保护大象，拒绝象牙！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="/wikis/%5B1.27%5D-%E7%B2%BE%E7%9B%8A%E5%BC%80%E5%8F%91%EF%BC%9A%E6%9B%B4%E5%AF%8C%E8%A1%A8%E7%8E%B0%E5%8A%9B%E7%9A%84Model%E5%B1%82%E5%92%8C%E9%87%8D%E9%87%8F%E7%BA%A7%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E7%9A%84%E5%BA%94%E5%AF%B9%E6%96%B9%E6%A1%88">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.11%5D-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9ADI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-%E8%AE%A9%E8%B5%84%E6%BA%90%E6%9B%B4%E5%8F%AF%E6%8E%A7.html">下一章</a></h4>
+<hr />
+<p><em>只要你能把握自己，你就能把握任何东西。  -- 古谚语</em>  </p>
+<h2>1.28.1 原生态的支持</h2>
+<p>应开发同学的需求，这里补充对COOKIE的支持。  </p>
+<p>因为，确实在项目的开发过程中，有时是需要对COOKIE进行处理的。所以，这里提供了简单的原生态支持。  </p>
+<p>下面通过代码示例来简明如何使用。</p>
+<h3>(1)注册COOKIE服务</h3>
+<p>如同其他的服务一样，我们在使用前需要对COOKIE进行注册。不需要用到COOKIE的同学，可以忽略此服务的注册。  </p>
+<p>在初始化文件init.php中添加如下注册代码：</p>
+<pre><code>//COOKIE
+DI()-&gt;cookie = 'PhalApi_Cookie';</code></pre>
+<h3>(2)使用</h3>
+<p>查看PhalApi_Cookie提供的接口，可以得到针对COOKIE的三种操作：</p>
+<pre><code>//设置COOKIE服务
+DI()-&gt;cookie-&gt;set('name', 'phalapi', $_SERVER['REQUEST_TIME'] + 600);
+
+//获取
+echo DI()-&gt;cookie-&gt;get('name');  //输出 phalapi
+
+//删除
+DI()-&gt;cookie-&gt;delete('name');</code></pre>
+<h2>1.28.2 记忆加密升级版</h2>
+<p>实际情况，项目的使用的情况更为复杂。  </p>
+<p>比如，需要对数据进行加解密，或者需要突破COOKIE的限制（设置后需要下一次请求才能获取，不过这也正是COOKIE的特点），想记住这一次设置的内容。所以，额外提供了这个升级版本。  </p>
+<h3>(1)注册COOKIE服务</h3>
+<p>和原生态的初始化，有些许不同，在于需要配置指定加解密的服务。如下：</p>
+<pre><code>$config = array('crypt' =&gt; $crypt, 'key' =&gt; 'a secrect');
+DI()-&gt;cookie = new PhalApi_Cookie($config);</code></pre>
+<p>上面中的crypt即为加密解服务，未指定时使用DI()-&gt;crypt，需要实现PhalApi_Crypt接口；key则为对应的密钥。</p>
+<h3>(2)使用COOKIE服务</h3>
+<p>使用同原生态一样，客户端感知不到区别，这里不再赘述。</p>
+<h3>(3)一个简单的实现示例</h3>
+<p>假设我们有这样一个简单的加解密类（真的很简单的）：</p>
+<pre><code>class Cookie_Crypt_Mock implements PhalApi_Crypt {
+
+    public function encrypt($data, $key) {
+        return base64_encode($data);
+    }
+
+    public function decrypt($data, $key) {
+        return base64_decode($data);
+    }
+}</code></pre>
+<p>随后，写一个简单的接口测试一下（因为涉及到COOKIE的操作，需要与浏览器可视化测试，所以没用单元测试）：</p>
+<pre><code>    public function cookieTest() {
+        $rs = array();
+
+        $config = array('crypt' =&gt; new Cookie_Crypt_Mock(), 'key' =&gt; 'a secrect');
+        DI()-&gt;cookie = new PhalApi_Cookie_Multi($config);
+
+        $rs['aEKey'] = DI()-&gt;cookie-&gt;get('name');
+        DI()-&gt;cookie-&gt;set('name', 'phalapi', $_SERVER['REQUEST_TIME'] + 600);
+
+        return $rs;
+
+    }
+</code></pre>
+<p>运行效果如下：
+<img src="http://webtools.qiniudn.com/20150411204629.jpg" alt="apic" />  </p>
+<p>从上图中可以看出，COOKIE在浏览器已经被我们做了“加密”，哈哈~</p>
+<h2>1.28.3 一如其他框架的建议</h2>
+<ul>
+<li>1、敏感数据不要存到COOKIE，以保证数据安全</li>
+<li>2、大的数据不要存到COOKIE，以保证瘦的客户端</li>
+</ul>
+<h2>1.28.4 扩展你的COOKIE</h2>
+<p>如需扩展，请重载PhalApi_Cookie基类。</p>
+<hr />
+<h4><a href="/wikis/%5B1.27%5D-%E7%B2%BE%E7%9B%8A%E5%BC%80%E5%8F%91%EF%BC%9A%E6%9B%B4%E5%AF%8C%E8%A1%A8%E7%8E%B0%E5%8A%9B%E7%9A%84Model%E5%B1%82%E5%92%8C%E9%87%8D%E9%87%8F%E7%BA%A7%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E7%9A%84%E5%BA%94%E5%AF%B9%E6%96%B9%E6%A1%88">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.11%5D-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9ADI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-%E8%AE%A9%E8%B5%84%E6%BA%90%E6%9B%B4%E5%8F%AF%E6%8E%A7.html">下一章</a></h4>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>
