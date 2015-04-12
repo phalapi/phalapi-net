@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[3.8]-扩展类库：用户、会话和第三方登录集成 | PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,phalapi文档,phalapi wiki,PhalApi文档,phalapi在线文档,phalapi官方文档">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">保护大象，拒绝象牙！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>
+<hr />
+<h2>3.8.1 扩展类库：用户、会话和第三方登录集成</h2>
+<p>首先，特别感谢@Aevit ，允许我将些扩展类库进行开源。原来此类库的功能只是当前开发项目中的功能，我现将其抽离成可配置使用的精确度，以供大家共享。  </p>
+<p>此类库主要特点有：</p>
+<ul>
+<li>1、可以和第三方登录集成，包括：微信登录、新浪登录、QQ登录</li>
+<li>2、为客户端提供了直接可以调用的登录接口</li>
+<li>3、为服务端提供了直接可以检测用户登录态的操作</li>
+<li>4、支持token落地、高效缓存和分布式的数据库存储  </li>
+<li>
+<p>5、展示了如何开发一个项目级的类库、包括数据库配置、翻译等</p>
+<blockquote>
+<p>温馨提示：<br />
+此扩展类库还在开发完善中，但已有项目在使用，感兴趣的同学可以尝试使用。  </p>
+</blockquote>
+</li>
+</ul>
+<h2>3.8.2 安装</h2>
+<h3>(1)扩展包下载</h3>
+<p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>User</strong> 用户包，如使用：</p>
+<pre><code>git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<p>然后把 <strong>User</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
+<pre><code>cp ./PhalApi-Library/PHPRPCt/ ./PhalApi/Library/ -R</code></pre>
+<h3>(2)数据库表导入</h3>
+<p>默认下，User类库会使用默认的数据库配置，但有追加一些需要用到的表。因此需要导入以下表：</p>
+<pre><code>$ cd /Library/User
+$ tree
+
+├── Data
+│   ├── user_login_qq.sql
+│   ├── user_login_sina.sql
+│   ├── user_login_weixin.sql
+│   ├── user_session.sql
+│   └── user.sql
+</code></pre>
+<blockquote>
+<p>温馨提示：<br />
+导入前，可以自行调整表的前缀。</p>
+</blockquote>
+<h3>(3)入口注册</h3>
+<pre><code>//必须显式注册，以便可以让服务自行初始化
+DI()-&gt;userLite = new User_Lite();</code></pre>
+<h3>(4)其他可选配置</h3>
+<ul>
+<li>为了体现高效缓存的好处，建议先注册DI()-&gt;cache</li>
+<li>
+<p>为了接口更明朗的参数规则说明，建议将下而规则追加到配置中：</p>
+<pre><code>return array(
+
+/**
+ * 应用接口层的统一参数
+ */
+'apiCommonRules' =&gt; array(
+    //其他原来的参数配置
+    ...
+
+    //登录信息
+    'userId' =&gt; array(
+        'name' =&gt; 'user_id', 'type' =&gt; 'int', 'default' =&gt; 0, 'require' =&gt; false,
+    ),
+    'token' =&gt; array(
+        'name' =&gt; 'token', 'type' =&gt; 'string', 'default' =&gt; '', 'require' =&gt; false,
+    ),
+),</code></pre>
+</li>
+</ul>
+<h2>3.8.3 入门使用</h2>
+<h3>(1)对于客户端</h3>
+<h4>(1-1)微信登录</h4>
+<h5>1、功能说明</h5>
+<p>实现通过微信登录，并且首次登录时，自动创建用户并绑定。</p>
+<h5>2、接口URL</h5>
+<p>/?service=User_Login.weixin + 公共参数(免登录态)</p>
+<h5>3、<a href="http://test.famillelab.com/fami/checkApiParams.php?service=User_Login.weixin">接口参数</a></h5>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>必须</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>wx_openid</td>
+<td>1</td>
+<td>微信OPENID</td>
+</tr>
+<tr>
+<td>wx_token</td>
+<td>1</td>
+<td>微信TOKEN</td>
+</tr>
+<tr>
+<td>wx_expires_in</td>
+<td>1</td>
+<td>微信失效时间</td>
+</tr>
+</tbody>
+</table>
+<h5>4、返回结果</h5>
+<h5>返回字段</h5>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>info</td>
+<td>object</td>
+<td>登录成功后的相关信息</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>int</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>token</td>
+<td>string</td>
+<td>用户TOKEN</td>
+</tr>
+<tr>
+<td>is_new</td>
+<td>int</td>
+<td>是否为首次登录，0不是，1是</td>
+</tr>
+</tbody>
+</table>
+<h5>结果示例</h5>
+<pre><code>{
+    "ret": 200,
+    "data": {
+        "code": 0,  //0正常登录
+        "info": {
+            "user_id": 3,  //用户ID
+            "token": "430C0F31FAF1FB1565E4290D1B61185A2408A6DEEA1604C1B5AEB14E44BDF2E0",  //用户TOKEN
+            "is_new": 0   //是否为首次登录，0不是，1是
+        },
+        "msg": ""
+    },
+    "msg": ""
+}</code></pre>
+<h5>请求示例</h5>
+<p>/service=User_User_Login.weixin&amp;wx_openid=wx_122348561111&amp;wx_token=ASDF&amp;wx_expires_in=130000000&amp;name=weixinName&amp;avatar=phpunit.png</p>
+<h4>(1-2)QQ登录</h4>
+<h5>1、功能说明</h5>
+<p>实现通过QQ登录，并且首次登录时，自动创建用户并绑定。</p>
+<h5>2、接口URL</h5>
+<p>/?service=User_Login.qq + 公共参数(免登录态)</p>
+<h5>3、<a href="http://test.famillelab.com/fami/checkApiParams.php?service=User_Login.qq">接口参数</a></h5>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>必须</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>qq_openid</td>
+<td>1</td>
+<td>QQ的OPENID</td>
+</tr>
+<tr>
+<td>qq_token</td>
+<td>1</td>
+<td>QQ的TOKEN</td>
+</tr>
+<tr>
+<td>qq_expires_in</td>
+<td>1</td>
+<td>QQ的失效时间</td>
+</tr>
+</tbody>
+</table>
+<h5>4、返回结果</h5>
+<h5>返回字段</h5>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>info</td>
+<td>object</td>
+<td>登录成功后的相关信息</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>int</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>token</td>
+<td>string</td>
+<td>用户TOKEN</td>
+</tr>
+<tr>
+<td>is_new</td>
+<td>int</td>
+<td>是否为首次登录，0不是，1是</td>
+</tr>
+</tbody>
+</table>
+<h5>结果示例</h5>
+<pre><code>{
+    "ret": 200,
+    "data": {
+        "code": 0,  //0正常登录
+        "info": {
+            "user_id": 3,  //用户ID
+            "token": "430C0F31FAF1FB1565E4290D1B61185A2408A6DEEA1604C1B5AEB14E44BDF2E0",  //用户TOKEN
+            "is_new": 0   //是否为首次登录，0不是，1是
+        },
+        "msg": ""
+    },
+    "msg": ""
+}</code></pre>
+<h5>请求示例</h5>
+<p>/service=User_User_Login.sina&amp;sina_openid=sina_12345611111&amp;sina_token=ASDF&amp;sina_expires_in=130000000&amp;name=sinaName&amp;avatar=<a href="http://dev.phalapi.com/no_avatar.png">http://dev.phalapi.com/no_avatar.png</a></p>
+<h4>(1-3)新浪微博登录</h4>
+<h5>1、功能说明</h5>
+<p>实现通过新浪微博登录，并且首次登录时，自动创建用户并绑定。</p>
+<h5>2、接口URL</h5>
+<p>/?service=User_Login.sina</p>
+<h5>3、<a href="http://test.famillelab.com/fami/checkApiParams.php?service=User_Login.sina">接口参数</a></h5>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>必须</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sina_openid</td>
+<td>1</td>
+<td>新浪微博OPENID</td>
+</tr>
+<tr>
+<td>sina_token</td>
+<td>1</td>
+<td>新浪微博TOKEN</td>
+</tr>
+<tr>
+<td>sina_expires_in</td>
+<td>1</td>
+<td>新浪微博失效时间</td>
+</tr>
+</tbody>
+</table>
+<h5>4、返回结果</h5>
+<h5>返回字段</h5>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>info</td>
+<td>object</td>
+<td>登录成功后的相关信息</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>int</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>token</td>
+<td>string</td>
+<td>用户TOKEN</td>
+</tr>
+<tr>
+<td>is_new</td>
+<td>int</td>
+<td>是否为首次登录，0不是，1是</td>
+</tr>
+</tbody>
+</table>
+<h5>结果示例</h5>
+<pre><code>{
+    "ret": 200,
+    "data": {
+        "code": 0,  //0正常登录
+        "info": {
+            "user_id": 3,  //用户ID
+            "token": "430C0F31FAF1FB1565E4290D1B61185A2408A6DEEA1604C1B5AEB14E44BDF2E0",  //用户TOKEN
+            "is_new": 0   //是否为首次登录，0不是，1是
+        },
+        "msg": ""
+    },
+    "msg": ""
+}</code></pre>
+<h5>请求示例</h5>
+<p>/service=User_User_Login.weixin&amp;wx_openid=wx_122348561111&amp;wx_token=ASDF&amp;wx_expires_in=130000000&amp;name=weixinName&amp;avatar=phpunit.png</p>
+<h4>(1-4)用户信息</h4>
+<h5>1、功能说明</h5>
+<p>获取用户个人信息</p>
+<h5>2、接口URL</h5>
+<p>/?service=User_Info.getUserInfo + 公共参数</p>
+<h5>3、<a href="http://test.famillelab.com/fami/checkApiParams.php?service=User_Info.getUserInfo">接口参数</a></h5>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>必须</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>other_user_id</td>
+<td>1</td>
+<td>用户id</td>
+</tr>
+</tbody>
+</table>
+<h5>4、返回结果</h5>
+<h5>返回字段</h5>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>info</td>
+<td>object</td>
+<td>登录成功后的相关信息</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>int</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>用户名</td>
+</tr>
+<tr>
+<td>nickname</td>
+<td>string</td>
+<td>用户昵称</td>
+</tr>
+<tr>
+<td>avatar</td>
+<td>string</td>
+<td>用户头像url</td>
+</tr>
+</tbody>
+</table>
+<h5>结果示例</h5>
+<pre><code>{
+    "ret": 200,
+    "data": {
+        "code": 0,
+        "info": {
+            "username": "aevit",
+            "nickname": "test",
+            "avatar": "",
+            "user_id": 1
+        },
+        "msg": ""
+    },
+    "msg": ""
+}</code></pre>
+<h5>请求示例</h5>
+<p>/service=User_User_Info.getUserInfo&amp;other_user_id=1</p>
+<h3>(2)对于服务端</h3>
+<h4>(1)温柔式检测登录态</h4>
+<pre><code>DI()-&gt;userLite-&gt;check();</code></pre>
+<h4>(2)强制式检测登录态</h4>
+<pre><code>DI()-&gt;userLite-&gt;check(true);</code></pre>
+<h2>3.8.4 示例</h2>
+<h3>(1)假设在我们的应用的接口中：</h3>
+<pre><code>&lt;?php
+
+class Api_Test extends PhalApi_Api {
+
+    public function go() {
+        Di()-&gt;userLite-&gt;check(true);
+
+        return 'ok';
+    }
+}
+</code></pre>
+<h3>(2)先调用微信的登录：</h3>
+<pre><code>/user/?service=User_User_Login.Weixin&amp;wx_openid=wx_122348561111&amp;wx_token=ASDF&amp;wx_expires_in=130000000&amp;name=weixinName&amp;avatar=phpunit.png</code></pre>
+<p>返回：</p>
+<pre><code>{
+    "ret": 200,
+    "data": {
+        "code": 0,
+        "info": {
+            "user_id": 94,
+            "token": "8509BE9C80B67009C559E6A2C4B88E02C885DA6B9FEFFC2DA080999377D08FBF",
+            "is_new": 0
+        },
+        "msg": ""
+    },
+    "msg": ""
+}</code></pre>
+<h3>(3)再调用我们应用 的接口：</h3>
+<pre><code>/user/?service=Test.go&amp;user_id=94&amp;token=CE1218493B3A441FCF630E24E98FD3640133EBA6D734C90A620A11C07CE35323</code></pre>
+<p>返回：</p>
+<pre><code>{"ret":200,"data":"ok","msg":""}</code></pre>
+<h3>(4)未登录下，返回：</h3>
+<pre><code>{"ret":401,"data":[],"msg":"\u975e\u6cd5\u8bf7\u6c42\uff1auser not login"}</code></pre>
+<hr />
+<h4><a href="#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>
