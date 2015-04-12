@@ -444,7 +444,7 @@ DI()-&gt;userLite = new User_Lite();</code></pre>
 <p>/service=User_User_Info.getUserInfo&amp;other_user_id=1</p>
 <h3>(2)对于服务端</h3>
 <h4>(1)温柔式检测登录态</h4>
-<pre><code>DI()-&gt;userLite-&gt;check();</code></pre>
+<pre><code>$isLogin = DI()-&gt;userLite-&gt;check();</code></pre>
 <h4>(2)强制式检测登录态</h4>
 <pre><code>DI()-&gt;userLite-&gt;check(true);</code></pre>
 <h2>3.8.4 示例</h2>
