@@ -97,27 +97,25 @@ DI()-&gt;userLite = new User_Lite();</code></pre>
 <h3>(4)其他可选配置</h3>
 <ul>
 <li>为了体现高效缓存的好处，建议先注册DI()-&gt;cache</li>
-<li>
-<p>为了接口更明朗的参数规则说明，建议将下而规则追加到配置中：</p>
+<li>为了接口更明朗的参数规则说明，建议将下而规则追加到配置文件./Config/app.php中：</li>
+</ul>
 <pre><code>return array(
 
-/**
- * 应用接口层的统一参数
- */
-'apiCommonRules' =&gt; array(
-    //其他原来的参数配置
-    ...
+    /**
+     * 应用接口层的统一参数
+     */
+    'apiCommonRules' =&gt; array(
+        //其他原来的参数配置
+        ...
 
-    //登录信息
-    'userId' =&gt; array(
-        'name' =&gt; 'user_id', 'type' =&gt; 'int', 'default' =&gt; 0, 'require' =&gt; false,
-    ),
-    'token' =&gt; array(
-        'name' =&gt; 'token', 'type' =&gt; 'string', 'default' =&gt; '', 'require' =&gt; false,
-    ),
-),</code></pre>
-</li>
-</ul>
+        //登录信息
+        'userId' =&gt; array(
+            'name' =&gt; 'user_id', 'type' =&gt; 'int', 'default' =&gt; 0, 'require' =&gt; false,
+        ),
+        'token' =&gt; array(
+            'name' =&gt; 'token', 'type' =&gt; 'string', 'default' =&gt; '', 'require' =&gt; false,
+        ),
+    ),</code></pre>
 <h2>3.8.3 入门使用</h2>
 <h3>(1)对于客户端</h3>
 <h4>(1-1)微信登录</h4>
