@@ -64,12 +64,14 @@
 <p><img src="http://webtools.qiniudn.com/20150411005257_929b7fdc7e966f54608b25c2e17def29" alt="QQ截图20150404004219" />  </p>
 <p>然后，再分别在里面添加接口目录Api、领域目录Domain、数据源目录Model和通用目录Common，即：  </p>
 <p><img src="http://webtools.qiniudn.com/20150411005257_9008ecb3491a703442f3522a86ffd624" alt="QQ截图20150404004458" /></p>
-<h3>(2)创建访问入口</h3>
+<h3>(2)准备一个接口</h3>
+<p>全部的接口类文件需要放置到./Api 目录下，你可以尝试编写一个简单的Default.Index接口，也可以直接将./Demo/Api/Default.php文件复制过来。  </p>
+<h3>(3)创建访问入口</h3>
 <p>将./Public/demo目录复制一份为对应项目名称小写的目录，如这里的myapp：  </p>
 <p><img src="http://webtools.qiniudn.com/20150411005257_e78908f60d6b34c7f932ba15eff1c1a2" alt="QQ截图20150404004653" /></p>
 <p>注意！这里需要修改./Public/myapp/index.php和./Public/myapp/checkApiParams.php中的目录：  </p>
 <p><img src="http://webtools.qiniudn.com/20150411005257_92bff2ed15c72380c54dff46ed800544" alt="QQ截图20150404004731" /></p>
-<h3>浏览器访问</h3>
+<h3>(4)浏览器访问</h3>
 <p>在浏览器输入以下链接：</p>
 <pre><code>http://localhost/phalapi/public/myapp/</code></pre>
 <p>应该可以看到：  </p>

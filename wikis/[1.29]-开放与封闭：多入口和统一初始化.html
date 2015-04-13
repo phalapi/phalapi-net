@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[1.29]-开放与封闭：多入口和统一初始化 | PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,phalapi文档,phalapi wiki,PhalApi文档,phalapi在线文档,phalapi官方文档">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">保护大象，拒绝象牙！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar" class="menu-item__link events-spec" target="_blank">博客</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="http://git.oschina.net/dogstar/PhalApi/" class="menu-item__link events-spec" target="_blank">Git@OSC</a></li>
+					<li class="menu-item"><a href="http://my.oschina.net/dogstar/blog/378252" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="/wikis/%5B1.28%5D-COOKIE%EF%BC%9A%E5%AF%B9COOKIE%E5%8E%9F%E7%94%9F%E6%80%81%E7%9A%84%E6%94%AF%E6%8C%81%E5%8F%8A%E8%AE%B0%E5%BF%86%E5%8A%A0%E5%AF%86%E5%8D%87%E7%BA%A7%E7%89%88.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.11%5D-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9ADI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-%E8%AE%A9%E8%B5%84%E6%BA%90%E6%9B%B4%E5%8F%AF%E6%8E%A7.html">下一章</a></h4>
+<hr />
+<p><em>美国著名棒球运动员约格.贝拉说过：“通过仔细地观察，你可以了解很多事情。”</em>  </p>
+<h2>1.29.1 绝对的开放，还是绝对的固化？</h2>
+<p>框架应该都会考虑这样一个问题：到底是应该给应用项目提供统一固定的入口和初始化流程呢，还是应该给他们完全自由的空间？  </p>
+<p>但我发现，很多PHP的框架都提供了一个绝对的固化流程。也就是你能作出改动的地方很，虽然这样应用不需要过多地去考虑。  </p>
+<p>然而我觉得，这样做，弊大于利。特别在现在项目需求背景各有各的不同时。所以，我为PhalApi框架选择了开放式的初始化做法。考虑到若开放的度太大，项目可能会迷茫，所以又结合了统一的初始化。  </p>
+<p>下面分别说明这两点：开放式入口和封闭式的初始化。  </p>
+<h2>1.29.2 开放式的入口</h2>
+<p>作为一个接口系统，是需要为不同的终端、不同的开放人群，甚至不同的版本提供不同的服务的。  </p>
+<p>如：  </p>
+<ul>
+<li>按不同的终端：iOS设备、Android设备、PC版、网页版</li>
+<li>按不同的开放人群：手机客户端、内部管理后台、内部其他系统、公共开放平台</li>
+<li>按不同的版本：版本从V1、V2到VN  </li>
+<li>按不同的项目：同一个应用下可能会存在多个项目，当然更推荐每个项目单独一个系统</li>
+</ul>
+<p>基于此，为不同的维度提供不同的入口就很有现实实用场景了。  </p>
+<p>更为重要的是，这些不同的入口都应该尽可能简单，并能统一共享公共的组件资源、数据库、日记系统这些。一个可能的入口示例如下：  </p>
+<pre><code>&lt;?php
+/**
+ * Demo 统一入口
+ */
+
+require_once dirname(__FILE__) . '/../init.php';
+
+//装载你的接口
+DI()-&gt;loader-&gt;addDirs('Demo');
+
+/** ---------------- 响应接口请求 ---------------- **/
+
+$api = new PhalApi();
+$rs = $api-&gt;response();
+$rs-&gt;output();</code></pre>
+<p>简单解读一下上面的代码，首先要加载统一初始化文件，其实装载挂靠的接口项目（对应你的项目目录的名称），最后创建一个PhalApi接口实例进行响应、输出结果。  </p>
+<p>下面来看下统一初始化文件需要做的事情。</p>
+<h2>1.29.3 封闭式的初始化</h2>
+<p>不言而喻，尽管我们有按不同维度划分入口的需要，但统一初始化的过程更是必不可少的。  </p>
+<p>不同的入口提供了各维度定制的机会，统一的初始化则为应用提供了统一定制的机会。  </p>
+<p>常规的入口，需要以下初始化操作：</p>
+<pre><code>&lt;?php
+/**
+ * 统一初始化
+ */
+
+/** ---------------- 根目录定义，自动加载 ---------------- **/
+
+defined('API_ROOT') || define('API_ROOT', dirname(__FILE__) . '/..');
+
+require_once API_ROOT . '/PhalApi/PhalApi.php';
+$loader = new PhalApi_Loader(API_ROOT);
+
+date_default_timezone_set('Asia/Shanghai');
+
+PhalApi_Translator::setLanguage('zh_cn');
+
+/** ---------------- 注册&amp;初始化服务组件 ---------------- **/
+
+//自动加载
+DI()-&gt;loader = $loader;
+
+//配置
+DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');
+
+//日记纪录
+DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime', 
+    PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);
+
+//数据操作 - 基于NotORM
+DI()-&gt;notorm = function() {
+    $debug = isset($_GET['debug']) ? true : false;
+    return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), $debug);
+};</code></pre>
+<p>上面是框架执行所需的基础服务注册和配置，一般直接可用，但也可以根据需要作些细微的调整。如日记的级别设定、调试的参数修改（改成一个只有自己知道的参数名字，别让外界知道！）等。  </p>
+<p>上面的操作，涵盖了大部分项目的需要。除此之外，还有一些额外的服务，可根据自身的情况，定制处理：</p>
+<pre><code>/** ---------------- 以下服务组件就根据需要定制注册 ---------------- **/
+
+//缓存 - MC
+/**
+DI()-&gt;cache = function() {
+    //可以考虑将此配置放进./Config/sys.php
+    $mcConfig = array(
+        'host' =&gt; '127.0.0.1',
+        'port' =&gt; 11211,
+    );
+
+    $mc = new PhalApi_Cache_Memecahced($mcConfig);
+    return $mc;
+};
+ */
+
+//签名验证服务
+//DI()-&gt;filter = 'Common_SignFilter';
+
+//支持JsonP的返回
+if (!empty($_GET['callback'])) {
+    DI()-&gt;response = new PhalApi_Response_JsonP($_GET['callback']);
+}</code></pre>
+<h2>1.29.4 用一张图来表示</h2>
+<p><img src="http://webtools.qiniudn.com/%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98%E9%9D%99%E6%80%81%E7%BB%93%E6%9E%84%E5%9B%BE-%E5%A4%9A%E5%85%A5%E5%8F%A3.jpg" alt="多级缓存静态结构图-多入口" /></p>
+<hr />
+<h4><a href="/wikis/%5B1.28%5D-COOKIE%EF%BC%9A%E5%AF%B9COOKIE%E5%8E%9F%E7%94%9F%E6%80%81%E7%9A%84%E6%94%AF%E6%8C%81%E5%8F%8A%E8%AE%B0%E5%BF%86%E5%8A%A0%E5%AF%86%E5%8D%87%E7%BA%A7%E7%89%88.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.11%5D-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9ADI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-%E8%AE%A9%E8%B5%84%E6%BA%90%E6%9B%B4%E5%8F%AF%E6%8E%A7.html">下一章</a></h4>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">&copy; PhalApi 开发团队 All Rights Reserved.</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>
