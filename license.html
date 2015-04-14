@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="cn" style="">
 <head>
-	<title>[3.4]-扩展类库：优酷开放平台接口调用 | PhalApi - PHP轻量级后台接口开发框架</title>
+	<title>许可 - PhalApi - PHP轻量级后台接口开发框架</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
 	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
-	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,phalapi文档,phalapi wiki,PhalApi文档,phalapi在线文档,phalapi官方文档">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发,后台接口开发框架,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
 	<meta name="author" content="dogstar">
 
-	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+	<link rel="stylesheet" type="text/css" href="./css/screen.css?20150211" />
 </head>
 
 <body>
@@ -22,7 +22,7 @@
 				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
 			</ul>
 			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
-				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">保护大象，拒绝象牙！</a></li>
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">感谢Simba赞助了服务器！</a></li>
 			</ul>
 		</div>
 	</div>
@@ -48,58 +48,43 @@
 </div>
 <!-- 顶部导航菜单(E) -->
 
-    <div class="grid-wrapper">
-        <div class="grid">
-            <div class="grid__cell">
-                <h4><a href="/wikis/%5B3.3%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%9F%BA%E4%BA%8EPHPMailer%E7%9A%84%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B3.5%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%B8%83%E7%89%9B%E4%BA%91%E5%AD%98%E5%82%A8%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8.html">下一章</a></h4>
-<hr />
-<h2>3.4.1 扩展类库：优酷开放平台接口调用</h2>
-<p>此扩展可用于对优酷开放平台提供的接口进行快速调用，并将失败的情况以debug方式写入日记。</p>
-<h2>3.4.2 安装和配置</h2>
-<p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>YoukuClient</strong> 优酷接口客户端，如使用：</p>
-<pre><code>git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
-<p>然后把 <strong>YoukuClient</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
-<pre><code>cp ./PhalApi-Library/YoukuClient/ ./PhalApi/Library/ -R</code></pre>
-<p>到处安装完毕！</p>
-<h2>3.4.3 使用</h2>
-<p>可以先在初始化文件init.php中引入扩展类库，并注册一个youkuClient的服务：</p>
-<pre><code>//$ vim ./Public/init.php
-$loader-&gt;addDirs('Library');
+<!-- 焦点部分(S) -->
+<!--
+<div class="grid-wrapper">
+	<div class="grid grid--center">
+		<div class="grid__cell grid__cell--centered">
+			<h1 class="homepage--title"></h1>
+		</div>
+		<div class="grid__cell unit-3-4--lap grid__cell--centered">
+			<p class="homepage--subtitle"></p>
+		</div>
+	</div>
+</div>
+-->
+<!-- 焦点部分(E) -->
 
-DI()-&gt;youkuClient = function() {
-    return new YoukuClient_Lite('https://openapi.youku.com', 'b043a60fbef8aed0');
-};</code></pre>
-<p>然后，就可以在项目中使用youkuClient这个服务来实现对优酷平台接口的调用。  </p>
-<p>通常，我们会在Model层包装这一层数据来源的获取。但这里只是了为演示的效果，全部将代码放到Api里面，如：</p>
-<pre><code>//$ vim ./Demo/Api/Youku.php 
+<!-- 更多 -->
+<div class="grid-wrapper">
+	<div class="grid">
+		<div class="grid__cell">
+			<h3>协议许可的权利</h3>
+<p>PhalApi官方网站为 <a href="http://www.phalapi.net，依法独立拥有">http://www.phalapi.net，依法独立拥有</a> PhalApi 及官网发布的PhalApi衍生产品著作权。PhalApi及其衍生产品著作权受到法律和国际公约保护。使用者需仔细阅读本协议，在理解、同意、并遵守本协议的全部条款后，方可开始使用 PhalApi及其衍生 软件。  </p>
+<p>本授权协议适用于 <a href="http://www.phalapi.net">http://www.phalapi.net</a> 发布的所有应用程序，PhalApi官方网站拥有对本授权协议的最终解释权。  </p>
+			<br/>
 
-&lt;?php
+<h3>协议规定的约束和限制</h3>
+<p>PhalApi软件及其PhalApi官网发布的PhalApi衍生产品在没有相关说明的情况下默认是免费的，可用于商业用途或者非商业用途。但是无论用途如何，是否经过修改，修改程度如何，未经过许可， 页面上的产品名称以及指向官网的连接还有源代码中关于PhalApi的版权信息及作者信息必须保留，不许修改或删除，除非您获得PhalApi官网的许可。  </p>
+<p>如果您未能遵守本协议的条款，您的授权将被终止，所被许可的权利将被收回，并承担相应法律责任。  </p>
+			<br/>
 
-class Api_Youku extends PhalApi_Api {
+<h3>有限担保和免责声明</h3>
+<p>本软件及所附带的文件是作为不提供任何明确的或隐含的赔偿或担保的形式提供的。 用户出于自愿而使用本软件，您必须了解使用本软件的风险，在尚未购买产品技术服务之前，我们不承诺提供任何形式的技术支持、使用担保，也不承担任何因使用本软件而产生问题的相关责任。 PhalApi官网不对使用本软件及官网发布的衍生产品构建的软件中的文章或信息承担责任。  </p>
+<p>有关 PhalApi 最终用户授权协议、商业授权与技术服务的详细内容，均由 PhalApi 官方网站独家提供。PhalApi官网拥有在不事先通知的情况下，修改授权协议和服务价目表的权力，修改后的协议或价目表对自改变之日起的新授权用户生效。 电子文本形式的授权协议如同双方书面签署的协议一样，具有完全的和等同的法律效力。您一旦开始安装 PhalApi以及官网发布的衍生产品，即被视为完全理解并接受本协议的各项条款，在享有上述条款授予的权力的同时，受到相关的约束和限制。 协议许可范围以外的行为，将直接违反本授权协议并构成侵权，我们有权随时终止授权，责令停止损害，并保留追究相关责任的权力。  </p>
+		</div>
+	</div>
+</div>
+<!-- 更多 -->
 
-    public function showBasic()
-    {
-        $uri = '/v2/videos/show_basic.json';
-        $params = array(
-            'video_url' =&gt; 'http://v.youku.com/v_show/id_XOTA4ODU4NjA0.html'
-        );
-        $timeoutMs = 3000;
-
-        $info = DI()-&gt;youkuClient-&gt;get($uri, $params, $timeoutMs);
-
-        return array('id' =&gt; $info['id'], 'title' =&gt; $info['title']);
-    }
-}</code></pre>
-<p>请求一下对应的接口，便可以获得以下的运行效果：  </p>
-<p><img src="http://webtools.qiniudn.com/20150411005257_d7386899f4fbd38cb5493950026a5b02" alt="0310" /></p>
-<p>对应的优酷视频是： <a href="http://v.youku.com/v_show/id_XOTA4ODU4NjA0.html?f=23542444&amp;ev=4&amp;from=y1.1-2.10001-0.1-1">【双语字幕】Apple Watch 动手玩 - The Verge</a></p>
-<hr />
-<h4><a href="/wikis/%5B3.3%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%9F%BA%E4%BA%8EPHPMailer%E7%9A%84%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B3.5%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%B8%83%E7%89%9B%E4%BA%91%E5%AD%98%E5%82%A8%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8.html">下一章</a></h4>
-            </div>
-        </div>
-    </div>
-    
- 
 <!-- footer(S) -->
 <div class="grid-wrapper footer">
 	<div id="footer" class="grid">	
