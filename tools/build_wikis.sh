@@ -17,6 +17,7 @@ fi
 #WIKI_PATH=$1
 WIKI_PATH="/mnt/hgfs/F/PHP/PhalApi.wiki"
 BASE_PATH=$(cd `dirname $0`; pwd)
+BASE_PATH="/mnt/hgfs/F/PHP/PhalApi-Net/tools/"
 PHP_PATH="/usr/bin/php"
 
 if [ ! -d $WIKI_PATH ]
