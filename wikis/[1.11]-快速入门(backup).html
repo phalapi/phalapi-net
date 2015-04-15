@@ -109,14 +109,12 @@ $rs-&gt;output();</code></pre>
 
 /** ---------------- 根目录定义，自动加载 ---------------- **/
 
+date_default_timezone_set('Asia/Shanghai');
+
 defined('API_ROOT') || define('API_ROOT', dirname(__FILE__) . '/..');
 
 require_once API_ROOT . '/PhalApi/PhalApi.php';
 $loader = new PhalApi_Loader(API_ROOT);
-
-date_default_timezone_set('Asia/Shanghai');
-
-PhalApi_Translator::setLanguage('zh_cn');
 
 /** ---------------- 注册&amp;初始化服务组件 ---------------- **/
 
@@ -126,17 +124,21 @@ DI()-&gt;loader = $loader;
 //配置
 DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');
 
-//参数请求
-DI()-&gt;request = new PhalApi_Request();
-
 //日记纪录
-DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime',
+DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime', 
     PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);
 
-//数据操作 - 基于NotORM
+//数据操作 - 基于NotORM，$_GET['__sql__']可自行改名
 DI()-&gt;notorm = function() {
-    return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), false);
+    $debug = !empty($_GET['__sql__']) ? true : false;
+    return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), $debug);
 };
+
+//调试模式，$_GET['__debug__']可自行改名
+DI()-&gt;debug = !empty($_GET['__debug__']) ? true : DI()-&gt;config-&gt;get('sys.debug');
+
+//翻译语言包设定
+SL('zh_cn');
 </code></pre>
 <h3>(2)TDD测试驱动开发</h3>
 <p>遵循最佳实践，我们在编写代码前先编写单元测试。但同时为了减少编写测试代码的痛苦，我们可以先定义接口函数签名，再通过脚本自动生成测试代码骨架来提高我们的开发效率。  </p>
