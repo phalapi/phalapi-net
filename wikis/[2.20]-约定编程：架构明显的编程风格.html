@@ -99,6 +99,73 @@ DI()-&gt;logger = new My_Logger(PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger:
 <p>这不仅是几行代码上的区别，而是针对不同问题不同技术解决方案的抉择。这也是有经验的开发和新手之间的区别，因为你选择的技术解决方案要和面临的风险相匹配。例如用牛刀来杀鸡，就是一个不匹配的做法，就如同使用高级的Hive来实现单一小项目的日记存储一样。  </p>
 <p>这是令人值得兴奋的。在很多旧的项目里面，当遇到瓶颈时，会请一些外部的专家来指导或优化。但即使拥有着各种“法宝”以及知道何时该使用哪种方案的专家，对于这种残留的代码也会步履维艰基于束手无策。因为，各种初始化和调用的代码，分遍在项目的“全国各地，四面八方”。即使你优化了，你会发现还要手动一个个地进行切换升级。更重要的是，很多时候不是你想优化就能优化的。  </p>
 <p>我曾经遇到过这样一个旧系统。它是在UcHome基础上做二次开发，但对于它的数据库使用，开发人员没有过多地优化，如：没有使用缓存，没有进行批量合并查询优化，重复查询相同的数据，没有建立索引等等，等等。这样的后果就是，请求一次接口，会触发150条到500条SQL语句不等。我后来，在底层添加了在线查看调试SQL语句的功能，尝试进行了一些合并查询，但当我想为数据库的表添加索引时，发现它用的却是虚拟表 -- 视图！</p>
+<h3>(5)扩展类库对“开发-配置-使用”模式的应用</h3>
+<p>如果说DI服务是微观上对“开发-配置-使用”模式的使用，那么PhalApi的扩展类库则是宏观上的应用。  </p>
+<p>扩展类库也是由第三方（可能是PhalApi开发团队、他人或者你）开发实现的，然后再通过简单配置（或者免配置），就可以使用扩展类库的功能了。如邮件发送、phprpc协议。<br />
+之所以提供扩展类库的形式，是因为DI服务更适合于单个类以及几个操作接口，而扩展类库则提供更丰富的功能操作和一系列的接口。  </p>
+<p>这样以后，项目就可以简单快速共享各种扩展类库了。难道这不是一件令人兴奋的事情吗？<br />
+因为“哈啊！我又找到了一个可以直接用的代码类库”，而不是“唉，又要写一堆代码，还要测试、联调。。。”。  </p>
+<h3>(6)回顾Yii框架的发现</h3>
+<p>程序、系统和框架，其作用太多数都体现在动态的功能上，而不是静态有限的功能。而动态的功能则很大程序上依赖于各种配置，如Tomcat下各层级xml配置。有些框架对配置这块提供了丰富的支持，但为此的代码是，配置难以掌控。  </p>
+<p>就拿Yii框架为例（Yii确实是一个很了不起的框架，这里只是以事论事），当你需要在视图渲染一个数据表格时，你可以使用 <a href="http://www.yiichina.com/doc/api/1.1/CGridView">CGridView</a> ，并类似这样配置：</p>
+<pre><code>$columns = array(
+    array('name' =&gt; 'mId', 'header' =&gt; '序号'),
+    array('name'=&gt;'id', 'header'=&gt;'事件ID'),
+    array('name'=&gt;'title', 'header'=&gt;'标题'),
+    array('name'=&gt;'content', 'header'=&gt;'内容', 'type' =&gt; 'html'),
+);
+
+$this-&gt;widget('bootstrap.widgets.TbGridView', array(
+    'type'=&gt;'striped bordered condensed',
+    'dataProvider'=&gt;$dataProvider,
+    'columns'=&gt; $columns,
+));</code></pre>
+<p>更为复杂的情况可以是：</p>
+<pre><code>$columns = array(
+    // ...
+    array('class' =&gt; 'CDataColumn', 'header' =&gt; '内容', 'type' =&gt; 'html', 'name' =&gt; 'content', 'htmlOptions' =&gt; array('width' =&gt; '200px')),
+    array(
+        'class'=&gt;'CButtonColumn',
+        'template'=&gt;'{showEvent}&lt;br/&gt;&lt;br/&gt;{deleteEvent}',
+        'header'=&gt;'操作',
+        'buttons'=&gt;array
+        (
+            'showEvent' =&gt; array(
+                'label' =&gt; '查看',
+                'url' =&gt; '"?r=DailyOperations/eventManagerShow&amp;userId=' . $userId  . '&amp;eventId=". $data["id"];',
+                'options' =&gt; array('target' =&gt; '_blank'),
+            ),
+            'deleteEvent' =&gt; array(
+                'label'=&gt;'删除',
+                'url'=&gt;'"javascript:void(0)"',
+                'imageUrl'=&gt;'/images/delete_24.png',
+                'deleteConfirmation'=&gt;"js:'Record with ID '+$(this).parent().parent().children(':first-child').text()+' will be deleted! Continue?'",
+                'click'=&gt;'js:function(){if (confirm("此操作将删除：ID = " + $(this).parent().parent().children(\':first-child\').text() + " \n是否确定？")) {deleteEvent($(
+this).parent().parent().children(\':first-child\').text());};}',
+            ),
+        ),
+    ),
+);
+
+// ...</code></pre>
+<p>然后，对于我这么笨的人来说，不管是简单的配置，还是复杂的配置，每次当我需要使用时，我都非常害怕且需要从以下三方便获取帮助：</p>
+<ul>
+<li>找曾经写过类似的代码并拷贝过来修改；</li>
+<li>“耐心”（耐着心）查看官方的文档；</li>
+<li>网上搜索相关的例子</li>
+</ul>
+<p>因为，每次我都记不住这些配置，但我又不得不承认它的效果很好。然后我觉得其缺点至少有两点：</p>
+<ul>
+<li>缺点1：尽管是很简单的功能也需要用配置来实现，从而导致配置羞涩难懂；</li>
+<li>缺点2：配置太复杂，对人的记忆要求太高；</li>
+</ul>
+<p>这是我对Yii框架配置的体会。</p>
+<h5>自己工作的回顾</h5>
+<p>最初，感受到配置式的开发，是在大学的时候做一个OutLook的插件。这个插件需要同步本地和远程服务器的联系人，其中当有冲突时，就有这么几种策略：冲突时以本地为准、冲突时以远程为准、冲突时提醒我、忽略冲突。  </p>
+<p>这有点像我们常用的SVN的处理方式。然而当我在尝试开发实现时，我发现过程很复杂，但处理又是如此相似。这里的区别很微妙，特别这些策略又是由外部用户指定时。最后，我惊讶地发现，如果我使用配置来做的话，会非常简单且明了！  </p>
+<p>但那时，只是初体会。  </p>
+<p>现在，经过了几年的开发，我才慢慢发现，可以把这种开发模式总结为：开发-配置-使用模式。<br />
+不知是否有其他模式和此新发现的模式类似？</p>
 <h2>2.20.3 框架外延</h2>
 <p>框架外延是指跨项目，与业务无关的抽象特性与代码实现。  </p>
 <p>这些从简单到复杂，有：通用功能，定制，扩展类库和产品簇框架。  </p>
