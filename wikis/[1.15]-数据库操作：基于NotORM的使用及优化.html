@@ -137,11 +137,10 @@ if ($rs &gt;= 1) {
 <h3>(8)关于NotORM中fetch()操作没有limit 1的处理方案 - fetchRow()</h3>
 <p>之前，有开发同学提及到，为什么notorm的基类fetch为啥没用limit(1)呢。后来，我去发了下NotORM的写法，确实做得很微妙。<br />
 其实NotORM之所以没有在fetch()里面自动limit 1是因为，你可以循环地获取数据，如：</p>
-<pre><code>        $user = DI()-&gt;notorm-&gt;user-&gt;select('id, username, nickname')-&gt;where('id &gt; ?', 0)-&gt;limit(3);
-        while(($row = $user-&gt;fetch())) {
-            var_dump($row);
-        }
-</code></pre>
+<pre><code>$user = DI()-&gt;notorm-&gt;user-&gt;select('id, username, nickname')-&gt;where('id &gt; ?', 0)-&gt;limit(3);
+while(($row = $user-&gt;fetch())) {
+    var_dump($row);
+ }</code></pre>
 <p>但是，更多情况下，我们只需要获取某一行的数据，上面的做法会造成不必要的SQL查询。为了保留原来的写法，我特意添加扩展了一个新的操作：fetchRow()，用法同fetch()，但只会取第一条。<br />
 以下是使用示例：  </p>
 <pre><code>$rs = DI()-&gt;notorm-&gt;user-&gt;select('id, username, nickname')-&gt;where('id &gt; ?', 0)-&gt;fetchRow());
