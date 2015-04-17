@@ -89,6 +89,24 @@ $rs= DI()-&gt;notorm-&gt;example-&gt;queryRows($sql, $params);</code></pre>
 <p>如：  </p>
 <pre><code>SELECT times FROM tpl_user_session_10 WHERE (user_id = ?); -- '74110'
 {"ret":0,"data":{"code":0},"msg":""}</code></pre>
+<h3>(7)update相同的数据的判断</h3>
+<p>在使用update操作时，如果更新的数据和原来的一样，则会返回0（影响0行）。这时，会和更新失败（同样影响0行）混淆。  </p>
+<p>但NotORM是一个优秀的类库，所以提供了优秀的解决文案。我们在使用update时，只须了解这两者返回的结果的微妙区别即可。<br />
+因为失败异常时，返回false；而相同数据更新会返回0。即：  </p>
+<ul>
+<li>1、update相同的数据时，返回0，严格来说是：int(0)</li>
+<li>2、update失败时，如更新一个不存在的字段，返回false，即：bool(false)</li>
+</ul>
+<p>用代码表示，就是：</p>
+<pre><code>$rs = DI()-&gt;notorm-&gt;user-&gt;where('id', $userId)-&gt;update($data);
+
+if ($rs &gt;= 1) {
+    //成功
+} else if ($rs === 0) {
+    //相同数据，无更新
+} else if ($r4s === false) {
+    //更新失败
+}</code></pre>
 <h2>1.15.3 可选的Model基类</h2>
 <h3>(1)表数据入口模式</h3>
 <p>我们一直在考虑，是否应该提供数据库的基本操作支持，以减少开发人员重复手工编写基本的数据操作。  </p>
