@@ -96,10 +96,23 @@ $ tree
 <p>温馨提示：<br />
 导入前，可以自行调整表的前缀。</p>
 </blockquote>
-<h3>(3)入口注册</h3>
+<h3>(3)数据库配置</h3>
+<p>将 PhalApi-Library/User/Config/dbs.php 里面的配置拷贝到你的项目配置：</p>
+<pre><code>    //请将以下配置拷贝到 ./Config/dbs.php 文件对应的位置中
+
+        //10张表，可根据需要，自行调整表前缀、主键名和路由
+        'user_session' =&gt; array(
+            'prefix' =&gt; 'phalapi_',
+            'key' =&gt; 'id',
+            'map' =&gt; array(
+                array('db' =&gt; 'db_demo'),
+                array('start' =&gt; 0, 'end' =&gt; 9, 'db' =&gt; 'db_demo'),
+            ),
+        ),</code></pre>
+<h3>(4)入口注册</h3>
 <pre><code>//必须显式注册，以便可以让服务自行初始化
 DI()-&gt;userLite = new User_Lite();</code></pre>
-<h3>(4)其他可选配置</h3>
+<h3>(5)其他可选配置</h3>
 <ul>
 <li>为了体现高效缓存的好处，建议先注册DI()-&gt;cache</li>
 <li>为了接口更明朗的参数规则说明，建议将下而规则追加到配置文件./Config/app.php中：</li>
