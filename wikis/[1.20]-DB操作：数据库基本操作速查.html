@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="cn" style="">
 <head>
-	<title>[1.19]-DI服务速查：各资源服务一览表 | PhalApi - PHP轻量级后台接口开发框架</title>
+	<title>[1.20]-DB操作：数据库基本操作速查 | PhalApi - PHP轻量级后台接口开发框架</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
 	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
@@ -51,101 +51,109 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                <h4><a href="/wikis/%5B1.18%5D-%E5%BF%AB%E9%80%9F%E5%87%BD%E6%95%B0%EF%BC%9A%E4%BA%BA%E6%80%A7%E5%8C%96%E7%9A%84%E5%85%B3%E6%80%80.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b1.20%5d-DB%e6%93%8d%e4%bd%9c%ef%bc%9a%e6%95%b0%e6%8d%ae%e5%ba%93%e5%9f%ba%e6%9c%ac%e6%93%8d%e4%bd%9c%e9%80%9f%e6%9f%a5.html">下一章</a></h4>
+                <h4><a href="/wikis/%5B1.19%5D-DI%E6%9C%8D%E5%8A%A1%E9%80%9F%E6%9F%A5%EF%BC%9A%E5%90%84%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E4%B8%80%E8%A7%88%E8%A1%A8.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.21%5D-%E7%B1%BB%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%BD%BD%EF%BC%9A%E9%81%B5%E5%BE%AAPEAR%E5%8C%85%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83.html">下一章</a></h4>
 <hr />
-<h2>1.19.1 一览表</h2>
+<h2>1.20.1 数据库基本操作速查表</h2>
 <table>
 <thead>
 <tr>
-<th>变量名称</th>
-<th>是否启动时自动注册</th>
-<th>是否必须</th>
-<th>接口/类</th>
-<th>作用说明</th>
+<th>操作</th>
+<th>说明</th>
+<th>示例</th>
+<th>备注</th>
+<th>是否PhalApi新增</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>loader</td>
+<td>fetch()</td>
+<td>循环获取每一行</td>
+<td>while($row = $user-&gt;fetch()) { //... }</td>
 <td>否</td>
+</tr>
+<tr>
+<td>fetchOne()</td>
+<td>只获取第一行</td>
+<td>$row = $user-&gt;where('id', 1)-&gt;fetchOne();</td>
+<td>等效于fetchRow()</td>
 <td>是</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Loader.html">PhalApi_Loader</a></td>
-<td>自动加载：负责PEAR风格下类的自动加载，需要手动注册，指定项目路径</td>
 </tr>
 <tr>
-<td>config</td>
-<td>否</td>
+<td>fetchRow()</td>
+<td>只获取第一行</td>
+<td>$row = $user-&gt;where('id', 1)-&gt;fetchRow();</td>
+<td>等效于fetchOne()</td>
 <td>是</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Config.html">PhalApi_Config</a></td>
-<td>配置：负责项目配置的读取，需要手动注册，指定存储媒介，默认是<a href="http://www.phalapi.net/docs/classes/PhalApi_Config_File.html">PhalApi_Config_File</a></td>
 </tr>
 <tr>
-<td>logger</td>
-<td>否</td>
+<td>fetchAll()</td>
+<td>获取全部的行</td>
+<td>$rows = $user-&gt;where('id', array(1, 2, 3))-&gt;fetchAll();</td>
+<td>等效于fetchRows()</td>
 <td>是</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Logger.html">PhalApi_Logger</a></td>
-<td>日记纪录：负责日记的写入，需要手动注册，指定日记级别和存储媒介，默认是<a href="http://www.phalapi.net/docs/classes/PhalApi_Logger_File.html">PhalApi_Logger_File</a></td>
 </tr>
 <tr>
-<td>notorm</td>
-<td>否</td>
-<td>推荐</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_DB_NotORM.html">PhalApi_DB_NotORM</a></td>
-<td>数据操作：基于NotORM的DB操作，需要手动注册，指定数据库配置</td>
-</tr>
-<tr>
-<td>cache</td>
-<td>否</td>
-<td>推荐</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Cache.html">PhalApi_Cache</a></td>
-<td>缓存：实现缓存读写，需要手动注册，指定缓存</td>
-</tr>
-<tr>
-<td>filter</td>
-<td>否</td>
-<td>推荐</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Filter.html">PhalApi_Filter</a></td>
-<td>拦截器：实现签名验证、权限控制等操作</td>
-</tr>
-<tr>
-<td>crypt</td>
-<td>否</td>
-<td>否</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Crypt.html">PhalApi_Crypt</a></td>
-<td>对称加密：实现对称加密和解密，需要手动注册</td>
-</tr>
-<tr>
-<td>curl</td>
-<td>否</td>
-<td>否</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_CUrl.html">PhalApi_CUrl</a></td>
-<td>CURL请求类：通过curl实现的快捷方便的接口请求类，需要手动注册</td>
-</tr>
-<tr>
-<td>request</td>
+<td>fetchRows()</td>
+<td>获取全部的行</td>
+<td>$rows = $user-&gt;where('id', array(1, 2, 3))-&gt;fetchRows();</td>
+<td>等效于fetchAll()</td>
 <td>是</td>
-<td>是</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Request.html">PhalApi_Request</a></td>
-<td>接口参数请求：用于收集接口请求的参数</td>
 </tr>
 <tr>
-<td>response</td>
+<td>queryAll($)</td>
+<td>复杂查询下获取全部的行</td>
+<td>$rows = $user-&gt;queryAll($sql, $parmas);</td>
+<td>等效于queryRows()</td>
 <td>是</td>
-<td>是</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Response.html">PhalApi_Response</a></td>
-<td>结果响应：用于输出返回给客户端的结果，默认为<a href="http://www.phalapi.net/docs/classes/PhalApi_Response_Json.html">PhalApi_Response_Json</a></td>
 </tr>
 <tr>
-<td>cookie</td>
+<td>queryRows()</td>
+<td>复杂查询下获取全部的行</td>
+<td>$rows = $user-&gt;queryRows($sql, $parmas);</td>
+<td>等效于queryAll()</td>
+<td>是</td>
+</tr>
+<tr>
+<td>insert()</td>
+<td>插入数据</td>
+<td>$user-&gt;insert($data);</td>
+<td>原生态操作需要再调用insert_id()获取插入的ID</td>
 <td>否</td>
+</tr>
+<tr>
+<td>insert_multi()</td>
+<td>批量插入</td>
+<td>$user-&gt;insert_multi($rows);</td>
 <td>否</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Cookie.html">PhalApi_Cookie</a></td>
-<td>COOKIE的操作</td>
+</tr>
+<tr>
+<td>update()</td>
+<td>更新数据</td>
+<td>$user-&gt;where('id', 1)-&gt;update($data);</td>
+<td>否</td>
+</tr>
+<tr>
+<td>insert_update()</td>
+<td>插入/更新</td>
+<td>不存时插入，存在时更新</td>
+<td>否</td>
+</tr>
+<tr>
+<td>delete()</td>
+<td>删除</td>
+<td>$user-&gt;where('id', 1)-&gt;delete();</td>
+<td>否</td>
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p>温馨提示：<br />
+上表中的$user变量为NotORM表实例，可以通过两种方式获得：<br />
+1、使用原生态的notorm，即：$user = DI()-&gt;notrom-&gt;user<br />
+2、使用PhalApi_Model_NotORM基类的方式，即：$user = $this-&gt;getORM()  </p>
+</blockquote>
 <hr />
-<h4><a href="/wikis/%5B1.18%5D-%E5%BF%AB%E9%80%9F%E5%87%BD%E6%95%B0%EF%BC%9A%E4%BA%BA%E6%80%A7%E5%8C%96%E7%9A%84%E5%85%B3%E6%80%80.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b1.20%5d-DB%e6%93%8d%e4%bd%9c%ef%bc%9a%e6%95%b0%e6%8d%ae%e5%ba%93%e5%9f%ba%e6%9c%ac%e6%93%8d%e4%bd%9c%e9%80%9f%e6%9f%a5.html">下一章</a></h4>
+<h4><a href="/wikis/%5B1.19%5D-DI%E6%9C%8D%E5%8A%A1%E9%80%9F%E6%9F%A5%EF%BC%9A%E5%90%84%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E4%B8%80%E8%A7%88%E8%A1%A8.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.21%5D-%E7%B1%BB%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%BD%BD%EF%BC%9A%E9%81%B5%E5%BE%AAPEAR%E5%8C%85%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83.html">下一章</a></h4>
             </div>
         </div>
     </div>

@@ -60,9 +60,9 @@
 <h3>(1)将原来返回的结果全部从对象改成数组</h3>
 <p>对原来的大部分使用无特别影响，可按原来的方式开发。主要目的是为了更方面处理返回的数据，以及简化对结果的再解析，简单明了。<br />
 如：</p>
-<pre><code>DI()-&gt;notorm-&gt;user-&gt;where('username = ?', 'dogstar')-&gt;fetch();</code></pre>
+<pre><code class="language-javascript">DI()-&gt;notorm-&gt;user-&gt;where('username = ?', 'dogstar')-&gt;fetch();</code></pre>
 <p>返回的将是一个数组：</p>
-<pre><code>array(7) {
+<pre><code class="language-javascript">array(7) {
   ["id"]=&gt;
   string(3) "180"
   ["username"]=&gt;
@@ -71,16 +71,21 @@
   string(10) "1414811954"
   //...
 }</code></pre>
-<h3>(2)提供获取全部结果的接口 - fetchAll()</h3>
+<h3>(2)提供获取全部结果的接口 - fetchAll() / fetchRows()</h3>
 <p>如：  </p>
-<pre><code>$rows = DI()-&gt;notorm-&gt;event_picurl-&gt;where('(eid)', $eids)-&gt;fetchAll();</code></pre>
-<p>即可获取全部的数据，不再受限于分页。   </p>
-<h3>(3)提供更灵活的查询方式 -queryRows()</h3>
+<pre><code>$rows = DI()-&gt;notorm-&gt;event_picurl-&gt;where('eid', $eids)-&gt;fetchAll();</code></pre>
+<p>或：</p>
+<pre><code>$rows = DI()-&gt;notorm-&gt;event_picurl-&gt;where('eid', $eids)-&gt;fetchRows();</code></pre>
+<p>即可获取全部的数据，不再受限于分页。<br />
+这里提供了fetchAll()和fetchRows()两种等效的操作，是为了减少记忆的痛苦，下同。  </p>
+<h3>(3)提供更灵活的查询方式 - queryAll() / queryRows()</h3>
 <p>当需要进行复杂的SQL查询时，可以使用此接口，如：  </p>
 <pre><code>$sql = 'select * from example AS ep LEFT JOIN user AS u ON ep.ui
 d = u.id  where ep.touid = :userId ORDER BY dateline desc LIMIT :start,:num';
 $params = array('userId' =&gt; $userId, ':start' =&gt; $start, ':num' =&gt; $num);
-$rs= DI()-&gt;notorm-&gt;example-&gt;queryRows($sql, $params);</code></pre>
+$rs= DI()-&gt;notorm-&gt;example-&gt;queryAll($sql, $params);</code></pre>
+<p>或：</p>
+<pre><code>$rs= DI()-&gt;notorm-&gt;example-&gt;queryRows($sql, $params);</code></pre>
 <h3>(4)修正原来的BUG</h3>
 <p>进行LIMIT时 因加入了 OFFSET 关键字导致MySQL下无法获取数据  </p>
 <h3>(5)禁止全表删除，防止误删</h3>
@@ -134,7 +139,7 @@ if ($rs &gt;= 1) {
 
         $this-&gt;assertSame(FALSE, $rs);
     }</code></pre>
-<h3>(8)关于NotORM中fetch()操作没有limit 1的处理方案 - fetchRow()</h3>
+<h3>(8)关于NotORM中fetch()操作没有limit 1的处理方案 - fetchOne() / fetchRow()</h3>
 <p>之前，有开发同学提及到，为什么notorm的基类fetch为啥没用limit(1)呢。后来，我去发了下NotORM的写法，确实做得很微妙。<br />
 其实NotORM之所以没有在fetch()里面自动limit 1是因为，你可以循环地获取数据，如：</p>
 <pre><code>$user = DI()-&gt;notorm-&gt;user-&gt;select('id, username, nickname')-&gt;where('id &gt; ?', 0)-&gt;limit(3);
@@ -166,6 +171,23 @@ var_dump($rs);
 string(4) "test"
 
 //纪录不存在时，返回 bool(false)</code></pre>
+<h3>(9)显式的SQL语法异常提示</h3>
+<p>很多时候，在开发时，我们对数据库操作一开始会存在一些SQL语法的问题，PDO会返回false,且原来NotORM也是使用 <strong>静默方式</strong> 来处理这类错误，从而使得开人员有时难以发现这些问题，除非将调试的SQL手动放到数据加执行才能发现问题所在。  </p>
+<p>为了能给开发同学更早、更直观的方式查看问题的所在，这里对NotORM底层进行了调整，使用了 <strong>显式方式</strong> 的策略来处理，即：直接抛出PDO异常。  </p>
+<p>如：</p>
+<pre><code>$userId = 1;
+
+//OK
+$rs = DI()-&gt;notorm-&gt;user-&gt;select('username')-&gt;where('id', $userId)-&gt;fetchOne();
+
+//WRONG
+$rs = DI()-&gt;notorm-&gt;user-&gt;select('wrong_username')-&gt;where('id', $userId)-&gt;fetchOne();
+</code></pre>
+<p>将会看到：</p>
+<pre><code>[1 - 0.06437s]SELECT username FROM fami_user WHERE (id = 1) LIMIT 1;&lt;br&gt;
+[2 - 0.06496s]SELECT wrong_username FROM fami_user WHERE (id = 1) LIMIT 1;&lt;br&gt;
+
+PDOException: Unknown column 'wrong_username' in 'field list'</code></pre>
 <h2>1.15.3 可选的Model基类</h2>
 <h3>(1)表数据入口模式</h3>
 <p>我们一直在考虑，是否应该提供数据库的基本操作支持，以减少开发人员重复手工编写基本的数据操作。  </p>
