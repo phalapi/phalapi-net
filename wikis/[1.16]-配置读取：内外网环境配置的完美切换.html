@@ -86,7 +86,7 @@ DI()-&gt;config-&gt;get('app');
 DI()-&gt;config-&gt;get('app.version');  //返回：1.1.1
 
 //app.php里面的多级配置
-DI()-&gt;config-&gt;get('app.version');  //返回：chanzonghuang@gmail.com</code></pre>
+DI()-&gt;config-&gt;get('app.email');  //返回：array('address' =&gt; 'chanzonghuang@gmail.com')</code></pre>
 <p>其他配置文件类似，你也可以随意添加新的配置文件。</p>
 <h2>1.16.2 内外环境配置管理的策略</h2>
 <p>可以说，在项目开发中，除了我们的代码、数据和文档外，配置也是一块相当重要的组成部分，而且占据着非常重要的位置。最为明显的是，如果配置一旦出错，就很可能影响到整个系统的运行，并且远比修改代码再上线发布速度快（假设我们不用文件存储配置而是以分布式存储在各服务器内存中）。  </p>
