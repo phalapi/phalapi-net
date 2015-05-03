@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[3.9]-扩展类库：swoole支持下的长链接和异步任务实现 | PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,phalapi文档,phalapi wiki,PhalApi文档,phalapi在线文档,phalapi官方文档">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">保护大象，拒绝象牙！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="/wikis/%5B3.8%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E7%94%A8%E6%88%B7%E3%80%81%E4%BC%9A%E8%AF%9D%E5%92%8C%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E9%9B%86%E6%88%90.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>
+<hr />
+<h2>写在前面的话</h2>
+<p>此PhalApi扩展类库只是初步开发完成，建议有swoole扩展经验或非保守派的同学使用，也欢迎你来丰富完善此扩展类库。</p>
+<h2>3.9.1 扩展类库：swoole支持下的长链接和异步任务实现</h2>
+<p>swoole官网请见： <a href="http://www.swoole.com/">Swoole: PHP的异步、并行、分布式扩展</a>  </p>
+<p>在这里，首先需要非常感谢swoole。  </p>
+<p>因为Swoole给我们提供了很多解决以往因PHP本身限制而产生的难题的灵感，但与此同时，也给我们带来了从没遇到过的挑战，特别是并发和长时间运行。  </p>
+<p>这需要我们更为小心地进行编码，因为以往可以忽略的小问题，在新的解决方案背景下都可能成为一个大问题。此扩展类库更多是作为一种尝试，并且可以作为扩展类库重要的一个转换点。因为在今后的日子里， <strong>PhalApi将会争取与其他开源项目一起，提供企业级的解决方案</strong> 。  </p>
+<p>目前，此扩展类库提供了：</p>
+<ul>
+<li>长链接的接口调用</li>
+<li>异步计划任务的调用</li>
+</ul>
+<h2>3.9.2 安装</h2>
+<p>(1)安装swoole扩展类库
+安装过程可以参考swoole官网，这里稍以linux系统简单说明一下编译安装。</p>
+<pre><code>unzip ./swoole-src-swoole-1.7.16-beta.zip
+cd swoole-src-swoole-1.7.16-beta
+phpize
+./configure
+make &amp;&amp; make install</code></pre>
+<p>安装好后，添加swoole扩展：</p>
+<pre><code>extension=swoole.so</code></pre>
+<p>重启PHP后，如果看到有swoole扩展，则说明安装成功：</p>
+<pre><code>#php -m | grep swoole
+swoole</code></pre>
+<h3>(2)扩展包下载</h3>
+<p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>Swoole</strong> 包，如使用：</p>
+<pre><code>git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<p>然后把 <strong>Swoole</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
+<pre><code>cp ./PhalApi-Library/Swoole/ ./PhalApi/Library/ -R</code></pre>
+<p>到处安装完毕！</p>
+<h3>(3)配置</h3>
+<p>将以下配置追加到./Config/app.php：</p>
+<pre><code>    /**
+     * Swoole扩展类库
+     */
+    'Swoole' =&gt; array(
+        //服务
+        'server' =&gt; array(
+            'ip' =&gt; '127.0.0.1',
+            'port' =&gt; 9501,
+            'worker_num' =&gt; 1,
+        ),
+        //计划任务
+        'task' =&gt; array(
+            'ip' =&gt; '127.0.0.1',
+            'port' =&gt; 9502,
+            'worker_num' =&gt; 1,
+        ),
+    ),</code></pre>
+<h2>3.9.3 入门使用</h2>
+<h3>(1)长链接入口</h3>
+<p>在使用长链接入口对外提供接口服务后，由于不再是HTTP协议，所以入口建议放置在新的目录./Server，而不再是./Public。<br />
+入口文件的编写，如同我们以往一样，很简单：</p>
+<pre><code>//$ vim ./Server/run_server.php
+&lt;?php
+
+require_once dirname(__FILE__) . '/../Public/init.php';
+
+DI()-&gt;loader-&gt;addDirs(array('Library', 'Demo'));
+
+$swooleLite = new Swoole_Lite();
+$swooleLite-&gt;runServer();
+</code></pre>
+<h4>启动、重启和关闭服务</h4>
+<p>启动可以用：</p>
+<pre><code>php ./Server/run_server.php</code></pre>
+<p>关闭可以用：</p>
+<pre><code>ps -ef | grep run_server | grep -v grep | awk '{print $2}'|xargs kill -9</code></pre>
+<h3>(2)异步计划任务</h3>
+<p>异步计划任务是新型的做法，即：也通过接口服务调用的方式来完成计划任务的调度，其启动文件如同长链接入口一样简单：</p>
+<pre><code>//$ vim ./Server/run_task.php
+&lt;?php
+
+require_once dirname(__FILE__) . '/../Public/init.php';
+
+DI()-&gt;loader-&gt;addDirs(array('Library', 'Demo'));
+
+$swooleLite = new Swoole_Lite();
+$swooleLite-&gt;runTask();</code></pre>
+<h4>启动、重启和关闭服务</h4>
+<p>启动可以用：</p>
+<pre><code>nohup php ./Server/run_task.php &gt; ./Server/run_task.log 2&gt;&amp;1 &amp;</code></pre>
+<h3>(3)客户端调用</h3>
+<p>在扩展类库里有一个测试的脚本，可以用来进行PHP客户端的请求。</p>
+<h4>(1)默认接口调用</h4>
+<pre><code>$ php ./check.php 127.0.0.1 9501 Default.Index username=swoole
+Send: {"service":"Default.Index","username":"swoole"}
+Received: {"ret":200,"data":{"title":"Hello World!","content":"Hi swoole, welcome to use PhalApi!","version":"1.1.3","time":1430620911},"msg":""}
+Connection close</code></pre>
+<h4>(2)带数据库的调用</h4>
+<pre><code>$ php ./check.php 127.0.0.1 9501 User.getBaseInfo userId=1
+Send: {"service":"User.getBaseInfo","userId":"1"}
+Received: {"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","username":"aevit","nickname":"test","password":"DE4CA99150F44B26F0D320DCA6E4B7629C43B6","salt":"wefewfew","reg_time":"0","avatar":"http:\/\/image.famillelab.com\/no_avatar.png","UUID":""}},"msg":""}
+Connection close</code></pre>
+<h4>(3)异步计划任务的调度</h4>
+<pre><code>$ php ./check.php 127.0.0.1 9502 Default.Index username=swoole
+Send: {"service":"Default.Index","username":"swoole"}
+Connection close</code></pre>
+<p>假设Default.Index为一个计划任务的接口，但目前发现一个问题是，首次请求异步计划任务不会主动结束，而需要工作强制ctrl + c结束，再请求，则正常。  </p>
+<p>对应的log，可以看到：</p>
+<pre><code>2015-05-03 12:24:57|DEBUG|asynctask(0) dispath in swoole|{"service":"Default.Index","username":"swoole"}
+2015-05-03 12:24:57|DEBUG|asynctask(0) start in swoole|{"service":"Default.Index","username":"swoole"}
+2015-05-03 12:24:57|DEBUG|asynctask(0) finish in swoole|{"ret":200,"data":{"title":"Hello World!","content":"Hi swoole, welcome to use PhalApi!","version":"1.1.3","time":1430627097},"msg":""}
+2015-05-03 12:24:57|DEBUG|asynctask(1) dispath in swoole|{"service":"Default.Index","username":"swoole"}
+2015-05-03 12:24:57|DEBUG|asynctask(1) start in swoole|{"service":"Default.Index","username":"swoole"}
+2015-05-03 12:24:57|DEBUG|asynctask(1) finish in swoole|{"ret":200,"data":{"title":"Hello World!","content":"Hi swoole, welcome to use PhalApi!","version":"1.1.3","time":1430627097},"msg":""}
+...</code></pre>
+<h2>3.9.4 对客户端调整</h2>
+<h3>(1)调用方式的改变</h3>
+<p>改用长链接。</p>
+<h3>(2)POST参数传递方式的改变</h3>
+<p>统一使用json发送数据包。</p>
+<h2>3.9.5 对服务端的影响</h2>
+<h3>(1)DI资源服务的调整</h3>
+<table>
+<thead>
+<tr>
+<th>变量名称</th>
+<th>是否全局通用</th>
+<th>是否每次请求新建</th>
+<th>可否使用</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>loader</td>
+<td>是</td>
+<td>否</td>
+<td>可使用</td>
+</tr>
+<tr>
+<td>config</td>
+<td>是</td>
+<td>否</td>
+<td>可使用</td>
+</tr>
+<tr>
+<td>logger</td>
+<td>是</td>
+<td>否</td>
+<td>可使用</td>
+</tr>
+<tr>
+<td>notorm</td>
+<td>是</td>
+<td>否</td>
+<td>可使用</td>
+<td>每次响应后，关闭此次全部数据库链接</td>
+</tr>
+<tr>
+<td>cache</td>
+<td>是</td>
+<td>否</td>
+<td>可使用</td>
+<td>需要查看使用的链接是否支持长链接</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>是</td>
+<td>否</td>
+<td>可使用</td>
+</tr>
+<tr>
+<td>crypt</td>
+<td>是</td>
+<td>否</td>
+<td>可使用</td>
+</tr>
+<tr>
+<td>curl</td>
+<td>是</td>
+<td>否</td>
+<td>可使用</td>
+</tr>
+<tr>
+<td>request</td>
+<td>否</td>
+<td>是</td>
+<td>可使用</td>
+</tr>
+<tr>
+<td>response</td>
+<td>否</td>
+<td>是</td>
+<td>可使用</td>
+</tr>
+<tr>
+<td>cookie</td>
+<td>---</td>
+<td>---</td>
+<td>不可使用</td>
+<td>长链接下不应进行COOKIE的操作</td>
+</tr>
+</tbody>
+</table>
+<h3>(2)关于swoole扩展类库的自问自答</h3>
+<ul>
+<li>1、数据库使用长链接吗？ -- 不使用，每次响应后手动关闭数据链接</li>
+<li>2、内存问题？-- 通过类成员方法的作用域控制内存</li>
+<li>3、并发的问题？-- TODO</li>
+<li>4、代码更新后如何同步？需要重启服务器吗？  -- 需要重启</li>
+<li>5、PhalApi_Response::formatResult()的访问权限，是框架的调整，还是个别自我提高？ -- 扩展自我提高</li>
+<li>6、注册错误回调函数？ -- 来自swoole的建议，已注册</li>
+<li>7、启动和关闭、重启脚本文件？ -- 提供参考命令</li>
+<li>8、一直运行？ -- TODO
+<h3>(3)特别注意！</h3>
+<p>由于服务在启动后，已经完成了大部分的类加载、配置读取以及PHP文件的解析，所以在对项目代码（包括配置）修改后，需要重启服务，方能生效。</p></li>
+</ul>
+<hr />
+<h4><a href="/wikis/%5B3.8%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E7%94%A8%E6%88%B7%E3%80%81%E4%BC%9A%E8%AF%9D%E5%92%8C%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E9%9B%86%E6%88%90.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left"><font size="2px">&copy;PhalApi All Rights Reserved. 粤ICP备15028808号</font></p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>
