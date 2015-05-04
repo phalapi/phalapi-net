@@ -181,11 +181,11 @@ CREATE TABLE `tpl_demo_2` (
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre>
 <h3>(4)使用与代码开发</h3>
 <p>在将上面的SQL语句导入数据库后，即可以像之前那样操作数据库。下面是一些示例：</p>
-<pre><code>DI()-&gt;notorm = new Core_DB_NotORM(Core_DI::one()-&gt;config-&gt;get('dbs'), true);
+<pre><code>DI()-&gt;notorm = new PhalApi_DB_NotORM(PhalApi_DI::one()-&gt;config-&gt;get('dbs'), true);
 
 DI()-&gt;notorm-&gt;demo-&gt;where('id', '1')-&gt;fetch();</code></pre>
 <p>用到了拆分表的代码示例，假设event表被拆分成了3个表，则客户端在调用里，需要根据（id % 3 ）来拼接合适的数据库表名，其他使用不变。</p>
-<pre><code>DI()-&gt;notorm = new Core_DB_NotORM(Core_DI::one()-&gt;config-&gt;get('dbs'), true);
+<pre><code>DI()-&gt;notorm = new PhalApi_DB_NotORM(PhalApi_DI::one()-&gt;config-&gt;get('dbs'), true);
 
 DI()-&gt;notorm-&gt;demo_0-&gt;where('id', '3')-&gt;fetch();
 DI()-&gt;notorm-&gt;demo_1-&gt;where('id', '10')-&gt;fetch();
