@@ -135,7 +135,7 @@ DI()-&gt;userLite = new User_Lite();</code></pre>
         ),
     ),</code></pre>
 <h3>(6)checkApiParams.php的初始化</h3>
-<p>同样，需要在checkApiParams.php文件显式沆，才能让User这个扩展类库完成自我的必要初始化：</p>
+<p>同样，需要在checkApiParams.php文件显式注册，才能让User这个扩展类库完成自我的必要初始化：</p>
 <pre><code>//装载你的接口
 DI()-&gt;loader-&gt;addDirs(array('Demo', 'Library'));
 DI()-&gt;userLite = new User_Lite();</code></pre>
