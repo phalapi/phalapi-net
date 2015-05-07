@@ -134,6 +134,12 @@ DI()-&gt;userLite = new User_Lite();</code></pre>
             'name' =&gt; 'token', 'type' =&gt; 'string', 'default' =&gt; '', 'require' =&gt; false,
         ),
     ),</code></pre>
+<h3>(6)checkApiParams.php的初始化</h3>
+<p>同样，需要在checkApiParams.php文件显式沆，才能让User这个扩展类库完成自我的必要初始化：</p>
+<pre><code>//装载你的接口
+DI()-&gt;loader-&gt;addDirs(array('Demo', 'Library'));
+DI()-&gt;userLite = new User_Lite();</code></pre>
+<p>否则会导致service不存在。</p>
 <h2>3.8.3 入门使用</h2>
 <h3>(1)对于客户端</h3>
 <h4>(1-1)微信登录</h4>
