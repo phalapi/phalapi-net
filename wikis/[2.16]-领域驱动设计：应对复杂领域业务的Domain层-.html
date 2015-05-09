@@ -190,7 +190,7 @@ PHP是一个运行于服务端的脚本解析语言，每一个HTTP请求都会�
 当坐标A发生改变，坐标A就不再是原来的坐标A，而是一个新的坐标。从哲学角度上看，这是两个不同的概念。  </p>
 <p>在PhalApi中，我们可以看到不可变值在Query对象中的应用：  </p>
 <pre><code>$query1 = new PhalApi_ModelQuery();
-$query2-&gt;id = 1;
+$query1-&gt;id = 1;
 
 $query2 = new PhalApi_ModelQuery($query1-&gt;toArray());
 $query2-&gt;id = 2;</code></pre>
