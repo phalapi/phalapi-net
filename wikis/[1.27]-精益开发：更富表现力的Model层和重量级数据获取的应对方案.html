@@ -145,29 +145,34 @@
 <p>在构造Model代理时，默认情况下使用了DI()-&gt;cache作为缓存，当需要进行单元测试时，我们可以两种途径在外部注入模拟的缓存而达到测试的目的：替换全局的DI()-&gt;cache，或单次构造注入。对于计划任务则可以在统一的后台任务启动文件将DI()-&gt;cache设置成空对象。</p>
 <h3>(2)取消缓存的方法2： 查询中的缓存控制</h3>
 <p>在项目层次，我们可以统一构造自己的查询基类，以实现对缓存的控制。  </p>
-<p>如：
-···
-class My_ModelQuery extends PhalApi_ModelQuery {</p>
-<pre><code>public function __construct($queryArr = array()) {
-    parent::__construct($queryArr);
+<p>如：</p>
+<pre><code>class My_ModelQuery extends PhalApi_ModelQuery {
 
-    if (DI()-&gt;debug) {
-        $this-&gt;readCache = FALSE;
-        $this-&gt;writeCache = FALSE;
+    public function __construct($queryArr = array()) {
+        parent::__construct($queryArr);
+
+        if (DI()-&gt;debug) {
+            $this-&gt;readCache = FALSE;
+            $this-&gt;writeCache = FALSE;
+        }
     }
-}</code></pre>
-<p>}
+}
 ···
-至于DI()-&gt;debug的设置，则可以在入口文件中根据约定的接口参数设定，简单地如：</p>
-<pre><code>if (isset($_GET['debug']) &amp;&amp; $_GET['debug'] == 1) {
-    DI()-&gt;debug = true;
-}</code></pre>
-<p>这样便可以获得了接口预览和调试的能力。</p>
-<h2>1.27.5 何时使用此方案？</h2>
-<p>可以看到，此方案是在缓存策略（包括单点缓存、低高速缓存、多级缓存）和广义Model层基础上扩展的，以便应对重量级的业务数据获取。此方案有一定的优势，但作为代价则是额外的代码编写以及层级复杂性。并且，我们还没谈及到数据变更时的处理。    </p>
-<p>所以，请在确切需要统一封装高成本的数据获取时，才使用此方案。</p>
-<hr />
-<h4><a href="/wikis/%5B1.26%5D-%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E6%96%B9%E6%A1%88.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.28%5D-COOKIE%EF%BC%9A%E5%AF%B9COOKIE%E5%8E%9F%E7%94%9F%E6%80%81%E7%9A%84%E6%94%AF%E6%8C%81%E5%8F%8A%E8%AE%B0%E5%BF%86%E5%8A%A0%E5%AF%86%E5%8D%87%E7%BA%A7%E7%89%88.html">下一章</a></h4>
+至于DI()-&gt;debug的设置，则可以在入口文件中根据约定的接口参数设定，简单地如：</code></pre>
+<p>if (isset($_GET['debug']) &amp;&amp; $_GET['debug'] == 1) {
+DI()-&gt;debug = true;
+}</p>
+<pre><code>
+这样便可以获得了接口预览和调试的能力。
+
+##1.27.5 何时使用此方案？
+可以看到，此方案是在缓存策略（包括单点缓存、低高速缓存、多级缓存）和广义Model层基础上扩展的，以便应对重量级的业务数据获取。此方案有一定的优势，但作为代价则是额外的代码编写以及层级复杂性。并且，我们还没谈及到数据变更时的处理。    
+
+所以，请在确切需要统一封装高成本的数据获取时，才使用此方案。
+
+***
+
+####[上一章](/wikis/%5B1.26%5D-%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E6%96%B9%E6%A1%88.html)   [文档首页](/wikis/)   [下一章](/wikis/%5B1.28%5D-COOKIE%EF%BC%9A%E5%AF%B9COOKIE%E5%8E%9F%E7%94%9F%E6%80%81%E7%9A%84%E6%94%AF%E6%8C%81%E5%8F%8A%E8%AE%B0%E5%BF%86%E5%8A%A0%E5%AF%86%E5%8D%87%E7%BA%A7%E7%89%88.html)</code></pre>
             </div>
         </div>
     </div>
