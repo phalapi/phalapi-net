@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[1.30]-保持的力量：接口开发最佳实践 | PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,phalapi文档,phalapi wiki,PhalApi文档,phalapi在线文档,phalapi官方文档">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">保护大象，拒绝象牙！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="/wikis/%5B1.29%5D-%E5%BC%80%E6%94%BE%E4%B8%8E%E5%B0%81%E9%97%AD%EF%BC%9A%E5%A4%9A%E5%85%A5%E5%8F%A3%E5%92%8C%E7%BB%9F%E4%B8%80%E5%88%9D%E5%A7%8B%E5%8C%96.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.31%5D-%E6%96%B0%E5%9E%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%9A%E4%BB%A5%E6%8E%A5%E5%8F%A3%E5%BD%A2%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1.html">下一章</a></h4>
+<hr />
+<p><em>神啊，求你赐给我平静的心，去接受我无法改变的事；赐给我勇气，去做我能改变的事；赐给我智慧，去分辨两者的不同。 --平静之祷</em>  </p>
+<h2>1.30.1 论保持的力量</h2>
+<p>追到一个心仪的女生不难，难于如何保持和培养一份真挚的感情；获得一时的财富也不难，难于如何长久保持收益；创业的公司很容易博得一时媒体的关注以及某次天使的投资，但难于如何排除各种障碍、充分利用各方资源发展成中企业及至上市公司。  </p>
+<p>同样，提供一时的接口很容易，但当我们需要不断为接口提供升级，以及当我们维护提供一整套接口时，面临的困难和问题会越来越大。<br />
+所以，这是一场持久的战役。需要我们用稳重的心态、专业的能力在背后持久支撑、推动。  </p>
+<p>值得庆幸的是，这些都是问题而不是限制，都是可以被解决的。<br />
+以下是结合 @郭了个浩浩 同学提供的apigee.web_api.pdf文档，以及我们多年来的项目实际开发经验为新手提供的一些建议，对老同学相信也会有所帮助。<br />
+每个建议通常会包括三部分： <strong>现在主流的做法、PhalApi的做法以及项目的选取。 </strong></p>
+<h2>1.30.2 最佳实践建议</h2>
+<p>为了大家查阅和翻看，这里先罗列本章的全部建议：</p>
+<ul>
+<li>(1)接口风格和协议的选择 - HTTP</li>
+<li>(2)接口域名 - 使用api单独域名</li>
+<li>(3)异常处理 - 200/400/500三大接口结果状态码</li>
+<li>(4)对外的命名规则 - 使用小写加下划线</li>
+<li>(5)对内的命名规则 - 使用驼峰法和遵循PEAR命名</li>
+<li>(6)安全与验证 - 使用接口签名和token登录态双重机制</li>
+<li>(7)返回结果格式 - JSON</li>
+<li>(8)URL规则与路由映射 - 统一service接口服务，可一个文件一个接口</li>
+<li>(9)SDK包 - 给客户端自由的调用空间和自由</li>
+<li>(10)接口文档 - 使用markdown快速编写</li>
+<li>(11)测试驱动开发 - 坚持单元测试</li>
+</ul>
+<h2>1.30.3 建议细说</h2>
+<h3>(1)接口风格和协议的选择 - HTTP</h3>
+<p>目前，后台接口开发可以用RESTFull风格，也可以用Web Service；可以用SOAP协议、RPC协议，也可以用HTTP协议；可以用短链接，也可以使用长链接。如果我们希望继续进行划分，还可以分为同步或异步、单个或批量、是否有SDK包、内部接口还是开放接口平台等。  </p>
+<h4>主流的做法</h4>
+<p>现在看来，大部分大型的企业以及大多数的小公司使用的都是HTTP协议下的接口开发，部分使用RESTFull，但Web Service较少。如：  </p>
+<ul>
+<li><a href="http://open.youku.com/docs/docs?id=44">优酷开放平台</a>，<a href="https://openapi.youku.com/v2/videos/show_basic.json">示例请点击</a></li>
+<li><a href="http://iot.weixin.qq.com/index.html">微信公众号-服务器接口协议</a>，<a href="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=">示例请点击</a></li>
+<li><a href="open.weibo.com">新浪微博开放平台</a>，使用REST风格，<a href="https://api.weibo.com/2/statuses/mentions/ids.json">示例请点击</a></li>
+<li><a href="http://aws.amazon.com/cn/documentation/">Amazon</a> ，采用Web Service、SOAP、REST等多种风格和协议提供服务，<a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketGETtagging.html">示例请点击</a></li>
+</ul>
+<h4>PhalApi的做法</h4>
+<p>我们选取了HTTP的协议，在于其无论是客户端接入、开发调试，还是部署构建上都很容易实现，而且也符合主流，因为大家都比较熟悉。<br />
+这一点是非常重要的：因为简单，后台接口开发的同学才会更容易上手；因为容易，客户端接入才会更加无压力而不用担心处处受挫。  </p>
+<h4>项目的选取</h4>
+<p>根据项目不同的项目背景和需求，可以选择你合适的风格或者协议。但是即使出于安全、性能或者其他技术或非技术的原因而不采用HTTP协议的情况下，你也可以在PhalApi原有的接口开发实现时，轻松扩展你需要的协议。如使用SOAP，PHPRpc或者swoole下的TCP协议。其中，部分协议已有扩展类库提供支持。</p>
+<h3>(2)接口域名 - 使用api单独域名</h3>
+<p>首先，有一点是可以肯定的。<br />
+接口系统应该有自己单独的域名，而不应该附属于网站或者管理后台。  </p>
+<h4>主流的做法</h4>
+<p>显然，主流做法也是这样做的。如：</p>
+<ul>
+<li>优酷开放平台：<a href="https://openapi.youku.com">https://openapi.youku.com</a></li>
+<li>微信公众号： <a href="https://api.weixin.qq.com">https://api.weixin.qq.com</a></li>
+<li>新浪微博： <a href="https://api.weibo.com">https://api.weibo.com</a></li>
+</ul>
+<h4>项目的选取</h4>
+<p>如果可以，尽量让接口系统使用独立的域名，并且使用api作为一级域名。如：</p>
+<pre><code>//你的网站为：
+http://www.demo.com
+
+//则对应的接口为：
+http://api.demo.com</code></pre>
+<h3>(3)异常处理 - 200/400/500三大接口结果状态码</h3>
+<p>对于接口的异常处理，在使用HTTP协议下，可以通过HTTP本身的响应状态码来进行区分。
+在非HTTP协议并有SDK包的情况下，异常的处理手段则会更为多样。  </p>
+<h4>主流的做法</h4>
+<p>优酷接口采用了HTTP响应状态码加结果返回的形式，如：</p>
+<pre><code>Request URL:https://openapi.youku.com/v2/videos/show_basic.json
+Request Method:GET
+Status Code:400 Bad Request
+
+{"error":{"code":1004,"type":"SystemException","description":"Client id null"}}</code></pre>
+<p>新浪微博也一样：</p>
+<pre><code>Request URL:https://api.weibo.com/2/statuses/mentions/ids.json
+Request Method:GET
+Status Code:403 Forbidden
+
+{"error":"auth by Null spi!","error_code":21301,"request":"/2/statuses/mentions/ids.json"}</code></pre>
+<p>微信接口则采用了统一200的形式，如：</p>
+<pre><code>Request URL:https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=
+Request Method:GET
+Status Code:200 OK
+
+{"errcode":41002,"errmsg":"appid missing"}</code></pre>
+<h3>PhalApi的做法</h3>
+<p>为了与HTTP保持一致性，同时降低不必要的复杂性，我们采用了200/400/500三大接口结果状态码。  </p>
+<p>注意，这里所说的三大状态码，是指接口返回结果中的状态码，而不是HTTP的响应状态。<br />
+也就是说接口全部的结果返回都应该是200，除非接口服务有内部未捕获的异常，即：</p>
+<pre><code>Status Code:200 OK</code></pre>
+<p>返回结果状态码刚是以下几种：</p>
+<pre><code>//正常返回
+{
+    "ret": 200,
+    "data": {
+        //...
+    },
+    "msg": ""
+}
+
+//客户端非法请求
+{
+    "ret": 400,
+    "data": [],
+    "msg": "非法请求：接口服务Default.Test不存在"
+}
+
+//服务端内部错误
+{
+    "ret": 500,
+    "data": [],
+    "msg": "服务器运行错误: can not connect to database db_demo"
+}
+
+####项目的选取
+你可以根据你的需要，扩展400和500这两系列的错误，如401表示登录失败等。  
+此外，在data里面，你也可以添加一个code来表示业务级的操作码，以及客户端根据不同的业务场景做出不同和反应、交互或引导提示。
+</code></pre>
+<h3>(4)对外的命名规则 - 使用小写加下划线</h3>
+<p>对外的命名，是指外部看得到的命名，如接口参数的名字，接口返回的结果节点名字，以及数据库的表名、字段名。  </p>
+<h4>主流的做法</h4>
+<p>新浪微博采用了小写加下划线的做法，如：</p>
+<pre><code>//URL
+https://c.api.weibo.com/2/friendships/followers/trend_count.json
+
+//请求参数
+source
+access_token
+
+//返回结果
+{
+    "uid": 10438,
+    "result": [            
+        {
+            "days": "2012-04-04",
+            "follower_count_online":"15",  //粉丝数 
+            "active_follower":"14", //活跃粉丝数
+            "loyal_follower":"0"   //互动粉丝数            
+        },
+        ....
+    ]
+}
+</code></pre>
+<p>Amazon采用了首字母大写且无下划线的做法，如：</p>
+<pre><code>//Responses
+HTTP/1.1 200 OK
+Date: Wed, 25 Nov 2009 12:00:00 GMT
+Connection: close
+Server: AmazonS3
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;BucketLoggingStatus xmlns="http://doc.s3.amazonaws.com/2006-03-01"&gt;
+  &lt;LoggingEnabled&gt;
+    &lt;TargetBucket&gt;mybucketlogs&lt;/TargetBucket&gt;
+    &lt;TargetPrefix&gt;mybucket-access_log-/&lt;/TargetPrefix&gt;
+    &lt;TargetGrants&gt;
+      &lt;Grant&gt;
+        &lt;Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:type="AmazonCustomerByEmail"&gt;
+          &lt;EmailAddress&gt;user@company.com&lt;/EmailAddress&gt;
+        &lt;/Grantee&gt;
+        &lt;Permission&gt;READ&lt;/Permission&gt;
+      &lt;/Grant&gt;
+    &lt;/TargetGrants&gt;
+  &lt;/LoggingEnabled&gt;
+&lt;/BucketLoggingStatus&gt;</code></pre>
+<h3>PhalApi的做法</h3>
+<p>我们提倡使用全部小写加下划线的命名，因为这样更符合客户端的使用，如：
+接口参数：</p>
+<pre><code>//正确的
+&amp;user_id=888
+
+//错误的
+&amp;user_id=888</code></pre>
+<p>返回字段：</p>
+<pre><code>//正确的
+"device_type": "cube",
+
+//错误的
+"deviceType": "cube",</code></pre>
+<p>数据库字段：</p>
+<pre><code>//正确的
+`user_id` bigint(20) DEFAULT '0' COMMENT '创建者的用户ID',
+
+//错误的
+`userId` bigint(20) DEFAULT '0' COMMENT '创建者的用户ID',</code></pre>
+<h3>项目的选取</h3>
+<p>不管是使用全部小写，还是全部大写，项目都应该保持一致的命名风格，而不是混合凌乱的风格。</p>
+<h3>(5)对内的命名规则 - 使用驼峰法和遵循PEAR命名</h3>
+<p>与对外命名对应的则是对内的命名规则，这里又回归到了老生常谈的PHP代码风格。<br />
+这里不作过多的说明，只是稍作提及。  </p>
+<h3>PhalApi的做法</h3>
+<p>我们建议使用PEAR包的命名风格，和驼峰法，如下为一个接口示例：</p>
+<pre><code>$ vim ./Api/Default.php 
+&lt;?php
+/**
+ * 默认接口服务类
+ *
+ * @author: dogstar &lt;chanzonghuang@gmail.com&gt; 2014-10-04
+ */
+
+class Api_Default extends PhalApi_Api {
+
+    public function getRules() {
+        return array(
+            'index' =&gt; array(
+                'username'  =&gt; array('name' =&gt; 'username', 'default' =&gt; 'PHPer', ),
+            ),
+        );
+    }
+
+    public function index() {
+        return array(
+            'title' =&gt; 'Default Api',
+            'content' =&gt; T('Hello {name}, Welcome to use PhalApi!', array('name' =&gt; $this-&gt;username)),
+            'version' =&gt; PHALAPI_VERSION,
+            'time' =&gt; $_SERVER['REQUEST_TIME'],
+        );
+    }
+}</code></pre>
+<h3>项目的选取</h3>
+<p>你可以选择你喜欢的风格，但团队应该保持一致。  </p>
+<p>即便你不喜欢PhalApi约定的PEAR命名，你也可以自行实现内部的类加载机制。<br />
+当有多个项目或者多个模块并存时，可以添加模块名前缀来作区分，如：</p>
+<pre><code>$ tree
+.
+├── Demo
+│   └── Api
+│       └── DUser.php
+├── MyApp
+│   └── Api
+│       └── MUser.php
+└── Task
+    └── Api
+        └── TUser.php
+
+$ head */*/*
+==&gt; Demo/Api/DUser.php &lt;==
+&lt;?php
+class Api_DUser extends PhalApi_Api {
+}
+
+==&gt; MyApp/Api/MUser.php &lt;==
+&lt;?php
+class Api_MUser extends PhalApi_Api {
+}
+
+==&gt; Task/Api/TUser.php &lt;==
+&lt;?php
+class Api_TUser extends PhalApi_Api {
+}</code></pre>
+<p>其它的Domain层和Model层等也类似，这样可以避免类名冲突，或者IDE开发环境下的混淆。</p>
+<h3>(6)安全与验证 - 使用接口签名和token登录态双重机制</h3>
+<p>既然采用HTTP协议，那么安全方面就需要接口自身进行保证。  </p>
+<p>所幸，现在可用的加密手段有多种选择。<br />
+对于接口签名，我们可以使用非对称的验签方式，如md5；也可以用对称的方式，如RSA。<br />
+最后，为每一个接入的客户端分配app_key和app_secrect即可。  </p>
+<p>当然，更好的安全是接口系统再提供登录态的验证，即通常所说的token。
+这两者的相合，会为接口增加更好的安全保障。</p>
+<h4>主流的做法</h4>
+<ul>
+<li>七牛云存储，采用Access Key/Secret Key，并且在需要时添加相应的凭证</li>
+<li>微信公众号，采用由AppID(应用ID)和AppSecret(应用密钥)生成的ACCESS_TOKEN</li>
+<li>优酷开放平台，采用应用Key client_id</li>
+</ul>
+<h3>PhalApi的做法</h3>
+<p>我们不提供具体的接口签名方案，是因为把这种决策移交给项目应用本身进行定制。<br />
+而定制也是非常简单的，只需要简单的两步即可：  </p>
+<ul>
+<li>1、实现过滤器接口 <strong>PhalApi_Filter::check()</strong>；</li>
+<li>2、注册过滤器服务 <strong>DI()-&gt;filter</strong>；</li>
+</ul>
+<p>对于token，虽然框架没有提供内置的实现，但可以从PhalApi的扩展类库寻找这种支持，这一点已经User扩展类库支持。  </p>
+<h3>项目的选取</h3>
+<p>正如PhalApi提供的自由空间，项目可以自行实现接口签名，和根据需要是否采用User扩展类库，或者自行实现token的处理。</p>
+<h3>(7)返回结果格式 - JSON</h3>
+<p>在 <a href="/wikis/%5B1.14%5D-%E7%BB%9F%E4%B8%80%E7%9A%84%E8%BF%94%E5%9B%9E%E6%A0%BC%E5%BC%8F%E5%92%8C%E7%BB%93%E6%9E%84%EF%BC%9Aret-data-msg.html">[1.14.1 统一返回的格式]</a>一节中，已经对JSON的返回格式作了说明，这里不再赘述，也只是稍作提及。  </p>
+<h4>主流的做法</h4>
+<p>目前采用了JSON的格式返回的有：</p>
+<ul>
+<li>新浪微博</li>
+<li>优酷开放平台</li>
+<li>腾讯开放平台</li>
+<li>微信接口</li>
+</ul>
+<p>采用了XML格式返回的有：</p>
+<ul>
+<li>Amazon</li>
+</ul>
+<h3>PhalApi的做法</h3>
+<p>我们默认采了JSON的格式返回。</p>
+<h3>项目的选取</h3>
+<p>项目可以轻松扩展成其他格式的返回。  </p>
+<h3>(8)URL规则与路由映射 - 统一service接口服务，可一个文件一个接口</h3>
+<p>先从项目内部的文件划分说起，通常最为常见的情况是，很多开发人员都喜欢把很多很多很多接口都塞到一个接口文件里面。  </p>
+<p>这样的文件，通常会有2K到3K左右。<br />
+我觉得这是一种极端，而且是一种不好的极端。因为文件过大的话，会带来很多问题。  </p>
+<p>但与之对立的有另一种做法，即一个文件，一个接口。<br />
+这一点，在我之前就职的一家出名的游戏公司中得到了广泛的认可和遵循。如：  </p>
+<pre><code>//?service=UserInfo.Go
+&lt;?php
+class Api_UserInfo extends PhalApi_Api {
+
+     public function go() {
+           //TODO
+     }
+}
+
+//?service=GroupInfo.Go
+&lt;?php
+class Api_GroupInfo extends PhalApi_Api {
+
+     public function go() {
+           //TODO
+     }
+}</code></pre>
+<p>虽然也是一种极端，但却很好地做到了接口隔离，即不用担心修改此接口的实现而影响到其他接口服务。  </p>
+<p>最后，我们再来聊URL规则，就更顺畅了。如果我们采用一个文件对应一个接口，则我们可以省略Action（全部都为go()方法），简写成：?service=XXX。<br />
+再进一步，我们可以利用接口服务器（如Nginx）的规则Rewrite来提供更好的URL规则，同时尽量隐藏我们的接口内部实现细节，如：</p>
+<pre><code>//原始地
+http://api.demo.com/?service=UserInfo.Go
+
+//简化地
+http://api.demo.com/?service=UserInfo
+
+//再进一步
+http://api.demo.com/UserInfo
+
+//或者
+http://api.demo.com/UserInfo.json</code></pre>
+<p>还有一点需要关注的就是接口的版本，当有v1，v2，v3等不同的版本时，我们也需要在接口URL中体现这些版本的不同。  </p>
+<h4>主流的做法</h4>
+<ul>
+<li>新浪微博的一个接口URL：<a href="https://c.api.weibo.com/2/friendships/followers/trend_count.json">https://c.api.weibo.com/2/friendships/followers/trend_count.json</a></li>
+<li>优酷平台的一个接口URL：<a href="https://openapi.youku.com/v2/videos/show_basic.json">https://openapi.youku.com/v2/videos/show_basic.json</a></li>
+<li>微信的一个接口URL：<a href="https://api.weixin.qq.com/device/get_stat">https://api.weixin.qq.com/device/get_stat</a></li>
+</ul>
+<h3>PhalApi的做法</h3>
+<p>目前而方，PhalApi在URL规则和路由这块还比较欠缺，没有像其他网站一样提供强大的路由支持。<br />
+但我们在代码实现的层面，可以提供不同的入口，以开放给不同的终端（内部的或者外部的）， 以及不同的版本支持。如：</p>
+<pre><code>$ tree Public/
+Public/
+├── v1
+│   └── index.php
+├── v2
+│   └── index.php
+└── v3
+    └── index.php
+
+3 directories, 3 files</code></pre>
+<p>则对应的版本URL则可以为：</p>
+<pre><code>//v1版本
+http://api.demo.com/v1/?service=Default.Index
+
+//v2版本
+http://api.demo.com/v1/?service=Default.Index
+
+//v3版本
+http://api.demo.com/v1/?service=Default.Index
+</code></pre>
+<h3>项目的选取</h3>
+<p>项目可以结合不同的入口，以及接口服务器的URL规则Rewrite作一些自定的URL路由。</p>
+<h3>(9)SDK包 - 给客户端自由的调用空间和自由</h3>
+<p>目前移动开发主要有iOS、Android、Windowns Phone、网站等不同的终端，各种终端又有不同的语言，如果我们需要提供SDK包，不仅仅需要考虑到纵向的版本升级，还需要维护横向的多样性。<br />
+而且，如果我们使用的是HTTP协议，则不必要担心这些维护的成本，同时给客户端提供一个自由的空间进行调用 -- 即客户端可以自己编写本身的接口客户端。  </p>
+<h4>主流的做法</h4>
+<p>很多国内的开放平台接口都是不提供SDK包的，但有些安全度高的则会，如支持宝。  </p>
+<p>以下是一些提供了SDK的平台 ：</p>
+<ul>
+<li><a href="https://openhome.alipay.com/doc/docIndex.htm?url=https://openhome.alipay.com/doc/viewKbDoc.htm?key=236698_261849&amp;type=info">支付宝SDK</a></li>
+<li><a href="https://developer.yahoo.com/social/sdk/">Yahoo! SDKs</a></li>
+<li><a href="https://aws.amazon.com/cn/tools/">Amazon丰富的开发工具包</a></li>
+</ul>
+<h3>PhalApi的做法</h3>
+<p>我们暂时没有提供SDK包，但对于PHP，有一个简单的客户端类，可见： <a href="/wikis/%5B1.13%5D-%E7%BB%9F%E4%B8%80%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%EF%BC%9A_sevice=XXX.XXX.html">[1.13]-统一的接口请求方式</a></p>
+<h3>项目的选取</h3>
+<p>出于公司产品簇的项目考虑，项目可以内部提供SDK给同类的客户端使用，如分为iOS版的客户端SDK，以及Android版的客户端SDK。</p>
+<h4>小故事：与SDK包的一个真实的痛苦经历</h4>
+<p>有一点是非常重要的，千万不要让不懂PHP语言的人去开发提供PHP的SDK包，更不要使用所谓的工具自动转换生成SDK包代码。<br />
+在我曾经做过的一个项目中，因为需要接入一个接口系统，而这个接口是由专业的JAVA团队维护的，但他们对PHP语言则是非常薄弱，以致他们使用了工具来生成PHP语言的SDK包。   </p>
+<p>这就导致了我在接入一个简单的接口时，却开发联调耗费了两天、测试联调时耗费了在接口调用超时问题排查上。<br />
+而最后找到的原因却是因为app_key不对而导致服务端异常，而在SDK包却隐藏了这一异常错误信息，反而给出了time out超时的提示，严重误导了排查的方向！<br />
+而当我尝试深入去调试SDK时，得到却又是既没有code又没有message的异常！最让人难以忍受的是，他们提供的SDK包竟然和JAVA的企业系统一样复杂的结构（正如他们是使用工具来生成转换的）！  </p>
+<p>想象一下，PHP代码下有\com\sina\webo\sdk\Constants.php这样类似JAVA的文件结构，PHP的同学会作何感想？用JAVA的世界的方式来开发PHP，显然是走不通的啊！<br />
+而执意要走的话，到最后就是各种接入的痛苦，稍微按奈不住的同学难免就会因为情绪问题而大开争论了。而这一切，只是因为非PHP人员使用了自动生成工具。<br />
+我觉得，这是一种不负责任的做法，希望大家不要效仿。</p>
+<h3>(10)接口文档 - 使用markdown快速编写</h3>
+<p>（场外音：通过沐浴法理清了头绪，继续回来执笔编写）。<br />
+就我个人经历而言，markdown就是一个开始你会拒绝，接着你会越来越喜欢，到最后会爱不释手的一个工具。  </p>
+<p>如果你或者你的团队还在使用邮件或者work文档来传递共享接口文档，那就太不应该了；如果你正在使用某个WIKI系统进行文档的维护但却不喜欢它的编辑或者展示方式时，你可以尝试使用一下markdown。<br />
+正如你现在正在查看的文档也是通过markdown编写的。  </p>
+<h4>主流的做法</h4>
+<p>作为开放接口平台，文档肯定是以网站的形式提供。但很多时候，对于我们内部的接口或者小项目来说，显然这样的成本太大了。<br />
+接口，从简单开始。<br />
+我们理应一直坚持这一点，所以文档也是一样，我们应该寻求一种在内部快速共享最新接口文档的途径。如：</p>
+<ul>
+<li>1、使用内部WIKI</li>
+<li>2、使用开源中国或者其他站点的WIKI（这时可以通过在线编辑或者GIT更新）</li>
+</ul>
+<h3>项目的选取</h3>
+<p>你可以根据项目的需要，或者公司以往的做法，但至少不要再使用邮件或者word文档。  </p>
+<h3>(11)测试驱动开发 - 坚持单元测试</h3>
+<p>单元测试，在PhalApi里面不只一次提到了，这里再次进行说明，是希望能引起大家的关注，去尝试体验一下。  </p>
+<p>我们都知道，在开发一个新功能时、新接口时，修复一个BUG或者作一些大的调整或者重构工作，我们是毫无压力的，而且这时的成本很低，仅在于开发人员本身的时间和精力的消耗。<br />
+当提测后进入测试阶段，测试人员发现一个BUG后，有些团队会以禅道或者Bugzilla或其他方式来纪录和追踪BUG。这时我们开发会觉得一个这么小的问题还需要去纪录、去登记很不值得。然后，我们应当注意到这时修复一个BUG会涉及到测试人员资源的开销。<br />
+当进入了回归测试阶段，特别是多系统交互、跨团队合作时，一个BUG就会从一个人传到另一个人，从这个团队流到那个团队，这时成本就会逐渐增大。  </p>
+<p>最后，上线后，当一个奇怪的问题出现后，我们需要定位原因就更加困难重重了。<br />
+我曾经就经历这样一番：有用户发现游戏的道具减少了。我们一开始以为是某些运营配置、或者数据以及用户的等级限制所引发的，但在排除了各种业务的问题后，到最后却发现是PHP中array使用“+”运算而引发的血案！<br />
+在正常情况下，我们都知道array_merge()函数对于数值的下标则会追加并重新生成下标序列，即会合并；而数组+则会去掉相同下标的元素。  </p>
+<p>但实际情况下，线上BUG所产生的影响不在于排查和修复的时间成本，而在于在这段时间内所损失的金额、数据等成本。  </p>
+<p>当然，从测试的角度上看，测试并不能保证我们的系统没有BUG，只能说暂时未发现BUG。<br />
+单元测试也一样，作为开发人员，我们应当在最低成本的时期就及时发现我们直觉觉得可能会出现的问题并进行修复。<br />
+对我们亲手所编写的代码负责，并且用客观的方式来证明我们的代码目前未发现问题，而不是主观认为“我写的代码没有问题”。更不应该一次又一次地犯下各种低级或者重复的错误，而让团队其他成员对我们丧失信任。  </p>
+<p>PhalApi一直很注重单元测试，也很注重自动化，为了减轻大家重复编写单元测试骨架代码的痛苦，我们提供了一个可以生成单元测试代码的脚本。<br />
+假设我们有这么一个类：</p>
+<pre><code>&lt;?php
+
+class Api_Default extends PhalApi_Api {
+
+        public function index() {
+             //TODO
+        }
+}</code></pre>
+<p>那么，我们可以这样生成测试代码：</p>
+<pre><code>$ cd .//Demo/Tests
+$ phalapi-buildtest ../Api/Default.php Api_Default ./test_env.php 
+&lt;?php
+/**
+ * PhpUnderControl_ApiDefault_Test
+ *
+ * 针对 ../Api/Default.php Api_Default 类的PHPUnit单元测试
+ *
+ * @author: dogstar 20150514
+ */
+
+require_once dirname(__FILE__) . '/test_env.php';
+
+if (!class_exists('Api_Default')) {
+    require dirname(__FILE__) . '/../Api/Default.php';
+}
+
+class PhpUnderControl_ApiDefault_Test extends PHPUnit_Framework_TestCase
+{
+    public $apiDefault;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this-&gt;apiDefault = new Api_Default();
+    }
+
+    protected function tearDown()
+    {
+    }
+
+    /**
+     * @group testGetRules
+     */ 
+    public function testGetRules()
+    {
+        $rs = $this-&gt;apiDefault-&gt;getRules();
+    }
+
+    /**
+     * @group testIndex
+     */ 
+    public function testIndex()
+    {
+        $rs = $this-&gt;apiDefault-&gt;index();
+    }
+
+}</code></pre>
+<blockquote>
+<p>温馨提示：  </p>
+<ol>
+<li>可以先执行：ln -s /path/to/PhalApi/phalapi-buildtest /usr/bin/phalapi-buildtest  </li>
+<li>test_env.php为测试环境初始化文件，可以在里面引用init.php文件，并作一些调整  </li>
+<li>输出的测试代码可以重定向到./Demo/Tests/Api/Api_Default_Test.php，让测试代码与产品代码对齐  </li>
+</ol>
+</blockquote>
+<p>最后，我们就可以这样执行单元测试了：</p>
+<pre><code>$ phpunit ./Api_Default_Test.php </code></pre>
+<hr />
+<h4><a href="/wikis/%5B1.29%5D-%E5%BC%80%E6%94%BE%E4%B8%8E%E5%B0%81%E9%97%AD%EF%BC%9A%E5%A4%9A%E5%85%A5%E5%8F%A3%E5%92%8C%E7%BB%9F%E4%B8%80%E5%88%9D%E5%A7%8B%E5%8C%96.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.31%5D-%E6%96%B0%E5%9E%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%9A%E4%BB%A5%E6%8E%A5%E5%8F%A3%E5%BD%A2%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1.html">下一章</a></h4>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left"><font size="2px">&copy;PhalApi All Rights Reserved. 粤ICP备15028808号</font></p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

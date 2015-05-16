@@ -71,12 +71,12 @@ DI()-&gt;notorm = function() {
 <p>回到前面获取用户基本信息接口 /demo/?service=User.GetBaseInfo 的示例。</p>
 <h3>(1)正常情况下</h3>
 <p>请求：  </p>
-<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;userId=1</code></pre>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=1</code></pre>
 <p>返回： </p>
 <pre><code>{"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","from":"oschina"}},"msg":""}</code></pre>
 <h3>(2)带&amp;debug=1调试下</h3>
 <p>请求：</p>
-<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;userId=1&amp;debug=1</code></pre>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=1&amp;debug=1</code></pre>
 <p>返回：</p>
 <pre><code>[1 - 0.00057s]SELECT * FROM tbl_user WHERE (id = ?); -- 1
 {"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","from":"oschina"}},"msg":""}</code></pre>
@@ -94,7 +94,7 @@ class Api_User extends PhalApi_Api {
         return array(
             //...
             'getMultiBaseInfo' =&gt; array(
-                'userIds' =&gt; array('name' =&gt; 'userIds', 'type' =&gt; 'array', 'format' =&gt; 'explode', 'require' =&gt; true),
+                'user_ids' =&gt; array('name' =&gt; 'user_ids', 'type' =&gt; 'array', 'format' =&gt; 'explode', 'require' =&gt; true),
             ),
         );
     }
@@ -105,7 +105,7 @@ class Api_User extends PhalApi_Api {
         $rs = array('code' =&gt; 0, 'msg' =&gt; '', 'list' =&gt; array());
 
         $domain = new Domain_User();
-        foreach ($this-&gt;userIds as $userId) {
+        foreach ($this-&gt;user_ids as $userId) {
             $rs['list'][] = $domain-&gt;getBaseInfo($userId);
         }
 
@@ -115,7 +115,7 @@ class Api_User extends PhalApi_Api {
 </code></pre>
 <h3>(2)运行调用一下</h3>
 <p>显然，我们可以很清楚地调用新增的接口：</p>
-<pre><code>http://dev.phalapi.com/demo/?service=User.GetMultiBaseInfo&amp;userIds=1,2,3</code></pre>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetMultiBaseInfo&amp;user_ids=1,2,3</code></pre>
 <p>可返回：</p>
 <pre><code>{
     "ret": 200,
@@ -149,7 +149,7 @@ INSERT INTO `tbl_user` VALUES ('3', 'King', 'game');</code></pre>
 <h3>(3)这样的问题？</h3>
 <p>这样的问题，在对外黑盒调用的客户端同学是发现不了的，对于测试人员来说也是无法感知的。但所犯的错误也是显然易见的，就是没有进行SQL的批量查询优化，造成了很多不必要的重复查询。<br />
 这里，根据后台接口开发人员提供的调试参数（假设为：&amp;debug=1），则我们可以快速发现存在的问题：</p>
-<pre><code>http://dev.phalapi.com/demo/?service=User.GetMultiBaseInfo&amp;userIds=1,2,3&amp;debug=1</code></pre>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetMultiBaseInfo&amp;user_ids=1,2,3&amp;debug=1</code></pre>
 <p>如下返回，我们看到了很多重复类似的查询语句。</p>
 <pre><code>[1 - 0.0005s]SELECT * FROM tbl_user WHERE (id = ?); -- 1
 [2 - 0.00042s]SELECT * FROM tbl_user WHERE (id = ?); -- 2
@@ -174,7 +174,7 @@ INSERT INTO `tbl_user` VALUES ('3', 'King', 'game');</code></pre>
 <p>奉上我们坚持TDD开发下的单元测试代码：</p>
 <pre><code>    public function testGetMultiBaseInfo()
     {
-        $str = 'service=User.GetMultiBaseInfo&amp;userIds=1,2,3';
+        $str = 'service=User.GetMultiBaseInfo&amp;user_ids=1,2,3';
         parse_str($str, $params);
 
         DI()-&gt;request = new PhalApi_Request($params);

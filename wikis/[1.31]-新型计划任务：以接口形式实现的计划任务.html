@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[1.31]-新型计划任务：以接口形式实现的计划任务 | PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,phalapi文档,phalapi wiki,PhalApi文档,phalapi在线文档,phalapi官方文档">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">保护大象，拒绝象牙！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="/wikis/%5B1.30%5D-%E4%BF%9D%E6%8C%81%E7%9A%84%E5%8A%9B%E9%87%8F%EF%BC%9A%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.11%5D-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9ADI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-%E8%AE%A9%E8%B5%84%E6%BA%90%E6%9B%B4%E5%8F%AF%E6%8E%A7.html">下一章</a></h4>
+<hr />
+<h2>1.31.1 这里所说的计划任务</h2>
+<p>计划任务主要负责处理一些耗时的操作，或者非用户触发的作业。  </p>
+<p>有些人会称它为后台任务，或者推送作业，又或者定时任务。这时则统称为：计划任务。  </p>
+<p>例如，当你发布一条微信朋友圈后需要通知上百个好友时；当一条后台的推荐资讯需要推送到每个用户的客户端时；当需要将本地的静态资源如图片同步到CDN时。<br />
+显然这些动则需要分钟级别的操作，不应该在客户端调用接口时同步处理（但让我惊讶的是现实真的有人会这么做！），又或者非用户触发而需要后台处理（但更让我惊讶的是竟然也有系统是在用户请求时附带进行处理，而且还是国内某个知名的会员中心！）。  </p>
+<p>这里不仅仅是提供实现计划任务的约束和机制，更多的是引导大家更好地应对此类问题。</p>
+<h2>1.31.2 计划任务的关键环节</h2>
+<h3>(1)触发</h3>
+<p>首先，是何时何地由何用户产生一条待执行的计划任务，我们可以把这个场景点称为一个触发点。<br />
+通常的做法，我们会先纪录下此触发点的场景信息，并放入到一个队列里面，以便等待计划任务消费。  </p>
+<h3>(2)调度</h3>
+<p>其次，是通过何种机制进行计划任务的调度。<br />
+这里不仅有技术层面的问题，还有业务的问题，如每次批量处理多少，间隔多少，是否需要失败重试等等？</p>
+<h3>(3)消费</h3>
+<p>最后，则是具体的计划任务执行，以完成必要的操作，也称为消费。<br />
+很多传统的做法，都是把这些操作和接口混在一起的，而这里，PhalApi则会以一种更为明朗的方式来实现，从而自底而上，支持更多的调度方式和触发机制。  </p>
+<h2>1.31.3 传统的计划任务</h2>
+<p><img src="http://webtools.qiniudn.com/20150514225554.jpg" alt="a pic" />   </p>
+<p>如果以一图而鳖之，上图虽然简化，但可以很好地说明传统计划任务的结构体系。<br />
+即：很多项目都是使用内嵌的方式来包含计划任务，这样明显会把接口服务系统和后台计划任务混在一起，增加了系统间的耦合性。<br />
+虽然小项目可以忍受或者适合这种混合，但是出于长远考虑，进行有意识地分解还是很有好处的。  </p>
+<p>而且这种混合潜意识下又让开发人员不加判断就进行调用，这会严重增加接口的反应时间。<br />
+我曾目睹一个接口耗时了近36秒之久，在对这个旧系统的接口进行一番排查后，原来是这个接口在发布后对上百个好友做了通知推送导致产生了上百条insert语句。  </p>
+<h3>(1)传统的调度方式</h3>
+<p>我们重点关注一下传统计划任务的调度方式，在过去，我们通常会有两种方式：一种是启动死循环的进程，另一种是启动一个crontab之类的定时任务。<br />
+当然，上述的在接口请求时同步进行调度也算一种方式，但不是正规的做法。  </p>
+<p>如果采用死循环的方式，我们还需要考虑代码更新升级后，对脚本的重启，以便载入新的代码。如果是sh循环调用PHP脚本，则可以忽略。</p>
+<h2>1.31.4 新型的计划任务</h2>
+<h3>(1)以接口的形式提供计划任务服务</h3>
+<p>PhalApi中最具特色的做法是，将计划任务的执行消费实现，以接口形式来提供。<br />
+这样的好处在于，我们作为接口开发人员，可以以熟悉的方式来进行计划任务的开发。<br />
+但更大的得益在于，将计划任务通过接口的形式提供后，我们会看到更为广阔的使用场景：我们可以使用MQ队列消费，可以同步请求也可以异步请求。  </p>
+<h3>(2)系统架构</h3>
+<p>我们所做的，不仅仅只是把原来混合型的代码作简单分解，如下：
+<img src="http://webtools.qiniudn.com/20150514225614.jpg" alt="a pic" />  </p>
+<p>而是以一种更为正统的做法，为此我们添加了一些必要的节点来设计此构架。新的实现方式下的体系结构如下：<br />
+<img src="http://webtools.qiniudn.com/20150514225619.jpg" alt="a pic" />  </p>
+<h4>节点说明</h4>
+<p>在上图中，应用节点还是我们的接口系统；MQ队列则是用于存放待消费的场景信息，同其他的MQ一样；计划任务则可以分为两部分，API接口实现和任务调度。<br />
+计划任务这两部分，物理部署上可以合在一起，也可以分开，这取决于应用系统是采用分布式的做法，还是单一的服务器。  </p>
+<h4>执行流程</h4>
+<p>由上图可以看出，一个完整的计划任务流程为：</p>
+<ul>
+<li>
+<ol>
+<li>应用产生一条新的计划任务，并存放于MQ队列</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>计划任务定时或者不停扫描新的计划任务；若有，则进行调度</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>计划任务API完成需要的工作，并将结果返回调度器</li>
+</ol>
+</li>
+</ul>
+<h3>(3)单个添加，批量处理</h3>
+<h3>(4)MQ共享</h3>
+<p>无论是分布式还是本地一体化，MQ队列都应该是可以共享访问的，以便为应用节点、计划任务调度节点所访问，如下图所示：
+<img src="http://webtools.qiniudn.com/20150514225632.jpg" alt="a pic" />   </p>
+<h4>首选redis MQ</h4>
+<p>因为MQ作为频繁读写的媒介，应该优先使用高效缓存来提高系统的吞吐率以及增加并发的能力。此外，作为临时一次性的数据，使用高效缓存也是大有好处的（但我们也需要考虑到数据丢失的情况）。<br />
+而且，为了支持 <strong>单个添加，批量处理</strong>，第三方缓存应该很好地支持队列的操作。<br />
+所以，redis是一个不错的选择。  </p>
+<p>如下，是redis简单的队列操作：</p>
+<pre><code>$redis = new Redis();
+$redis-&gt;connect('127.0.0.1', 6300);
+
+$redis-&gt;lpush('test_key', 'www');
+$redis-&gt;lpush('test_key', 'phalapi');
+$redis-&gt;lpush('test_key', 'net');
+
+echo $redis-&gt;lpop('test_key'), "\n";
+echo $redis-&gt;lpop('test_key'), "\n";
+echo $redis-&gt;lpop('test_key'), "\n";</code></pre>
+<h4>数据库MQ</h4>
+<p>如果考虑到redis扩展不好安装，或者应用喜欢使用数据库来存放MQ，也是可以的。只需要用SQL的一些基本的操作语句便可做到FIFO。</p>
+<h4>文件MQ</h4>
+<p>文件MQ也是一种方式，但很少使用。</p>
+<h3>(5)更丰富的调度方式</h3>
+<h4>接口同步调度</h4>
+<p>虽然也是同步调度，但是我们将计划任务隔离后，便于日后发现此同步的计划任务影响到接口的响应时间时，可以及时轻松地切换到后台异步处理的方式。  </p>
+<h4>回归传统的调度</h4>
+<p>我们也可以沿用传统的做法，即使用死循环的脚本调度，或者crontab类的定时任务。  </p>
+<h4>MQ队列消费</h4>
+<p>既然我们以接口服务的形式提供计划任务的操作，那么可以把同一接口的调度放置到同一队列中进行维护和消费。</p>
+<h4>接口异步调度</h4>
+<p>当计划任务以接口服务提供后，我们可以使用另一种免MQ的做法，即使用接口的异步调度。如下：<br />
+<img src="http://webtools.qiniudn.com/20150514225625.jpg" alt="a pic" />   </p>
+<p>这样既可以避免死循环带来的性能负载问题，也可以避免定时任务带来的延时问题，可以说异步调度是一种折中完美的做法。<br />
+但这也可能是一种不负责任或者不安全的做法，因为我们无法跟进异步计划任务的结果。 </p>
+<h4>本地调度和远程调度</h4>
+<p>本地调度是指在执行过程中构建模拟接口的调用而无须经过网络请求，远程调度则是通过远程接口请求来实现。<br />
+如果把本地调度和远程调度，跟同步/异步组合起来，我们可以得到以下三种有意义的组合：</p>
+<ul>
+<li>本地同步调度</li>
+<li>远程同步调度</li>
+<li>远程异步调度</li>
+</ul>
+<h3>(6)计划任务的划分</h3>
+<h4>service即类型</h4>
+<p>明显地，接口服务名称service即可作为计划任务划分的依据。  </p>
+<p>不同的service作为不同的队列，不同类型的计划任务；而相同的service则作为相同的队列相同的计划任务。  </p>
+<h4>接口参数即参数</h4>
+<p>接口参数即可计划任务执行时所需要的上下文信息。</p>
+<h2>1.31.5 PhalApi中计划任务的核心设计解读</h2>
+<h3>(1)桥接模式 - 数据与行为独立变化</h3>
+<p>为了给计划任务一个执行的环境，我们提供了 <strong>计划任务调度器</strong> ，即：Task_Runner。<br />
+每个计划任务需要调度的接口是不一样的，即不同的接口服务决定不同的行为；每个行为需要的数据也不一样，即不同的接口参数决定不同的数据。  </p>
+<p>自然而言的，Task_Runner按照桥接模式，其充当的角色如下：<br />
+<img src="http://webtools.qiniudn.com/task_1.jpg" alt="a pic" />  </p>
+<p>然后，我们就可以这样各自实现：
+<img src="http://webtools.qiniudn.com/task_2.jpg" alt="a pic" /> </p>
+<h3>(2)适配器模式 - 对象适配器和类适配器</h3>
+<p>在对MQ进行实现时，我们提供的Redis MQ队列、文件MQ队列和DB MQ队列，都使用了适配器模式，以重用框架已有的功能。<br />
+其中，Redis MQ队列和文件MQ队列是属于对象适配器，DB MQ队列是类适配器。
+对于对象适配器，我们也提供了外部注入，以便客户端在使用时可以轻松定制扩展，当然也可以使用默认的缓存。  </p>
+<p>如下：
+<img src="http://webtools.qiniudn.com/task_3.jpg" alt="a pic" /> </p>
+<p>这样以后，我们可以这样根据创建不同的MQ队列：</p>
+<pre><code>//Redis MQ队列
+$mq = Task_MQ_Redis();
+//或
+$mq = Task_MQ_Redis(new PhalApi_Cache_Redis(array('host' =&gt; '127.0.0.1', 'port' =&gt; 6379)));
+
+//文件MQ队列
+$mq = new Task_MQ_File();
+//或
+$mq = new Task_MQ_File(new PhalApi_Cache_File(array('path' =&gt; '/tmp/cache')));
+
+//DB MQ队列
+$mq = new Task_MQ_DB();
+
+//Array MQ队列
+$mq = new Task_MQ_DB();</code></pre>
+<h3>(3)模板方法 - 本地和远程两种调度策略</h3>
+<p>在完成底层的实现后，我们可以再来关注如何调度的问题，目前可以有本地调度和远程调度两种方式。  </p>
+<ul>
+<li>本地调度：是指本地模拟接口的请求，以实现接口的调度</li>
+<li>远程调度：是指通过计划任务充当接口客户端，通过请求远程服务器的接口以完成接口的调度</li>
+</ul>
+<p>为此，我们的设计演进成了这样：
+<img src="http://webtools.qiniudn.com/task_4.jpg" alt="a pic" />  </p>
+<p>上图多了两个调度器的实现类，并且远程调度器会将远程的接口请求功能委托给连接器来完成。  </p>
+<h3>(4)设计审视</h3>
+<p>好了！让我们再回头审视这样的设计。  </p>
+<p>首先，我们在高层，也就是规约层得到了很好的约定。<br />
+不必过多地深入理解计划任务内部的实现细节，我们也可以轻松得到这样的概念流程：<br />
+<strong> 计划任务调度器(Task_Runner)从MQ队列(Task_MQ)中不断取出计划任务接口服务(PhalApi_Api)进行消费。</strong>  </p>
+<p>再下一层，则是具体的实现，即我们所说的实现层。<br />
+客户可以根据自己的需要进行选取使用，他们也可以扩展他们需要的MQ。重要的是，他们需要自己实现计划任务的接口服务。  </p>
+<h3>(5)没有引入工厂方法的原因</h3>
+<p>我们在考虑是否需要提供工厂方法来创建计划任务调度器，或者MQ。<br />
+但我们发现，设计是如此明了，不必要再引入工厂方法来增加使用的复杂性，因为存在组合的情况。而且，对于后期客户端进行扩展也不利。  </p>
+<p>当我们需要启动一个计划任务时，可以这样写：</p>
+<pre><code>$mq = new Task_MQ_Redis();
+$runner = new Task_Runner_Local($mq);
+
+$runner-&gt;go('MyTask.DoSth');</code></pre>
+<p>上面简单的组合可以有：4种MQ * 2种调度 = 8种组合。  </p>
+<p>所以，我们最后决定不使用工厂方法，而是把这种自由组合的权利交给客户端。  </p>
+<h3>(6)失败重试与并发问题</h3>
+<p>除了对计划任务使用什么模式进行探讨外，我们还需要关注计划任务其他运行时的问题。  </p>
+<p>一个考虑的是失败重试，这一点会发生在远程调度中，因为接口请求可能会超时。这时我们采用的是失败轮循重试。<br />
+即，把失败的任务放到MQ的最后，等待下一批次的尝试。连接器在进行请求时，也会进行一定次数的超时重试。这里主要是为了预防接口服务器崩溃后的计划任务丢失。  </p>
+<p>另一个则是并发的问题。这里并没有过多地进行加锁策略。<br />
+而是把这种需要的实现移交给了客户端。因为加锁会使得计划任务更为复杂，而且有时不一定需要使用，如一个计划任务只有一个进程时，也就是单个死循环的脚本进程的情况。  </p>
+<h3>(7)客户端的使用</h3>
+<p>最后，客户端的使用就很简单了：</p>
+<pre><code>$mq = new Task_MQ_Redis();
+$taskLite = new Task_Lite();
+
+$taskLite-&gt;add('MyTask.DoSth', array('id' =&gt; 888));</code></pre>
+<hr />
+<h4><a href="/wikis/%5B1.30%5D-%E4%BF%9D%E6%8C%81%E7%9A%84%E5%8A%9B%E9%87%8F%EF%BC%9A%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.11%5D-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9ADI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-%E8%AE%A9%E8%B5%84%E6%BA%90%E6%9B%B4%E5%8F%AF%E6%8E%A7.html">下一章</a></h4>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left"><font size="2px">&copy;PhalApi All Rights Reserved. 粤ICP备15028808号</font></p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

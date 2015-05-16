@@ -85,7 +85,7 @@ $server-&gt;response();</code></pre>
 <p><img src="http://webtools.qiniudn.com/20150411005257_3ee80900ce60ca4b1ab5facd5bc4450c" alt="0214" />  </p>
 <h3>(2)通过phprpc协议调用</h3>
 <p>如果通过phprpc协议调用，我们则可以得到接口返回的 <strong>源数据</strong> 。<br />
-假设请求的接口为：?service=User.GetBaseInfo&amp;userId=1，则可以得到我们熟悉的：</p>
+假设请求的接口为：?service=User.GetBaseInfo&amp;user_iduser_id=1，则可以得到我们熟悉的：</p>
 <pre><code>array (
   'ret' =&gt; 200,
   'data' =&gt; 
@@ -102,7 +102,7 @@ $server-&gt;response();</code></pre>
   'msg' =&gt; '',
 )</code></pre>
 <h2>3.2.5 phprpc协议调试</h2>
-<p>同样，为了方便进行phprpc协议下接口调用的调试，我们提供了一个脚本，如上面的对?service=User.GetBaseInfo&amp;userId=1调用，使用脚本即为：</p>
+<p>同样，为了方便进行phprpc协议下接口调用的调试，我们提供了一个脚本，如上面的对?service=User.GetBaseInfo&amp;user_iduser_id=1调用，使用脚本即为：</p>
 <pre><code>$ php ./Library/PHPRPC/check.php http://dev.phprpc.com/phprpc/?service=User.GetBaseInfo userId=1
 array(3) {
   ["ret"]=&gt;

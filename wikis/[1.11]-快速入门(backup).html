@@ -62,7 +62,7 @@
 <p>以给大家一个感观的认识。  </p>
 <p>最终接口的调用与返回结果如下：  </p>
 <pre><code>//接口请求格式
-http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;userId=帐号ID
+http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=帐号ID
 
 //返回结果格式
 {
@@ -169,7 +169,7 @@ require_once dirname(__FILE__) . '/../test_env.php';</code></pre>
      */
     public function testGetBaseInfo()
     {
-        $str = 'service=User.GetBaseInfo&amp;userId=1';
+        $str = 'service=User.GetBaseInfo&amp;user_id=1';
         parse_str($str, $params);
 
         DI()-&gt;request = new PhalApi_Request($params);
@@ -357,7 +357,7 @@ return array(
 <h3>(8)最终接口调用</h3>
 <p>接口调用的链接，这时已经相当明了了，即：域名 + 路径（/demo） + 参数（可从单元测试那直接获取）</p>
 <p>如本示例的是：</p>
-<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;userId=1</code></pre>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=1</code></pre>
 <p>返回的结果是：</p>
 <pre><code>{
     "ret": 200,
@@ -383,7 +383,7 @@ return array(
 <p>当我们访问一个不存在的用户时，将会触发日记纪录：</p>
 <pre><code>DI()-&gt;logger-&gt;debug('user not found', $this-&gt;userId);</code></pre>
 <p>如访问：</p>
-<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;userId=2</code></pre>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=2</code></pre>
 <p>然后，可以在Runtime下看到按天分目录的日记：</p>
 <pre><code>$ tailf ./Runtime/log/201501/20150128.log 
 2015-01-28 00:37:34|DEBUG|user not found|2</code></pre>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[2.16]-领域驱动设计：应对复杂领域业务的Domain层 | PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,phalapi文档,phalapi wiki,PhalApi文档,phalapi在线文档,phalapi官方文档">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">保护大象，拒绝象牙！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>
+<hr />
+<p><em>温馨提示：此篇章需要比较长的时间才能最终定稿，因为我还要寻找最合适的方式和语言来表述。</em></p>
+<h2>2.16.1 领域驱动设计</h2>
+<p>很多框架关心性能，而不关心人文；很多项目关心技术，而不关注业务。  </p>
+<p>就这造成了复杂的领域业务在项目中得不到很好地体现和描述，也没有统一的规则，更没有释意的接口。最终导致了在“纯面向对象”框架里面凌乱的代码编写，为后期的维护扩展、升级优化带来很大的阻碍。这就变成了，框架只关注性能，项目只关心技术，而项目却可怜地失去了演进的权利，慢慢地步履维艰，最终牵一发而动全身。  </p>
+<p><strong>很多人都不知道该如何真正应对和处理领域的业务</strong> ，尽管领域业务和单元测试都是如此重要并被广泛推崇。正如同表面上我们都知道单元测试却没有具体真实地接触过，并且一旦到真正需要编写一行单元测试的代码时就傻眼了。  </p>
+<p>这里不是发明一些新技术，也不是提供一些新的模式，而是继续将前人、大神和顶级大师关于领域驱动设计这方面的思想结合真实后台接口开发进行分享，进而推广之。</p>
+<h2>2.16.2 讲述故事</h2>
+<p>很多人，都喜欢听故事。像我以前中学的时候，就很喜欢看《故事会》。  </p>
+<p>如果，我们能让代码也像小说一样，在讲述某个故事时，将会更加吸引“读者”（也就是其他开发同学），从而易于理解和维护。   </p>
+<p>最近，我在做一个项目时，再一次发现了这种讲述故事的威力。  </p>
+<h3>(1)一个第三方登录的写法</h3>
+<p>我们先以F项目来命名这个项目，在F项目中，我们跟其他App一样，需要接入第三方登录，其中包括：微信登录、微博登录和QQ登录、邮箱登录等。  </p>
+<p>以下，则是我根据 <strong>讲述故事</strong>  的方式，为微信登录编写的代码：</p>
+<pre><code>&lt;?php
+
+class Api_User_Login extends PhalApi_Api {
+
+    public function getRules() {
+        return array(
+            'weixin' =&gt; array(
+                'openId' =&gt; array('name' =&gt; 'wx_openid', 'require' =&gt; true, 'min' =&gt; 1, 'max' =&gt; 28),
+                'token' =&gt; array('name' =&gt; 'wx_token', 'require' =&gt; true, 'min' =&gt; 1, 'max' =&gt; 150),
+                'expiresIn' =&gt; array('name' =&gt; 'wx_expires_in', 'require' =&gt; true, 'min' =&gt; 1),
+                'nickname' =&gt; array('name' =&gt; 'name', 'default' =&gt; '',),
+                'avatar' =&gt; array('name' =&gt; 'avatar', 'default' =&gt; '',),
+            ),
+        );
+    }
+
+    public function weixin()
+    {
+        $rs = array('code' =&gt; 0, 'info' =&gt; array(), 'msg' =&gt; '');
+
+        $domain = new Domain_User_Login_Weixin();
+        $isFirstBind = $domain-&gt;isFirstBind($this-&gt;openId);
+
+        $userId = 0;
+        if ($isFirstBind) {
+            $userId = Domain_User_Generator::createUserForWeixin(
+                   $this-&gt;openId, $this-&gt;nickname, $this-&gt;avatar);
+
+            $domain-&gt;bindUser($userId, $this-&gt;openId, $this-&gt;token, $this-&gt;expiresIn);
+        } else {
+            $userId = $domain-&gt;getUserIdByWxOpenId($this-&gt;openId);
+        }
+
+        $token = Domain_User_Session::generate($userId, $this-&gt;client);
+
+        $rs['info']['user_id'] = $userId;
+        $rs['info']['token'] = $token;
+        $rs['info']['is_new'] = $isFirstBind ? 1 : 0;
+
+        return $rs;
+    }
+}</code></pre>
+<blockquote>
+<p>温馨提示：<br />
+以下代码为我正在参与开发的一个项目的源代码，已征得项目负责人同意。同时出于对项目的尊重，已省去部分代码。  </p>
+</blockquote>
+<h3>(2)登录场景的故事</h3>
+<p>细细品读上面的代码，其实就是在描述登录场景的故事：<br />
+当用户进行微信登录时，先查看用户是否首次登录；如果是，则为用户自动生成了一个帐号并绑定，如果不是，则获取已绑定的用户ID；最后，生成一个登录态的token。  </p>
+<p>当然，这里为了突出故事的主线，已去除了很多异常情况的处理。</p>
+<h3>(3)有趣的开发体验</h3>
+<p>更为有趣的是，此次参与F项目开发的还有另外一位同学。<br />
+这位同学拥有多年资深的iOS开发经验，但对PHP开发还是首次接触，但他在参考微信登录的写法后，很快就交付了微博和QQ登录这两个接口服务。  </p>
+<p>但令我为之惊讶和兴奋的不是他的速度，而是他所编写的代码是如此的优雅美丽，犹如出自资深PHP开发人员之手。  </p>
+<p>这让我再一次相信，使用 <strong>讲述故事</strong> 的方式来开发接口，不仅能让代码更易于传送业务逻辑，也能为更多的同学乃至新手接受并快速上手。</p>
+<h3>(4)与TDD的结合</h3>
+<p><strong>讲述故事</strong> 有一个很明显的特点就是，全部的操作都是处于同一抽象级别的，即都是释意接口下的领域业务规则和操作。  </p>
+<p>但对于如何引出这个业务场景，很多人用传统的方式都是写一个接口，然后在浏览器调试。  </p>
+<p>其实，这并不是最好的开发体验。因为，使用这种传统的开发方式，你难免会落入技术缠绕的纠结中，比如在想使用哪些类型的数据库表字段。也就是说，你在丢失关注点。  </p>
+<p>而通过测试驱动，则会先引导你做正确的事，再将你的关注引导到领域业务上，最后将自然而然地就知道应用使用什么技术了。</p>
+<p>讲故事，是针Domain领域层外部使用的说明。下面，我们将走进Domain层内部，阐明我们应该如何为讲故事做好准备。</p>
+<h2>2.16.3 表达规则</h2>
+<h3>(1)释意接口</h3>
+<p>释意接口的作用是很大的，这可以使得后来的同学在看待一个接口时，无须深入内部实现即可明白它的用意和产生的影响。<br />
+如一个get系列的操作，我们可以推断出它是无副作用的。但如果当时的开发者不遵守约定，在里面作了一些“手脚”，则会破坏我们这些“望文生义”的推断。    </p>
+<p>在我曾经就职的一个游戏公司里面，我常根据接口的命名来推断它的作用，但往往会倍受伤害。因为以前的开发人员没有遵守这些约定，当时的team leader还责怪我不能太相信这些接口的命名。然而我想，如果我们都不能相信我们团队其他人员的接口，我们又能相信谁呢？我们是否应该反思，是否应该遵守约定编程所带来的好处？<br />
+任何一个问题，都不是个人的问题，而是一个团队的问题。如果我们经常不断地发生一生项目的问题而要去指责某个人时，我们又为何不从一开始就遵守约定而去避免呢？  </p>
+<p>简单来说，释意接口会将“命令-查询”分离、会将多个操作分解成更小粒度的操作而保持同一层面的处理。根据《领域驱动设计》一书的说法：<br />
+<em>类型名、方法名和参数名一起构成了一个释意接口（Intention-Revealing Interface），以解释设计意图，避免开发人员需要考虑内部如何实现，或者猜测。</em>  </p>
+<p>如下面的家庭组成员领域业务类：</p>
+<pre><code>&lt;?php
+class Domain_Group_Member {
+
+    public function joinGroup($userId, $groupId) {
+        //TODO
+    }
+
+    public function hasJoined($userId, $groupId) {
+        //TODO
+    }
+
+}</code></pre>
+<p>我们可以知道，Domain_Group_Member::joinGroup()用于加入家庭组，会产生副作用，是一个命令操作；Domain_Group_Member::hasJoined()用于检测用户是否已加入家庭组，无副作用，则是一个查询操作。</p>
+<h3>(2)业务规则的描述</h3>
+<p><em>规则出现且仅出现一次。</em>  </p>
+<p>当代码出现重复时，我们都知道会面临维护的高成本。而当规则多次出现时，我们更知道当规则发生变化时所带来的各种严重的问题，这也正是为什么总有一些这样那样的BUG的原因。<br />
+系统出现问题，大多数上都是业务的问题。而业务的问题在于我们不能把规则收敛起来，汇集于一处。  </p>
+<p>在以往的开发中，我都很注意对这些规则统一的重构工作。这使得我可以非常相信我所提供业务的稳定性，以及在给别人解讲时的信心。<br />
+如有一次，我们有一个大型的系统中的一个页面跳转链接的生成规则，后来系统进行了调整，需要对URL生成规则作出调整。我跟另一位新来的同事说只需改一处时，他仍然很惊讶地问我怎么可能？！因为他看到是这么多场景，如此多的页面，怕会有所遗漏。然而，事实证明，我们确实只需要改动一处就可以了。  </p>
+<p>类似这样的URL拼接规则，我们可以这样表示：</p>
+<pre><code>&lt;?php
+class Domain_Page_Helper {
+
+    public static function createUrl($userId) {
+        return DI()-&gt;config-&gt;get('app.web.host') . '/u/' . $userId;
+    }
+}</code></pre>
+<p>正如你看到了，我们使用了static静态方法，是因为这个规则生成可以当作一个工具方法来使用。我们不反对使用static方法，但推荐只在合适的时候使用。  </p>
+<p>规则出现且仅出现一次，可以说是一个知易行难的做法，因为我们总会有不经意间重复实现规则。有时我们会忽略已有的规则，有时我们会出于当前紧张开发进度的考虑，有时我们可能懒得去统一。<br />
+但把规则的实现统一起来，再重复调用，会让你在今后的项目开发中，长期收益。没错，真的会长期收益。  </p>
+<h2>2.16.4 不可变值与无状态操作</h2>
+<h3>(1)在开源中国上翻译的两点收获</h3>
+<p>首先，让我们简单来了解一下PHP语言的运行机制。<br />
+PHP是一个运行于服务端的脚本解析语言，每一个HTTP请求都会触发一个php-fpm进程来响应，所以不同于其他长时间运行的语言或者系统，不用过多地考虑内存的回收或者对实体的管理和共享。  </p>
+<p>这样是有明显的好处，作为PHP开发人员，由于每一次请求所消耗的内存都会在本次释放，即使运行错误也不会影响其他的调用。从而，我们可以放心快速地开发。<br />
+但我们也应该看到这样的便利给很多开发同学所带来的误导。正因为不用再担心一些传统的问题（如内存管理），他们变得更无限制。当这种无限制日积月累而引发诸多项目的问题时，他们会开始责怪PHP这门语言。  </p>
+<p>其实，语言本身没有对错，关键在于我们怎么使用。  </p>
+<p>先前，在开源中国进行翻译时，我从翻译的文章中收获了两点。  </p>
+<ul>
+<li>第一点是，学习不同的语言，你将会获得不同的灵感。比如，你是OC的开发人员，可以从GO语言中获得OC的开发灵感；反之亦然。  </li>
+<li>第二点是，不可变值的使用。  </li>
+</ul>
+<p>这里，我将尝试说明如何在PhalApi现有的分层机制基础上，结合不可变值和无状态，应对复杂的领域业务开发。  </p>
+<h3>(2)不可变值</h3>
+<p>通常，我们在程序中处理的变量可以分为：值和实体。简单来说，值是一些基本的类型，如整数、布尔值、字符串；实体则是类对象，有自己内部的状态。当一个实体表示一个值的概念时（如坐标、金额、日期等），我们可以称之为值对象。<br />
+明显地，系统的复杂性不在于对值的处理，而在于对一系列实体以及与其关联的另一系列实体间的处理。  </p>
+<p>如同其他语言一样，如果我们也在PHP遵循 <strong>不可变值</strong> 与 <strong>无状态</strong> 这两个用法，我们的系统乃至业务都可以从中获益。  </p>
+<p><strong>不可变值</strong> 是指一个实体在创建后，其内部的状态是不可变更的，这样就能在系统内放心地流通使用，而无须担心有副作用。  </p>
+<p>举个简单的例子，在我们国际交易系统中有一个金额为100RMB的对象，表示用户此次转账的金额。如果此对象是不可变值，那么我们在系统内，无论是计算手费、日记纪录，还是转账事务或其他，我们都能信任此对象放心使用，不用担心哪里作了篡改而导致一个隐藏的致使BUG。  </p>
+<p>也就说，当你需要修改此类对象时，你需要复制一个再改之。有人会担心new所带来的内存消耗，但实际上，new一个只有一些属性的对象消耗很少很少。  </p>
+<p>要明白为什么在修改前需要再创建新的对象，也是很容易理解的。首先，我们保持了和基本类型一致的处理方式；其次，我们保持了概念的一致性，如坐标A（1，2）和坐标B（1，3）是两个不同的坐标。<br />
+当坐标A发生改变，坐标A就不再是原来的坐标A，而是一个新的坐标。从哲学角度上看，这是两个不同的概念。  </p>
+<p>在PhalApi中，我们可以看到不可变值在Query对象中的应用：  </p>
+<pre><code>$query1 = new PhalApi_ModelQuery();
+$query1-&gt;id = 1;
+
+$query2 = new PhalApi_ModelQuery($query1-&gt;toArray());
+$query2-&gt;id = 2;</code></pre>
+<p>这样以后，我们就不再需要小心翼翼维护“漂洋过海”的值对象了，而是可以轻松地逐层传递，这有点像网络协议的逐层组装。  </p>
+<p>这又让我想起了《领域驱动设计》一书中较为中肯的说法：<br />
+<em>把值对象看成是不可变的。不要给它任何标识，这样可以避免实体的维护工作，降低设计的复杂性。</em>  </p>
+<h3>(3)无状态操作</h3>
+<p>前面提到了PHP的运行机制，不同于长时间运行的语言或系统，PHP很少会在不同的php-fpm进程中共享实体，最多也只是在同一次请求中共享。  </p>
+<p>这样，当我们在一次请求中需要处理两个或两个以上的用户实体时，可以怎么应对呢？<br />
+关于对实体的追踪和识别，可以使用ORM进行实体与关系数据库映射，但PhalApi弱化了这种映射，取而代之的是更明朗的处理方式，即： <strong>无状态操作</strong> 。 </p>
+<p>因为PhalApi都是通过“空洞”的实体来获得数据，即实体无内部属性，对数据库的处理采用了 <strong>表数据入口模式</strong> 。<br />
+当我们需要获取两个用户的信息时，可以这样：</p>
+<pre><code>$model = new Model_User();
+$user1 = $model-&gt;get(1);  //$user1是一个数组
+$user2 = $model-&gt;get(2);
+
+//而不是
+$user1 = new Model_User(1);  //$user1是一个对象
+$user2 = new Model_User(2);
+
+//或者可以这样批量获取
+$users = $model-&gt;multiGet(array(1, 2));  //$users是一个二维数组，下标是用户的ID</code></pre>
+<p>这样做，没有绝对的对错，可以根据你的项目应用场景作出调整。但我觉得无状态在PhalApi应用，可以更简单便捷地处理各种数据以及规则的统一，以实现操作的无状态。因为：  </p>
+<ul>
+<li>1、可以按需取得不同的字段，多个获取时可以使用批量获取</li>
+<li>2、在单次请求处理中，简化对实体的追踪和维护</li>
+<li>3、换种方式来获得不可变值性的好处，因为既然没有内部状态，就没有改变了</li>
+</ul>
+<h3>(4)引申到Domain层</h3>
+<p>Domain层作为ADM（Api-Domain-Model）分层中的桥梁，主要负责处理业务规则。  </p>
+<p>将值对象与无状态操作引申到Domain层，同样有处于简化我们对数据和业务规则的处理。  </p>
+<p>我们可以根据上述的家庭组成员领域类来完成类似下面功能场景的业务需求：</p>
+<pre><code>$domain = new Domain_Group_Member();
+
+if ($domain-&gt;hasJoined(1, 100)) {
+    $domain-&gt;joinGroup(1, 100);
+}
+if ($domain-&gt;hasJoined(2, 100)) {
+    $domain-&gt;joinGroup(2, 100);
+}
+if ($domain-&gt;hasJoined(3, 100)) {
+    $domain-&gt;joinGroup(3, 100);
+}</code></pre>
+<p>即：如果用户1还没加入过组100，那么就允许他加入。用户2、用户3也以此类推。  </p>
+<p>当我们把业务规则，划分为更细的维度时，我们可以轻松上在业务层组装不同的功能，讲述不同的故事。</p>
+<h2>2.16.5 越痛苦的事情，越早做</h2>
+<p>在有一次敏捷开发分享会上，有位前辈说：要对小问题不断进行优化迭代，而不要等到大问题来了再作变革。<br />
+也就是我们常听说的黄金法则： <strong>演变优于剧变</strong> 。  </p>
+<p>同样，在持续集成中，也提倡着类似的理念，即：越痛苦的事情，越早做。</p>
+<p>有时，对自己狠一点，是会有所收获的。  </p>
+<p>我们都赞扬美好的事物，但我们很少也会那样去做，因为我们知道美好需要付出更多的努力，意味着者牺牲。  </p>
+<p>如很多女生，都很喜欢苗条的身材，却总忍不住零食的诱惑，也很难坚持锻炼。<br />
+我们很多人都喜欢优雅的代码，自动却也总会写下一些临时性的代码，而没多及时清理代码的异味，也没有尝试去重构，更没有坚持单元测试。  </p>
+<p>从另外一个角度说，如果一个项目的问题，我们在前期及时沟通并解决的话，根本不值得过多去关注。但若我们因为团队关系或者心烦意乱有意识去抵触多变的需求时，一个很小的问题，到了上线后，就可能会演变成一个灾难。<br />
+到了那时，即使只是一行代码的改变，也会涉及到开发、测试、产品、运维、用户、商务、老板等等一系列的干涉人。为了修复上线，我们还要走一系列的发布流程，事后还需要为这样的故障买单。  </p>
+<p>既然如此，明明知道当初一个不确定的需求时，为什么没去及时处理呢？<br />
+我知道，我相信我们大家也知道，程序员总会有一些很烦很想抵触的时候，这时我们会拒绝改变，拒绝去做一些正确的事情。  </p>
+<p>但越痛苦的事情，越早做，不仅仅需要我们增强对自身的情商控制，更让我们能很好地应对高价值的系统。<br />
+试想，谁会把一个影响到千千万万用户、涉及到动则百万金额的系统交给一个动不动就发脾气的人呢？  </p>
+<p>所以，对自己“狠”一点吧，明天的你，将会感谢今天努力的你。</p>
+<h2>2.16.6 收篇</h2>
+<p>领域驱动设计所提供的思想、概念和设计非常广泛，这里不能一一说明。本章仅仅是摘取其中的部分内容进行再传播，以唤醒入门同学的注意，培养一种约定编程的意识。 </p>
+<p>更为重要的是，要懂得去学习，学习后应用到自己当前的工作或项目中，慢慢地你将会体会到开发的乐趣。  </p>
+<hr />
+<h4><a href="#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left"><font size="2px">&copy;PhalApi All Rights Reserved. 粤ICP备15028808号</font></p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

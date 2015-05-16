@@ -109,7 +109,7 @@ $ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Publ
     public function testGetBaseInfo()
     {
         //当。。。
-        $str = 'service=User.GetBaseInfo&amp;userId=1';
+        $str = 'service=User.GetBaseInfo&amp;user_id=1';
 
         parse_str($str, $params);
         DI()-&gt;request = new PhalApi_Request($params);
@@ -133,7 +133,7 @@ $ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Publ
     }</code></pre>
 <p>上面的验证意思简单明了，结合 <strong>构造-操作-检验（BUILD-OPERATE-CHECK）模式</strong> 加以说明一下。  </p>
 <h3>构造</h3>
-<pre><code>        $str = 'service=User.GetBaseInfo&amp;userId=1';</code></pre>
+<pre><code>        $str = 'service=User.GetBaseInfo&amp;user_id=1';</code></pre>
 <p>此参数即对应接口请求的URL参数，我们将此参数追加在接口入口并在浏览器打开可以得到同样的接口执行效果。但这样的好处更在于通过单元测试帮我们记住了各种接口测试的业务场景。而不再是像以前那样打开N个浏览器窗口人工进行调试，也不用像以前那样苦苦寻找浏览器记录。</p>
 <pre><code>        parse_str($str, $params);
         DI()-&gt;request = new PhalApi_Request($params);</code></pre>

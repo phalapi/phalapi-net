@@ -53,13 +53,474 @@
             <div class="grid__cell">
                 <h4><a href="/wikis/%5B2.21%5D-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BB%9F%E4%B8%80%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E7%AE%80%E6%98%8E%E7%89%88%EF%BC%9ACentOs---Nginx---php-fpm---MySql-%5B--Memcached%5D.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B3.1%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91.html">下一章</a></h4>
 <hr />
-<h2>2.22.1 PHPUnit：自动化单元测试 //TODO</h2>
-<h2>2.22.2 Phing：一键部署、快速发布 //TODO</h2>
-<h2>2.22.3 autobench：接口压力测试与可视化图表 //TODO</h2>
-<h2>2.22.4 xhprof：性能分析工具 //TODO</h2>
-<h2>2.22.5 Jenkis和Sonar：持续集成和静态代码分析 //TODO</h2>
-<h2>2.22.6 Git/SVN：更多的版本控制 //TODO</h2>
-<h2>2.22.7 WIKI：团队沟通与文档交流 //TODO</h2>
+<h2>2.22.1 PHPUnit：自动化单元测试</h2>
+<p>目前核心框架单元测试的覆盖率（高达90%以上！！！此处应该有掌声~）：
+<img src="http://webtools.qiniudn.com/131634_NHlk_256338.jpg" alt="a pic" />  </p>
+<p>注意，此测试截图并不是最新的，但我们一直都在致力坚持单元测试。<br />
+这一点，你可以在单元测试的代码中找到证明。  </p>
+<h2>2.22.2 Phing：一键部署、快速发布</h2>
+<p>无论如何，都应该走自动化发布流程，避免人工地打包、上传、解压、改生产配置这些重复性的人工操作。  </p>
+<p>在自动化发布中，Phing是个不错的尝试。  </p>
+<p>以下是我某个项目中的使用配置，出于对项目的保护，部分数据已删除，但仍然可以参考。</p>
+<h3>(1)发布配置 - build.xml</h3>
+<p>主要的操作有：</p>
+<ul>
+<li>
+<ol>
+<li>备份当前代码，并删除一天前的备份</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>从SVN签出最新的发布代码</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>执行配置检测脚本</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>代码发布切换，并替换使用线上配置文件</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>移除单元测试初始化文件，以免误执行</li>
+</ol>
+</li>
+</ul>
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;!-- ============================================  --&gt;
+&lt;!-- PhalApi                       --&gt;
+&lt;!-- @dogstar 20141221                             --&gt;
+&lt;!-- ============================================  --&gt;
+
+&lt;project name="demo.phalapi.com" default="build"&gt;
+
+    &lt;property 
+        name="backup_path" 
+        value="/home/apps/backup/demo.phalapi.com" 
+        override="true" /&gt;
+    &lt;property 
+        name="backup_prefix" 
+        value="demo.phalapi.com_phing_backup_" 
+        override="true" /&gt;
+    &lt;property 
+        name="svn_todir" 
+        value="/home/apps/svn/demo.phalapi.com" 
+        override="true" /&gt;
+
+    &lt;!-- ============================================  --&gt;
+    &lt;!-- Target: prepare                               --&gt;
+    &lt;!-- ============================================  --&gt;
+    &lt;target name="prepare"&gt;
+        &lt;mkdir dir="./Runtime" /&gt;
+        &lt;mkdir dir="${svn_todir}" /&gt;
+        &lt;mkdir dir="${backup_path}" /&gt;
+    &lt;/target&gt;
+
+    &lt;!-- ============================================  --&gt;
+    &lt;!-- Target: svn checkout                          --&gt;
+    &lt;!-- ============================================  --&gt;
+    &lt;target name="svncheckout"&gt;
+        &lt;svncheckout 
+            repositoryurl="svn://127.0.0.1/PhalApi/demo/release" 
+            username="test"
+            password="123456"
+            nocache="true"
+            todir="${svn_todir}" /&gt;
+    &lt;/target&gt;
+
+    &lt;!-- ============================================  --&gt;
+    &lt;!-- Target: svn update                            --&gt;
+    &lt;!-- ============================================  --&gt;
+    &lt;target name="svnup" depends="svncheckout"&gt;
+        &lt;svnupdate 
+            repositoryurl="svn://127.0.0.1/PhalApi/demo/release" 
+            username="test"
+            password="123456"
+            nocache="true"
+            todir="${svn_todir}" /&gt;
+    &lt;/target&gt;
+
+    &lt;!-- ============================================  --&gt;
+    &lt;!-- Target: check config                          --&gt;
+    &lt;!-- ============================================  --&gt;
+    &lt;target name="checkconfig"&gt;
+    &lt;php expression="include('${svn_todir}/Tools/check_config.php')" /&gt;
+        &lt;php 
+            function="checkProd" 
+            class="Tools_Check_Config" 
+            returnProperty="checkProdErrorMsg" /&gt;
+
+        &lt;fail msg="${checkProdErrorMsg}" if="checkProdErrorMsg" /&gt;
+    &lt;/target&gt;
+
+    &lt;!-- ============================================  --&gt;
+    &lt;!-- Target: backup                                --&gt;
+    &lt;!-- ============================================  --&gt;
+    &lt;target name="backup"&gt;
+        &lt;php 
+            expression="date('Ymd', strtotime('-1 day'))" 
+            returnProperty="backup_version_yesterday" /&gt;
+        &lt;php 
+            expression="date('Ymd')" 
+            returnProperty="backup_version_today" /&gt;
+        &lt;delete&gt;
+            &lt;fileset dir="${backup_path}"&gt;
+                &lt;exclude name="${backup_prefix}${backup_version_yesterday}*" /&gt;
+                &lt;exclude name="${backup_prefix}${backup_version_today}*" /&gt;
+            &lt;/fileset&gt;
+        &lt;/delete&gt;
+
+        &lt;php 
+            expression="date('YmdHis')" 
+            returnProperty="backup_version" /&gt;
+        &lt;zip destfile="${backup_path}/${backup_prefix}${backup_version}.zip" basedir="." &gt;
+            &lt;fileset dir="."&gt;
+                &lt;include name="**/**" /&gt;
+
+                &lt;exclude name="./Runtime" /&gt;
+                &lt;exclude name="./Runtime/**" /&gt;
+                &lt;exclude name="./.svn" /&gt;
+                &lt;exclude name="./.svn/**" /&gt;
+            &lt;/fileset&gt;
+        &lt;/zip&gt;
+        &lt;copy 
+            file="${backup_path}/${backup_prefix}${backup_version}.zip" 
+            tofile="${backup_path}/${backup_prefix}lastest.zip" 
+            overwrite="true" /&gt;
+    &lt;/target&gt;
+
+    &lt;!-- ============================================  --&gt;
+    &lt;!-- Target: build                                 --&gt;
+    &lt;!-- ============================================  --&gt;
+    &lt;target name="build" depends="prepare,svnup,checkconfig,backup"&gt;
+        &lt;copy todir="." overwrite="true" &gt;
+            &lt;fileset dir="${svn_todir}"&gt;
+                &lt;include name="**/**" /&gt;
+
+                &lt;exclude name="${svn_todir}/Config/dbs.php" /&gt;
+                &lt;exclude name="${svn_todir}/Config/sys.php" /&gt;
+                &lt;exclude name="${svn_todir}/Test" /&gt;
+                &lt;exclude name="${svn_todir}/Test/**" /&gt;
+            &lt;/fileset&gt;
+        &lt;/copy&gt;
+
+        &lt;copy 
+            file="./Config/dbs.php.prod" 
+            tofile="./Config/dbs.php" 
+            overwrite="true" /&gt;
+        &lt;copy 
+            file="./Config/sys.php.prod" 
+            tofile="./Config/sys.php" 
+            overwrite="true" /&gt;
+
+        &lt;!-- 避免在生产环境执行PHPUnit，故把测试环境的初始文件移开 --&gt;
+        &lt;move 
+            file="./Test/test_env.php"
+            tofile="./Test/test_env.php.bak" 
+            overwrite="true"/&gt;
+    &lt;/target&gt;
+
+&lt;/project&gt;
+</code></pre>
+<h3>(2)回滚配置 - rollback.xml</h3>
+<p>主要操作：  </p>
+<ul>
+<li>
+<ol>
+<li>回滚到上一个版本</li>
+</ol>
+</li>
+</ul>
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;!-- ============================================  --&gt;
+&lt;!-- PhalApi                       --&gt;
+&lt;!-- @dogstar 20141222 冬至                        --&gt;
+&lt;!-- ============================================  --&gt;
+
+&lt;project name="demo.phalapi.com" default="rollback"&gt;
+
+    &lt;property 
+        name="backup_path" 
+        value="/home/apps/backup/demo.phalapi.com" 
+        override="true" /&gt;
+    &lt;property 
+        name="backup_prefix" 
+        value="demo.phalapi.com_phing_backup_" 
+        override="true" /&gt;
+    &lt;property 
+        name="svn_todir" 
+        value="./__svn__" 
+        override="true" /&gt;
+
+    &lt;!-- ============================================  --&gt;
+    &lt;!-- Target: rollback                              --&gt;
+    &lt;!-- ============================================  --&gt;
+    &lt;target name="rollback" &gt;
+        &lt;unzip file="${backup_path}/${backup_prefix}lastest.zip" todir="." &gt;
+            &lt;fileset dir="."&gt;
+                &lt;include name="*.zip"/&gt;
+            &lt;/fileset&gt;
+        &lt;/unzip&gt;
+    &lt;/target&gt;
+
+&lt;/project&gt;
+</code></pre>
+<h2>2.22.3 autobench：接口压力测试与可视化图表</h2>
+<p>可以通过以下的脚本来进行，使用示例：  </p>
+<pre><code>$ ./autobench.sh
+Usage: ./autobench.sh &lt;host&gt; &lt;uri&gt;
+
+ - ./autobench.sh www.baidu.com /index.php</code></pre>
+<p>参数可以自行调整。  </p>
+<h3>(1)利用bench2graph生成可视化图表</h3>
+<h4>纯PHP访问 - 入口欢迎接口</h4>
+<p><img src="http://webtools.qiniudn.com/1421422942BjP7K5M5.jpg" alt="a pic" /></p>
+<h4>mysql访问 - 事件获取接口</h4>
+<p><img src="http://webtools.qiniudn.com/14214229738ftM0Nck.jpg" alt="a pic" /></p>
+<h4>带MC缓存的访问 - 应用入口 - 带缓存的身份token验证</h4>
+<p><img src="http://webtools.qiniudn.com/1421424027OYV4Ae5i.jpg" alt="a pic" /></p>
+<h3>(2)详细的数据报表</h3>
+<pre><code>dem_req_rate    req_rate_demo.phalapi.com     con_rate_demo.phalapi.com     min_rep_rate_demo.phalapi.com avg_rep_rate_demo.phalapi.com    max_rep_rate_demo.phalapi.com stddev_rep_rate_demo.phalapi.com      resp_time_demo.phalapi.com       net_io_demo.phalapi.com       errors_demo.phalapi.com
+5       5.0     5.0     4.8     5.0     5.2     0.1     22.4    2.9     0
+25      25.0    25.0    25.0    25.0    25.0    0.0     21.6    14.3    0
+45      45.0    45.0    45.0    45.0    45.0    0.0     22.3    25.7    0
+65      64.9    64.9    64.7    64.7    64.7    0.0     25.4    37.0    0
+85      84.8    84.8    84.6    84.6    84.6    0.0     28.6    48.3    0
+105     104.6   104.6   0.0     0.0     0.0     0.0     34.4    59.7    0
+125     124.0   124.0   0.0     0.0     0.0     0.0     42.2    70.7    0
+145     143.8   143.8   0.0     0.0     0.0     0.0     59.2    82.0    0
+165     147.4   147.4   0.0     0.0     0.0     0.0     262.9   84.1    0
+185     151.1   151.1   0.0     0.0     0.0     0.0     429.7   86.2    0</code></pre>
+<h3>(3)附脚本</h3>
+<pre><code>#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 &lt;host&gt; &lt;uri&gt;"
+    echo ""
+    echo " - $0 www.baidu.com /index.php"
+    echo ""
+    exit
+fi
+
+DM=$1
+URL=$2
+
+#--signle_host 只测单机
+#--host1 测试主机地址
+#--uri1 host1 测试URI
+#--quiet 安静模式
+#--low_rate 测试时最低请求数(指 httperf)
+#--hight_rate 测试时最高请求数
+#--rate_step 每次测试请求数增加步长
+#--num-call 每连接中发起联接数，一般是1
+#--num_conn 测试联接数
+#--file 测试结果输出的 tsv文件
+
+autobench \
+--single_host \
+--host1=$DM \
+--port1=80 \
+--uri1=$URL \
+--low_rate=5 \
+--high_rate=200 \
+--rate_step=20 \
+--num_call=1 \
+--num_conn=500 \
+--timeout=10 \
+--file ./$DM.tsv</code></pre>
+<h2>2.22.4 xhprof：性能分析工具</h2>
+<p>xhprof是一个不错的内部性能分析工具，这里不过多的讲述此工具的特点和使用，但会以对PhalApi进行的一个性能测试展示它的分析效果。  </p>
+<h3>(1)测试的接口服务</h3>
+<p><a href="http://api.phalapi.com">http://api.phalapi.com</a> /demo/?service=Default.Index&amp;username=test</p>
+<h3>(2)Overall Summary</h3>
+<pre><code>Total Incl. Wall Time (microsec):     7,873 microsecs
+Total Incl. CPU (microsecs):    7,999 microsecs
+Total Incl. MemUse (bytes):    304,456 bytes
+Total Incl. PeakMemUse (bytes):    306,616 bytes
+Number of Function Calls:        338</code></pre>
+<h3>(3)Top 10耗时</h3>
+<table>
+<thead>
+<tr>
+<th>Function Name</th>
+<th>Calls</th>
+<th>Calls%</th>
+<th>Incl. Wall Time(microsec)</th>
+<th>IWall%(microsec)</th>
+<th>Excl. Wall Time</th>
+<th>EWall%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PhalApi_Loader::loadClass</td>
+<td>10</td>
+<td>3.00%</td>
+<td>3,020</td>
+<td>38.40%</td>
+<td>1,038</td>
+<td>13.20%</td>
+</tr>
+<tr>
+<td>PhalApi_Loader::loadClass1</td>
+<td>4</td>
+<td>1.20%</td>
+<td>785</td>
+<td>10.00%</td>
+<td>398</td>
+<td>5.10%</td>
+</tr>
+<tr>
+<td>run_init::Public/init.php</td>
+<td>1</td>
+<td>0.30%</td>
+<td>3,915</td>
+<td>49.70%</td>
+<td>327</td>
+<td>4.20%</td>
+</tr>
+<tr>
+<td>file_exists</td>
+<td>18</td>
+<td>5.30%</td>
+<td>249</td>
+<td>3.20%</td>
+<td>249</td>
+<td>3.20%</td>
+</tr>
+<tr>
+<td>main()</td>
+<td>1</td>
+<td>0.30%</td>
+<td>7,873</td>
+<td>100.00%</td>
+<td>248</td>
+<td>3.20%</td>
+</tr>
+<tr>
+<td>load::zh_cn/common.php</td>
+<td>2</td>
+<td>0.60%</td>
+<td>237</td>
+<td>3.00%</td>
+<td>237</td>
+<td>3.00%</td>
+</tr>
+<tr>
+<td>PhalApi_Loader::load</td>
+<td>9</td>
+<td>2.70%</td>
+<td>3,380</td>
+<td>42.90%</td>
+<td>226</td>
+<td>2.90%</td>
+</tr>
+<tr>
+<td>PhalApi_DI::get</td>
+<td>9</td>
+<td>2.70%</td>
+<td>1,268</td>
+<td>16.10%</td>
+<td>223</td>
+<td>2.80%</td>
+</tr>
+<tr>
+<td>PhalApi_Translator::addMessage</td>
+<td>2</td>
+<td>0.60%</td>
+<td>522</td>
+<td>6.60%</td>
+<td>136</td>
+<td>1.70%</td>
+</tr>
+<tr>
+<td>DI</td>
+<td>15</td>
+<td>4.40%</td>
+<td>645</td>
+<td>8.20%</td>
+<td>134</td>
+<td>1.70%</td>
+</tr>
+<tr>
+<td>class_exists</td>
+<td>11</td>
+<td>3.30%</td>
+<td>1,383</td>
+<td>17.60%</td>
+<td>130</td>
+<td>1.70%</td>
+</tr>
+<tr>
+<td>load::Config/sys.php</td>
+<td>1</td>
+<td>0.30%</td>
+<td>120</td>
+<td>1.50%</td>
+<td>120</td>
+<td>1.50%</td>
+</tr>
+</tbody>
+</table>
+<p>对应的图表如下：<br />
+<img src="http://webtools.qiniudn.com/phalapi_xhprxf.jpg" alt="a pic" /><br />
+从中可以看出，主要的耗时途径在于文件的加载，下面将进一步探讨。</p>
+<h3>(4)Top 1耗时深入</h3>
+<p><img src="http://webtools.qiniudn.com/top1_sheet-small.png" alt="a pic" />    </p>
+<p>所加载的文件如下：<br />
+<img src="http://webtools.qiniudn.com/top1_loader.png" alt="a pic" />  </p>
+<h2>2.22.5 Jenkis和Sonar：持续集成和静态代码分析</h2>
+<p>PhalApi从来不会隐藏自己的设计，当然，我们也不会隐藏我们内部的各个细节以及存在的问题。<br />
+但和其他隐藏了技术债务的框架相比，PhalApi敢于展示自己的静态代码分析报告，并且它也是做得相当出色的。  </p>
+<p>以下截图来自 GIT@OSC 上的静态代码分析：
+<img src="http://webtools.qiniudn.com/sonar_code_analysis.png" alt="a pic" />  </p>
+<p>当你的项目很重要时，也可以使用Jenkis或者Sonar进行静态代码的分析。<br />
+不要个人主观地觉得你的代码风格写得好，而是交由专业的分析工具进行解剖，并理解各个数据报表背后的含义，然后改进之。</p>
+<h2>2.22.6 Git/SVN：更多的版本控制</h2>
+<h2>2.22.7 WIKI：团队沟通与文档交流</h2>
+<h3>(1)markdown接口模板</h3>
+<pre><code>#3.2 接口文档模板
+##1、功能说明
+_请在这里放置简短的接口功能说明。_  
+
+##2、接口URL
+/?service= _接口服务名称_  + 公共参数(是否免登录态？)
+
+##3、接口参数 [跳转](http://demo.phalapi.com/demo/checkApiParams.php?service=) 
+
+参数|必须|默认值|说明
+---|---|---|---
+user_id|1||用户id
+
+##4、返回结果
+
+###返回字段
+参数|类型|说明
+---|---|---
+data.username|string|用户名
+
+###结果示例
+{
+    "ret": 200,
+    "data": {
+       ....  //更多结果的说明
+
+        "msg": ""
+    },
+    "msg": ""
+}
+
+###请求示例
+_请放置一个接口请求的链接。_
+
+http://demo.phalapi.com/demo/?service=</code></pre>
 <hr />
 <h4><a href="/wikis/%5B2.21%5D-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BB%9F%E4%B8%80%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E7%AE%80%E6%98%8E%E7%89%88%EF%BC%9ACentOs---Nginx---php-fpm---MySql-%5B--Memcached%5D.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B3.1%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91.html">下一章</a></h4>
             </div>
