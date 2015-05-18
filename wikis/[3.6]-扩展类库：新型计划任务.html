@@ -56,21 +56,9 @@
 <h2>3.6.1 扩展类库：新型计划任务</h2>
 <p>此扩展类型用于后台计划任务的调度，主要功能点有：</p>
 <ul>
-<li>
-<ol>
-<li>提供了Redis/文件/数据库三种MQ队列</li>
-</ol>
-</li>
-<li>
-<ol>
-<li>提供了本地和远程两种调度方式</li>
-</ol>
-</li>
-<li>
-<ol>
-<li>以接口的形式实现计划任务</li>
-</ol>
-</li>
+<li>1、提供了Redis/文件/数据库三种MQ队列</li>
+<li>2、提供了本地和远程两种调度方式</li>
+<li>3、以接口的形式实现计划任务</li>
 </ul>
 <p>更多内容，请查看：<a href="/wikis/%5B1.31%5D-%E6%96%B0%E5%9E%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%9A%E4%BB%A5%E6%8E%A5%E5%8F%A3%E5%BD%A2%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1.html">[1.31] 新型计划任务：以接口形式实现的计划任务</a>  </p>
 <h2>3.6.2 安装</h2>
@@ -154,7 +142,7 @@ if ($argc &lt; 2) {
 $service = trim($argv[1]);
 
 $mq = new Task_Redis();
-$runnter = new Task_Runner_Local($mq);
+$runner = new Task_Runner_Local($mq);
 $rs = $runnter-&gt;go($service);
 
 echo "\nDone:\n", json_encode($rs), "\n\n";</code></pre>
