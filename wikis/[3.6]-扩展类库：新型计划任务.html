@@ -59,6 +59,7 @@
 <li>1、提供了Redis/文件/数据库三种MQ队列</li>
 <li>2、提供了本地和远程两种调度方式</li>
 <li>3、以接口的形式实现计划任务</li>
+<li>4、提供统一的crontab调度</li>
 </ul>
 <p>更多内容，请查看：<a href="/wikis/%5B1.31%5D-%E6%96%B0%E5%9E%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%9A%E4%BB%A5%E6%8E%A5%E5%8F%A3%E5%BD%A2%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1.html">[1.31] 新型计划任务：以接口形式实现的计划任务</a>  </p>
 <h2>3.6.2 安装</h2>
@@ -147,6 +148,38 @@ $rs = $runnter-&gt;go($service);
 
 echo "\nDone:\n", json_encode($rs), "\n\n";</code></pre>
 <p>然后使用nohup或者crontab启动即可。  </p>
+<h3>(3)续篇 - 统一的crontab计划任务</h3>
+<p>上面第二点的启动是通用、自定义、也是自由的启动方式。  </p>
+<p>这里再提供一种具体的、统一的启动方式，即使用crontab的方式。  </p>
+<p>首先，创建以下表(或见./Library/Task/Data/phalapi_task_progress.sql文件)：</p>
+<pre><code>CREATE TABLE `phalapi_task_progress` (
+      `id` bigint(20) NOT NULL AUTO_INCREMENT,
+      `title` varchar(200) DEFAULT '' COMMENT '任务标题',
+      `trigger_class` varchar(50) DEFAULT '' COMMENT '触发器类名',
+      `fire_params` varchar(255) DEFAULT '' COMMENT '需要传递的参数，格式自定',
+      `interval_time` int(11) DEFAULT '0' COMMENT '执行间隔，单位：秒',
+      `enable` tinyint(1) DEFAULT '1' COMMENT '是否启动，1启动，0禁止',
+      `result` varchar(255) DEFAULT '' COMMENT '运行的结果，以json格式保存',
+      `state` tinyint(1) DEFAULT '0' COMMENT '进程状态，0空闲，1运行中，-1异常退出',
+      `last_fire_time` int(11) DEFAULT '0' COMMENT '上一次运行时间',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre>
+<p>接着，添加crontab计划任务：</p>
+<pre><code>$ crontab -e
+
+*/1 * * * * /usr/bin/php /path/to/PhalApi/Library/Task/crontab.php &gt;&gt; /tmp/phalapi_task_crontab.log 2&gt;&amp;1
+</code></pre>
+<p>然后，实现你的计划任务服务接口：</p>
+<pre><code>&lt;?php
+class Api_Task_Demo extends PhalApi_Api {
+
+      public function doSth() {
+            // ...
+      }
+}</code></pre>
+<p>最后，配置计划任务：</p>
+<pre><code>INSERT INTO `phalapi_task_progress`(title, trigger_class, fire_params, interval_time)  VALUES('你的任务名字', 'Task_Progress_Trigger_Common', 'Task_Demo.DoSth&amp;Task_MQ_File&amp;Task_Runner_Local', '300');</code></pre>
+<p>注意，在配置时，需要指明MQ和Runner的类型。</p>
 <h2>3.6.4 更多说明</h2>
 <h3>(1)依赖的资源服务</h3>
 <table>

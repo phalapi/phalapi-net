@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[2.15]-演进：新型计划任务续篇 | PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,phalapi文档,phalapi wiki,PhalApi文档,phalapi在线文档,phalapi官方文档">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">保护大象，拒绝象牙！</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="/wikis/%5B2.14%5D-%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%EF%BC%9A%E6%84%8F%E5%9B%BE%E5%AF%BC%E5%90%91%E7%BC%96%E7%A8%8B%E4%B8%8B%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.16%5D-%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%BA%94%E5%AF%B9%E5%A4%8D%E6%9D%82%E9%A2%86%E5%9F%9F%E4%B8%9A%E5%8A%A1%E7%9A%84Domain%E5%B1%82-.html">下一章</a></h4>
+<hr />
+<h2>2.15.1 新型计划任务回顾</h2>
+<p>在 <a href="/wikis/%5B1.31%5D-%E6%96%B0%E5%9E%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%9A%E4%BB%A5%E6%8E%A5%E5%8F%A3%E5%BD%A2%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1.html">[1.31]-新型计划任务：以接口形式实现的计划任务</a> 一章中，我们讨论了PhalApi中对计划任务的设计和底层实现。 </p>
+<p>但对于很多应用，很多项目，或者很多同学来说，仍然比较广泛，不能直接使用。<br />
+这一章则专门为此而进行演进，并提供最终可用的计划任务调度，同时我们也会阐明如何进行扩展定制。</p>
+<p>也就是说，这一章将提供Task扩展类库的统一调度方式，以便在启动crontab任务后，可以通过数据库简单配置，即可执行各种任务。  </p>
+<h2>2.15.2 最终调度的方式：crontab</h2>
+<p>出于对业务的考虑，我们首先需要明确此crontab调度方式所支持的功能，它应该包括但不限于：  </p>
+<ul>
+<li>1、通过简单的数据库配置，即可启动一个新的任务</li>
+<li>2、具备循环调度的能力，并能初步防止并发调度</li>
+<li>3、可以对异常的任务进行修复</li>
+<li>4、优先执行太远未执行的任务</li>
+<li>5、支持本地和远程两种调度方式、三种MQ类型，以及扩展的能力</li>
+</ul>
+<h2>2.15.3 核心时序图与分层</h2>
+<p>在原来的时序图基础上，我们可以进行演进的设计，追加了统一的调度后如下所示：<br />
+<img src="http://webtools.qiniudn.com/task_6.jpg" alt="a pic" />   </p>
+<p>通过上面详细的时序图，我们可以发现里面的设计是出于这样的分层考虑：  </p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>层</th>
+<th>关键操作</th>
+<th>说明</th>
+<th>如何使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>启动脚本</td>
+<td>crontab.php</td>
+<td>操作crontab执行的脚本</td>
+<td>客户端可以进行必要的初始化工作</td>
+</tr>
+<tr>
+<td>2</td>
+<td>进程级</td>
+<td>Task_Progress::run()</td>
+<td>根据进程配置的数据库表，进行循环调度</td>
+<td>不需要改动，直接使用</td>
+</tr>
+<tr>
+<td>3</td>
+<td>触发器</td>
+<td>Task_Trigger::fire()</td>
+<td>进行计划任务调度的上下文环境，用于指定runner和mq类型</td>
+<td>客户端也可进行定制扩展，进行必要的操作</td>
+</tr>
+<tr>
+<td>4</td>
+<td>MQ消费与调度</td>
+<td>Task_MQ::pop()和Task_Runner::go()</td>
+<td>不断消费MQ队列，并依次进行调度</td>
+<td>不需要改动，直接使用，也可扩展</td>
+</tr>
+<tr>
+<td>5</td>
+<td>计划任务服务</td>
+<td>PhalApi_Api::doSth()</td>
+<td>执行计划任务服务</td>
+<td>由客户端按接口形式实现</td>
+</tr>
+</tbody>
+</table>
+<p>虽然上面的层级，初看起来有点多，但我们再次验证了计算机那个伟大的定论：计算机的任何问题都可以通过一个中间层来解决。  </p>
+<p>由此看出，上面的层级其实相当于：</p>
+<pre><code>客户端初始化 --&gt; 直接使用 --&gt; 自由组合与操作 --&gt; 直接使用 --&gt; 任务服务实现</code></pre>
+<h2>2.16.4 进程配置的数据库表设计</h2>
+<pre><code>CREATE TABLE `phalapi_task_progress` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) DEFAULT '' COMMENT '任务标题',
+  `trigger_class` varchar(50) DEFAULT '' COMMENT '触发器类名',
+  `fire_params` varchar(255) DEFAULT '' COMMENT '需要传递的参数，格式自定',
+  `interval_time` int(11) DEFAULT '0' COMMENT '执行间隔，单位：秒',
+  `enable` tinyint(1) DEFAULT '1' COMMENT '是否启动，1启动，0禁止',
+  `result` varchar(255) DEFAULT '' COMMENT '运行的结果，以json格式保存',
+  `state` tinyint(1) DEFAULT '0' COMMENT '进程状态，0空闲，1运行中，-1异常退出',
+  `last_fire_time` int(11) DEFAULT '0' COMMENT '上一次运行时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;</code></pre>
+<p>对此表的关键字段说明如下：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>trigger_class</td>
+<td>触发器的类名</td>
+<td>须实现Task_Progress_Trigger::fire($params)接口</td>
+</tr>
+<tr>
+<td>fire_params</td>
+<td>触发器的参数</td>
+<td>加传给Task_Progress_Trigger::fire()函数的参数，格式为：service&amp;MQ类名&amp;runner类名</td>
+</tr>
+<tr>
+<td>interval_time</td>
+<td>执行间隔</td>
+<td>单位为秒</td>
+</tr>
+<tr>
+<td>enable</td>
+<td>是否启动</td>
+<td>此字段禁止时，将不再执行</td>
+</tr>
+<tr>
+<td>state</td>
+<td>进程状态</td>
+<td>当此状态一直为异常或者运行且超过1天时，系统会进行修复，即重置为空闲状态</td>
+</tr>
+</tbody>
+</table>
+<p>其中，对于fire_params参数，MQ类名和runner类名可选，以下是一些示例：</p>
+<pre><code>//示例1：完整的配置
+//fire_params=Task_Demo.DoSth&amp;Task_MQ_DB&amp;Task_Runner_Local
+$mq = new Task_MQ_DB();
+$runner = new Task_Runner_Local($mq);
+$runner-&gt;go('Task_Demo.DoSth');
+
+//示例2：使用默认的Runner
+//fire_params=Task_Demo.DoSth&amp;Task_MQ_DB
+$mq = new Task_MQ_DB();
+$runner = new Task_Runner_Local($mq);  //默认使用本地Runner
+$runner-&gt;go('Task_Demo.DoSth');
+
+//示例3:使用默认的MQ和默认的Runner
+//fire_params=Task_Demo.DoSth
+$mq = new Task_MQ_Redis(); //默认使用redis的MQ
+$runner = new Task_Runner_Local($mq);  //默认使用本地Runner
+$runner-&gt;go('Task_Demo.DoSth');
+
+//示例4：使用自定义的MQ和Runner
+//fire_params=Task_Demo.DoSth&amp;My_MQ&amp;My_Runner
+class My_MQ implements Task_MQ {
+     // ...
+}
+class My_Runner extends Task_Runner {
+     // ...
+}
+$mq = new My_MQ();
+$runner = new My_Runner($mq);
+$runner-&gt;go('Task_Demo.DoSth');</code></pre>
+<h2>2.15.5 运行效果</h2>
+<p>最终的效果就是，我们通过这样两行简单的代码，即可实现一系列复杂的任务调度：</p>
+<pre><code>$progress = new Task_Progress();
+$progress-&gt;run();</code></pre>
+<p>让我们来看下这样设计的运行效果吧！看下这两行代码背后所产生的魔力。  </p>
+<p>首先，我们先添加两条计划任务：</p>
+<pre><code>INSERT INTO `phalapi_task_progress` VALUES ('1', 'test demo', 'Task_Progress_Trigger_Common', 'Task_Demo.DoSth&amp;Task_MQ_File&amp;Task_Runner_Local', '300', '1', '', '0', '0');
+INSERT INTO `phalapi_task_progress` VALUES ('2', 'test ok', 'Task_Progress_Trigger_Common', 'Default.Index&amp;Task_MQ_DB&amp;Task_Runner_Local', '100', '1', '', '0', '0');</code></pre>
+<p>然后，伪造一些MQ：</p>
+<pre><code>INSERT INTO `phalapi_task_mq_0` VALUES ('8', 'Default.Index', '', '0', '');</code></pre>
+<p>最后，生成单元测试：</p>
+<pre><code>&lt;?php
+class PhpUnderControl_TaskProgress_Test extends PHPUnit_Framework_TestCase
+{
+    public $taskProgress;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this-&gt;taskProgress = new Task_Progress();
+    }
+
+    /**
+     * @group testRun
+     */
+    public function testRun()
+    {
+        $rs = $this-&gt;taskProgress-&gt;run();
+    }
+
+}
+</code></pre>
+<p>并执行之：</p>
+<pre><code>$ phpunit ./Task_Progress_Test.php
+
+[1 - 0.06666s]SELECT id, title FROM phalapi_task_progress WHERE (state != ?) AND (last_fire_time &lt; ?) AND (enable = ?) ORDER BY last_fire_time ASC; -- 0, 1431965153, 1&lt;br&gt;
+[2 - 0.07002s]SELECT id, title, trigger_class, fire_params FROM phalapi_task_progress WHERE (state = 0) AND (interval_time + last_fire_time &lt; ?) AND (enable = ?); -- 1432051553, 1&lt;br&gt;
+[3 - 0.06549s]SELECT enable, state FROM phalapi_task_progress WHERE (id = '1');&lt;br&gt;
+[4 - 0.07432s]UPDATE phalapi_task_progress SET state = 1 WHERE (id = '1');&lt;br&gt;
+[5 - 0.06469s]UPDATE phalapi_task_progress SET result = '{\"total\":0,\"fail\":0}', state = 0, last_fire_time = 1432051553 WHERE (id = '1');&lt;br&gt;
+[6 - 0.06746s]SELECT enable, state FROM phalapi_task_progress WHERE (id = '2');&lt;br&gt;
+[7 - 0.07043s]UPDATE phalapi_task_progress SET state = 1 WHERE (id = '2');&lt;br&gt;
+[8 - 0.06673s]SELECT id, params FROM phalapi_task_mq_0 WHERE (service = 'Default.Index') ORDER BY id ASC LIMIT 0,10;&lt;br&gt;
+[9 - 0.48185s]DELETE FROM phalapi_task_mq_0 WHERE (id IN ('8'));&lt;br&gt;
+[10 - 0.06514s]SELECT id, params FROM phalapi_task_mq_0 WHERE (service = 'Default.Index') ORDER BY id ASC LIMIT 0,10;&lt;br&gt;
+[11 - 0.50694s]UPDATE phalapi_task_progress SET result = '{\"total\":1,\"fail\":0}', state = 0, last_fire_time = 1432051553 WHERE (id = '2');&lt;br&gt;
+
+Time: 1.98 seconds, Memory: 6.50Mb
+
+OK (1 test, 0 assertions)</code></pre>
+<p>查看对比一下数据库，目前发现运行良好！  </p>
+<p>提交代码，保存文档，收工睡觉！</p>
+<h2>2.15.6 演进的乐趣</h2>
+<p>得益于前期良好的设计以及底层支持，我们发现，在提供这样一种统一的调度方式是非常方便的。  </p>
+<p>不仅如此，如果你明白了其中的设计，需要进行定制和扩展也是非常方便的。也就是说，我们不仅提供了一种具体实际可用的方式，也提供了广阔自由的扩展空间。具体与抽象，两者仍可得。  </p>
+<p>然而，这一切不仅依赖于良好的设计，还依赖于测试驱动开发下的浮现式设计。</p>
+<hr />
+<h4><a href="/wikis/%5B2.14%5D-%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%EF%BC%9A%E6%84%8F%E5%9B%BE%E5%AF%BC%E5%90%91%E7%BC%96%E7%A8%8B%E4%B8%8B%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.16%5D-%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%BA%94%E5%AF%B9%E5%A4%8D%E6%9D%82%E9%A2%86%E5%9F%9F%E4%B8%9A%E5%8A%A1%E7%9A%84Domain%E5%B1%82-.html">下一章</a></h4>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left"><font size="2px">&copy;PhalApi All Rights Reserved. 粤ICP备15028808号</font></p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>
