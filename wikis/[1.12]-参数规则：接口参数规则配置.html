@@ -277,6 +277,18 @@ return array(
 <pre><code>array('name' =&gt; 'sex', 'type' =&gt; 'enum', 'range' =&gt; array('female', 'male'))</code></pre>
 <p>当传递的参数不合法时，如&amp;sex=unknow，则会被拦截，返回失败：</p>
 <pre><code>{"ret":1200,"data":[],"msg":"Illegal Param: sex should be in female\/male, but now sex = unknow"}</code></pre>
+<h3>(8)文件 file</h3>
+<p>在需要对上传的文件进行过滤、接收和处理时，可以使用文件类型，如：</p>
+<pre><code>array('name' =&gt; 'upfile', 'type' =&gt; 'file', 'min' =&gt; '', 'max' =&gt; '', 'range' =&gt; array('image/jpeg', 'image/png'))</code></pre>
+<p>其中，min和max分别对应文件大小的范围，单位为：字节；range为允许的文件类型，使用数组配置。 </p>
+<p>如果成功，返回的值对应的是$_FILES[&quot;upfile&quot;]，即会返回：</p>
+<pre><code>array(
+     'name' =&gt; '',
+     'type' =&gt; '',
+     'size' =&gt; '',
+     'tmp_name' =&gt; '',
+)</code></pre>
+<p>若需要配置默认值default选项，则也应为一数组，且其格式应类似如上。</p>
 <h2>1.12.8 关于参数设计的原则</h2>
 <h3>(1)通配的$_REQUEST</h3>
 <p>使用$_REQUEST获取参数，便于在不同场合下GET/POST之间的切换，同时在初始化DI()-&gt;request服务时，可以指定传递的参数，以便于灵活的单元测试；</p>
