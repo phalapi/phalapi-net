@@ -280,7 +280,7 @@ return array(
 <h3>(8)文件 file</h3>
 <p>在需要对上传的文件进行过滤、接收和处理时，可以使用文件类型，如：</p>
 <pre><code>array('name' =&gt; 'upfile', 'type' =&gt; 'file', 'min' =&gt; '', 'max' =&gt; '', 'range' =&gt; array('image/jpeg', 'image/png'))</code></pre>
-<p>其中，min和max分别对应文件大小的范围，单位为：字节；range为允许的文件类型，使用数组配置。 </p>
+<p>其中，min和max分别对应文件大小的范围，单位为：字节；range为允许的文件类型，使用数组配置，且不区分大小写。 </p>
 <p>如果成功，返回的值对应的是$_FILES[&quot;upfile&quot;]，即会返回：</p>
 <pre><code>array(
      'name' =&gt; '',
@@ -288,6 +288,14 @@ return array(
      'size' =&gt; '',
      'tmp_name' =&gt; '',
 )</code></pre>
+<p>对应的是：  </p>
+<ul>
+<li>$_FILES[&quot;file&quot;][&quot;name&quot;] - 被上传文件的名称</li>
+<li>$_FILES[&quot;file&quot;][&quot;type&quot;] - 被上传文件的类型</li>
+<li>$_FILES[&quot;file&quot;][&quot;size&quot;] - 被上传文件的大小，以字节计</li>
+<li>$_FILES[&quot;file&quot;][&quot;tmp_name&quot;] - 存储在服务器的文件的临时副本的名称</li>
+<li>$_FILES[&quot;file&quot;][&quot;error&quot;] - 由文件上传导致的错误代码</li>
+</ul>
 <p>若需要配置默认值default选项，则也应为一数组，且其格式应类似如上。</p>
 <h2>1.12.8 关于参数设计的原则</h2>
 <h3>(1)通配的$_REQUEST</h3>
