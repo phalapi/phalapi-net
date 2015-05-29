@@ -188,6 +188,51 @@ $rs = DI()-&gt;notorm-&gt;user-&gt;select('wrong_username')-&gt;where('id', $use
 [2 - 0.06496s]SELECT wrong_username FROM fami_user WHERE (id = 1) LIMIT 1;&lt;br&gt;
 
 PDOException: Unknown column 'wrong_username' in 'field list'</code></pre>
+<h3>(10)关联查询</h3>
+<h3>简单的关联查询</h3>
+<p>如果是简单的关联查询，可以使用NotORM支持的写法，这样的好处在于我们使用了一致的开发，并且能让PhalApi框架保持分布式的操作方式（注意，关联的表仍然需要在同一个数据库）。  </p>
+<p>以下是一个简单的示例：<br />
+假设我们有这样的数据：</p>
+<pre><code>INSERT INTO `phalapi_user` VALUES ('1', 'wx_edebc877070133c65161d00799e00544', 'weixinName', '******', '4CHqOhe1Jxi3X9HmRfPOXygDnU267eCA', '1431790647', 'phpunit.png');
+INSERT INTO `phalapi_user_session_0` VALUES ('1', '1', 'ABC', '', '0', '0', '0', null);</code></pre>
+<p>那么对应关联查询的代码如下面：</p>
+<pre><code>    public function testLeftJoin()
+    {
+        $rs = DI()-&gt;notorm-&gt;user_session_0
+            -&gt;select('expires_time, user.username, user.nickname')
+            -&gt;where('token', 'ABC')
+            -&gt;fetchRow();
+
+        var_dump($rs);
+    }
+</code></pre>
+<p>运行一下，我们可以看到这样的输出：</p>
+<pre><code>SELECT expires_time, user.username, user.nickname FROM phalapi_user_session_0 LEFT JOIN phalapi_user AS user ON phalapi_user_session_0.user_id = user.id WHERE (token = 'ABC') LIMIT 1;
+
+.[1 - 0.06318s]SELECT expires_time, user.username, user.nickname FROM phalapi_user_session_0 LEFT JOIN phalapi_user AS user ON phalapi_user_session_0.user_id = user.id WHERE (token = 'ABC') LIMIT 1;&lt;br&gt;
+array(3) {
+  ["expires_time"]=&gt;
+  string(1) "0"
+  ["username"]=&gt;
+  string(35) "wx_edebc877070133c65161d00799e00544"
+  ["nickname"]=&gt;
+  string(10) "weixinName"
+}</code></pre>
+<p>这样，我们就可以实现关联查询的操作。按照NotORM官网的说法，则是：</p>
+<blockquote>
+<p>If the dot notation is used for a column anywhere in the query (&quot;$table.$column&quot;) then NotORM automatically creates left join to the referenced table. Even references across several tables are possible (&quot;$table1.$table2.$column&quot;). Referencing tables can be accessed by colon: $applications-&gt;select(&quot;COUNT(application_tag:tag_id)&quot;).</p>
+</blockquote>
+<p>-&gt;select('expires_time, user.username, user.nickname')这一行调用将会【自动产生关联操作】，而ON 的字段，则是这个字段关联你配置的【表结构】，外键默认为： 表名_id 。</p>
+<h3>复杂的关联查询</h3>
+<p>如果是复杂的关联查询，则是建议使用原生态的SQL语句，但我们仍然可以保持很好的写法，如这样一个示例：</p>
+<pre><code>        $sql = 'SELECT t.id, t.team_name, v.vote_num '
+            . 'FROM phalapi_team AS t LEFT JOIN phalapi_vote AS v '
+            . 'ON t.id = v.team_id '
+            . 'ORDER BY v.vote_num DESC';
+        $rows = $this-&gt;getORM()-&gt;queryAll($sql, array());
+</code></pre>
+<p>注意，此时的表需要使用全名，即自带前缀。<br />
+这样也可以实现更自由的关联查询。  </p>
 <h2>1.15.3 可选的Model基类</h2>
 <h3>(1)表数据入口模式</h3>
 <p>我们一直在考虑，是否应该提供数据库的基本操作支持，以减少开发人员重复手工编写基本的数据操作。  </p>
