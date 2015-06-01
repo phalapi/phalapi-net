@@ -82,7 +82,7 @@
 <p>当需要进行复杂的SQL查询时，可以使用此接口，如：  </p>
 <pre><code>$sql = 'select * from example AS ep LEFT JOIN user AS u ON ep.ui
 d = u.id  where ep.touid = :userId ORDER BY dateline desc LIMIT :start,:num';
-$params = array('userId' =&gt; $userId, ':start' =&gt; $start, ':num' =&gt; $num);
+$params = array(':userId' =&gt; $userId, ':start' =&gt; $start, ':num' =&gt; $num);
 $rs= DI()-&gt;notorm-&gt;example-&gt;queryAll($sql, $params);</code></pre>
 <p>或：</p>
 <pre><code>$rs= DI()-&gt;notorm-&gt;example-&gt;queryRows($sql, $params);</code></pre>
