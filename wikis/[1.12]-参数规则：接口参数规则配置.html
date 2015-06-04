@@ -277,7 +277,7 @@ return array(
 <pre><code>array ( 0 =&gt; '1', 1 =&gt; '2', 2 =&gt; '3', )</code></pre>
 <p>又如接口需要使用JSON来传递整块参数时，可以这样配置：</p>
 <pre><code>array('name' =&gt; 'params', 'type' =&gt; 'array', 'format' =&gt; 'json')</code></pre>
-<p>对应¶ms={&quot;username&quot;:&quot;test&quot;,&quot;password&quot;:&quot;123456&quot;}则会被转换成：</p>
+<p>对应&amp;params={&quot;username&quot;:&quot;test&quot;,&quot;password&quot;:&quot;123456&quot;}则会被转换成：</p>
 <pre><code>array ( 'username' =&gt; 'test', 'password' =&gt; '123456', )</code></pre>
 <p>特别地，当配置成了数组，却未指定格式format时，会转换成一个元素的数组，如：&amp;name=test，会转换成：array('test')。</p>
 <h3>(7)枚举 enum</h3>
