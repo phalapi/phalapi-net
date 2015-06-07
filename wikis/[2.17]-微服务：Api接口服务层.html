@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[2.17]-微服务：Api接口服务层 | PhalApi - PHP轻量级后台接口开发框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,phalapi文档,phalapi wiki,PhalApi文档,phalapi在线文档,phalapi官方文档">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">官方交流群：421032344</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="/wikis/%5B2.16%5D-%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%BA%94%E5%AF%B9%E5%A4%8D%E6%9D%82%E9%A2%86%E5%9F%9F%E4%B8%9A%E5%8A%A1%E7%9A%84Domain%E5%B1%82-.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>
+<hr />
+<h2>2.17.1 微服务</h2>
+<p><img src="http://7qnay5.com1.z0.glb.clouddn.com/qq_20150607110405.jpg" alt="a pic" />  </p>
+<p>Martin Fowler（我喜欢和敬仰的大师）曾发表了上面这一段话。这段话也出现在了2015年QCon分享会上，并加了一张PPT“什么是微服务”加以说明。 </p>
+<p><img src="http://7qnay5.com1.z0.glb.clouddn.com/qcon_20150607.png" alt="a pic" />   </p>
+<p>里面提到了 <strong>微服务</strong> 这个概念，在PhalApi框架中即对应我们的Api接口服务层，只是我们不是称之为微服务，而是接口服务。<br />
+不管何种说法，我们都应该关注里面提及到的这几点重要特质：  </p>
+<ul>
+<li>小，且专注于做一件事情</li>
+<li>独立的进程中</li>
+<li>轻量级的通信机制</li>
+<li>松耦合、独立部署</li>
+</ul>
+<p>这里不过多地讨论微服务相关的分享，而是重温接口服务层Api与领域驱动和单元测试之间的关系，以及如何开发一个优雅、稳定又简单的接口。  </p>
+<h2>2.17.2 层级调用的顺序</h2>
+<p>整体上讲根据从Api接口层、Domain领域层再到Model数据源层的顺序进行开发。  </p>
+<p>在开发过程中，需要注意不能 <strong>越层调用</strong> 也不能 <strong>逆向调用</strong> ，即不能Api调用Model。而应该是 <strong>上层调用下层，或者同层级调用</strong> ，也就是说，我们应该：</p>
+<ul>
+<li>Api层调用Domain层</li>
+<li>Domain层调用Domain层</li>
+<li>Domain层调用Model层</li>
+<li>Model层调用Model层</li>
+</ul>
+<p>如果用一张图来表示，则是：<br />
+<img src="http://7qnay5.com1.z0.glb.clouddn.com/201506071124.png" alt="a pic" />  </p>
+<p>为了更明确调用的关系，以下调用是 <strong>错误</strong> 的：  </p>
+<ul>
+<li>错误的做法1：Api层直接调用Model层</li>
+<li>错误的做法2: Domain层调用Api层，也不应用将Api层对象传递给Domain层</li>
+<li>错误的做法3: Model层调用Domain层 </li>
+</ul>
+<p>这样的约定，便于我们形成统一的开发规范，降低学习维护成本。<br />
+比如需要添加缓存，我们知道应该定位到Model层数据源进行扩展；若发现业务规则处理不当，则应该进入Domain层探其究竟；如果需要对接口的参数进行调整，新手也知道应该找开对应的Api文件进行改动。  </p>
+<h2>2.17.3 接口服务的定义</h2>
+<p>现实项目开发过程中，绝大部分我们编写的接口是给别人使用的，或许给Android客户端同学使用，或者给iOS客户端同学使用，抑或提供给其他后台系统的同学使用。<br />
+为了提高并行开发的速度，我们不能等待接口完全开发完成后才提供接口文档，而且他们也不能忍受这么漫长的等待。   </p>
+<p>所以，客户端同学时常会问我们：什么时候可以提供接口文档？  </p>
+<p>我们提倡“接口先行”，如果有时不能很好地做到这一点（毕竟多变的需求促发多变的情境），我们可以快速提供接口的定义。<br />
+这有点像规约层对接口的定义一样，在PhalApi中定义一个接口，再具体一点即：  </p>
+<ul>
+<li>1、创建一个接口服务类和声明函数</li>
+<li>2、配置接口参数规则</li>
+<li>3、提供接口返回格式的注释</li>
+</ul>
+<p>简单来说，就是创建一个类，写个函数，定义参数和返回结果。  </p>
+<p>下面以 <a href="http://git.oschina.net/dogstar/PhalApi-Demo-Vote">开发实战3：一个简单的小型项目开发（奔跑吧兄弟投票活动）</a> 中的团队参赛接口为例，说明这三步操作的过程。  </p>
+<h3>(1)创建一个接口服务类和声明函数</h3>
+<pre><code>//$ vim ./Vote/Api/Act.php 
+
+&lt;?php
+class Api_Act extends PhalApi_Api {
+
+    public function joinIn() {
+    }
+}</code></pre>
+<h3>(2)配置接口参数规则</h3>
+<pre><code>&lt;?php
+class Api_Act extends PhalApi_Api {
+
+    public function getRules() {
+        return array(
+            'joinIn' =&gt; array(
+                'teamName' =&gt; array('name' =&gt; 'team_name', 'require' =&gt; true, 'min' =&gt; 1, 'max' =&gt; 100),
+            ),
+        );
+    }
+
+    public function joinIn() {
+    }
+}</code></pre>
+<h3>(3)提供接口返回格式的注释</h3>
+<pre><code>&lt;?php
+class Api_Act extends PhalApi_Api {
+
+    public function getRules() {
+        return array(
+            'joinIn' =&gt; array(
+                'teamName' =&gt; array('name' =&gt; 'team_name', 'require' =&gt; true, 'min' =&gt; 1, 'max' =&gt; 100),
+            ),
+        );
+    }
+
+    /**
+     * 团队参赛接口
+     *  
+     * @return int code 0，参赛成功；1，队名已存在
+     * @return int team_id 新建的团队ID
+     */
+    public function joinIn() {
+    }
+}</code></pre>
+<h3>(4)在线查看一下效果</h3>
+<p>在完成上面的动作后，我们可以通过在线工具来看下实时的效果，在浏览打开后访问：</p>
+<pre><code>http://api.vote.phalapi.com/vote/checkApiParams.php?service=Act.JoinIn</code></pre>
+<p>可以看到：<br />
+<img src="http://7qnay5.com1.z0.glb.clouddn.com/201506071302.jpg" alt="a pic" />  </p>
+<p>到了这里，即使我们未完成接口的开发，也未提供更完善的接口文档，但接口客户端同学也可以根据这个在线的接口参数进行开发了。</p>
+<h2>2.17.4 在ATDD下讲述故事</h2>
+<p>我们一直推崇测试驱动开发，但在对于Api接口开发，更准确来说是ATDD，即：验收测试驱动开发（Acceptance Test Driven Development）。  </p>
+<p>在前面Domain层文档中，我们提到了Api层是讲述故事的场景。因此，为了验证我们的业务场景是否正确，我们应该事先编写好单元测试，以不断引导我们前往正确的目的地。  </p>
+<p>我们可以使用脚本来快速生成测试骨架：</p>
+<pre><code>$ pwd
+$ /path/to/api.vote.phalapi.com/Vote/Tests/Api
+$ phalapi-buildtest ../../Api/Act.php Api_Act ../test_env.php &gt; Api_Act_Test.php</code></pre>
+<p>然后，稍微修改完善测试场景：</p>
+<pre><code>    /**
+     * @group testJoinIn
+     */
+    public function testJoinIn()
+    {
+        //Step 1. 构建请求URL
+        $url = 'service=Act.JoinIn';
+        $params = array(
+            'sign' =&gt; 'phalapi',
+            'team_name' =&gt; 'test team name',
+            'user_id' =&gt; '1',
+            'token' =&gt; '193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731',
+        );
+
+        DI()-&gt;notorm-&gt;team-&gt;where('team_name', $params['team_name'])-&gt;delete();
+
+        //Step 2. 执行请求  
+        $rs = PhalApiTestRunner::go($url, $params);
+        //var_dump($rs);
+
+        //Step 3. 验证
+        $this-&gt;assertNotEmpty($rs);
+        $this-&gt;assertArrayHasKey('code', $rs);
+        $this-&gt;assertArrayHasKey('team_id', $rs);
+        $this-&gt;assertEquals(0, $rs['code']);
+        $this-&gt;assertGreaterThan(0, $rs['team_id']);
+
+        //create again
+        $rs = PhalApiTestRunner::go($url, $params);
+        $this-&gt;assertEquals(1, $rs['code']);
+    }
+</code></pre>
+<p>从上面测试的代码可以看出，我们先后进行了两次报名。明显地，第一次报名应该是成功的，第二次则应该提示不能重复报名。  </p>
+<p>单元测试的好处，不但在于可以引导我们做正确的事情，还可以提高我们的关注点，不致于在开发过程中被各种事务（如临时性的会议）打断后回来却不知刚才开发到哪了。<br />
+然而，更多的是为后期的维护、扩展提供可验证的业务场景。这点是很重要的。因为每一个测试场景，都保存了对应场景的模拟信息，这样不仅仅在后面的扩展，还是突如其来的BUGFIXED，我们都可以快速证明我们的修改是正确的，至少不会影响到原来的业务流程。<br />
+试想一下，如果原来可以下单支付的接口，突然被影响到而导致支付不成功，这是何等的损失！  </p>
+<p>我现在慢慢地，每当需要修改别人的代码时，我都会看下有没有对应的单元测试。如果没有，我会先补回，这样能增强我修改别人代码的信心。  </p>
+<h2>2.17.5 精益接口开发</h2>
+<p>传统的接口开发，由于没有很好的分层结构，而且热衷于在一个文件里面完成绝大部分事情，最终导致了臃肿漫长的代码，也就是通常所说的意大利面条式的代码。  </p>
+<p>在PhalApi中，我们针对接口领域开发，提供了新的分层思想：ADM（Api - Domain - Model）。<br />
+即便这样，如果项目在实际开发中，仍然使用原来的做法，纵使使用再好的接口开发框架，也还是会退化到原来的局面。  </p>
+<p>为了能让大家更为明确Api接口层的职责所在，我们建议：  </p>
+<h3>(1)Api接口层应该做：</h3>
+<ul>
+<li>应该：对用户登录态进行必要的检测</li>
+<li>应该：控制业务场景的主流程，创建领域业务实例，并进行调用</li>
+<li>应该：进行必要的日记纪录</li>
+<li>
+<p>应该：返回接口结果</p>
+<h3>(2)Api接口层不应该做：</h3>
+</li>
+<li>不应该：进行业务规则的处理或者计算</li>
+<li>不应该：关心数据是否使用缓存，或进行缓存相关的直接操作</li>
+<li>不应该：直接操作数据库</li>
+<li>不应该：将多个接口合并在一起</li>
+</ul>
+<p>在明确了上面应该做的和不应该做的，并且也完成了接口的定义，还有验收测序驱动开发的场景准备后，相信这时，即使是新手也可以编写出高质量的接口代码。<br />
+因为他会受到约束，他知道他需要做什么，主要他按照限定的开发流程和约定稍加努力即可。  </p>
+<p>如果真的这样，相信我们也就慢慢能体会到 <strong>精益开发</strong> 的乐趣。  </p>
+<p>最后，让我们一起来看下上述团队参赛接口开发的代码实现：</p>
+<pre><code>    /**
+     * 团队参赛接口
+     *  
+     * @return int code 0，参赛成功；1，队名已存在
+     * @return int team_id 新建的团队ID
+     */
+    public function joinIn() {
+        $rs = array('code' =&gt; 0, 'team_id' =&gt; 0);
+
+        DI()-&gt;userLite-&gt;check(true);
+
+        $domain = new Domain_Team();
+        if ($domain-&gt;isExists($this-&gt;teamName)) {
+            $rs['code'] = 1;
+            return $rs;
+        }
+
+        $teamId = $domain-&gt;joinIn($this-&gt;teamName);
+        $rs['team_id'] = $teamId;
+
+        return $rs;
+    }
+</code></pre>
+<p>可以看出，上面的代码短小达意，简单清晰。</p>
+<hr />
+<h4><a href="/wikis/%5B2.16%5D-%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%BA%94%E5%AF%B9%E5%A4%8D%E6%9D%82%E9%A2%86%E5%9F%9F%E4%B8%9A%E5%8A%A1%E7%9A%84Domain%E5%B1%82-.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>
+            </div>
+        </div>
+    </div>
+    
+ 
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">
+				<font size="2px">&copy;PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+
+			<p>
+				<!-- JiaThis Button BEGIN -->
+				<div id="ckepop">
+				<span class="jiathis_txt">分享到：</span>
+				<a class="jiathis_button_tsina">新浪微博</a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+				<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+			</p>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>
