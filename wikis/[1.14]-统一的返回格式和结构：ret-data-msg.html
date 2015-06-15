@@ -97,6 +97,85 @@
 如当配置的参数规则不符合要求时，或者获取了不存在的参数等即会触发此类异常错误，通常由框架抛出。  </p>
 <h3>(2)业务数据 data</h3>
 <p>data为接口和客户端主要沟通对接的数据部分，可以为任何类型，由接口自定义。但为了更好地扩展、向后兼容，建议都使用array。  </p>
+<h4>返回格式的定义与在线查看</h4>
+<p>当我们在开发接口时，可以通过为接口添加注释的方式来定义接口的返回格式，然后就可以为外部提供在线文档的实时查看了。  </p>
+<p>如：</p>
+<pre><code>&lt;?php
+
+class Api_User extends PhalApi_Api {
+
+    /**
+     * 获取用户基本信息
+     * @return int code 操作码，0表示成功，1表示用户不存在
+     * @return object info 用户信息对象
+     * @return int info.id 用户ID
+     * @return string info.name 用户名字
+     * @return string info.from 用户来源
+     * @return string msg 提示信息
+     */
+    public function getBaseInfo() {
+        // ... ...
+    }
+</code></pre>
+<p>然后在浏览器访问：
+<a href="http://demo.phalapi.net/checkApiParams.php?service=User.getBaseInfo">http://demo.phalapi.net/checkApiParams.php?service=User.getBaseInfo</a></p>
+<p>可以看到：
+<img src="http://7qnay5.com1.z0.glb.clouddn.com/20150615.png" alt="apic" />  </p>
+<h4>注释格式</h4>
+<p>格式是以docs的 return 注释来标明的，其格式为：</p>
+<pre><code>@return  返回的类型  字段名字路径(以点号连接)  字段名字及解析</code></pre>
+<table>
+<thead>
+<tr>
+<th>其中，返回的类型可以为：
+关键字</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>string</td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>int</td>
+<td>整型</td>
+</tr>
+<tr>
+<td>float</td>
+<td>浮点型</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>布尔型</td>
+</tr>
+<tr>
+<td>date</td>
+<td>日期</td>
+</tr>
+<tr>
+<td>array</td>
+<td>数组</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>固定值</td>
+</tr>
+<tr>
+<td>enum</td>
+<td>枚举类型</td>
+</tr>
+<tr>
+<td>object</td>
+<td>对象</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>温馨提示：array与object的区别
+array是指没有下标的一个数组集合，或者有下标但下标是连续的自然数，且各无素的结构相同；
+object则是指一个结构体，类似字典。  </p>
+</blockquote>
 <h3>(3)错误信息 msg</h3>
 <p>当返回状态码不为200时，此字段不为空。即当有异常（如上面所说的客户端非法请求和服务端运行错误两大类）触发时，会自动将异常的错误信息作为错误信息msg返回。  </p>
 <p>但对于服务端的异常，出于对接口隐私的保护，框架在错误信息时没有过于具体地描述；相反，对于客户端的异常，由会进行必要的说明，以提醒客户端该如何进行调用调整。  </p>
