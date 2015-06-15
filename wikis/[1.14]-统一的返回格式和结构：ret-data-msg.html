@@ -177,7 +177,7 @@ array是指没有下标的一个数组集合，或者有下标但下标是连续
 object则是指一个结构体，类似字典。  </p>
 </blockquote>
 <p>此外，为了明确数组与对象间的返回格式，我们也推荐如果是元素来自数组，则在返回字段的后面添加方括号来表明，以提醒客户端在接收到此类返回时需要循环处理。如：</p>
-<pre><code>     @return array list 用户列表
+<pre><code>     * @return array list 用户列表
      * @return int list[].id 用户ID
      * @return string list[].name 用户名字
      * @return string list[].from 用户来源
