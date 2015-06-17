@@ -89,8 +89,11 @@ $params = array(':userId' =&gt; $userId, ':start' =&gt; $start, ':num' =&gt; $nu
 $rs= DI()-&gt;notorm-&gt;example-&gt;queryAll($sql, $params);</code></pre>
 <p>或：</p>
 <pre><code>$rs= DI()-&gt;notorm-&gt;example-&gt;queryRows($sql, $params);</code></pre>
-<h3>(4)修正原来的BUG</h3>
-<p>进行LIMIT时 因加入了 OFFSET 关键字导致MySQL下无法获取数据  </p>
+<h3>(4)limit 操作的调整</h3>
+<p>取消了NotORM中对OFFSET关键字的使用，改用逗号的写法，修改后正确的使用方法应该是：  </p>
+<pre><code>$table-&gt;limit(10);  // limit 10   # 查询前10个
+
+$table-&gt;limit(5, 10); // limit 5,10   # 从第5个位置开始，查询前10个</code></pre>
 <h3>(5)禁止全表删除，防止误删</h3>
 <h3>(6)开启HTTP调试模式</h3>
 <p>当处于debug模式时，可以输入执行的全部SQL语句，以便调试。   </p>
@@ -342,7 +345,8 @@ $model-&gt;delete(1);</code></pre>
         </div>
     </div>
     
- <div class="grid-wrapper desktop-only">
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
 	<p align="center">
 		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
 	</p>
