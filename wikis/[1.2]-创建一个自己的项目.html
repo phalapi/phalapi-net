@@ -143,6 +143,11 @@ $ sudo ln -s /path/to/phalapi-buildsqls /usr/bin/phalapi-buildsqls
 
 $ chmod +x ./phalapi-buildtest
 $ sudo ln -s /path/to/phalapi-buildtest /usr/bin/phalapi-buildtest</code></pre>
+<p>或者通过使用别名 alias 的方式来注册脚本命令：</p>
+<pre><code># vim /etc/bashrc 
+
+#PhalApi - 自动生成SQL语句
+alias phalapi-buildsqls='/usr/local/php/bin/php /path/to/PhalApi/phalapi-buildsqls'</code></pre>
 <hr />
 <h4><a href="/wikis/%5B1.1%5D-%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85.html">上一章</a>    <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.3%5D-%E5%9C%A8%E7%BA%BF%E4%BD%93%E9%AA%8C.html">下一章</a></h4>
             </div>
