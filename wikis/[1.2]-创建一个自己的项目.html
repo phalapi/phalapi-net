@@ -144,7 +144,7 @@ $ sudo ln -s /path/to/phalapi-buildsqls /usr/bin/phalapi-buildsqls
 $ chmod +x ./phalapi-buildtest
 $ sudo ln -s /path/to/phalapi-buildtest /usr/bin/phalapi-buildtest</code></pre>
 <h3>(3)No such file or directory的解决方案</h3>
-<h4>解决方案一：增加 /usr/bin/php软件链</h4>
+<h4>解决方案一：增加 /usr/bin/php软链</h4>
 <p>可以将php的执行路径追加到/usr/bin下，即类似：</p>
 <pre><code>ln -s /usr/local/php/bin/php /usr/bin/php</code></pre>
 <h4>解决方案二：使用alias起别名</h4>
