@@ -85,7 +85,7 @@ DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');</code></pre>
 DI()-&gt;config-&gt;get('app');
 
 //app.php里面的单个配置
-DI()-&gt;config-&gt;get('app.version');  //返回：1.1.1
+DI()-&gt;config-&gt;get('app.version.address');  //返回：1.1.1
 
 //app.php里面的多级配置
 DI()-&gt;config-&gt;get('app.email');  //返回：array('address' =&gt; 'chanzonghuang@gmail.com')</code></pre>
