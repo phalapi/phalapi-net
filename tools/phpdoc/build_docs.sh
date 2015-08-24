@@ -13,10 +13,10 @@ $PHPDOC_PATH  --config=./phpdoc.xml
 
 cp ./imgs/* ./_phalapi_docs_release/images/;
 
-rm $PHALAPI_PATH/docs/* -rf;
+#rm $PHALAPI_PATH/docs/* -rf;
 cp ./_phalapi_docs_release/* $PHALAPI_PATH/docs/ -R;
 
-rm $PHALAPI_NET_PATH/docs/* -rf;
+#rm $PHALAPI_NET_PATH/docs/* -rf;
 cp ./_phalapi_docs_release/* $PHALAPI_NET_PATH/docs/ -R;
 
 echo ""
