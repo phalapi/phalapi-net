@@ -4,3 +4,6 @@
 ./tools/phpdoc/phalapi_docs_parser/*
 ./tools/phpdoc/_phalapi_docs_release/*
 
+tools/phpdoc/phalapi_docs_parser
+tools/phpdoc/_phalapi_docs_release
+
