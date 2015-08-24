@@ -1,0 +1,6 @@
+./tools/phalapi_docs_parser
+./tools/_phalapi_docs_release
+
+./tools/phalapi_docs_parser/*
+./tools/_phalapi_docs_release/*
+
