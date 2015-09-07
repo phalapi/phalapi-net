@@ -102,9 +102,9 @@ class Api_User extends Core_Api
    'password' =&gt; array('name' =&gt; 'password', 'require' =&gt; true, 'min' =&gt; 6),
 ),</code></pre>
 <p>尝试一下非法的参数请求，如无任何参数的情况下，访问/?service=User.Login，返回：</p>
-<pre><code>{"ret":1200,"data":[],"msg":"Illegal Param: wrong param: username"}</code></pre>
+<pre><code>{"ret":400,"data":[],"msg":"Illegal Param: wrong param: username"}</code></pre>
 <p>再尝试一下密码长不对的情况，访问/?service=User.Login&amp;username=test&amp;password=123，返回：</p>
-<pre><code>{"ret":1200,"data":[],"msg":"Illegal Param: password.len should &gt;= 6, but now password.len = 3"}</code></pre>
+<pre><code>{"ret":400,"data":[],"msg":"Illegal Param: password.len should &gt;= 6, but now password.len = 3"}</code></pre>
 <h2>1.12.4 三级参数</h2>
 <h3>(1)系统参数</h3>
 <p>已被系统固定占有的参数，目前只有一个，即：service，为需要调用的服务，类型为字符串，格式为：XXX.XXX，首字母不区分大小写，建议统一以大写开头。</p>
@@ -259,12 +259,12 @@ return array(
 <p>当一个参数规则 未指定类型时，默认为string。一个完整的写法可以为：</p>
 <pre><code>array('name' =&gt; 'username', 'type' =&gt; 'string', 'require' =&gt; true, 'default' =&gt; 'nobody', 'min' =&gt; 1, 'max' =&gt; 10)</code></pre>
 <p>若传递的参数长度过长，如&amp;username=alonglonglonglongname，则会异常失败返回：</p>
-<pre><code>{"ret":1200,"data":[],"msg":"Illegal Param: username.len should &lt;= 10, but now username.len = 21"}</code></pre>
+<pre><code>{"ret":400,"data":[],"msg":"Illegal Param: username.len should &lt;= 10, but now username.len = 21"}</code></pre>
 <h3>(2)整型 int</h3>
 <p>如通常数据库中的id，即可配置成：</p>
 <pre><code>array('name' =&gt; 'id', 'type' =&gt; 'int', 'require' =&gt; true, 'min' =&gt; 1 )</code></pre>
 <p>当传递的参数，不在其配置的范围内时，如&amp;id=0，则会异常失败返回：</p>
-<pre><code>{"ret":1200,"data":[],"msg":"Illegal Param: id should &gt;= 1, but now id = 0"}</code></pre>
+<pre><code>{"ret":400,"data":[],"msg":"Illegal Param: id should &gt;= 1, but now id = 0"}</code></pre>
 <h3>(3)浮点 float</h3>
 <p>浮点型，类似整型的配置，此处略。</p>
 <h3>(4)布尔值 boolean</h3>
@@ -291,7 +291,7 @@ return array(
 <p>在需要对接口参数进行范围限制时，可以使用此枚举型。如对于性别的参数，可以这样配置：</p>
 <pre><code>array('name' =&gt; 'sex', 'type' =&gt; 'enum', 'range' =&gt; array('female', 'male'))</code></pre>
 <p>当传递的参数不合法时，如&amp;sex=unknow，则会被拦截，返回失败：</p>
-<pre><code>{"ret":1200,"data":[],"msg":"Illegal Param: sex should be in female\/male, but now sex = unknow"}</code></pre>
+<pre><code>{"ret":400,"data":[],"msg":"Illegal Param: sex should be in female\/male, but now sex = unknow"}</code></pre>
 <h3>(8)文件 file</h3>
 <p>在需要对上传的文件进行过滤、接收和处理时，可以使用文件类型，如：</p>
 <pre><code>array('name' =&gt; 'upfile', 'type' =&gt; 'file', 'min' =&gt; '', 'max' =&gt; '', 'range' =&gt; array('image/jpeg', 'image/png'))</code></pre>
