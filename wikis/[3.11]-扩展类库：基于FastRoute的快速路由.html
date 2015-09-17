@@ -55,9 +55,9 @@
             <div class="grid__cell">
                 <h4><a href="#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>
 <hr />
-<h2>3.10.1 扩展类库：基于FastRoute的快速路由</h2>
+<h2>3.11.1 扩展类库：基于FastRoute的快速路由</h2>
 <p>此扩展基于 <img src="https://github.com/nikic/FastRoute" alt="FastRoute" /> 实现，需要 <strong>PHP 5.4.0</strong> 及以上版本，可以通过配置实现自定义路由配置，从而轻松映射到PhalApi中的service接口服务。  </p>
-<h2>3.5.2 安装和配置</h2>
+<h2>3.11.2 安装和配置</h2>
 <h3>(1)扩展包下载</h3>
 <p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>FastRoute</strong> 七牛扩展包，如使用：</p>
 <pre><code>git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
@@ -94,7 +94,7 @@
         rewrite ^/(.*)$ /index.php/$1 last;
     }</code></pre>
 <p>然后重启nginx。  </p>
-<h2>3.5.3 入门使用</h2>
+<h2>3.11.3 入门使用</h2>
 <h3>(1)入口注册</h3>
 <pre><code class="language-javascript">//$ vim ./Public/index.php
 
@@ -111,10 +111,10 @@ DI()-&gt;fastRoute-&gt;dispatche();
 $api = new PhalApi();
 $rs = $api-&gt;response();
 $rs-&gt;output();</code></pre>
-<h2>3.5.3 调用效果及扩展</h2>
+<h2>3.11.3 调用效果及扩展</h2>
 <h3>(1)通过新的路由正常访问</h3>
 <p>在完成上面的配置后，我们就可以这样进行页面访问测试：</p>
-<pre><code class="language-javascript">  http://library.phalapi.com/user/get_base_info/1
+<pre><code>  http://library.phalapi.com/user/get_base_info/1
   等效于：http://library.phalapi.com/?service=User.GetBaseInfo&amp;user_id=1
 
   http://library.phalapi.com/user/get_multi_base_info/1,2
@@ -142,7 +142,7 @@ $rs-&gt;output();</code></pre>
 }</code></pre>
 <p>然后，在分发时指定handler：</p>
 <pre><code class="language-javascript">DI()-&gt;fastRoute-&gt;dispatche(new FastRoute_Handler_App());</code></pre>
-<h3>3.5.4 更多路由配置说明</h3>
+<h3>3.11.4 更多路由配置说明</h3>
 <p>请访问 <img src="https://github.com/nikic/FastRoute" alt="FastRoute" />，查看其官方说明。</p>
 <h4><a href="#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>
             </div>

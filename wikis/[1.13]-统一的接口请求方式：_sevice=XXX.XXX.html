@@ -73,19 +73,19 @@ http://dev.phalapi.com   +   /demo/  +  ?service=User.GetBaseInfo</code></pre>
     public function getBaseInfo() {
     }
 }</code></pre>
-<h2>1.12.2 统一参数用GET</h2>
+<h2>1.13.2 统一参数用GET</h2>
 <p>在一个项目中，会有很多公共的接口参数，如客户端、版本号、密钥等。这些同样可以纳入GET参数里面，或者也可以放到POST里面。  </p>
 <blockquote>
 <p>温馨提示：<br />
 这样要求是有目的的，因为这样的话可以在nginx的access日记里面查看来自客户端的快照信息，以便统计或者定位问题。  </p>
 </blockquote>
-<h2>1.12.3 接口参数用POST</h2>
+<h2>1.13.3 接口参数用POST</h2>
 <p>特别地，接口参数我们建议统一使用POST方式传递，理由很简单：  </p>
 <ul>
 <li>1、相对保护上传的数据，一如密码；</li>
 <li>2、避免特殊字符或者过大数据包在GET下的限制；</li>
 </ul>
-<h2>1.12.4 测试下的模拟参数</h2>
+<h2>1.13.4 测试下的模拟参数</h2>
 <p>默认地，PhalApi框架会将$_REQUEST作为接口参数的来源：</p>
 <pre><code>$this-&gt;request = 'PhalApi_Request';</code></pre>
 <p>当我们需要统一强制用$_GET，可以这样简单定制：</p>
@@ -97,7 +97,7 @@ http://dev.phalapi.com   +   /demo/  +  ?service=User.GetBaseInfo</code></pre>
 
 parse_str($str, $params);
 DI()-&gt;request = new PhalApi_Request($params);</code></pre>
-<h2>1.12.5 PHP接口客户端示例</h2>
+<h2>1.13.5 PHP接口客户端示例</h2>
 <p>先看下调用和使用的代码示例：</p>
 <pre><code>&lt;?php
 require_once './PhalApiClient.php';
