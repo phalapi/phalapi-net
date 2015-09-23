@@ -60,6 +60,12 @@
 <p>对于请求，正如前面所看到的，我们可以使用$_GET，也可以使用$_POST，也可以两者都使用，还可以在测试时自己指定模拟的请求数据包。  </p>
 <p>或者，在实际项目开发中，我们还需要根据自身的需求，跟我们自己的客户端作一些约定。如通常地，我们会要求客户端 <strong>service参数必须用GET方式</strong> ，以便服务器返回500时定位接口服务位置。对此，简单的我们把$_POST['service']去掉即可，如在入口文件前面添加：</p>
 <pre><code>unset($_POST['service']);   //只接收GET方式的service参数</code></pre>
+<h3>(1)当需要指定数据源时</h3>
+<p>很多时间，不同的项目对数据接收有不同的需求。如简单地，如果客户端是通过JSON后再传递的话，我们可以这样在入口处进行代码调整：</p>
+<pre><code>$HTTP_RAW_POST_DATA = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "{}";
+DI()-&gt;request = new PhalApi_Request(array_merge($_GET,json_decode($HTTP_RAW_POST_DATA, true))); </code></pre>
+<p>对于先进行加密再进行传递的参数的处理方式也一样，或者其他途径的参数来源也一样。即：  </p>
+<pre><code>DI()-&gt;request = new PhalApi_Request(数据源);</code></pre>
 <h2>1.23.2 响应</h2>
 <p>当前默认使用JSON的格式返回，但项目需要其他返回格式也是可以的。只需要实现PhalApi_Response抽象中的formatResult($result)格式化返回结果，然后也是重新注册DI()-&gt;response服务即可。如：  </p>
 <h3>(1)JSONP的返回</h3>

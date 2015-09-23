@@ -95,7 +95,7 @@ $rs= DI()-&gt;notorm-&gt;example-&gt;queryAll($sql, $params);</code></pre>
 
 $table-&gt;limit(5, 10); // limit 5,10   # 从第5个位置开始，查询前10个</code></pre>
 <h3>(5)禁止全表删除，防止误删</h3>
-<h3>(6)开启HTTP调试模式</h3>
+<h3>(6)添加&amp;<strong>sql</strong>=1请求参数，可开启HTTP调试模式</h3>
 <p>当处于debug模式时，可以输入执行的全部SQL语句，以便调试。   </p>
 <p>如：  </p>
 <pre><code>SELECT times FROM tpl_user_session_10 WHERE (user_id = ?); -- '74110'
