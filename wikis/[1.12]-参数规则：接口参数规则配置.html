@@ -107,7 +107,22 @@ class Api_User extends Core_Api
 <pre><code>{"ret":400,"data":[],"msg":"Illegal Param: password.len should &gt;= 6, but now password.len = 3"}</code></pre>
 <h2>1.12.4 三级参数</h2>
 <h3>(1)系统参数</h3>
-<p>已被系统固定占有的参数，目前只有一个，即：service，为需要调用的服务，类型为字符串，格式为：XXX.XXX，首字母不区分大小写，建议统一以大写开头。</p>
+<p>已被系统固定占有的参数，目前只有一个，即：service，为需要调用的服务，类型为字符串，格式为：XXX.XXX，首字母不区分大小写，建议统一以大写开头。  </p>
+<p>以下是一些示例：  </p>
+<pre><code>#推荐写法
+/?service=User.GetBaseInfo
+
+#正确写法（开头小写）
+/?service=user.getBaseInfo
+#正确写法（方法名小写，但类名只能开头小写，否则会导致linux系统下文件加载失败）
+/?service=user.getbaseinfo
+
+#错误写法（缺少方法名）
+/?service=User
+#错误写法（缺少点号分割）
+/?service=UserGetBaseInfo
+#错误写法（默认只支持点号分割）
+/?service=User|GetBaseInfo</code></pre>
 <h3>(2)应用参数</h3>
 <p>应用参数是指在一个项目中，全部接口都需要的参数，或者通用的参数规则。假如我们的项目中全部需要签名sign参数，且必须；以及非必须的版本号，则可以在./Config/app.php中的apiCommonRules配置：</p>
 <pre><code>//$vim ./Config/app.php
@@ -149,13 +164,22 @@ return array(
 <p>温馨提示：
 在Api类里面配置规则时，下标不区分大小写。因为框架会自动将请求的函数名和全部的规则下标转换成小写进行匹配。</p>
 </blockquote>
-<p>另外，当同一个参数规则分别在应用参数、接口通用参数及特定接口参数出现时，后面的规则会覆盖前面的，即具体化的规则和替换通用的规则，以保证接口在特定场合的定制性。</p>
+<p>这里，再小结一下，接口参数可以分为两种： <strong>通用接口参数</strong> 和 <strong>指定接口参数</strong> 。前者用 * 号下标表示，后者则用函数名作为下标表示。  </p>
+<h3>(4)多个参数规则的优先级</h3>
+<p>当同一个参数规则分别在应用参数、接口通用参数及特定接口参数出现时，后面的规则会覆盖前面的，即具体化的规则会替换通用的规则，以保证接口在特定场合的定制性。  </p>
+<p>简而言之，多个参数规则的优先级从高到下，分别是（正如你想到的那样）：  </p>
+<ul>
+<li>1、指定接口参数</li>
+<li>2、通用接口参数</li>
+<li>3、应用参数</li>
+<li>4、系统参数（通常忽略，因为只有service）</li>
+</ul>
 <h2>1.12.5 在线接口参数查询工具</h2>
 <p>为了便于理解上面全部的参数规则，对于具体接口调用的要求，这里可以使用在线接口参数查询工具在浏览器访问查看：</p>
 <pre><code>/demo/checkApiParams.php?service=User.Login</code></pre>
-<p>可以看到：
-<img src="http://webtools.qiniudn.com/20150411005257_9059c8a741f03da3b099f9042ced8678" alt="show" />
-此工具同时也可以方便客户端实时查看接口文档时，进行辅助的接口规则说明。</p>
+<p>可以看到：<br />
+<img src="http://webtools.qiniudn.com/20150411005257_9059c8a741f03da3b099f9042ced8678" alt="show" />  </p>
+<p>此工具同时也可以方便客户端实时查看接口文档时，进行辅助的接口规则说明。</p>
 <h2>1.12.6 参数传递的方式</h2>
 <p>系统下GET和POST皆可，但是推荐：</p>
 <ul>
@@ -184,65 +208,65 @@ return array(
 </thead>
 <tbody>
 <tr>
-<td>string</td>
-<td>必须</td>
-<td>可选，true/false，默认false</td>
 <td>字符串</td>
+<td>string</td>
+<td>true/false，默认false</td>
+<td>应为字符串</td>
 <td>可选</td>
 <td>regex下标为正则匹配的规则</td>
 </tr>
 <tr>
-<td>int</td>
-<td>必须</td>
-<td>可选，true/false，默认false</td>
 <td>整数</td>
+<td>int</td>
+<td>true/false，默认false</td>
+<td>应为整数</td>
 <td>可选</td>
 <td>---</td>
 </tr>
 <tr>
-<td>float</td>
-<td>必须</td>
-<td>可选，true/false，默认false</td>
 <td>浮点数</td>
+<td>float</td>
+<td>true/false，默认false</td>
+<td>应为浮点数</td>
 <td>可选</td>
 <td>---</td>
 </tr>
 <tr>
-<td>boolean</td>
-<td>必须</td>
-<td>可选，true/false，默认false</td>
 <td>布尔值</td>
-<td>可选</td>
+<td>boolean</td>
+<td>true/false，默认false</td>
+<td>true/false</td>
+<td>---</td>
 <td>以下值会转换为true： ok, true, success, on, yes, 1</td>
 </tr>
 <tr>
+<td>时间戳/日期</td>
 <td>date</td>
-<td>必须</td>
-<td>可选，true/false，默认false</td>
-<td>时间戳或日期字符串</td>
+<td>true/false，默认false</td>
+<td>会按格式转换</td>
 <td>可选</td>
 <td>格式：format 为timestamp时会将字符串的日期转换</td>
 </tr>
 <tr>
+<td>数组</td>
 <td>array</td>
-<td>必须</td>
-<td>可选，true/false，默认false</td>
-<td>数组，非数组会自动转换/解析成数组</td>
-<td>可选</td>
+<td>true/false，默认false</td>
+<td>为非数组会自动转换/解析成数组</td>
+<td>---</td>
 <td>格式：format 为explode时，会根据separator将字符串分割成数组, 为json时，会json解析</td>
 </tr>
 <tr>
+<td>枚举</td>
 <td>enum</td>
-<td>必须</td>
-<td>可选，true/false，默认false</td>
-<td>range中的某个元素</td>
-<td>可选</td>
+<td>true/false，默认false</td>
+<td>应为range中的某个元素</td>
+<td>---</td>
 <td>必须，range,以数组指定枚举的范围</td>
 </tr>
 <tr>
+<td>文件</td>
 <td>file</td>
-<td>必须</td>
-<td>可选，true/false，默认false</td>
+<td>true/false，默认false</td>
 <td>数组类型</td>
 <td>min和max表示文件大小范围</td>
 <td>range下标表示允许上传的文件类型</td>
@@ -292,6 +316,18 @@ return array(
 <pre><code>array('name' =&gt; 'sex', 'type' =&gt; 'enum', 'range' =&gt; array('female', 'male'))</code></pre>
 <p>当传递的参数不合法时，如&amp;sex=unknow，则会被拦截，返回失败：</p>
 <pre><code>{"ret":400,"data":[],"msg":"Illegal Param: sex should be in female\/male, but now sex = unknow"}</code></pre>
+<p>关于枚举类型的配置，这里需要特别注意配置时，应尽量使用字符串的值。<br />
+因为通常而言，接口通过GET/POST方式获取到的参数都是字符串的，而如果配置规则时指定范围用了整型，会导致底层规则验证时误。如：  </p>
+<pre><code>//接口参数为： &amp;type=N
+
+//接口参数规则为：
+array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(0, 1, 2))
+
+//误判，因为：
+var_dump(in_array('N', array(0, 1, 2))); //结果为true，因为 'N' == 0</code></pre>
+<p>为了避免这类情况发生，应该这样配置：  </p>
+<pre><code>//接口参数规则为（使用字符串）：
+array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1`, `2`))</code></pre>
 <h3>(8)文件 file</h3>
 <p>在需要对上传的文件进行过滤、接收和处理时，可以使用文件类型，如：</p>
 <pre><code>array('name' =&gt; 'upfile', 'type' =&gt; 'file', 'min' =&gt; '', 'max' =&gt; '', 'range' =&gt; array('image/jpeg', 'image/png'))</code></pre>

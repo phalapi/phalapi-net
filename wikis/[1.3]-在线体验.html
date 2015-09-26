@@ -58,25 +58,56 @@
 <p><em>片刻之欢愉，不如须臾之宁静</em>  </p>
 <h2>1.3.1 在线体验</h2>
 <pre><code>//默认的接口服务
-http://phalapi.oschina.mopaas.com/Public/demo/
+http://demo.phalapi.net/
+{
+    "ret": 200,
+    "data": {
+        "title": "Hello World!",
+        "content": "PHPer您好，欢迎使用PhalApi！",
+        "version": "1.2.0",
+        "time": 1443278491
+    },
+    "msg": ""
+}
 
 //带参数的示例接口
-http://phalapi.oschina.mopaas.com/Public/demo/?service=Default.Index&amp;username=oschina
+http://demo.phalapi.net/?service=Default.Index&amp;username=oschina
+{
+    "ret": 200,
+    "data": {
+        "title": "Hello World!",
+        "content": "oschina您好，欢迎使用PhalApi！",
+        "version": "1.2.0",
+        "time": 1443278475
+    },
+    "msg": ""
+}
 
 //故意请求一个非法的服务
-http://phalapi.oschina.mopaas.com/Public/demo/?service=Demo.None
+http://demo.phalapi.net/?service=Demo.None
 {
     "ret": 400,
     "data": [],
     "msg": "非法请求：服务Demo.None不存在"
 }</code></pre>
-<h2>1.3.2 [酷！]接口参数在线查询</h2>
+<h2>1.3.2 在线接口调试</h2>
+<p>这里说的接口调试，更多是针对接口调用过程中所执行的SQL语句查看，如：  </p>
+<pre><code>//带&amp;__sql__=1可打印SQL语句
+http://demo.phalapi.net/?service=User.getMultiBaseInfo&amp;user_ids=1,2,3&amp;__sql__=1
+
+返回：
+[1 - 0.00032s]SELECT * FROM tbl_user WHERE (id = ?); -- 1
+[2 - 0.00019s]SELECT * FROM tbl_user WHERE (id = ?); -- 2
+[3 - 0.00016s]SELECT * FROM tbl_user WHERE (id = ?); -- 3
+{"ret":200,"data":{"code":0,"msg":"","list":[{"id":"1","name":"dogstar","from":"oschina"},{"id":"2","name":"aevit","from":"fami"},{"id":"3","name":"test","from":"phalapi"}]},"msg":""}</code></pre>
+<h2>1.3.3 [酷！]接口参数在线查询</h2>
 <p>为了方便客户端查看最新的接口参数，特别提供此在线工具，根据接口代码实时生成接口参数报表，完全不需要后台开发编写维护额外的文档。我觉得，这很符合敏捷开发之道。</p>
 <pre><code>//接口参数在线查询工具链接
-http://phalapi.oschina.mopaas.com/Public/demo/checkApiParams.php</code></pre>
-<p>如：<a href="http://phalapi.oschina.mopaas.com/Public/demo/checkApiParams.php">http://phalapi.oschina.mopaas.com/Public/demo/checkApiParams.php</a> ，访问效果如下：</p>
-<p><img src="http://webtools.qiniudn.com/20150411005257_e1cabe55d7662b02cfa349bf80c1aa14" alt="mahua" />
-因此，接口所需要的参数，对于接口开发人员，也只是简单配置一下参数规则，便可以轻松获取。</p>
+http://demo.phalapi.net/checkApiParams.php</code></pre>
+<p>如：<a href="http://demo.phalapi.net/checkApiParams.php">http://demo.phalapi.net/checkApiParams.php</a> ，访问效果如下：</p>
+<p><img src="http://7qnay5.com1.z0.glb.clouddn.com/20150926-2.png" alt="mahua" />
+因此，接口所需要的参数，对于接口开发人员，也只是简单配置一下参数规则，便可以轻松获取。<br />
+关于具体的参数规则配置，和接口结果返回格式定义，后期会详细讲到。  </p>
 <hr />
 <h4><a href="/wikis/%5B1.2%5D-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84%E9%A1%B9%E7%9B%AE.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.4%5D-%E6%96%87%E6%A1%A3%E3%80%81%E5%B8%AE%E5%8A%A9%E5%92%8C%E5%AE%98%E7%BD%91.html">下一章</a></h4>
             </div>
