@@ -118,9 +118,9 @@ class Api_User extends PhalApi_Api {
         // ... ...
     }
 </code></pre>
-<p>然后在浏览器访问：
-<a href="http://demo.phalapi.net/checkApiParams.php?service=User.getBaseInfo">http://demo.phalapi.net/checkApiParams.php?service=User.getBaseInfo</a></p>
-<p>可以看到：
+<p>然后在浏览器访问：<br />
+<a href="http://demo.phalapi.net/checkApiParams.php?service=User.getBaseInfo">http://demo.phalapi.net/checkApiParams.php?service=User.getBaseInfo</a>  </p>
+<p>可以看到：<br />
 <img src="http://7qnay5.com1.z0.glb.clouddn.com/20150615.png" alt="apic" />  </p>
 <h4>注释格式</h4>
 <p>格式是以docs的 return 注释来标明的，其格式为：</p>
@@ -174,8 +174,7 @@ class Api_User extends PhalApi_Api {
 </table>
 <blockquote>
 <p>温馨提示：array与object的区别<br />
-array是指没有下标的一个数组集合，或者有下标但下标是连续的自然数，且各无素的结构相同；<br />
-object则是指一个结构体，类似字典。  </p>
+array是指没有下标的一个数组集合，或者有下标但下标是连续的自然数，且各无素的结构相同；object则是指一个结构体，类似字典。  </p>
 </blockquote>
 <p>此外，为了明确数组与对象间的返回格式，我们也推荐如果是元素来自数组，则在返回字段的后面添加方括号来表明，以提醒客户端在接收到此类返回时需要循环处理。如：</p>
 <pre><code>     * @return array list 用户列表
@@ -206,7 +205,7 @@ object则是指一个结构体，类似字典。  </p>
 <pre><code>class MyResponse_XML extends PhalApi_Response {
 
     protected function formatResult($result) {
-        //TODO ...
+        //TODO：把数组$result格式化成XML ...
     }
 }</code></pre>
 <p>随后，也是简单重新注册一下即可：</p>
