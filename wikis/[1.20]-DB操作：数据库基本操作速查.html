@@ -131,17 +131,20 @@
 <td>insert_multi()</td>
 <td>批量插入</td>
 <td>$user-&gt;insert_multi($rows);</td>
+<td>可批量插入</td>
 <td>否</td>
 </tr>
 <tr>
 <td>update()</td>
 <td>更新数据</td>
 <td>$user-&gt;where('id', 1)-&gt;update($data);</td>
+<td>更新异常时返回fals，数据无变化时返回0，成功更新返回1</td>
 <td>否</td>
 </tr>
 <tr>
 <td>insert_update()</td>
 <td>插入/更新</td>
+<td>接口签名：insert_update(array $unique, array $insert, array $update = array()</td>
 <td>不存时插入，存在时更新</td>
 <td>否</td>
 </tr>
@@ -149,6 +152,7 @@
 <td>delete()</td>
 <td>删除</td>
 <td>$user-&gt;where('id', 1)-&gt;delete();</td>
+<td>禁止无where条件的删除操作</td>
 <td>否</td>
 </tr>
 </tbody>

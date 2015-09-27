@@ -140,7 +140,23 @@ DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/ConfigTest');</code></pre
 <p>执行phing发布后，将会看到对应的这样提示：</p>
 <pre><code>     [copy] Copying 1 file to /home/phapapi/Config
      [copy] Copying 1 file to /home/phapapi/Config</code></pre>
-<h2>1.16.3 扩展你的配置读取</h2>
+<h2>1.16.3 主从数据库的配置</h2>
+<p>通常一般而言，数据库支持分表分库配置，且只有一份，即：  </p>
+<pre><code>./Config/dbs.php</code></pre>
+<p>然后，我们这样指定数据库的配置：  </p>
+<pre><code>DI()-&gt;notorm = function() {
+    $debug = !empty($_GET['__sql__']) ? true : false;
+    return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), $debug);
+};</code></pre>
+<p>如果需要从库时，要以参考./Config/dbs.php，创建一个从库的配置拷贝，即：</p>
+<pre><code>cp ./Config/dbs.php ./Config/dbs_slave.php</code></pre>
+<p>然后，注册一个从库的notorm：</p>
+<pre><code>DI()-&gt;notormSlave = function() {
+    $debug = !empty($_GET['__sql__']) ? true : false;
+    return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs_slave'), $debug); //注意：配置不同
+};</code></pre>
+<p>最后使用此从库的服务DI()-&gt;notormSlave即可完成对从库的读取操作，用法同DI()-&gt;notorm，这里不再赘述。</p>
+<h2>1.16.4 扩展你的配置读取</h2>
 <p>虽然上面有不同的配置文件管理策略，但很多实际情况下，我们的配置需要可以随时更改、下发和调整。并且在海量访问，性能要求高的情况下快速读取配置。  </p>
 <p>这就要求我们的项目既可以方便维护即时修改，又需要能够快速同步一致更新下发和读取。这样就涉及到了配置更高层的管理：  统一集中式的配置管理，还是分布式的配置管理？  文件存储，还是DB存储，还是MC缓存，还是进驻内存？    </p>
 <p>个人认为，性能最优的莫过于配置进驻内存并分布式存储。毕竟作为前端机的PHP内存这块还是相对充裕且可以利用的。但需要把这一条线打通，有点难度。  </p>

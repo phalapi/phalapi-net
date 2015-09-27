@@ -89,6 +89,20 @@
 <td>日记纪录：负责日记的写入，需要手动注册，指定日记级别和存储媒介，默认是<a href="http://www.phalapi.net/docs/classes/PhalApi_Logger_File.html">PhalApi_Logger_File</a></td>
 </tr>
 <tr>
+<td>request</td>
+<td>是</td>
+<td>是</td>
+<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Request.html">PhalApi_Request</a></td>
+<td>接口参数请求：用于收集接口请求的参数</td>
+</tr>
+<tr>
+<td>response</td>
+<td>是</td>
+<td>是</td>
+<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Response.html">PhalApi_Response</a></td>
+<td>结果响应：用于输出返回给客户端的结果，默认为<a href="http://www.phalapi.net/docs/classes/PhalApi_Response_Json.html">PhalApi_Response_Json</a></td>
+</tr>
+<tr>
 <td>notorm</td>
 <td>否</td>
 <td>推荐</td>
@@ -124,25 +138,18 @@
 <td>CURL请求类：通过curl实现的快捷方便的接口请求类，需要手动注册</td>
 </tr>
 <tr>
-<td>request</td>
-<td>是</td>
-<td>是</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Request.html">PhalApi_Request</a></td>
-<td>接口参数请求：用于收集接口请求的参数</td>
-</tr>
-<tr>
-<td>response</td>
-<td>是</td>
-<td>是</td>
-<td><a href="http://www.phalapi.net/docs/classes/PhalApi_Response.html">PhalApi_Response</a></td>
-<td>结果响应：用于输出返回给客户端的结果，默认为<a href="http://www.phalapi.net/docs/classes/PhalApi_Response_Json.html">PhalApi_Response_Json</a></td>
-</tr>
-<tr>
 <td>cookie</td>
 <td>否</td>
 <td>否</td>
 <td><a href="http://www.phalapi.net/docs/classes/PhalApi_Cookie.html">PhalApi_Cookie</a></td>
 <td>COOKIE的操作</td>
+</tr>
+<tr>
+<td>debug</td>
+<td>否</td>
+<td>否</td>
+<td>boolean</td>
+<td>应用级的调试开关，通常可从配置读取，暂时框架未用到</td>
 </tr>
 </tbody>
 </table>
