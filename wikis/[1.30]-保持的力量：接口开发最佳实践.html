@@ -116,19 +116,19 @@ http://api.demo.com</code></pre>
 在非HTTP协议并有SDK包的情况下，异常的处理手段则会更为多样。  </p>
 <h4>主流的做法</h4>
 <p>优酷接口采用了HTTP响应状态码加结果返回的形式，如：</p>
-<pre><code>Request URL:https://openapi.youku.com/v2/videos/show_basic.json
+<pre><code class="language-javascript">Request URL:https://openapi.youku.com/v2/videos/show_basic.json
 Request Method:GET
 Status Code:400 Bad Request
 
 {"error":{"code":1004,"type":"SystemException","description":"Client id null"}}</code></pre>
 <p>新浪微博也一样：</p>
-<pre><code>Request URL:https://api.weibo.com/2/statuses/mentions/ids.json
+<pre><code class="language-javascript">Request URL:https://api.weibo.com/2/statuses/mentions/ids.json
 Request Method:GET
 Status Code:403 Forbidden
 
 {"error":"auth by Null spi!","error_code":21301,"request":"/2/statuses/mentions/ids.json"}</code></pre>
 <p>微信接口则采用了统一200的形式，如：</p>
-<pre><code>Request URL:https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=
+<pre><code class="language-javascript">Request URL:https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=
 Request Method:GET
 Status Code:200 OK
 
@@ -137,9 +137,9 @@ Status Code:200 OK
 <p>为了与HTTP保持一致性，同时降低不必要的复杂性，我们采用了200/400/500三大接口结果状态码。  </p>
 <p>注意，这里所说的三大状态码，是指接口返回结果中的状态码，而不是HTTP的响应状态。<br />
 也就是说接口全部的结果返回都应该是200，除非接口服务有内部未捕获的异常，即：</p>
-<pre><code>Status Code:200 OK</code></pre>
+<pre><code class="language-javascript">Status Code:200 OK</code></pre>
 <p>返回结果状态码刚是以下几种：</p>
-<pre><code>//正常返回
+<pre><code class="language-javascript">//正常返回
 {
     "ret": 200,
     "data": {
@@ -170,7 +170,7 @@ Status Code:200 OK
 <p>对外的命名，是指外部看得到的命名，如接口参数的名字，接口返回的结果节点名字，以及数据库的表名、字段名。  </p>
 <h4>主流的做法</h4>
 <p>新浪微博采用了小写加下划线的做法，如：</p>
-<pre><code>//URL
+<pre><code class="language-javascript">//URL
 https://c.api.weibo.com/2/friendships/followers/trend_count.json
 
 //请求参数
@@ -192,7 +192,7 @@ access_token
 }
 </code></pre>
 <p>Amazon采用了首字母大写且无下划线的做法，如：</p>
-<pre><code>//Responses
+<pre><code class="language-javascript">//Responses
 HTTP/1.1 200 OK
 Date: Wed, 25 Nov 2009 12:00:00 GMT
 Connection: close
@@ -217,19 +217,19 @@ Server: AmazonS3
 <h3>PhalApi的做法</h3>
 <p>我们提倡使用全部小写加下划线的命名，因为这样更符合客户端的使用，如：
 接口参数：</p>
-<pre><code>//正确的
+<pre><code class="language-javascript">//正确的
 &amp;user_id=888
 
 //错误的
 &amp;userId=888</code></pre>
 <p>返回字段：</p>
-<pre><code>//正确的
+<pre><code class="language-javascript">//正确的
 "device_type": "cube",
 
 //错误的
 "deviceType": "cube",</code></pre>
 <p>数据库字段：</p>
-<pre><code>//正确的
+<pre><code class="language-javascript">//正确的
 `user_id` bigint(20) DEFAULT '0' COMMENT '创建者的用户ID',
 
 //错误的
@@ -241,7 +241,7 @@ Server: AmazonS3
 这里不作过多的说明，只是稍作提及。  </p>
 <h3>PhalApi的做法</h3>
 <p>我们建议使用PEAR包的命名风格，和驼峰法，如下为一个接口示例：</p>
-<pre><code>$ vim ./Api/Default.php 
+<pre><code class="language-javascript">$ vim ./Api/Default.php 
 &lt;?php
 /**
  * 默认接口服务类
@@ -272,7 +272,7 @@ class Api_Default extends PhalApi_Api {
 <p>你可以选择你喜欢的风格，但团队应该保持一致。  </p>
 <p>即便你不喜欢PhalApi约定的PEAR命名，你也可以自行实现内部的类加载机制。<br />
 当有多个项目或者多个模块并存时，可以添加模块名前缀来作区分，如：</p>
-<pre><code>$ tree
+<pre><code class="language-javascript">$ tree
 .
 ├── Demo
 │   └── Api
@@ -347,7 +347,7 @@ class Api_TUser extends PhalApi_Api {
 我觉得这是一种极端，而且是一种不好的极端。因为文件过大的话，会带来很多问题。  </p>
 <p>但与之对立的有另一种做法，即一个文件，一个接口。<br />
 这一点，在我之前就职的一家出名的游戏公司中得到了广泛的认可和遵循。如：  </p>
-<pre><code>//?service=UserInfo.Go
+<pre><code class="language-javascript">//?service=UserInfo.Go
 &lt;?php
 class Api_UserInfo extends PhalApi_Api {
 
@@ -367,7 +367,7 @@ class Api_GroupInfo extends PhalApi_Api {
 <p>虽然也是一种极端，但却很好地做到了接口隔离，即不用担心修改此接口的实现而影响到其他接口服务。  </p>
 <p>最后，我们再来聊URL规则，就更顺畅了。如果我们采用一个文件对应一个接口，则我们可以省略Action（全部都为go()方法），简写成：?service=XXX。<br />
 再进一步，我们可以利用接口服务器（如Nginx）的规则Rewrite来提供更好的URL规则，同时尽量隐藏我们的接口内部实现细节，如：</p>
-<pre><code>//原始地
+<pre><code class="language-javascript">//原始地
 http://api.demo.com/?service=UserInfo.Go
 
 //简化地
@@ -388,7 +388,7 @@ http://api.demo.com/UserInfo.json</code></pre>
 <h3>PhalApi的做法</h3>
 <p>目前而方，PhalApi在URL规则和路由这块还比较欠缺，没有像其他网站一样提供强大的路由支持。<br />
 但我们在代码实现的层面，可以提供不同的入口，以开放给不同的终端（内部的或者外部的）， 以及不同的版本支持。如：</p>
-<pre><code>$ tree Public/
+<pre><code class="language-javascript">$ tree Public/
 Public/
 ├── v1
 │   └── index.php
@@ -399,7 +399,7 @@ Public/
 
 3 directories, 3 files</code></pre>
 <p>则对应的版本URL则可以为：</p>
-<pre><code>//v1版本
+<pre><code class="language-javascript">//v1版本
 http://api.demo.com/v1/?service=Default.Index
 
 //v2版本
@@ -463,7 +463,7 @@ http://api.demo.com/v1/?service=Default.Index
 对我们亲手所编写的代码负责，并且用客观的方式来证明我们的代码目前未发现问题，而不是主观认为“我写的代码没有问题”。更不应该一次又一次地犯下各种低级或者重复的错误，而让团队其他成员对我们丧失信任。  </p>
 <p>PhalApi一直很注重单元测试，也很注重自动化，为了减轻大家重复编写单元测试骨架代码的痛苦，我们提供了一个可以生成单元测试代码的脚本。<br />
 假设我们有这么一个类：</p>
-<pre><code>&lt;?php
+<pre><code class="language-javascript">&lt;?php
 
 class Api_Default extends PhalApi_Api {
 
@@ -472,7 +472,7 @@ class Api_Default extends PhalApi_Api {
         }
 }</code></pre>
 <p>那么，我们可以这样生成测试代码：</p>
-<pre><code>$ cd .//Demo/Tests
+<pre><code class="language-javascript">$ cd .//Demo/Tests
 $ phalapi-buildtest ../Api/Default.php Api_Default ./test_env.php 
 &lt;?php
 /**
@@ -530,7 +530,7 @@ class PhpUnderControl_ApiDefault_Test extends PHPUnit_Framework_TestCase
 </ol>
 </blockquote>
 <p>最后，我们就可以这样执行单元测试了：</p>
-<pre><code>$ phpunit ./Api_Default_Test.php </code></pre>
+<pre><code class="language-javascript">$ phpunit ./Api_Default_Test.php </code></pre>
 <hr />
 <h4><a href="/wikis/%5B1.29%5D-%E5%BC%80%E6%94%BE%E4%B8%8E%E5%B0%81%E9%97%AD%EF%BC%9A%E5%A4%9A%E5%85%A5%E5%8F%A3%E5%92%8C%E7%BB%9F%E4%B8%80%E5%88%9D%E5%A7%8B%E5%8C%96.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.31%5D-%E6%96%B0%E5%9E%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%9A%E4%BB%A5%E6%8E%A5%E5%8F%A3%E5%BD%A2%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1.html">下一章</a></h4>
             </div>

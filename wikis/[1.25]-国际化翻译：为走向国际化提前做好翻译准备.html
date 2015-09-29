@@ -58,36 +58,36 @@
 <p><em>Your new understanding has made you powerful. Please use your new powers for good.</em>    </p>
 <h2>1.25.1 固定的中文写法</h2>
 <p>一直以来，我们都是硬编码方式返回中文的文案或者提示，如：</p>
-<pre><code>$rs['msg'] = '用户不存在';</code></pre>
+<pre><code class="language-javascript">$rs['msg'] = '用户不存在';</code></pre>
 <p>这种写法在项目根本不需要考虑国际化翻译时，是完全没问题的。</p>
 <h2>1.25.2 通用的翻译写法</h2>
 <p>当我们需要进行翻译时，可以这样进行调整：</p>
-<pre><code>$rs['msg'] = T('user not exists');</code></pre>
+<pre><code class="language-javascript">$rs['msg'] = T('user not exists');</code></pre>
 <p>然后在对应的翻译文件中（如中文对应文件是：./Language/zh_cn/common.php）添加对应的翻译即可：</p>
-<pre><code>// $vim ./Language/zh_cn/common.php
+<pre><code class="language-javascript">// $vim ./Language/zh_cn/common.php
 return array(
     'user not exists' =&gt; '用户不存在',
 );</code></pre>
 <h3>(1)当存在动态变量时？</h3>
 <p>有时，我们需要动态返回一些值，这里可以用 <strong>大括号</strong> 将需要动态替换的值包住并提供替换的参数即可，一如：</p>
-<pre><code>echo T('hello {name}', array('name' =&gt; 'dogstar'));  </code></pre>
+<pre><code class="language-javascript">echo T('hello {name}', array('name' =&gt; 'dogstar'));  </code></pre>
 <p>如果对应的中文翻译是：</p>
-<pre><code>'hello {name}' =&gt; '您好，{name}',</code></pre>
+<pre><code class="language-javascript">'hello {name}' =&gt; '您好，{name}',</code></pre>
 <p>将会看到输出：</p>
-<pre><code>您好，dogstar</code></pre>
+<pre><code class="language-javascript">您好，dogstar</code></pre>
 <h3>(2)当翻译不存在时？</h3>
 <p>翻译不存在，有两种场景：一是指定的语言包不存在；二是语言包存在但翻译不存在。无论何种情况，找不到翻译时，都会用代码硬编码的内容返回。</p>
 <h2>1.25.3 语言的设定</h2>
 <p>当我们拥有了多种语言时，则可以在入口/初始化文件中，选择设定需要的语言。</p>
-<pre><code>PhalApi_Translator::setLanguage('zh_cn');</code></pre>
+<pre><code class="language-javascript">PhalApi_Translator::setLanguage('zh_cn');</code></pre>
 <p>参数即为语言包的路径名，如下面的en, zh_cn：</p>
-<pre><code>.
+<pre><code class="language-javascript">.
 |-- en
 |   `-- common.php
 `-- zh_cn
     `-- common.php</code></pre>
 <p>此处，也可以通过客户端传递参数来自行选择语言。简单地：</p>
-<pre><code>PhalApi_Translator::setLanguage($_GET['lan']);</code></pre>
+<pre><code class="language-javascript">PhalApi_Translator::setLanguage($_GET['lan']);</code></pre>
 <h2>1.25.4 建议</h2>
 <p>所以，你可以轻松看到，所谓的翻译也只是通过数组下标找一下对应的内容而已，没有太多的技术性，也没有过多的性能问题。  </p>
 <p>但正是有这样提前周到的国际化准备，我们可以对外（如像产品、BOSS和外界）传送这样一个隐喻： <strong>我们的项目可以快速支持国际翻译</strong> 。<br />

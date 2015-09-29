@@ -72,7 +72,7 @@
 </ul>
 <p>基于此，为不同的维度提供不同的入口就很有现实实用场景了。  </p>
 <p>更为重要的是，这些不同的入口都应该尽可能简单，并能统一共享公共的组件资源、数据库、日记系统这些。一个可能的入口示例如下：  </p>
-<pre><code>&lt;?php
+<pre><code class="language-javascript">&lt;?php
 /**
  * Demo 统一入口
  */
@@ -94,7 +94,7 @@ $rs-&gt;output();</code></pre>
 <p>不同的入口提供了各维度定制的机会，统一的初始化则为应用提供了统一定制的机会。  </p>
 <h3>(1)常规入口代码</h3>
 <p>常规的入口，需要以下初始化操作：</p>
-<pre><code>&lt;?php
+<pre><code class="language-javascript">&lt;?php
 /**
  * 统一初始化
  */
@@ -135,14 +135,14 @@ SL('zh_cn');</code></pre>
 <p>上面是框架执行所需的基础服务注册和配置，一般直接可用，但也可以根据需要作些细微的调整。如日记的级别设定、调试的参数修改（改成一个只有自己知道的参数名字，别让外界知道！）等。 </p>
 <p>出于让大家对初始化过程有一个更理性的认识，这里补充一下各代码的作用。  </p>
 <p>最开始是利用了PHP原生态的时区设置和宏定义：  </p>
-<pre><code>date_default_timezone_set('Asia/Shanghai');
+<pre><code class="language-javascript">date_default_timezone_set('Asia/Shanghai');
 
 defined('API_ROOT') || define('API_ROOT', dirname(__FILE__) . '/..');</code></pre>
 <p>接着，便开始引入PhalApi框架的类自动加载器：</p>
-<pre><code>require_once API_ROOT . '/PhalApi/PhalApi.php';
+<pre><code class="language-javascript">require_once API_ROOT . '/PhalApi/PhalApi.php';
 $loader = new PhalApi_Loader(API_ROOT);</code></pre>
 <p>这样，我们就可以从原生态的PHP开发，切入到了PhalApi接口开发模式。但在捲起袖口准备大干一场前，我们还需要注册一些必备的服务：</p>
-<pre><code>//自动加载
+<pre><code class="language-javascript">//自动加载
 DI()-&gt;loader = $loader;
 
 //配置
@@ -162,7 +162,7 @@ DI()-&gt;notorm = function() {
 注意到，PhalApi_DB_NotORM初始化时，除了配置文件外，还有一个debug参数，此参数的作用是用于控制是否打印显示执行的SQL语句及对应消耗的时间。  </p>
 <p>至此，我们已经为项目完成了绝大部分的基础服务注册，且上面的初始化顺序建议保留不变。因为，前后有依赖关系。  </p>
 <p>但为了让我们的项目更有活力、更具生气、更国际化，我们还可以多加这么两行代码：</p>
-<pre><code>//调试模式，$_GET['__debug__']可自行改名
+<pre><code class="language-javascript">//调试模式，$_GET['__debug__']可自行改名
 DI()-&gt;debug = !empty($_GET['__debug__']) ? true : DI()-&gt;config-&gt;get('sys.debug');
 
 //翻译语言包设定
@@ -171,10 +171,10 @@ SL('zh_cn');</code></pre>
 此debug的来源，默认来自环境的系统配置文件（如区分生产环境和测试环境）；也可以来自某个请求的手动设置，这样，开发同学便可以快速进行在线调试了。
 而这个参数，则是框架代码、项目代码以及扩展类库所共用的调试开关，至于各个场景使用的效果，视各环节而定。  </p>
 <p>SL()是一个快速函数，作用是设定翻译语言包。如果觉得中文下的UTF-8查看不直观，可以自行加个参数修改，如：</p>
-<pre><code>SL(isset($_GET['__lan__']) ? $_GET['__lan__'] : 'zh_cn');</code></pre>
+<pre><code class="language-javascript">SL(isset($_GET['__lan__']) ? $_GET['__lan__'] : 'zh_cn');</code></pre>
 <h3>(3)更多定制注册代码</h3>
 <p>上面的操作，涵盖了大部分项目的需要。除此之外，还有一些额外的服务，可根据自身的情况，定制处理：</p>
-<pre><code>/** ---------------- 以下服务组件就根据需要定制注册 ---------------- **/
+<pre><code class="language-javascript">/** ---------------- 以下服务组件就根据需要定制注册 ---------------- **/
 
 //缓存 - MC
 /**
@@ -194,15 +194,15 @@ if (!empty($_GET['callback'])) {
 <h3>(4)更多定制解读</h3>
 <p>此部分的注册，非项目必须部分。可根据需要，自行定制。  </p>
 <p>如上面出现的第一个，即缓存服务，使用的是Memcached：</p>
-<pre><code>DI()-&gt;cache = function() {
+<pre><code class="language-javascript">DI()-&gt;cache = function() {
     $mc = new PhalApi_Cache_Memecahced(DI()-&gt;config-&gt;get('sys.mc'));
     return $mc;
 };</code></pre>
 <p>接下来的，是重要的接口签名验证服务。之所以没有提供这个服务的实现，是出于更高安全性考虑而建议项目各自制定签名规则并实现。然后这样简单注册即可被框架自动调用：</p>
-<pre><code>//签名验证服务
+<pre><code class="language-javascript">//签名验证服务
 //DI()-&gt;filter = 'Common_SignFilter';</code></pre>
 <p>在有些需要支持JsonP返回的场景，可以使用PhalApi_Response_JsonP返回格式开放callback操作：</p>
-<pre><code>//支持JsonP的返回
+<pre><code class="language-javascript">//支持JsonP的返回
 if (!empty($_GET['callback'])) {
     DI()-&gt;response = new PhalApi_Response_JsonP($_GET['callback']);
 }</code></pre>

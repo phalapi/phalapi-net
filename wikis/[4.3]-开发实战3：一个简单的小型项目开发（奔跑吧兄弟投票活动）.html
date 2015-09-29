@@ -83,7 +83,7 @@
 <p>把PhalApi最新的框架代码下载后，并将User扩展类库按文档说明配置后，将项目部署到了以下接口域名：</p>
 <pre><code>http://api.vote.phalapi.com</code></pre>
 <p>测试一下：</p>
-<pre><code>http://api.vote.phalapi.com/vote/?sign=phalapi
+<pre><code class="language-javascript">http://api.vote.phalapi.com/vote/?sign=phalapi
 
 //返回
 {
@@ -99,7 +99,7 @@
 <p>Good! 下面是简明的开发过程。</p>
 <h3>(2)单元测试驱动开发</h3>
 <p>在定好接口后：</p>
-<pre><code>&lt;?php
+<pre><code class="language-javascript">&lt;?php
 class Api_Act extends PhalApi_Api {
 
     public function joinIn() {
@@ -112,11 +112,11 @@ class Api_Act extends PhalApi_Api {
     }
 }</code></pre>
 <p>便可使用脚本，快速生成单元测试的骨架代码：</p>
-<pre><code>$ cd ./Vote/Tests/Api
+<pre><code class="language-javascript">$ cd ./Vote/Tests/Api
 $ phalapi_buildtests ../../Api/Act.php Api_Act ../test_env.php  &gt; Api_Act_Test.php</code></pre>
 <h3>(3)快速开发</h3>
 <p>开发过程此处略，但在单元测试驱动的引导下，很快就产出了以下高质量的代码：</p>
-<pre><code>.
+<pre><code class="language-javascript">.
 ├── Api
 │   ├── Act.php
 │   └── Default.php
@@ -140,7 +140,7 @@ $ phalapi_buildtests ../../Api/Act.php Api_Act ../test_env.php  &gt; Api_Act_Tes
 </code></pre>
 <h3>(4)单元测试全部通过了！</h3>
 <p>为了方便大家查看，已省略了部分的调试内容，但保留了测试过程中全部执行的SQL语句，如下：</p>
-<pre><code>$ phpunit ./Api_Act_Test.php 
+<pre><code class="language-javascript">$ phpunit ./Api_Act_Test.php 
 PHPUnit 4.3.4 by Sebastian Bergmann.
 
 [1 - 0.06911s]DELETE FROM phalapi_team WHERE (team_name = 'test team name');&lt;br&gt;
@@ -172,7 +172,7 @@ OK (4 tests, 42 assertions)</code></pre>
 <h3>(5)运行效果 - Part 1</h3>
 <p>在我们通过第三方登录后，我们就可以这样进行接口操作了。  </p>
 <p>首先，让我们添加两个参赛团队：</p>
-<pre><code>//奔跑吧兄弟（蓝队）
+<pre><code class="language-javascript">//奔跑吧兄弟（蓝队）
 http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.JoinIn&amp;team_name=%E5%A5%94%E8%B7%91%E5%90%A7%E5%85%84%E5%BC%9F%EF%BC%88%E8%93%9D%E9%98%9F%EF%BC%89&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731&amp;user_id=1
 //返回
 {
@@ -196,7 +196,7 @@ http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.JoinIn&amp;team_n
     "msg": ""
 }</code></pre>
 <p>然后，让我们进行疯狂地投票：</p>
-<pre><code>//第一次投票
+<pre><code class="language-javascript">//第一次投票
 http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=5&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731&amp;user_id=1
 //返回
 {"ret":200,"data":{"code":0,"vote_num":1},"msg":""}
@@ -216,7 +216,7 @@ http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=
 //返回 - 注意此返回！
 {"ret":200,"data":{"code":2,"vote_num":0},"msg":""}</code></pre>
 <p>最后，看一下排行榜：</p>
-<pre><code>http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.ShowList&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731&amp;user_id=1
+<pre><code class="language-javascript">http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.ShowList&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731&amp;user_id=1
 //返回
 {
     "ret": 200,
@@ -244,7 +244,7 @@ http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=
 <p>接口服务，不仅仅需要提供正常的业务功能，还需要考虑到各种客户端使用的情况，包括非法的请求，或者不合的调用，比如防刷票。  </p>
 <p>这一部分，主要展示接口在各种异常情况下的响应能力。  </p>
 <h4>签名失败</h4>
-<pre><code>http://api.vote.phalapi.com/vote/?sign=XXX&amp;service=Act.JoinIn&amp;team_name=%E5%A5%94%E8%B7%91%E5%90%A7%E5%85%84%E5%BC%9F%EF%BC%88%E7%BA%A2%E9%98%9F%EF%BC%89&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731&amp;user_id=1
+<pre><code class="language-javascript">http://api.vote.phalapi.com/vote/?sign=XXX&amp;service=Act.JoinIn&amp;team_name=%E5%A5%94%E8%B7%91%E5%90%A7%E5%85%84%E5%BC%9F%EF%BC%88%E7%BA%A2%E9%98%9F%EF%BC%89&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731&amp;user_id=1
 //返回
 {
     "ret": 400,
@@ -253,7 +253,7 @@ http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=
     "msg": "非法请求：wrong sign"
 }</code></pre>
 <h4>无登录态</h4>
-<pre><code>http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.JoinIn&amp;team_name=%E5%A5%94%E8%B7%91%E5%90%A7%E5%85%84%E5%BC%9F%EF%BC%88%E7%BA%A2%E9%98%9F%EF%BC%89&amp;token=XXX&amp;user_id=1
+<pre><code class="language-javascript">http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.JoinIn&amp;team_name=%E5%A5%94%E8%B7%91%E5%90%A7%E5%85%84%E5%BC%9F%EF%BC%88%E7%BA%A2%E9%98%9F%EF%BC%89&amp;token=XXX&amp;user_id=1
 //返回
 {
     "ret": 401,
@@ -262,7 +262,7 @@ http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=
     "msg": "非法请求：user need to login again"
 }</code></pre>
 <h4>重复参赛</h4>
-<pre><code>http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.JoinIn&amp;team_name=%E5%A5%94%E8%B7%91%E5%90%A7%E5%85%84%E5%BC%9F%EF%BC%88%E7%BA%A2%E9%98%9F%EF%BC%89&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731&amp;user_id=1
+<pre><code class="language-javascript">http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.JoinIn&amp;team_name=%E5%A5%94%E8%B7%91%E5%90%A7%E5%85%84%E5%BC%9F%EF%BC%88%E7%BA%A2%E9%98%9F%EF%BC%89&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731&amp;user_id=1
 //返回
 {
     "ret": 200,
@@ -273,7 +273,7 @@ http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=
     "msg": ""
 }</code></pre>
 <h4>当天投票次数已达最大</h4>
-<pre><code>//第四次投票后
+<pre><code class="language-javascript">//第四次投票后
 http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=5&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731&amp;user_id=1
 //返回 - 注意此返回！
 {
@@ -285,7 +285,7 @@ http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=
     "msg": ""
 }</code></pre>
 <h4>投票的团队不存在</h4>
-<pre><code>http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=404&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731&amp;user_id=1
+<pre><code class="language-javascript">http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=404&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731&amp;user_id=1
 //返回
 {
     "ret": 200,
@@ -296,7 +296,7 @@ http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=
     "msg": ""
 }</code></pre>
 <p>在进行上面的非法请求后，我们可以同时关注后台的日记：</p>
-<pre><code>$ tailf ./Runtime/log/201505/20150517.log 
+<pre><code class="language-javascript">$ tailf ./Runtime/log/201505/20150517.log 
 2015-05-17 01:35:32|DEBUG|user not login|{"userId":null,"token":null}
 2015-05-17 01:36:01|DEBUG|user can not vote today|{"userId":1,"teamId":5}
 2015-05-17 01:37:52|DEBUG|user can not vote today|{"userId":1,"teamId":5}
@@ -304,7 +304,7 @@ http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=
 2015-05-17 01:48:13|DEBUG|user can not vote today|{"userId":1,"teamId":5}</code></pre>
 <h3>(7)需要的数据库表</h3>
 <p>以下为关键的表，其他表，可以通过脚本自动生成，然后导入。</p>
-<pre><code>-- ----------------------------
+<pre><code class="language-javascript">-- ----------------------------
 -- Table structure for `phalapi_team`
 -- ----------------------------
 DROP TABLE IF EXISTS `phalapi_team`;
@@ -330,12 +330,12 @@ INSERT INTO `phalapi_user_session_1` VALUES ('1', '1', '193CE82D1F4588A9A168BDE6
 <h2>4.3.4 脚本的使用</h2>
 <h3>(1)创建项目脚本 - phalapi_buildapp</h3>
 <p>此脚本可用于快速创建项目，其使用如下：</p>
-<pre><code>$ ./PhalApi/phalapi-buildapp 
+<pre><code class="language-javascript">$ ./PhalApi/phalapi-buildapp 
 Usage: ./PhalApi/phalapi-buildapp &lt;app&gt;</code></pre>
 <p>此脚本会根据Demo示例，快速生成一个新的项目。</p>
 <h3>(2)自动生成单元测试骨架脚本 - phalapi_buildtest</h3>
 <p>这是一个用来自动生成单元测试骨架的脚本，其使用如下：</p>
-<pre><code>$ phalapi-buildtest 
+<pre><code class="language-javascript">$ phalapi-buildtest 
 
 Usage: 
         php /usr/bin/phalapi-buildtest &lt;file_path&gt; &lt;class_name&gt; [bootstrap] [author = dogstar]
@@ -343,7 +343,7 @@ Usage:
 Demo:
         php ./build_phpunit_test_tpl.php ./Demo.php Demo &gt; Demo_Test.php</code></pre>
 <p>然后，我们就可以使用辅助的PhalApiTestRunner::go()进行单元测试：</p>
-<pre><code>    public function testShowList()
+<pre><code class="language-javascript">    public function testShowList()
     {
         //Step 1. 构建请求URL
         $url = 'service=Act.ShowList&amp;sign=phalapi&amp;user_id=1&amp;token=193CE82D1F4588A9A168BDE6E6B83868B1464F523D16C05206F308E51EB91731';
@@ -369,10 +369,10 @@ Demo:
     }</code></pre>
 <h3>(3)自动生成分表建表SQL语句 - phalapi_buildsqls</h3>
 <p>此脚本用于根据dbs.php配置和./Data/*.sql文件生成完整的建表语句，其使用如下：</p>
-<pre><code>$ ./PhalApi/phalapi-buildsqls 
+<pre><code class="language-javascript">$ ./PhalApi/phalapi-buildsqls 
 Usage: ./PhalApi/phalapi-buildsqls &lt;dbs.php&gt; &lt;table&gt; [engine=InnoDB]</code></pre>
 <p>假设我们需要对vote进行分表，拆分成3个表，可以这样配置：</p>
-<pre><code>//$ vim ./Config/dbs.php
+<pre><code class="language-javascript">//$ vim ./Config/dbs.php
 
         'vote' =&gt; array(
             'prefix' =&gt; 'phalapi_',
@@ -382,12 +382,12 @@ Usage: ./PhalApi/phalapi-buildsqls &lt;dbs.php&gt; &lt;table&gt; [engine=InnoDB]
             ),
         ),</code></pre>
 <p>然后准备基本的建表语句：</p>
-<pre><code>//$vim ./Data/vote.sql
+<pre><code class="language-javascript">//$vim ./Data/vote.sql
 
   `team_id` bigint(20) DEFAULT '0',
   `vote_num` int(11) DEFAULT '0',</code></pre>
 <p>最后，执行生成脚本：</p>
-<pre><code>$ phalapi-buildsqls ./Config/dbs.php vote
+<pre><code class="language-javascript">$ phalapi-buildsqls ./Config/dbs.php vote
 
 /**
  * DB: phalapi_vote
@@ -419,7 +419,7 @@ CREATE TABLE `phalapi_vote_2` (
 </code></pre>
 <h2>4.3.5 在线接口参数查看</h2>
 <p>可以通过以下链接，在线实时查看接口参数：</p>
-<pre><code>//参赛接口
+<pre><code class="language-javascript">//参赛接口
 http://api.vote.phalapi.com/vote/checkApiParams.php?service=Act.JoinIn
 
 //投票接口

@@ -61,12 +61,12 @@
 <p>接口不尽相同，主要区别在于领域业务数据的处理。而数据的来源则更为广泛，可能是来自数据库，可能来自第三方平台接口，可能存放于内存。所以，PhalApi这里的Model层，则是 <strong>广义上的数据源层</strong> ，用于获取原始的业务数据，而不管来自何方，何种存储媒介。这也是为什么我们没有将Model层打造成活动纪录或者数据映射器的原因。当然，如果你确实需要，也可以自行调整。  </p>
 <p>如果数据来源于数据库，我们则需要考虑到数据库服务器的感受，保证不会有过载的请求而导致它罢工。对此，我们可以结合缓存来进行性能优化。</p>
 <p>如，一般地：</p>
-<pre><code>
+<pre><code class="language-javascript">
     // 版本1：简单的获取
         $model = new Model_User();
         $rs = $model-&gt;getByUserId($userId);</code></pre>
 <p>这种是没有缓存的情况，当发现有性能问题并且可以通过缓存来解决时，我们可以在调用时简单引入缓存：</p>
-<pre><code>        // 版本2：使用单点缓存/多级缓存 (应该移至Model层中)
+<pre><code class="language-javascript">        // 版本2：使用单点缓存/多级缓存 (应该移至Model层中)
         $key = 'userbaseinfo_' . $userId;
         $rs = DI()-&gt;cache-&gt;get($key);
         if ($rs === NULL) {
@@ -74,7 +74,7 @@
                 DI()-&gt;cache-&gt;set($key, $rs, 600);
         }</code></pre>
 <p>但不建议在领域Domain层中引入缓存，因为会导致混淆和不便进行测试。更好是将缓存的处理移至Model，保持数据获取的透明性：</p>
-<pre><code>class Model_User extends PhalApi_Model_NotORM {
+<pre><code class="language-javascript">class Model_User extends PhalApi_Model_NotORM {
 
     public function getByUserIdWithCache($userId) {
         $key = 'userbaseinfo_' . $userId;
@@ -86,7 +86,7 @@
             return $rs;
     }</code></pre>
 <p>对应地，外部的调用调整成：</p>
-<pre><code>    // 版本2：使用单点缓存/多级缓存 (应该移至Model层中)
+<pre><code class="language-javascript">    // 版本2：使用单点缓存/多级缓存 (应该移至Model层中)
         $model = new Model_User();
         $rs = $model-&gt;getByUserIdWithCache($userId);</code></pre>
 <p>至此，Model层对于上层如Domain来说，负责获取源数据，而不管此数据来自于数据库，还是远程接口，抑或是缓存包装下的数据。这正是我们使用数组在Model层和Domain层通讯的原因，因为数组更加通用，不需要额外添加实体。</p>
@@ -101,7 +101,7 @@
 <p>之所以使用代理模式，是因为实际上并不一定会真正调用到最终源数据的获取，因为往往源数据的获取成本非常高，故而我们希望通过缓存来拦截数据的获取。  </p>
 <p>由于Model代理被上层的Domain领域层调用，但又依赖于下层Model层获得原始数据，所以处于Domain和Model之间。为了保持良好的项目代码层级，如果需要创建PhalApi_ModelProxy子类，建议新建一个ModelProxy目录。  </p>
 <p>如对用户基本信息的获取，我们添加了一个代理：</p>
-<pre><code>class ModelProxy_UserBaseInfo extends PhalApi_ModelProxy {
+<pre><code class="language-javascript">class ModelProxy_UserBaseInfo extends PhalApi_ModelProxy {
 
     protected function doGetData($query) {
         $model = new Model_User();
@@ -126,7 +126,7 @@
 <p>很多时候，这四个基本的变量是满足不了各项目的实际需求的，因此你可以定义你的查询子类， 以支持丰富的数据获取。如调用优酷平台接口获取用户最近上传发布的视频时，需要用户昵称、获取的数量、排序种类等。</p>
 <h3>(4)最终的调用</h3>
 <p>在完成了上面的工作后，让我们看下最终呈现的效果：</p>
-<pre><code>        // 版本3：缓存 + 代理
+<pre><code class="language-javascript">        // 版本3：缓存 + 代理
         $query = new PhalApi_ModelQuery();
         $query-&gt;id = $userId;
         $modelProxy = new ModelProxy_UserBaseInfo();
@@ -148,7 +148,7 @@
 <h3>(2)取消缓存的方法2： 查询中的缓存控制</h3>
 <p>在项目层次，我们可以统一构造自己的查询基类，以实现对缓存的控制。  </p>
 <p>如：</p>
-<pre><code>class My_ModelQuery extends PhalApi_ModelQuery {
+<pre><code class="language-javascript">class My_ModelQuery extends PhalApi_ModelQuery {
 
     public function __construct($queryArr = array()) {
         parent::__construct($queryArr);
@@ -160,21 +160,17 @@
     }
 }
 ···
-至于DI()-&gt;debug的设置，则可以在入口文件中根据约定的接口参数设定，简单地如：</code></pre>
-<p>if (isset($_GET['debug']) &amp;&amp; $_GET['debug'] == 1) {
-DI()-&gt;debug = true;
-}</p>
-<pre><code>
-这样便可以获得了接口预览和调试的能力。
-
-##1.27.5 何时使用此方案？
-可以看到，此方案是在缓存策略（包括单点缓存、低高速缓存、多级缓存）和广义Model层基础上扩展的，以便应对重量级的业务数据获取。此方案有一定的优势，但作为代价则是额外的代码编写以及层级复杂性。并且，我们还没谈及到数据变更时的处理。    
-
-所以，请在确切需要统一封装高成本的数据获取时，才使用此方案。
-
-***
-
-####[上一章](/wikis/%5B1.26%5D-%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E6%96%B9%E6%A1%88.html)   [文档首页](/wikis/)   [下一章](/wikis/%5B1.28%5D-COOKIE%EF%BC%9A%E5%AF%B9COOKIE%E5%8E%9F%E7%94%9F%E6%80%81%E7%9A%84%E6%94%AF%E6%8C%81%E5%8F%8A%E8%AE%B0%E5%BF%86%E5%8A%A0%E5%AF%86%E5%8D%87%E7%BA%A7%E7%89%88.html)</code></pre>
+至于DI()-&gt;debug的设置，则可以在入口文件中根据约定的接口参数设定，简单地如：
+```javascript
+if (isset($_GET['debug']) &amp;&amp; $_GET['debug'] == 1) {
+    DI()-&gt;debug = true;
+}</code></pre>
+<p>这样便可以获得了接口预览和调试的能力。</p>
+<h2>1.27.5 何时使用此方案？</h2>
+<p>可以看到，此方案是在缓存策略（包括单点缓存、低高速缓存、多级缓存）和广义Model层基础上扩展的，以便应对重量级的业务数据获取。此方案有一定的优势，但作为代价则是额外的代码编写以及层级复杂性。并且，我们还没谈及到数据变更时的处理。    </p>
+<p>所以，请在确切需要统一封装高成本的数据获取时，才使用此方案。</p>
+<hr />
+<h4><a href="/wikis/%5B1.26%5D-%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E6%96%B9%E6%A1%88.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.28%5D-COOKIE%EF%BC%9A%E5%AF%B9COOKIE%E5%8E%9F%E7%94%9F%E6%80%81%E7%9A%84%E6%94%AF%E6%8C%81%E5%8F%8A%E8%AE%B0%E5%BF%86%E5%8A%A0%E5%AF%86%E5%8D%87%E7%BA%A7%E7%89%88.html">下一章</a></h4>
             </div>
         </div>
     </div>

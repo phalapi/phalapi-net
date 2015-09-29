@@ -58,7 +58,7 @@
 <p><em>Experience by itself teaches nothing... Without theory, experience has no meaning. Without theory, one has no questions to ask. Hence, without theory, there is no learning. – Edwards Deming</em>  </p>
 <h2>1.16.1 配置的简单读取</h2>
 <p>通常，我们会有以下三个配置文件：  </p>
-<pre><code>dogstar@ubuntu:Config$ tree
+<pre><code class="language-javascript">dogstar@ubuntu:Config$ tree
 .
 ├── app.php
 ├── dbs.php
@@ -66,12 +66,12 @@
 </code></pre>
 <p>其中app.php为项目应用配置；dbs.php为分布式存储的数据库配置；sys.php为不同环境下的系统配置。  </p>
 <p>在入口文件，注册配置组件服务后：</p>
-<pre><code>//$ vim ./Public/init.php
+<pre><code class="language-javascript">//$ vim ./Public/init.php
 
 //配置
 DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');</code></pre>
 <p>假设有这样的app.php配置：</p>
-<pre><code>return array(
+<pre><code class="language-javascript">return array(
 
     'version' =&gt; '1.1.1',
 
@@ -81,7 +81,7 @@ DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');</code></pre>
 );
 </code></pre>
 <p>我们就可以分别这样根据需要获取配置：</p>
-<pre><code>//app.php里面的全部配置
+<pre><code class="language-javascript">//app.php里面的全部配置
 DI()-&gt;config-&gt;get('app');
 
 //app.php里面的单个配置
@@ -102,7 +102,7 @@ DI()-&gt;config-&gt;get('app.email');  //返回：array('address' =&gt; 'chanzon
 <h3>(2)不同环境，不同入口</h3>
 <p>当服务器的账号和密码也是由开发来掌控时，则可以使用这种在代码层次控制的策略。  </p>
 <p>我们可以在Public下提供不同的入口，一如：</p>
-<pre><code>$ mkdir ./Public/myapi
+<pre><code class="language-javascript">$ mkdir ./Public/myapi
 $ myapi$ tree
 .
 ├── index.php
@@ -110,14 +110,14 @@ $ myapi$ tree
 </code></pre>
 <p>我们有这样不同的入口，客户端在测试时，只需要将入口路径改成：/myapi/test.php?service=XXX.XXX，而在打包发布时只需要将入口路径改成：/myapi/?service=XXX.XXX 即可。也就是将test.php去掉。  </p>
 <p>而在服务端，仅需要在这些不同的入口文件，修改一下配置文件目录路径即可：</p>
-<pre><code>//$ vim ./Public/myapi/test.php
+<pre><code class="language-javascript">//$ vim ./Public/myapi/test.php
 DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/ConfigTest');</code></pre>
 <p>另外，也可以通过客户端在请求时带参数来作区分，如带上&amp;env=test或者&amp;env=prod。</p>
 <h3>(3)持续集成下的配置管理</h3>
 <p>但个人最为建议的还是在 <strong>持续集成</strong> 下作配置管理。  </p>
 <p>因为首先，持续集成中的发布应该是经常性的，且应该是自动化的。所以，既然有自动化的支持，我们也应该及早地将配置纳入其中管理。</p>
 <p>配置文件不同只要是环境不同，而环境不同所影响的配置文件通常只有sys.php和dbs.php；为此，我们为测试环境和生产环境准备了各自的配置文件，而在发布时自动选择所需要的配置文件。一般地，我们建议生产环境的配置文件以 <strong>.prod</strong> 结尾。所以，这时我们的配置文件可能会是这样：</p>
-<pre><code>dogstar@ubuntu:Config$ tree
+<pre><code class="language-javascript">dogstar@ubuntu:Config$ tree
 .
 ├── app.php
 ├── dbs.php
@@ -127,7 +127,7 @@ DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/ConfigTest');</code></pre
 <p>多了生产环境的配置文件：dbs.php.prod和sys.php.prod。  </p>
 <p>再通过发布工具，我们就可以对不同环境的配置文件进行快速选择了。这里以phing为例，说明一下相关的配置和效果。  </p>
 <p>如下，在Phing的配置文件build.xml中，在生产环境发布过程中，我们将配置文件进行了替换。</p>
-<pre><code>//$ vim ./build.xml 
+<pre><code class="language-javascript">//$ vim ./build.xml 
 
         &lt;copy 
             file="./Config/dbs.php.prod" 
@@ -138,20 +138,20 @@ DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/ConfigTest');</code></pre
             tofile="./Config/sys.php" 
             overwrite="true" /&gt;</code></pre>
 <p>执行phing发布后，将会看到对应的这样提示：</p>
-<pre><code>     [copy] Copying 1 file to /home/phapapi/Config
+<pre><code class="language-javascript">     [copy] Copying 1 file to /home/phapapi/Config
      [copy] Copying 1 file to /home/phapapi/Config</code></pre>
 <h2>1.16.3 主从数据库的配置</h2>
 <p>通常一般而言，数据库支持分表分库配置，且只有一份，即：  </p>
-<pre><code>./Config/dbs.php</code></pre>
+<pre><code class="language-javascript">./Config/dbs.php</code></pre>
 <p>然后，我们这样指定数据库的配置：  </p>
-<pre><code>DI()-&gt;notorm = function() {
+<pre><code class="language-javascript">DI()-&gt;notorm = function() {
     $debug = !empty($_GET['__sql__']) ? true : false;
     return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), $debug);
 };</code></pre>
 <p>如果需要从库时，要以参考./Config/dbs.php，创建一个从库的配置拷贝，即：</p>
-<pre><code>cp ./Config/dbs.php ./Config/dbs_slave.php</code></pre>
+<pre><code class="language-javascript">cp ./Config/dbs.php ./Config/dbs_slave.php</code></pre>
 <p>然后，注册一个从库的notorm：</p>
-<pre><code>DI()-&gt;notormSlave = function() {
+<pre><code class="language-javascript">DI()-&gt;notormSlave = function() {
     $debug = !empty($_GET['__sql__']) ? true : false;
     return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs_slave'), $debug); //注意：配置不同
 };</code></pre>

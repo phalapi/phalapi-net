@@ -93,7 +93,7 @@
 </ol>
 </li>
 </ul>
-<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre><code class="language-javascript">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 
 &lt;!-- ============================================  --&gt;
 &lt;!-- PhalApi                       --&gt;
@@ -239,7 +239,7 @@
 </ol>
 </li>
 </ul>
-<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre><code class="language-javascript">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 
 &lt;!-- ============================================  --&gt;
 &lt;!-- PhalApi                       --&gt;
@@ -276,7 +276,7 @@
 </code></pre>
 <h2>2.22.3 autobench：接口压力测试与可视化图表</h2>
 <p>可以通过以下的脚本来进行，使用示例：  </p>
-<pre><code>$ ./autobench.sh
+<pre><code class="language-javascript">$ ./autobench.sh
 Usage: ./autobench.sh &lt;host&gt; &lt;uri&gt;
 
  - ./autobench.sh www.baidu.com /index.php</code></pre>
@@ -289,7 +289,7 @@ Usage: ./autobench.sh &lt;host&gt; &lt;uri&gt;
 <h4>带MC缓存的访问 - 应用入口 - 带缓存的身份token验证</h4>
 <p><img src="http://webtools.qiniudn.com/1421424027OYV4Ae5i.jpg" alt="a pic" /></p>
 <h3>(2)详细的数据报表</h3>
-<pre><code>dem_req_rate    req_rate_demo.phalapi.com     con_rate_demo.phalapi.com     min_rep_rate_demo.phalapi.com avg_rep_rate_demo.phalapi.com    max_rep_rate_demo.phalapi.com stddev_rep_rate_demo.phalapi.com      resp_time_demo.phalapi.com       net_io_demo.phalapi.com       errors_demo.phalapi.com
+<pre><code class="language-javascript">dem_req_rate    req_rate_demo.phalapi.com     con_rate_demo.phalapi.com     min_rep_rate_demo.phalapi.com avg_rep_rate_demo.phalapi.com    max_rep_rate_demo.phalapi.com stddev_rep_rate_demo.phalapi.com      resp_time_demo.phalapi.com       net_io_demo.phalapi.com       errors_demo.phalapi.com
 5       5.0     5.0     4.8     5.0     5.2     0.1     22.4    2.9     0
 25      25.0    25.0    25.0    25.0    25.0    0.0     21.6    14.3    0
 45      45.0    45.0    45.0    45.0    45.0    0.0     22.3    25.7    0
@@ -301,7 +301,7 @@ Usage: ./autobench.sh &lt;host&gt; &lt;uri&gt;
 165     147.4   147.4   0.0     0.0     0.0     0.0     262.9   84.1    0
 185     151.1   151.1   0.0     0.0     0.0     0.0     429.7   86.2    0</code></pre>
 <h3>(3)附脚本</h3>
-<pre><code>#!/bin/bash
+<pre><code class="language-javascript">#!/bin/bash
 
 if [ $# -eq 0 ]; then
     echo "Usage: $0 &lt;host&gt; &lt;uri&gt;"
@@ -342,7 +342,7 @@ autobench \
 <h3>(1)测试的接口服务</h3>
 <p><a href="http://api.phalapi.com">http://api.phalapi.com</a> /demo/?service=Default.Index&amp;username=test</p>
 <h3>(2)Overall Summary</h3>
-<pre><code>Total Incl. Wall Time (microsec):     7,873 microsecs
+<pre><code class="language-javascript">Total Incl. Wall Time (microsec):     7,873 microsecs
 Total Incl. CPU (microsecs):    7,999 microsecs
 Total Incl. MemUse (bytes):    304,456 bytes
 Total Incl. PeakMemUse (bytes):    306,616 bytes

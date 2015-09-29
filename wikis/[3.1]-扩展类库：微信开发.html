@@ -60,13 +60,13 @@
 <h2>3.1.2 安装和配置</h2>
 <h3>(1)扩展包下载</h3>
 <p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>Wechat</strong> 微信包，如使用：</p>
-<pre><code>git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<pre><code class="language-javascript">git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
 <p>然后把 <strong>Wechat</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
-<pre><code>cp ./PhalApi-Library/Wechat/ ./PhalApi/Library/ -R</code></pre>
+<pre><code class="language-javascript">cp ./PhalApi-Library/Wechat/ ./PhalApi/Library/ -R</code></pre>
 <p>到处安装完毕！接下是插件的配置。</p>
 <h3>(2)扩展包配置</h3>
 <p>为了让微信扩展包能接收来自微信服务器的信息以及返回信息给用户，我们需要在 <strong>./Config/app.php</strong> 配置文件中追加以下配置：</p>
-<pre><code>
+<pre><code class="language-javascript">
     /**
      * 插件注册 - 项目级重用
      */
@@ -89,7 +89,7 @@
 <h2>3.1.3 入门使用</h2>
 <h3>(1)微信入口文件</h3>
 <p>可以按将下面的入口代码得到你的项目下：</p>
-<pre><code>//$ vim ./Public/weixin/index.php 
+<pre><code class="language-javascript">//$ vim ./Public/weixin/index.php 
 
 &lt;?php
 
@@ -111,7 +111,7 @@ $robot = new Wechat_Lite('YourTokenHere...', true);
 $rs = $robot-&gt;response();
 $rs-&gt;output();</code></pre>
 <p><strong>特别地</strong> ，当首次接入微信时，需要将开头的两句注释去掉，以便通过微信的验证，即：</p>
-<pre><code>// echo $_GET['echostr'];
+<pre><code class="language-javascript">// echo $_GET['echostr'];
 // die();</code></pre>
 <h2>3.1.4 示例：让红包飞</h2>
 <h3>(1)业务场景</h3>
@@ -119,7 +119,7 @@ $rs-&gt;output();</code></pre>
 <p>通常地，当我们需要添加一个新的微信服务号的功能时，可以两步走： <strong>先开发插件，再注册插件</strong> 。</p>
 <h3>(2)开发插件</h3>
 <p>很简单地：</p>
-<pre><code>// $vim ./Demo/Plugin/Money.php 
+<pre><code class="language-javascript">// $vim ./Demo/Plugin/Money.php 
 
 &lt;?php
 
@@ -141,7 +141,7 @@ class Plugin_Money implements Wechat_Plugin_Text {
 <p><img src="http://webtools.qiniudn.com/20150411005257_976929b37873ae51ca54d5cb24a61ff0" alt="webwxgetmsgimg" />  </p>
 <h2>3.1.5 微信开发调试</h2>
 <p>为了便于进行微信开发的调试，我们专门提供了一个快速模拟微信请求的脚本。以下是对上面发红包的模拟请求：</p>
-<pre><code>$php ./Library/Wechat/Tests/send_wechat_text.php http://dev.wechat.com/weixin/ demo
+<pre><code class="language-javascript">$php ./Library/Wechat/Tests/send_wechat_text.php http://dev.wechat.com/weixin/ demo
 
 &lt;xml&gt;
 &lt;ToUserName&gt;&lt;![CDATA[oWNXvjipYqRViMpO8GZwXxE43pUY]]&gt;&lt;/ToUserName&gt;

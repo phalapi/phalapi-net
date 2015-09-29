@@ -59,13 +59,13 @@
 <p>此扩展可用于发送邮件。</p>
 <h2>3.3.2 安装和配置</h2>
 <p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>PHPMailer</strong> 包，如使用：</p>
-<pre><code>git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<pre><code class="language-javascript">git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
 <p>然后把 <strong>PHPMailer</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
-<pre><code>cp ./PhalApi-Library/PHPMailer/ ./PhalApi/Library/ -R</code></pre>
+<pre><code class="language-javascript">cp ./PhalApi-Library/PHPMailer/ ./PhalApi/Library/ -R</code></pre>
 <p>到处安装完毕！接下是插件的配置。</p>
 <h3>(1)邮箱配置</h3>
 <p>需要在 <strong>./Config/app.php</strong> 配置文件中追加以下配置：</p>
-<pre><code>  'PHPMailer' =&gt; array(
+<pre><code class="language-javascript">  'PHPMailer' =&gt; array(
     'email' =&gt; array(
         'host' =&gt; 'smtp.gmail.com',
         'username' =&gt; 'XXX@gmail.com',
@@ -77,7 +77,7 @@
   ),</code></pre>
 <h2>3.3.3 使用</h2>
 <p>如下代码示例：</p>
-<pre><code>require_once './init.php';
+<pre><code class="language-javascript">require_once './init.php';
 
 DI()-&gt;loader-&gt;addDirs('Library');
 

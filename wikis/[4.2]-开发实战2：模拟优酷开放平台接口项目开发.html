@@ -60,7 +60,7 @@
 <p>但这里不涉及具体的内部开发（我们也确实不得而知），而是只从外部的角度，通过PhalApi框架搭建类似的平台接口架构。  </p>
 <h2>4.2.2 优酷URL分析与路由Rewrite</h2>
 <p>以下是优酷平台的部分接口URL：</p>
-<pre><code>#单条视频基本信息(videos/show_basic)
+<pre><code class="language-javascript">#单条视频基本信息(videos/show_basic)
 https://openapi.youku.com/v2/videos/show_basic.json
 
 #我的详细信息(users/myinfo) 
@@ -77,13 +77,13 @@ https://openapi.youku.com/v2/searches/show/by_keyword.json
 <h3>与PhalApi接口规则的冲突</h3>
 <p>但在PhalApi框架中，我们是通过&amp;service=XXX参数来指定需要的服务的。为此，我们需要在服务端配置一些Rewrite规则以支持这些URL。
 简单地，我们可以这样在nginx配置：</p>
-<pre><code>    if ( !-f $request_filename )
+<pre><code class="language-javascript">    if ( !-f $request_filename )
     {
         rewrite ^/v2/(.*)/(.*).json /v2/?service=$1.$2;
     }
 </code></pre>
 <p>并为了更兼容PhalApi的风格，我们在入口文件将接收到的service首字母强制为大写，即：  </p>
-<pre><code>//$ vim ./Public/v2/index.php
+<pre><code class="language-javascript">//$ vim ./Public/v2/index.php
 
 if (isset($_REQUEST['service'])) {
     $_REQUEST['service'] = ucwords($_REQUEST['service']);
@@ -91,7 +91,7 @@ if (isset($_REQUEST['service'])) {
 <p>重启一下nginx后，我们可以有浏览器，试着访问：</p>
 <pre><code>https://openapi.youku.com/v2/videos/show_basic.json</code></pre>
 <p>我们将会看到：  </p>
-<pre><code>{
+<pre><code class="language-javascript">{
     "ret": 400,
     "data": [
     ],
@@ -99,7 +99,7 @@ if (isset($_REQUEST['service'])) {
 }</code></pre>
 <p>即表明Rewrite规则已生效，并能正常工作了，哈哈！  </p>
 <p>以下是更完整的nginx配置：</p>
-<pre><code>server {
+<pre><code class="language-javascript">server {
     root /path/to/openapi.youku.com/Public;
     index index.html index.htm index.php;
 
@@ -127,7 +127,7 @@ if (isset($_REQUEST['service'])) {
 }</code></pre>
 <h2>4.2.3 项目的主要目录结构</h2>
 <p>首先，我们建立了一个Youku的项目目录，并按不同的版本划分了不同的模块，如：  </p>
-<pre><code>$ tree ./Youku/
+<pre><code class="language-javascript">$ tree ./Youku/
 ./Youku/
 └── V2
     ├── Api
@@ -145,7 +145,7 @@ if (isset($_REQUEST['service'])) {
 8 directories, 4 files
 </code></pre>
 <p>然后，为不同的版本，提供不同的入口，如：  </p>
-<pre><code>$ tree ./Public/
+<pre><code class="language-javascript">$ tree ./Public/
 ./Public/
 ├── checkApiParams.php
 ├── index.php
@@ -160,7 +160,7 @@ if (isset($_REQUEST['service'])) {
 <h2>4.2.4 简单的模拟实现</h2>
 <p>现在，到了接口具体开发的环节，我们将模拟开发 <a href="http://open.youku.com/docs/docs?id=44">单条视频基本信息(videos/show_basic)</a>  </p>
 <p>首先，我们可以定义接口：  </p>
-<pre><code>//$ vim ./Youku/V2/Api/Videos.php
+<pre><code class="language-javascript">//$ vim ./Youku/V2/Api/Videos.php
 
 &lt;?php
 
@@ -197,7 +197,7 @@ class Api_Videos extends PhalApi_Api {
 <img src="http://7qnay5.com1.z0.glb.clouddn.com/20150809.png" alt="a pic" /><br />
 可以看出，这与优酷平台上的接口文档是非常相近的。  </p>
 <p>最后，我们可以简单模拟实现：  </p>
-<pre><code>    public function show_basic() {
+<pre><code class="language-javascript">    public function show_basic() {
         $rs = '{
             "id" : "XMjg1MTcyNDQ0",
                 "title" : "泡芙小姐的灯泡 11",
@@ -227,7 +227,7 @@ class Api_Videos extends PhalApi_Api {
 <h2>4.2.5 接口调用效果</h2>
 <p>虽然是模拟返回（其实是直接强制返回优酷开放平台上的示例数据），但我们还是可以来看下在模拟实现后的接口调用效果。  </p>
 <p>首先，是缺少client_id时的非法请求：  </p>
-<pre><code>#请求
+<pre><code class="language-javascript">#请求
 http://openapi.youku.com/v2/videos/show_basic.json
 
 #返回
@@ -238,7 +238,7 @@ http://openapi.youku.com/v2/videos/show_basic.json
     "msg": "非法请求：缺少必要参数client_id"
 }</code></pre>
 <p>然后，尝试一个合法的请求：</p>
-<pre><code>#请求
+<pre><code class="language-javascript">#请求
 http://openapi.youku.com/v2/videos/show_basic.json?client_id=test
 
 #返回
@@ -282,7 +282,7 @@ http://openapi.youku.com/v2/videos/show_basic.json?client_id=test
 在此场景，即：  </p>
 <h3>先自定义response服务</h3>
 <p>我们先创建一个公共的目录./Youku/Common，再创建项目需要的特定响应类：  </p>
-<pre><code>//$ vim ./Youku/Common/Response.php
+<pre><code class="language-javascript">//$ vim ./Youku/Common/Response.php
 
 &lt;?php
 
@@ -295,7 +295,7 @@ class Common_Response extends PhalApi_Response_Json {
 </code></pre>
 <h3>注册response服务</h3>
 <p>接着，我们对response进行注册：  </p>
-<pre><code>//$ vim ./Public/v2/index.php
+<pre><code class="language-javascript">//$ vim ./Public/v2/index.php
 
 //装载你的接口
 DI()-&gt;loader-&gt;addDirs(array('Youku', 'Youku/V2'));
@@ -304,7 +304,7 @@ DI()-&gt;response = 'Common_Response';</code></pre>
 <p>这里需要稍微注意一下，我们要在装载Youku目录后，才能注册DI()-&gt;response。  </p>
 <h3>再次返回</h3>
 <p>回到刚才那个请求链接，我们可以发现，当再次调用时，会返回：  </p>
-<pre><code>{
+<pre><code class="language-javascript">{
     "id": "XMjg1MTcyNDQ0",
     "title": "泡芙小姐的灯泡 11",
     "link": "http://v.youku.com/v_show/id_XMjg1MTcyNDQ0.html",
@@ -337,7 +337,7 @@ DI()-&gt;response = 'Common_Response';</code></pre>
 <p>我们可以先来看下优酷开放平台是怎么处理接口签名的。  </p>
 <p>简单地，优酷会为每一个接入方提供一个client_id，然后在每次接口请求时，通过都需要传递此参数。  </p>
 <p>为此，我们针对这个client_id编写一个简单的客户端验证服务。如：  </p>
-<pre><code>//$ vim ./Youku/Common/ClientCheck.php
+<pre><code class="language-javascript">//$ vim ./Youku/Common/ClientCheck.php
 
 &lt;?php
 
@@ -358,16 +358,16 @@ class Common_ClientCheck implements PhalApi_Filter {
 }
 </code></pre>
 <p>然后，在入口处注册一下：</p>
-<pre><code>//$ vim ./Public/v2/index.php 
+<pre><code class="language-javascript">//$ vim ./Public/v2/index.php 
 
 DI()-&gt;filter = 'Common_ClientCheck';</code></pre>
 <p>当我们，再次打开刚才那个链接：</p>
 <pre><code>http://openapi.youku.com/v2/videos/show_basic.json?client_id=test</code></pre>
 <p>我们会看到空的返回：</p>
-<pre><code>[]</code></pre>
+<pre><code class="language-javascript">[]</code></pre>
 <p>这说明，对客户端的非法请求已拦截成功，但这样用户体验明显不好，因为没有任何的错误提示输出。  </p>
 <p>为此，我们需要回到刚才自定义的响应类，修改一下：</p>
-<pre><code>//$ vim ./Youku/Common/Response.php 
+<pre><code class="language-javascript">//$ vim ./Youku/Common/Response.php 
 
 &lt;?php
 
@@ -389,7 +389,7 @@ class Common_Response extends PhalApi_Response_Json {
 }
 </code></pre>
 <p>再刷新一下，可以看到和优酷平台接口近似的返回了！  </p>
-<pre><code>{
+<pre><code class="language-javascript">{
     "error": {
         "code": ,
         "type": "SystemException",

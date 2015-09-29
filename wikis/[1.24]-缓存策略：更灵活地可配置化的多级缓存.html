@@ -60,7 +60,7 @@
 <h2>1.24.2 简单缓存</h2>
 <p>这里所指的简单缓存，是指文件缓存。因为实现简单，且部署方便。但其缺点也是明显的，如文件I/O读写导致性能低，不能支持分布式。所以在没有集群服务器下是适用的。</p>
 <p>当需要使用文件缓存时，先对文件缓存进行DI注册，便可使用。</p>
-<pre><code>//$ vim ./Public/init.php 
+<pre><code class="language-javascript">//$ vim ./Public/init.php 
 DI()-&gt;cache = new PhalApi_Cache_File(array('path' =&gt; API_ROOT . '/Runtime', 'prefix' =&gt; 'demo'));
 
 // 设置
@@ -74,7 +74,7 @@ DI()-&gt;cache-&gt;delete('thisYear');</code></pre>
 <h2>1.24.3 高速缓存</h2>
 <p>高速缓存通常具备分布式的能力，并能进驻内存，因此性能高。但同样此优点所带来的则是需要另外部署缓存扩展，如常见的Memcached、Redis。若需要考虑缓存落地，还要进一点筛选和配置。  </p>
 <p>如使用Memcached：</p>
-<pre><code>DI()-&gt;cache = new PhalApi_Cache_Memecahced(array('host' =&gt; '127.0.0.1', 'port' =&gt; 11211, 'prefix' =&gt; 'demo_'));
+<pre><code class="language-javascript">DI()-&gt;cache = new PhalApi_Cache_Memecahced(array('host' =&gt; '127.0.0.1', 'port' =&gt; 11211, 'prefix' =&gt; 'demo_'));
 
 // 设置
 DI()-&gt;cache-&gt;set('thisYear', 2015, 600);
@@ -91,7 +91,7 @@ DI()-&gt;cache-&gt;delete('thisYear');</code></pre>
 <p>作为一个框架，除了考虑上述的原有调用、单点缓存复用外，还需要考虑到多级缓存的组装。部分框架，一如我最喜欢的Phalcon则是使用了配置的形式来实现。但仍然，我们需要了解其配置的各个格式要求才能更好掌握和使用，这点带来了学习的成本。因此，PhalApi则是使用了简单的组合模式来实现。  </p>
 <p>正如你在源代码中看到的PhalApi_Cache_Multi类，通过此类的实例可以利用PhalApi_Cache_Multi::addCache()快速添加一个缓存节点，而节点的优先级则按开发同学添加的顺序来确定。显然在添加时，我们应该先添加分布式的高速缓存，再添加本地的低速缓存（希望不会有人先添加文件缓存再添加MC缓存）。而各个节点的初始化，则是我们之前所熟悉的。只是简单添加即可。</p>
 <p>以下是结合文件缓存和MC缓存的多级缓存示例：</p>
-<pre><code>$cache = PhalApi_Cache_Multi();
+<pre><code class="language-javascript">$cache = PhalApi_Cache_Multi();
 
 $mcCache = new PhalApi_Cache_Memecahced(array('host' =&gt; '127.0.0.1', 'port' =&gt; 11211, 'prefix' =&gt; 'demo_'));
 $cache-&gt;addCache($mcCache);
@@ -101,7 +101,7 @@ $cache-&gt;addCache($fileCache);
 
 DI()-&gt;cache = $cache;</code></pre>
 <p>然后，就可像之前那样设置、获取和删除缓存，而不需考虑是单点缓存，还是多级缓存：</p>
-<pre><code>// 设置
+<pre><code class="language-javascript">// 设置
 DI()-&gt;cache-&gt;set('thisYear', 2015, 600);
 
 // 获取

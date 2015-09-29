@@ -63,7 +63,7 @@
 <p>本文，就以模拟获取开源中国用户信息接口开发（即：从数据库获取用户的基本信息并以JSON格式返回给客户端）为例，简明的接口开发中的流程，以及用到的基本功能和操作，主要包括有：统一入口文件、参数规则配置、接口层/领域层/模型持久层、日记纪录、数据库操作、配置读取、国际化翻译等。  </p>
 <p>以给大家一个感观的认识。  </p>
 <p>最终接口的调用与返回结果如下：  </p>
-<pre><code>//接口请求格式
+<pre><code class="language-javascript">//接口请求格式
 http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=帐号ID
 
 //返回结果格式
@@ -84,7 +84,7 @@ http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=帐号ID
 <h3>(1) 统一入口文件</h3>
 <p>为了更好保护我们的项目代码，建议将接口的访问路径设置在：./PhalApi/Pubic目录，并且各套接口（如按版本分：v1/v2/v3等等；按不同终端分：ios/android/pc等）各自独立入口。所以本示例中将./PhalApi/Pubic/demo/index.php下。  </p>
 <p>参数入口文件的写法，我们可以快速得到基本的入口文件如下：  </p>
-<pre><code>// $ vim ./Public/demo/index.php 
+<pre><code class="language-javascript">// $ vim ./Public/demo/index.php 
 
 &lt;?php
 /**
@@ -102,7 +102,7 @@ $server = new PhalApi();
 $rs = $server-&gt;response();
 $rs-&gt;output();</code></pre>
 <p>此外，我们还需要一个公共的初始化文件：  </p>
-<pre><code>//$ vim ./Public/init.php 
+<pre><code class="language-javascript">//$ vim ./Public/init.php 
 
 &lt;?php
 /**
@@ -144,7 +144,7 @@ SL('zh_cn');
 </code></pre>
 <h3>(2)TDD测试驱动开发</h3>
 <p>遵循最佳实践，我们在编写代码前先编写单元测试。但同时为了减少编写测试代码的痛苦，我们可以先定义接口函数签名，再通过脚本自动生成测试代码骨架来提高我们的开发效率。  </p>
-<pre><code>//$vim ./Demo/Api/User.php
+<pre><code class="language-javascript">//$vim ./Demo/Api/User.php
 
 &lt;?php
 
@@ -155,16 +155,16 @@ class Api_User extends PhalApi_Api
     }
 }</code></pre>
 <p>通过脚本生成测试骨架：  </p>
-<pre><code>$ mkdir -p ./Demo/Tests/Api/
+<pre><code class="language-javascript">$ mkdir -p ./Demo/Tests/Api/
 $ cd ./Demo/Tests/Api
 $ php ../../../PhalApi/build_phpunit_test_tpl.php ../../Api/User.php Api_User ./../test_env.php</code></pre>
 <p>然后，根据/Public/demo/index.php入口文件，也搭建一个测试环境的入口文件：  </p>
-<pre><code>vim ./Demo/Tests/test_env.php</code></pre>
+<pre><code class="language-javascript">vim ./Demo/Tests/test_env.php</code></pre>
 <p>修正一下Api_Examples_User_Test.php里，测试环境test_env.php的包含路径：  </p>
-<pre><code>//手动调用test_env.php的路径
+<pre><code class="language-javascript">//手动调用test_env.php的路径
 require_once dirname(__FILE__) . '/../test_env.php';</code></pre>
 <p>并且，修改测试，以符合我们通过userId=1获取基本信息（名字为dogstar，来源为oschina）：</p>
-<pre><code>//$vim ./Demo/Tests/Api/Api_User_Test.php
+<pre><code class="language-javascript">//$vim ./Demo/Tests/Api/Api_User_Test.php
 
     /**
      * @group testGetBaseInfo
@@ -192,7 +192,7 @@ require_once dirname(__FILE__) . '/../test_env.php';</code></pre>
         $this-&gt;assertEquals('oschina', $rs['info']['from']);
     }</code></pre>
 <p>此时，单元测试是预期失败的：  </p>
-<pre><code>$ phpunit ./Api_User_Test.php 
+<pre><code class="language-javascript">$ phpunit ./Api_User_Test.php 
 PHPUnit 4.3.4 by Sebastian Bergmann.
 
 F
@@ -218,7 +218,7 @@ Tests: 1, Assertions: 1, Failures: 1.</code></pre>
 1、我们坚持驼峰法的代码风格；<br />
 2、对外界我们可以统一使用大写来提供服务名称，如：User.Login，这样更显专业。  </p>
 </blockquote>
-<pre><code>//$vim ./Demo/Api/User.php
+<pre><code class="language-javascript">//$vim ./Demo/Api/User.php
 
 &lt;?php
 
@@ -236,7 +236,7 @@ class Api_User extends PhalApi_Api
     //...</code></pre>
 <p>如上，我们就定义了getBaseInfo接口中的userId参数，名字也为userId，整型，最小值为1，必须。</p>
 <h4>接口实现</h4>
-<pre><code>//$vim ./Demo/Api/User.php
+<pre><code class="language-javascript">//$vim ./Demo/Api/User.php
 
     public function getBaseInfo()
     {
@@ -260,7 +260,7 @@ class Api_User extends PhalApi_Api
 <h3>(4)Domain领域层</h3>
 <p>领域层主要是关注复杂业务的处理，以及缓存的处理、耗时操作后台异步处理等，并调用Model持久层获取需要的数据。因此，是Api与Model层之间的桥梁。  </p>
 <p>在此示例中，我们只需要简单地调用Model层获取用户的信息即可，再加强一下用户ID的合法性判断。  </p>
-<pre><code>//$ vim ./Demo/Domain/User.php 
+<pre><code class="language-javascript">//$ vim ./Demo/Domain/User.php 
 
 &lt;?php
 
@@ -284,7 +284,7 @@ class Domain_User
 <h3>(5)Model持久层</h3>
 <p>此一层主要关注数据从持久存储的获取，特别是针对数据库的操作，但不排除其他媒介，如文件、缓存等。  </p>
 <p>首先，先准备一下我们需要的表和数据：</p>
-<pre><code>CREATE TABLE `phalapi_test`.`tbl_user` (
+<pre><code class="language-javascript">CREATE TABLE `phalapi_test`.`tbl_user` (
   `id` INT NOT NULL,
   `name` VARCHAR(45) NULL,
   `from` VARCHAR(45) NULL,
@@ -292,7 +292,7 @@ class Domain_User
 
 INSERT INTO `phalapi_test`.`tbl_user` (`id`, `name`, `from`) VALUES ('1', 'dogstar', 'oschina');</code></pre>
 <p>然后，编写需要的Model代码，即利用NotORm实现对数据的操作：</p>
-<pre><code>//$ vim ./Demo/Model/User.php 
+<pre><code class="language-javascript">//$ vim ./Demo/Model/User.php 
 
 &lt;?php
 
@@ -305,7 +305,7 @@ class Model_User
 }</code></pre>
 <h3>(6)单元测试通过啦！</h3>
 <p>在完成上面简单的开发后，我们即可以实现接口的开发，运行一下刚才的单元测试，完美通过！</p>
-<pre><code>$ phpunit ./Api_User_Test.php 
+<pre><code class="language-javascript">$ phpunit ./Api_User_Test.php 
 PHPUnit 4.3.4 by Sebastian Bergmann.
 
 SELECT * FROM tbl_user WHERE (id = ?); -- 1
@@ -318,7 +318,7 @@ OK (2 tests, 7 assertions)</code></pre>
 <p>在单元测试的保证下，我们便可以放心大胆地将我们的代码发布到外网，提供给更多的开发者，和终端用户使用。  </p>
 <h3>(7)数据库配置</h3>
 <p>因为是单元测试，所以我们配置搭建了新的一个测试环境，特别对于数据库的配置，如下：</p>
-<pre><code>//$ vim ./Config/dbs.php
+<pre><code class="language-javascript">//$ vim ./Config/dbs.php
 
 &lt;?php
 /**
@@ -359,9 +359,9 @@ return array(
 <h3>(8)最终接口调用</h3>
 <p>接口调用的链接，这时已经相当明了了，即：域名 + 路径（/demo） + 参数（可从单元测试那直接获取）</p>
 <p>如本示例的是：</p>
-<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=1</code></pre>
+<pre><code class="language-javascript">http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=1</code></pre>
 <p>返回的结果是：</p>
-<pre><code>{
+<pre><code class="language-javascript">{
     "ret": 200,
     "data": {
         "code": 0,
@@ -383,11 +383,11 @@ return array(
 <h2>1.11.3 更多简明的使用</h2>
 <h3>(1)日记纪录</h3>
 <p>当我们访问一个不存在的用户时，将会触发日记纪录：</p>
-<pre><code>DI()-&gt;logger-&gt;debug('user not found', $this-&gt;userId);</code></pre>
+<pre><code class="language-javascript">DI()-&gt;logger-&gt;debug('user not found', $this-&gt;userId);</code></pre>
 <p>如访问：</p>
 <pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=2</code></pre>
 <p>然后，可以在Runtime下看到按天分目录的日记：</p>
-<pre><code>$ tailf ./Runtime/log/201501/20150128.log 
+<pre><code class="language-javascript">$ tailf ./Runtime/log/201501/20150128.log 
 2015-01-28 00:37:34|DEBUG|user not found|2</code></pre>
 <blockquote>
 <p>温馨提示：<br />
@@ -395,25 +395,25 @@ return array(
 </blockquote>
 <h3>(2)国际化翻译</h3>
 <p>当需要翻译时，可以使用人性化的函数T()，如：</p>
-<pre><code>$rs['msg'] = T('user not exists');</code></pre>
+<pre><code class="language-javascript">$rs['msg'] = T('user not exists');</code></pre>
 <p>对应地需要补充翻译的内容：</p>
-<pre><code>//$ vim ./Language/zh_cn/common.php 
+<pre><code class="language-javascript">//$ vim ./Language/zh_cn/common.php 
 
     'user not exists' =&gt; '用户不存在',</code></pre>
 <p>还是以上面的用户不存在为例，看下运行的截图效果：
 <img src="http://webtools.qiniudn.com/20150411005257_d8fc7091e4a2717fa9e1b4f9891117ff" alt="show" /></p>
 <h3>(3)配置读取</h3>
 <p>配置的读取，使用方便，直接通过以下方式便可以获取，以点号分割：</p>
-<pre><code>DI()-&gt;config-&gt;get('dbs')</code></pre>
+<pre><code class="language-javascript">DI()-&gt;config-&gt;get('dbs')</code></pre>
 <p>第一段，必须为文件名，后面的为用点号相连的数组下标，不限级。</p>
 <h3>(4)[酷！]接口参数在线查询</h3>
 <p>为了方便客户端实时查看最新的接口参数，这里提供了一个快速的在线工具：</p>
-<pre><code>http://dev.phalapi.com/demo/checkApiParams.php?service=User.GetBaseInfo</code></pre>
+<pre><code class="language-javascript">http://dev.phalapi.com/demo/checkApiParams.php?service=User.GetBaseInfo</code></pre>
 <p>用浏览器打开后，即可以看到最新的接口参数说明， 不需要后台接口开发人员编写文档维护，直接从代码中生成参数报表：</p>
 <p><img src="http://webtools.qiniudn.com/20150411005257_af3f58d9bc050b4906a57fea3d04e9b2" alt="show" /></p>
 <h2>1.11.4 Demo相关代码文件</h2>
 <p>从上面可以得到，此示例相关的代码如下：</p>
-<pre><code>Demo$ tree
+<pre><code class="language-javascript">Demo$ tree
 .
 ├── Api
 │   ├── Default.php

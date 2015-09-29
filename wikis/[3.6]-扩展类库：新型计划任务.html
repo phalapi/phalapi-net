@@ -73,7 +73,7 @@ PhalApi需要PhaApi 1.2.0及以上版本。</p>
 </blockquote>
 <h3>(2)配置</h3>
 <p>我们需要在 <strong>./Config/app.php</strong> 配置文件中追加以下配置：</p>
-<pre><code>    /**
+<pre><code class="language-javascript">    /**
      * 计划任务配置
      */
     'Task' =&gt; array(
@@ -102,7 +102,7 @@ PhalApi需要PhaApi 1.2.0及以上版本。</p>
 <p>以上内容看情况需要而配置。  </p>
 <h3>(3)数据库表</h3>
 <p>当需要使用数据库MQ列队时，还需要将以下数据库的配置追加到 <strong>./Config/dbs.php</strong> 中：</p>
-<pre><code>    'tables' =&gt; array(
+<pre><code class="language-javascript">    'tables' =&gt; array(
 
     //请将以下配置拷贝到 ./Config/dbs.php 文件对应的位置中，未配置的表将使用默认路由
 
@@ -120,14 +120,14 @@ PhalApi需要PhaApi 1.2.0及以上版本。</p>
 <h2>3.6.3 入门使用</h2>
 <h3>(1)加入MQ队列</h3>
 <p>首先，我们需要在入门文件进行对Task的初始化：</p>
-<pre><code>DI()-&gt;loader-&gt;addDirs('Library');
+<pre><code class="language-javascript">DI()-&gt;loader-&gt;addDirs('Library');
 $mq = new Task_MQ_Redis();  //可以选择你需要的MQ
 DI()-&gt;taskLite = new Task_Lite($mq);</code></pre>
 <p>然后，这样即可添加一个新的计划任务到MQ：</p>
-<pre><code>DI()-&gt;taskLite-&gt;add('Task.DoSth', array('id' =&gt; 1));</code></pre>
+<pre><code class="language-javascript">DI()-&gt;taskLite-&gt;add('Task.DoSth', array('id' =&gt; 1));</code></pre>
 <h3>(2)计划任务的启动</h3>
 <p>在启动计划任务前，我们需要编写简单的脚本，一如这样：</p>
-<pre><code>#!/usr/bin/env php
+<pre><code class="language-javascript">#!/usr/bin/env php
 &lt;?php
 require_once '/path/to/Public/init.php';
 
@@ -150,7 +150,7 @@ echo "\nDone:\n", json_encode($rs), "\n\n";</code></pre>
 <p>上面第二点的启动是通用、自定义、也是自由的启动方式。  </p>
 <p>这里再提供一种具体的、统一的启动方式，即使用crontab的方式。  </p>
 <p>首先，创建以下表(或见./Library/Task/Data/phalapi_task_progress.sql文件)：</p>
-<pre><code>CREATE TABLE `phalapi_task_progress` (
+<pre><code class="language-javascript">CREATE TABLE `phalapi_task_progress` (
       `id` bigint(20) NOT NULL AUTO_INCREMENT,
       `title` varchar(200) DEFAULT '' COMMENT '任务标题',
       `trigger_class` varchar(50) DEFAULT '' COMMENT '触发器类名',
@@ -163,12 +163,12 @@ echo "\nDone:\n", json_encode($rs), "\n\n";</code></pre>
       PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre>
 <p>接着，添加crontab计划任务：</p>
-<pre><code>$ crontab -e
+<pre><code class="language-javascript">$ crontab -e
 
 */1 * * * * /usr/bin/php /path/to/PhalApi/Library/Task/crontab.php &gt;&gt; /tmp/phalapi_task_crontab.log 2&gt;&amp;1
 </code></pre>
 <p>然后，实现你的计划任务服务接口：</p>
-<pre><code>&lt;?php
+<pre><code class="language-javascript">&lt;?php
 class Api_Task_Demo extends PhalApi_Api {
 
       public function doSth() {
@@ -176,7 +176,7 @@ class Api_Task_Demo extends PhalApi_Api {
       }
 }</code></pre>
 <p>最后，配置计划任务：</p>
-<pre><code>INSERT INTO `phalapi_task_progress`(title, trigger_class, fire_params, interval_time)  VALUES('你的任务名字', 'Task_Progress_Trigger_Common', 'Task_Demo.DoSth&amp;Task_MQ_File&amp;Task_Runner_Local', '300');</code></pre>
+<pre><code class="language-javascript">INSERT INTO `phalapi_task_progress`(title, trigger_class, fire_params, interval_time)  VALUES('你的任务名字', 'Task_Progress_Trigger_Common', 'Task_Demo.DoSth&amp;Task_MQ_File&amp;Task_Runner_Local', '300');</code></pre>
 <p>注意，在配置时，需要指明MQ和Runner的类型。</p>
 <h2>3.6.4 更多说明</h2>
 <h3>(1)依赖的资源服务</h3>
@@ -209,7 +209,7 @@ class Api_Task_Demo extends PhalApi_Api {
 <h3>(2)MQ</h3>
 <h4>Redis MQ队列</h4>
 <p>Redis MQ队列需要的配置为：</p>
-<pre><code>    'Task' =&gt; array(
+<pre><code class="language-javascript">    'Task' =&gt; array(
         //MQ队列设置，可根据使用需要配置
         'mq' =&gt; array(
             'redis' =&gt; array(
@@ -257,7 +257,7 @@ class Api_Task_Demo extends PhalApi_Api {
 </tbody>
 </table>
 <p>可以这样创建Redis MQ队列：</p>
-<pre><code>//方法一：使用app.Task.mq.redis配置
+<pre><code class="language-javascript">//方法一：使用app.Task.mq.redis配置
 $mq = new Task_MQ_Redis();
 
 //方法二：外部依赖注入
@@ -265,7 +265,7 @@ $redisCache = new PhalApi_Cache_Redis(array('host' =&gt; '127.0.0.1'));
 $mq = new Task_MQ_Redis($redisCache);</code></pre>
 <h4>文件MQ队列</h4>
 <p>文件MQ需要的配置为：</p>
-<pre><code>    'Task' =&gt; array(
+<pre><code class="language-javascript">    'Task' =&gt; array(
         //MQ队列设置，可根据使用需要配置
         'mq' =&gt; array(
             'file' =&gt; array(
@@ -300,7 +300,7 @@ $mq = new Task_MQ_Redis($redisCache);</code></pre>
 </tbody>
 </table>
 <p>可以这样创建文件MQ队列：</p>
-<pre><code>//方法一：使用app.Task.mq.file配置
+<pre><code class="language-javascript">//方法一：使用app.Task.mq.file配置
 $mq = new Task_MQ_File();
 
 //方法二：外部依赖注入
@@ -308,7 +308,7 @@ $fileCache = new PhalApi_Cache_File(array('path' =&gt; '/tmp/cache'));
 $mq = new Task_MQ_Redis($fileCache);</code></pre>
 <h4>数据库MQ队列</h4>
 <p>数据库MQ队列需要的配置为：</p>
-<pre><code>    'tables' =&gt; array(
+<pre><code class="language-javascript">    'tables' =&gt; array(
 
         //请将以下配置拷贝到 ./Config/dbs.php 文件对应的位置中，未配置的表将使用默认路由
 
@@ -323,19 +323,19 @@ $mq = new Task_MQ_Redis($fileCache);</code></pre>
         ),
     )</code></pre>
 <p>可以这样创建数据库MQ队列：</p>
-<pre><code>$mq = new Task_MQ_DB();</code></pre>
+<pre><code class="language-javascript">$mq = new Task_MQ_DB();</code></pre>
 <h4>数组MQ队列</h4>
 <p>数组MQ队列是将MQ存放在PHP的数组里面，用于单元测试或者是一次性、临时性的计划任务调度。</p>
 <p>可以这样创建数据库MQ队列：</p>
-<pre><code>$mq = new Task_MQ_Array();</code></pre>
+<pre><code class="language-javascript">$mq = new Task_MQ_Array();</code></pre>
 <h3>(3)本地和远程调度</h3>
 <h4>本地调度的创建</h4>
-<pre><code>$runner = new Task_Runner_Local($mq, 10);  //10表示每批次弹出10个进行处理</code></pre>
+<pre><code class="language-javascript">$runner = new Task_Runner_Local($mq, 10);  //10表示每批次弹出10个进行处理</code></pre>
 <p>需要注意的是，每次执行一个计划任务，都会重新初始化必要的DI资源服务。<br />
 且此调度方式不能用于接口请求时的同步调用。  </p>
 <h4>远程调度的创建</h4>
 <p>首先需要以下配置：</p>
-<pre><code>    /**
+<pre><code class="language-javascript">    /**
      * 计划任务配置
      */
     'Task' =&gt; array(
@@ -372,7 +372,7 @@ $mq = new Task_MQ_Redis($fileCache);</code></pre>
 </tbody>
 </table>
 <p>可以这样创建：</p>
-<pre><code>//使用默认的连接器 - HTTP + POST的方式
+<pre><code class="language-javascript">//使用默认的连接器 - HTTP + POST的方式
 $runner = new Task_Runner_Remote($mq, 10); //10表示每批次弹出10个进行处理
 
 //或者，指定连接器

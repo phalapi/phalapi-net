@@ -68,7 +68,7 @@
 </ul>
 <h2>1.14.2 统一返回结构</h2>
 <p>通常，我们正常情况下请求接口会返回类似：  </p>
-<pre><code>{
+<pre><code class="language-javascript">{
     "ret": 200,
     "data": {
         "title": "Default Api",
@@ -91,7 +91,7 @@
 <h4>4XX 客户端非法请求</h4>
 <p>此类请求是由客户端不正确调用引起的，如请求的接口服务不存在，或者接口参数不对，验证失败等等。当这种情况发生时，客户端同学只需要调整修正调用即可。  </p>
 <p>对于此系统的状态码，在进行接口开发时，可由项目自已定义约定。  通常地，我们需要告知客户端签名失败时，可以这样：  </p>
-<pre><code>throw new PhalApi_Exception_BadRequest('wrong sign', 1);</code></pre>
+<pre><code class="language-javascript">throw new PhalApi_Exception_BadRequest('wrong sign', 1);</code></pre>
 <p>即抛出PhalApi_Exception_BadRequest异常即可，错误信息会返回客户端，对应msg字段；状态为1，系统对此类的异常会在400基础上相加的，即： <strong>401 = 400 + 1</strong> 。  </p>
 <h4>5XX 服务器运行错误</h4>
 <p>此类错误是应该避免的，但当客户端发现有这种情况时，应该知会后台接口开发人员进行修正。<br />
@@ -101,7 +101,7 @@
 <h4>返回格式的定义与在线查看</h4>
 <p>当我们在开发接口时，可以通过为接口添加注释的方式来定义接口的返回格式，然后就可以为外部提供在线文档的实时查看了。  </p>
 <p>如：</p>
-<pre><code>&lt;?php
+<pre><code class="language-javascript">&lt;?php
 
 class Api_User extends PhalApi_Api {
 
@@ -177,7 +177,7 @@ class Api_User extends PhalApi_Api {
 array是指没有下标的一个数组集合，或者有下标但下标是连续的自然数，且各无素的结构相同；object则是指一个结构体，类似字典。  </p>
 </blockquote>
 <p>此外，为了明确数组与对象间的返回格式，我们也推荐如果是元素来自数组，则在返回字段的后面添加方括号来表明，以提醒客户端在接收到此类返回时需要循环处理。如：</p>
-<pre><code>     * @return array list 用户列表
+<pre><code class="language-javascript">     * @return array list 用户列表
      * @return int list[].id 用户ID
      * @return string list[].name 用户名字
      * @return string list[].from 用户来源
@@ -186,7 +186,7 @@ array是指没有下标的一个数组集合，或者有下标但下标是连续
 <p>当返回状态码不为200时，此字段不为空。即当有异常（如上面所说的客户端非法请求和服务端运行错误两大类）触发时，会自动将异常的错误信息作为错误信息msg返回。  </p>
 <p>但对于服务端的异常，出于对接口隐私的保护，框架在错误信息时没有过于具体地描述；相反，对于客户端的异常，由会进行必要的说明，以提醒客户端该如何进行调用调整。  </p>
 <p>此外，我们根据需要可以考虑是否需要进行国际化的翻译。如果项目在可预见的范围内需要部署到国外时，提前做好翻译的准备是很有帮助的。如下，开发时可以这样返回异常错误信息：</p>
-<pre><code>throw new PhalApi_Exception_BadRequest(T('wrong sign'), 1);</code></pre>
+<pre><code class="language-javascript">throw new PhalApi_Exception_BadRequest(T('wrong sign'), 1);</code></pre>
 <h2>1.14.3 关于Exception类异常没捕捉的原因</h2>
 <p>我们没有对Exception类的异常进行捕捉，封装返回非200的形式，是因为我们出于以下的考虑：</p>
 <ul>
@@ -195,21 +195,21 @@ array是指没有下标的一个数组集合，或者有下标但下标是连续
 </ul>
 <h2>1.14.4 JsonP格式和其他的返回</h2>
 <p>在部分H5页面异步请求的情况下，客户端需要我们返回JSONP格式的结果，则可以这样在入口文件重新注册response：</p>
-<pre><code>if (!empty($_GET['callback'])) {
+<pre><code class="language-javascript">if (!empty($_GET['callback'])) {
     DI()-&gt;response = new PhalApi_Response_JsonP($_GET['callback']);
 }</code></pre>
 <p>但是在测试环境中，我们是不希望有内容输出的，所以我们可以测试时这样注册response：</p>
-<pre><code>DI()-&gt;response = 'PhalApi_Response_Explorer';</code></pre>
+<pre><code class="language-javascript">DI()-&gt;response = 'PhalApi_Response_Explorer';</code></pre>
 <h2>1.14.5 扩展你的返回格式</h2>
 <p>当你的项目需要返回其他格式时，如返回XML，则可以先这样实现你的格式类：</p>
-<pre><code>class MyResponse_XML extends PhalApi_Response {
+<pre><code class="language-javascript">class MyResponse_XML extends PhalApi_Response {
 
     protected function formatResult($result) {
         //TODO：把数组$result格式化成XML ...
     }
 }</code></pre>
 <p>随后，也是简单重新注册一下即可：</p>
-<pre><code>DI()-&gt;response = 'MyResponse_XML';</code></pre>
+<pre><code class="language-javascript">DI()-&gt;response = 'MyResponse_XML';</code></pre>
 <h2>1.14.6 各状态码产生的时机</h2>
 <p><img src="http://webtools.qiniudn.com/20150413210910.jpg" alt="各状态码产生的时机" />  </p>
 <h2>1.14.7 更好地建议</h2>

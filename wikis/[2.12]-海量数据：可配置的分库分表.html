@@ -91,7 +91,7 @@
 <h3>(1)配置数据库的路由配置</h3>
 <p>修改./Config/dbs.php文件，以下是参考的示例配置。其中servers为DB服务器，包括数据库的账号信息等，tables为数据库表的映射关系，其中<strong>default</strong>下标为缺省的数据库路由。  </p>
 <p>在每个数据库表里面，可以配置多个数据库表，通过开始的下标start和结束的下标end来对表进行分布式存放，并且如果没有start和end的，则视为不需要拆分存放，同时也是当找不到合适时的拆分表时所采用的默认配置。</p>
-<pre><code>return array(
+<pre><code class="language-javascript">return array(
     /**
      * avaiable db servers
      */
@@ -131,22 +131,22 @@
     ),
 );</code></pre>
 <p>上面示例配置的意思是：</p>
-<pre><code>表名   DB服务器
+<pre><code class="language-javascript">表名   DB服务器
   tbl_demo    db_demo
   tbl_demo_0      db_demo
   tbl_demo_1      db_demo
   tbl_demo_2      db_demo</code></pre>
 <h3>(2)准备需要创建表的基本SQL语句</h3>
 <p>这里说的基本SQL语句是指：仅是这个表所特有的字段，排队已固定公共有的自增主键id，和扩展字段ext_data。下面是一个示例：</p>
-<pre><code>`name` varchar(11) DEFAULT NULL,</code></pre>
+<pre><code class="language-javascript">`name` varchar(11) DEFAULT NULL,</code></pre>
 <h3>(3)生成并导入SQL语句</h3>
 <p>由于拆分后的数据库表数量众多，这里提供了一个快捷的脚本工具来生成所需要创建的数据库表。</p>
-<pre><code>$ php ./build_sqls.php
+<pre><code class="language-javascript">$ php ./build_sqls.php
 Usage: ./build_sqls.php &lt;table&gt; [engine=InnoDB]</code></pre>
 <p>执行上面的脚本，输入数据库表参数后：</p>
-<pre><code> php ./build_sqls.php demo</code></pre>
+<pre><code class="language-javascript"> php ./build_sqls.php demo</code></pre>
 <p>将会从配置文件 里面寻找所需要创建的表，并生成类似以下的SQL语句：</p>
-<pre><code>/**
+<pre><code class="language-javascript">/**
  * DB: localhost  db_demo
  */
 
@@ -183,19 +183,51 @@ CREATE TABLE `tpl_demo_2` (
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre>
 <h3>(4)使用与代码开发</h3>
 <p>在将上面的SQL语句导入数据库后，即可以像之前那样操作数据库。下面是一些示例：</p>
-<pre><code>DI()-&gt;notorm = new PhalApi_DB_NotORM(PhalApi_DI::one()-&gt;config-&gt;get('dbs'), true);
+<pre><code class="language-javascript">DI()-&gt;notorm = new PhalApi_DB_NotORM(PhalApi_DI::one()-&gt;config-&gt;get('dbs'), true);
 
 DI()-&gt;notorm-&gt;demo-&gt;where('id', '1')-&gt;fetch();</code></pre>
 <p>用到了拆分表的代码示例，假设event表被拆分成了3个表，则客户端在调用里，需要根据（id % 3 ）来拼接合适的数据库表名，其他使用不变。</p>
-<pre><code>DI()-&gt;notorm = new PhalApi_DB_NotORM(PhalApi_DI::one()-&gt;config-&gt;get('dbs'), true);
+<pre><code class="language-javascript">DI()-&gt;notorm = new PhalApi_DB_NotORM(PhalApi_DI::one()-&gt;config-&gt;get('dbs'), true);
 
-DI()-&gt;notorm-&gt;demo_0-&gt;where('id', '3')-&gt;fetch();
-DI()-&gt;notorm-&gt;demo_1-&gt;where('id', '10')-&gt;fetch();
-DI()-&gt;notorm-&gt;demo_2-&gt;where('id', '2')-&gt;fetch();</code></pre>
+$row = DI()-&gt;notorm-&gt;demo_0-&gt;where('id', '3')-&gt;fetch();
+$row = DI()-&gt;notorm-&gt;demo_1-&gt;where('id', '10')-&gt;fetch();
+$row = DI()-&gt;notorm-&gt;demo_2-&gt;where('id', '2')-&gt;fetch();</code></pre>
+<h4>使用Model基类的情况</h4>
+<p>更好的写法，应该是继承于PhalApi_Model_NotORM，并统一实现分表的操作，如：  </p>
+<pre><code class="language-javascript">&lt;?php
+
+class Model_Demo extends PhalApi_Model_NotORM {
+
+    protected function getTableName($id) {
+        $tableName = 'demo';
+        if ($id !== null) {
+            $tableName .= '_' . ($id % 3);
+        }
+        return $tableName;
+    }
+}</code></pre>
+<p>然后，上面的查询分别对应：  </p>
+<pre><code class="language-javascript">$model = new Model_Demo();
+
+$row = $model-&gt;get('3', 'id');
+$row = $model-&gt;get('10', 'id');
+$row = $model-&gt;get('2', 'id');</code></pre>
+<p>更进一步，我们可以通过$this-&gt;getORM($id)来获取分表的实例进行分表的操作，如：<br />
+···javascript
+&lt;?php</p>
+<p>class Model_Demo extends PhalApi_Model_NotORM {</p>
+<pre><code>//... ...
+
+public function getNameById($id) {
+    $row = $this-&gt;getORM($id)-&gt;select('name')-&gt;fetchRow(); //假设$id为3，则 $this-&gt;getORM($id) 等效于 DI()-&gt;notorm-&gt;demo_0
+return !empty($row) ? $row['name'] : '';
+}</code></pre>
+<p>}
+···</p>
 <h2>2.12.5 与主从数据库的有机结合</h2>
 <p>虽然这是专门为海量数据设计的存储方案，但也是可以结合主从配置来获得更庞大强壮的方案，当然为之付出的是复杂性的引入。  </p>
 <p>简单地，可以将dbs.php复制一份dbs_slave.php出来给从库使用，然后注册一个从库的服务：</p>
-<pre><code>DI()-&gt;slaveNotorm = new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('slave_dbs'));</code></pre>
+<pre><code class="language-javascript">DI()-&gt;slaveNotorm = new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('slave_dbs'));</code></pre>
 <p>最后，在需要使用从库来读取时，使用slaveNotorm 服务即可。</p>
 <h2>2.12.6 不足与注意点</h2>
 <p>这样的设计是有明显的灵活性的，因为在后期如果需要迁移数据库服务器，我们可以在框架支持的情况下轻松应对，但依然需要考虑到一些问题和不足。</p>

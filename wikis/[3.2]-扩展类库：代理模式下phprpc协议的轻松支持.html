@@ -62,14 +62,14 @@
 <h2>3.2.2 安装</h2>
 <h3>(1)扩展包下载</h3>
 <p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>PHPRPC</strong> 微信包，如使用：</p>
-<pre><code>git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<pre><code class="language-javascript">git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
 <p>然后把 <strong>PHPRPC</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
-<pre><code>cp ./PhalApi-Library/PHPRPCt/ ./PhalApi/Library/ -R</code></pre>
+<pre><code class="language-javascript">cp ./PhalApi-Library/PHPRPCt/ ./PhalApi/Library/ -R</code></pre>
 <p>到处安装完毕！</p>
 <h2>3.2.3 入门使用</h2>
 <h3>(1)phprpc协议入口</h3>
 <p>可以参考下面的入口代码编写：</p>
-<pre><code>//$ vim ./Public/phprpc/index.php
+<pre><code class="language-javascript">//$ vim ./Public/phprpc/index.php
 
 &lt;?php
 
@@ -88,7 +88,7 @@ $server-&gt;response();</code></pre>
 <h3>(2)通过phprpc协议调用</h3>
 <p>如果通过phprpc协议调用，我们则可以得到接口返回的 <strong>源数据</strong> 。<br />
 假设请求的接口为：?service=User.GetBaseInfo&amp;user_iduser_id=1，则可以得到我们熟悉的：</p>
-<pre><code>array (
+<pre><code class="language-javascript">array (
   'ret' =&gt; 200,
   'data' =&gt; 
   array (
@@ -105,7 +105,7 @@ $server-&gt;response();</code></pre>
 )</code></pre>
 <h2>3.2.5 phprpc协议调试</h2>
 <p>同样，为了方便进行phprpc协议下接口调用的调试，我们提供了一个脚本，如上面的对?service=User.GetBaseInfo&amp;user_iduser_id=1调用，使用脚本即为：</p>
-<pre><code>$ php ./Library/PHPRPC/check.php http://dev.phprpc.com/phprpc/?service=User.GetBaseInfo userId=1
+<pre><code class="language-javascript">$ php ./Library/PHPRPC/check.php http://dev.phprpc.com/phprpc/?service=User.GetBaseInfo userId=1
 array(3) {
   ["ret"]=&gt;
   int(200)
@@ -136,7 +136,7 @@ array(3) {
 <h3>(2)POST参数传递方式的改变</h3>
 <p>其实对POST参数传递的改变。考虑到phprpc协议中对POST的数据有一定的复杂性，这里统一作了简化。
 正如我们下面的代码所示：</p>
-<pre><code>    public function response($params = NULL) {
+<pre><code class="language-javascript">    public function response($params = NULL) {
         $paramsArr = json_decode($params, TRUE);
         if ($paramsArr !== FALSE) {
             DI()-&gt;request = new PhalApi_Request(array_merge($_GET, $paramsArr));
@@ -145,7 +145,7 @@ array(3) {
 <p>我们约定： <strong>通过第一个参数用JSON格式来传递全部原来需要POST的数据</strong> 。  </p>
 <p>当POST的数据和GET的数据冲突时，以POST为准。  </p>
 <p>所以，相应地，当需要传递POST参数时，客户需要这样调整（如PHP下）：</p>
-<pre><code>$client-&gt;response(json_encode($params)))</code></pre>
+<pre><code class="language-javascript">$client-&gt;response(json_encode($params)))</code></pre>
 <p>如无此POST参数，则可以忽略不传。</p>
 <h3>(3)返回结果格式的改变</h3>
 <p>最后，就是返回结果格式的改变。  </p>

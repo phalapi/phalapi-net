@@ -83,15 +83,15 @@
 <h3>(1)使用phalapi-buildapp脚本</h3>
 <p>phalapi-buildapp脚本用于创建项目，进入 ./PhalApi/PhalApi/ 后，可以看到这个脚本。  </p>
 <p>不过，首先，需要为这个脚本添加执行权限：</p>
-<pre><code>$ chmod +x ./phalapi-buildapp</code></pre>
+<pre><code class="language-javascript">$ chmod +x ./phalapi-buildapp</code></pre>
 <p>然后，调用脚本创建一个MyApp的项目：</p>
-<pre><code>$ ./phalapi-buildapp MyApp
+<pre><code class="language-javascript">$ ./phalapi-buildapp MyApp
 
 OK!
 </code></pre>
 <h3>(2)查看生成的项目及访问</h3>
 <p>回到 /path/to/PhalApi 目录，你会发现生成了一个MyApp目录，并且里面的文件如下：  </p>
-<pre><code>$ cd MyApp/
+<pre><code class="language-javascript">$ cd MyApp/
 $ tree
 .
 ├── Api
@@ -111,7 +111,7 @@ $ tree
 9 directories, 4 files
 </code></pre>
 <p>在Public目录下，则会有myapp的访问入口：</p>
-<pre><code>└── myapp
+<pre><code class="language-javascript">└── myapp
     ├── checkApiParams.php
     └── index.php</code></pre>
 <p>在浏览器访问：</p>
@@ -119,7 +119,7 @@ $ tree
 <p>可以看到接口结果输出。</p>
 <h3>(3)执行单元测试</h3>
 <p>如果安装了PHPUnit，执行一下单元测试，也是通过的！</p>
-<pre><code>$ phpunit ./Tests/
+<pre><code class="language-javascript">$ phpunit ./Tests/
 PHPUnit 4.3.4 by Sebastian Bergmann.
 
 ...
@@ -133,7 +133,7 @@ OK (3 tests, 13 assertions)
 <p>请确保日记目录Runtime拥有写入的权限，可以给0777 。</p>
 <h3>(2)脚本加执行权限和软链</h3>
 <p>有本个脚本，需要添加执行权限和软链，便于日后使用：</p>
-<pre><code>$ cd /pah/to/PhalApi/PhalApi
+<pre><code class="language-javascript">$ cd /pah/to/PhalApi/PhalApi
 
 $ chmod +x ./phalapi-buildapp
 $ sudo ln -s /path/to/phalapi-buildapp /usr/bin/phalapi-buildapp
@@ -149,12 +149,12 @@ $ sudo ln -s /path/to/phalapi-buildtest /usr/bin/phalapi-buildtest</code></pre>
 <pre><code>ln -s /usr/local/php/bin/php /usr/bin/php</code></pre>
 <h4>解决方案二：使用alias起别名</h4>
 <p>或者通过使用别名 alias 的方式来注册脚本命令：</p>
-<pre><code># vim /etc/bashrc 
+<pre><code class="language-javascript"># vim /etc/bashrc 
 
 #PhalApi - 自动生成SQL语句
 alias phalapi-buildsqls='/usr/local/php/bin/php /path/to/PhalApi/phalapi-buildsqls'</code></pre>
 <p>需要注意的地，保存后，需要source一下，即：</p>
-<pre><code># source /etc/bashrc
+<pre><code class="language-javascript"># source /etc/bashrc
 
 $ source /etc/bashrc</code></pre>
 <hr />

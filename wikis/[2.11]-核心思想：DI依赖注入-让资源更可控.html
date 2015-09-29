@@ -64,7 +64,7 @@
 <p>引入依赖注入的目的不仅是为了增加一个类，而是为了更好的对资源进行初始化、管理和维护。下面将进行详细的说明。  </p>
 <h2>2.11.2 一个简单的例子</h2>
 <p>很多时候，类之间会存在依赖、引用、委托的关系，如A依赖B时，可以这样使用：</p>
-<pre><code>class A {
+<pre><code class="language-javascript">class A {
     protected $_b;
 
     public function __construct()
@@ -73,7 +73,7 @@
     }
 }</code></pre>
 <p>这种方式在A内限制约束了B的实例对象，当改用B的子类或者改变B的构建方式时，A需要作出调整。这时可以通过依赖来改善这种关系：</p>
-<pre><code>class A {
+<pre><code class="language-javascript">class A {
     protected $_b;
 
     public function __construct($b)
@@ -82,7 +82,7 @@
     }
 }</code></pre>
 <p>再进一步，可以使用DI对B的对象进行管理：</p>
-<pre><code>class A {
+<pre><code class="language-javascript">class A {
     public function __construct()
     {       
     }
@@ -97,7 +97,7 @@
 <p>一方面，对于使用A的客户（指开发人员），不需要再添加一个B的成员变量，特别不是全部类的成员函数都需要使用B类服务时。另一方面在外部多次初始化A实例时，可以统一对B的构建。</p>
 <h2>2.11.3 依赖注入的使用示例</h2>
 <p>为方便使用，调用的方式有：set/get函数、魔法方法setX/getX、类变量$fdi-&gt;X、数组$fdi['X']，初始化的途径有：直接赋值、类名、匿名函数。</p>
-<pre><code>/** ------------------ 创建与设置 ------------------ **/
+<pre><code class="language-javascript">/** ------------------ 创建与设置 ------------------ **/
 //获取DI
 $di = DI();
 //演示的key
@@ -137,7 +137,7 @@ class Simple
 <p>因此，保存在DI里面的类，不需要再编写获取单例的代码，直接通过DI获取即可。  </p>
 <p>例如很多API的服务组件以及其他的一些类，都实现了单例获取的方式。分别如：  </p>
 <p>微博接口调用：  </p>
-<pre><code>&lt;?php
+<pre><code class="language-javascript">&lt;?php
 class Weibo_Api
 {
     protected static $_instance = null;
@@ -153,7 +153,7 @@ class Weibo_Api
     //....
 }</code></pre>
 <p>七牛云存储接口调用：</p>
-<pre><code>class Qiniu_Api {
+<pre><code class="language-javascript">class Qiniu_Api {
     private static $_instance = null; //实例对象
 
     public static function getInstance()
@@ -165,7 +165,7 @@ class Weibo_Api
     }
 }</code></pre>
 <p>QQ开放平台接口调用：</p>
-<pre><code>class QQ_Api { 
+<pre><code class="language-javascript">class QQ_Api { 
     private static $_instance = null; //实例对象
 
     public static function getInstance()
@@ -177,7 +177,7 @@ class Weibo_Api
     }
 }</code></pre>
 <p>如果使用DI对上面这些服务进行管理，则上面三个类乃至其他的类对于单例这块的代码都可以忽略不写。注册代码如下：</p>
-<pre><code>$di-&gt;sStockApi = 'Weibo_Api';
+<pre><code class="language-javascript">$di-&gt;sStockApi = 'Weibo_Api';
 $di-&gt;sDioAopi = 'Qiniu_Api';
 $di-&gt;sShopApi = 'QQ_Api';</code></pre>
 <p>上面是通过类名来进行延迟加载，但需要各个类提供public的无参数的构造函数。如果各个服务需要进行初始化，可以将初始化的工作放置在onInitialize()函数内，DI在对类实例化时会回调此函数进行初始化。</p>
@@ -185,18 +185,18 @@ $di-&gt;sShopApi = 'QQ_Api';</code></pre>
 <p>这里引入DI，更多是为了“一处创建，多处使用”， 而不是各自创建，各自使用。</p>
 <h4>创建和使用分离</h4>
 <p>考虑以下场景：假设有这样的业务数据需要缓存机制，所以可注册一个实现缓存机制的实例：</p>
-<pre><code>$di-&gt;set('cache', new FileCache());</code></pre>
+<pre><code class="language-javascript">$di-&gt;set('cache', new FileCache());</code></pre>
 <p>然后提供给多个客户端使用：</p>
-<pre><code>$di['cache']-&gt;set('indexHtml', $indexContent);   //缓存页面
+<pre><code class="language-javascript">$di['cache']-&gt;set('indexHtml', $indexContent);   //缓存页面
 $di['cache']-&gt;set('config', $config);  //缓存公共配置
 $di['cache']-&gt;set('artistList', $artistList);   //缓存数据</code></pre>
 <p>当需要切换到MC或者Redis缓存或者多层缓存时，只需要修改对缓存机制的注入即可，如：</p>
-<pre><code>$di-&gt;set('cache', new RedisCache());</code></pre>
+<pre><code class="language-javascript">$di-&gt;set('cache', new RedisCache());</code></pre>
 <p>依赖注入的一个很大的优势就在于可以推迟决策，当需要用到某个对象时，才对其实例化。可以让开发人员在一开始时不必要关注过多的细节实现，同时也给后期的扩展和维护带来极大的方便。  </p>
 <p>再上一层，假设未来我们需要更高级的缓存服务，那么我们可以在不影响客户端使用的情况下，轻松升级。<br />
 未来的可配置化的多级缓存策略</p>
 <p>以下是一个模拟的使用场景，但依然对现在的项目有一定的帮助。假设我们现在有一个MC集群的缓存且引入了DI，使用如下：   </p>
-<pre><code>&lt;?php
+<pre><code class="language-javascript">&lt;?php
 
 //初始化
 $di = Core_DI::one();
@@ -209,7 +209,7 @@ echo $di-&gt;cache-&gt;get('key2');
 echo $di-&gt;cache-&gt;get('key3');
 ...</code></pre>
 <p>假设现在发现一层缓存存在穿透情况，为保证服务器的稳定性，我们已开发实现了多层缓存策略，并且可以通过简单配置即可实现，只需要对DI容器里面的cache实例进行升级，其他客户端的调用即可马上享受到缓存升级的优质服务。升级涉及改动的代码如下：</p>
-<pre><code>&lt;?php
+<pre><code class="language-javascript">&lt;?php
 
 //初始化
 $di = new Core_DI();
@@ -253,9 +253,9 @@ return new Multiple(array(
 <h3>(4)以优雅的方式取代滥用的全局变量</h3>
 <p>在我看来，PHP里面是不应该使用全局变量（global和$_GLOBALS），更不应该到处使用。  </p>
 <p>用了DI来管理，即可这样注册：</p>
-<pre><code>$di-&gt;set('debug', true);</code></pre>
+<pre><code class="language-javascript">$di-&gt;set('debug', true);</code></pre>
 <p>然后这样使用：</p>
-<pre><code>$debug = $di-&gt;get('debug');</code></pre>
+<pre><code class="language-javascript">$debug = $di-&gt;get('debug');</code></pre>
 <p>也许有人会想：仅仅是换个地方存放变量而已吗？其实是换一种思想使用资源。  </p>
 <p>以此延伸，DI还可用于改善优化另外两个地方：通过include文件途径对变量的使用和变量的多层传递。  </p>
 <p>变量的多层传递，通俗来说就是漂洋过海的变量。  </p>

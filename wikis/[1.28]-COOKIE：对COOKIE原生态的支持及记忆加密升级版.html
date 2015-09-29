@@ -63,11 +63,11 @@
 <h3>(1)注册COOKIE服务</h3>
 <p>如同其他的服务一样，我们在使用前需要对COOKIE进行注册。不需要用到COOKIE的同学，可以忽略此服务的注册。  </p>
 <p>在初始化文件init.php中添加如下注册代码：</p>
-<pre><code>//COOKIE
+<pre><code class="language-javascript">//COOKIE
 DI()-&gt;cookie = 'PhalApi_Cookie';</code></pre>
 <h3>(2)使用</h3>
 <p>查看PhalApi_Cookie提供的接口，可以得到针对COOKIE的三种操作：</p>
-<pre><code>//设置COOKIE服务
+<pre><code class="language-javascript">//设置COOKIE服务
 DI()-&gt;cookie-&gt;set('name', 'phalapi', $_SERVER['REQUEST_TIME'] + 600);
 
 //获取
@@ -80,14 +80,14 @@ DI()-&gt;cookie-&gt;delete('name');</code></pre>
 <p>比如，需要对数据进行加解密，或者需要突破COOKIE的限制（设置后需要下一次请求才能获取，不过这也正是COOKIE的特点），想记住这一次设置的内容。所以，额外提供了这个升级版本。  </p>
 <h3>(1)注册COOKIE服务</h3>
 <p>和原生态的初始化，有些许不同，在于需要配置指定加解密的服务。如下：</p>
-<pre><code>$config = array('crypt' =&gt; $crypt, 'key' =&gt; 'a secrect');
+<pre><code class="language-javascript">$config = array('crypt' =&gt; $crypt, 'key' =&gt; 'a secrect');
 DI()-&gt;cookie = new PhalApi_Cookie($config);</code></pre>
 <p>上面中的crypt即为加密解服务，未指定时使用DI()-&gt;crypt，需要实现PhalApi_Crypt接口；key则为对应的密钥。</p>
 <h3>(2)使用COOKIE服务</h3>
 <p>使用同原生态一样，客户端感知不到区别，这里不再赘述。</p>
 <h3>(3)一个简单的实现示例</h3>
 <p>假设我们有这样一个简单的加解密类（真的很简单的）：</p>
-<pre><code>class Cookie_Crypt_Mock implements PhalApi_Crypt {
+<pre><code class="language-javascript">class Cookie_Crypt_Mock implements PhalApi_Crypt {
 
     public function encrypt($data, $key) {
         return base64_encode($data);
@@ -98,7 +98,7 @@ DI()-&gt;cookie = new PhalApi_Cookie($config);</code></pre>
     }
 }</code></pre>
 <p>随后，写一个简单的接口测试一下（因为涉及到COOKIE的操作，需要与浏览器可视化测试，所以没用单元测试）：</p>
-<pre><code>    public function cookieTest() {
+<pre><code class="language-javascript">    public function cookieTest() {
         $rs = array();
 
         $config = array('crypt' =&gt; new Cookie_Crypt_Mock(), 'key' =&gt; 'a secrect');

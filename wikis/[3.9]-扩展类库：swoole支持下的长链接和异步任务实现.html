@@ -71,21 +71,21 @@
 <h2>3.9.2 安装</h2>
 <p>(1)安装swoole扩展类库
 安装过程可以参考swoole官网，这里稍以linux系统简单说明一下编译安装。</p>
-<pre><code>unzip ./swoole-src-swoole-1.7.16-beta.zip
+<pre><code class="language-javascript">unzip ./swoole-src-swoole-1.7.16-beta.zip
 cd swoole-src-swoole-1.7.16-beta
 phpize
 ./configure
 make &amp;&amp; make install</code></pre>
 <p>安装好后，添加swoole扩展：</p>
-<pre><code>extension=swoole.so</code></pre>
+<pre><code class="language-javascript">extension=swoole.so</code></pre>
 <p>重启PHP后，如果看到有swoole扩展，则说明安装成功：</p>
-<pre><code>#php -m | grep swoole
+<pre><code class="language-javascript">#php -m | grep swoole
 swoole</code></pre>
 <h3>(2)扩展包下载</h3>
 <p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>Swoole</strong> 包，如使用：</p>
-<pre><code>git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<pre><code class="language-javascript">git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
 <p>然后把 <strong>Swoole</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
-<pre><code>cp ./PhalApi-Library/Swoole/ ./PhalApi/Library/ -R</code></pre>
+<pre><code class="language-javascript">cp ./PhalApi-Library/Swoole/ ./PhalApi/Library/ -R</code></pre>
 <p>到处安装完毕！ </p>
 <blockquote>
 <p>温馨提示：<br />
@@ -93,7 +93,7 @@ swoole</code></pre>
 </blockquote>
 <h3>(3)配置</h3>
 <p>将以下配置追加到./Config/app.php：</p>
-<pre><code>    /**
+<pre><code class="language-javascript">    /**
      * Swoole扩展类库
      */
     'Swoole' =&gt; array(
@@ -114,7 +114,7 @@ swoole</code></pre>
 <h3>(1)长链接入口</h3>
 <p>在使用长链接入口对外提供接口服务后，由于不再是HTTP协议，所以入口建议放置在新的目录./Server，而不再是./Public。<br />
 入口文件的编写，如同我们以往一样，很简单：</p>
-<pre><code>//$ vim ./Server/run_server.php
+<pre><code class="language-javascript">//$ vim ./Server/run_server.php
 &lt;?php
 
 require_once dirname(__FILE__) . '/../Public/init.php';
@@ -126,12 +126,12 @@ $swooleLite-&gt;runServer();
 </code></pre>
 <h4>启动、重启和关闭服务</h4>
 <p>启动可以用：</p>
-<pre><code>php ./Server/run_server.php</code></pre>
+<pre><code class="language-javascript">php ./Server/run_server.php</code></pre>
 <p>关闭可以用：</p>
-<pre><code>ps -ef | grep run_server | grep -v grep | awk '{print $2}'|xargs kill -9</code></pre>
+<pre><code class="language-javascript">ps -ef | grep run_server | grep -v grep | awk '{print $2}'|xargs kill -9</code></pre>
 <h3>(2)异步计划任务</h3>
 <p>异步计划任务是新型的做法，即：也通过接口服务调用的方式来完成计划任务的调度，其启动文件如同长链接入口一样简单：</p>
-<pre><code>//$ vim ./Server/run_task.php
+<pre><code class="language-javascript">//$ vim ./Server/run_task.php
 &lt;?php
 
 require_once dirname(__FILE__) . '/../Public/init.php';
@@ -142,26 +142,26 @@ $swooleLite = new Swoole_Lite();
 $swooleLite-&gt;runTask();</code></pre>
 <h4>启动、重启和关闭服务</h4>
 <p>启动可以用：</p>
-<pre><code>nohup php ./Server/run_task.php &gt; ./Server/run_task.log 2&gt;&amp;1 &amp;</code></pre>
+<pre><code class="language-javascript">nohup php ./Server/run_task.php &gt; ./Server/run_task.log 2&gt;&amp;1 &amp;</code></pre>
 <h3>(3)客户端调用</h3>
 <p>在扩展类库里有一个测试的脚本，可以用来进行PHP客户端的请求。</p>
 <h4>(1)默认接口调用</h4>
-<pre><code>$ php ./check.php 127.0.0.1 9501 Default.Index username=swoole
+<pre><code class="language-javascript">$ php ./check.php 127.0.0.1 9501 Default.Index username=swoole
 Send: {"service":"Default.Index","username":"swoole"}
 Received: {"ret":200,"data":{"title":"Hello World!","content":"Hi swoole, welcome to use PhalApi!","version":"1.1.3","time":1430620911},"msg":""}
 Connection close</code></pre>
 <h4>(2)带数据库的调用</h4>
-<pre><code>$ php ./check.php 127.0.0.1 9501 User.getBaseInfo userId=1
+<pre><code class="language-javascript">$ php ./check.php 127.0.0.1 9501 User.getBaseInfo userId=1
 Send: {"service":"User.getBaseInfo","userId":"1"}
 Received: {"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","username":"aevit","nickname":"test","password":"DE4CA99150F44B26F0D320DCA6E4B7629C43B6","salt":"wefewfew","reg_time":"0","avatar":"http:\/\/image.famillelab.com\/no_avatar.png","UUID":""}},"msg":""}
 Connection close</code></pre>
 <h4>(3)异步计划任务的调度</h4>
-<pre><code>$ php ./check.php 127.0.0.1 9502 Default.Index username=swoole
+<pre><code class="language-javascript">$ php ./check.php 127.0.0.1 9502 Default.Index username=swoole
 Send: {"service":"Default.Index","username":"swoole"}
 Connection close</code></pre>
 <p>假设Default.Index为一个计划任务的接口，但目前发现一个问题是，首次请求异步计划任务不会主动结束，而需要工作强制ctrl + c结束，再请求，则正常。  </p>
 <p>对应的log，可以看到：</p>
-<pre><code>2015-05-03 12:24:57|DEBUG|asynctask(0) dispath in swoole|{"service":"Default.Index","username":"swoole"}
+<pre><code class="language-javascript">2015-05-03 12:24:57|DEBUG|asynctask(0) dispath in swoole|{"service":"Default.Index","username":"swoole"}
 2015-05-03 12:24:57|DEBUG|asynctask(0) start in swoole|{"service":"Default.Index","username":"swoole"}
 2015-05-03 12:24:57|DEBUG|asynctask(0) finish in swoole|{"ret":200,"data":{"title":"Hello World!","content":"Hi swoole, welcome to use PhalApi!","version":"1.1.3","time":1430627097},"msg":""}
 2015-05-03 12:24:57|DEBUG|asynctask(1) dispath in swoole|{"service":"Default.Index","username":"swoole"}

@@ -89,7 +89,7 @@
 <h3>(1)Api接口层的单元测试</h3>
 <p>Api接口层，是我们后台开发的主要切入点，也是直接对外提供服务的入口，属于更高层次的概念并拥有指定的业务功能，更是后台开发的关注点。所以在对新接口进行开发前，编写单元测试是非常有意义的。  </p>
 <p>为了可以自动生成测试代码，我们可以先简单定义好接口的函数签名（以获取用户基本信息接口为例）：</p>
-<pre><code>//$ vim ./Demo/Api/User.php 
+<pre><code class="language-javascript">//$ vim ./Demo/Api/User.php 
 &lt;?php
 
 class Api_User extends PhalApi_Api {
@@ -99,12 +99,12 @@ class Api_User extends PhalApi_Api {
 
 }</code></pre>
 <p>随后，自动生成测试代码骨架：</p>
-<pre><code>$ mkdir ./Demo/Tests/Api -p
+<pre><code class="language-javascript">$ mkdir ./Demo/Tests/Api -p
 $ cd ./Demo/Tests/Api
 $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Public/init.php
 $ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Public/init.php &gt; ./Demo/Tests/Api/Api_User_Test.php</code></pre>
 <p>根据接口的需要，验证接口返回的格式，以及业务数据的正确性。</p>
-<pre><code>//$ vim ./Demo/Tests/Api/Api_User_Test.php
+<pre><code class="language-javascript">//$ vim ./Demo/Tests/Api/Api_User_Test.php
     /**
      * @group testGetBaseInfo
      */
@@ -135,12 +135,12 @@ $ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Publ
     }</code></pre>
 <p>上面的验证意思简单明了，结合 <strong>构造-操作-检验（BUILD-OPERATE-CHECK）模式</strong> 加以说明一下。  </p>
 <h3>构造</h3>
-<pre><code>        $str = 'service=User.GetBaseInfo&amp;user_id=1';</code></pre>
+<pre><code class="language-javascript">        $str = 'service=User.GetBaseInfo&amp;user_id=1';</code></pre>
 <p>此参数即对应接口请求的URL参数，我们将此参数追加在接口入口并在浏览器打开可以得到同样的接口执行效果。但这样的好处更在于通过单元测试帮我们记住了各种接口测试的业务场景。而不再是像以前那样打开N个浏览器窗口人工进行调试，也不用像以前那样苦苦寻找浏览器记录。</p>
-<pre><code>        parse_str($str, $params);
+<pre><code class="language-javascript">        parse_str($str, $params);
         DI()-&gt;request = new PhalApi_Request($params);</code></pre>
 <p>通过重新注册DI容器中的request服务，但可以轻松地利用测试数据来进行模拟接口请求。</p>
-<pre><code>        $api = new Api_User();
+<pre><code class="language-javascript">        $api = new Api_User();
         $api-&gt;init();</code></pre>
 <p>最后，我们再像上面这样进行接口实例的创建和手工创始化即可。但由于没有通过接口工厂方法来创建，所以我们需要注意两点：</p>
 <ul>
@@ -149,7 +149,7 @@ $ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Publ
 </ul>
 <h4>操作</h4>
 <p>这里的操作，显然就是对应我们接口的调用。简单地如：</p>
-<pre><code>        //做。。。
+<pre><code class="language-javascript">        //做。。。
         $rs = $api-&gt;getBaseInfo();</code></pre>
 <h4>检验</h4>
 <p>在对接口返回的结果中，我们可以这样依次进行正确性的验证：</p>
@@ -157,7 +157,7 @@ $ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Publ
 <li>1、先验证接口返回的格式是否正确，有无字段遗漏；</li>
 <li>2、返回的业务数据是否正确；</li>
 </ul>
-<pre><code>        //应该。。。
+<pre><code class="language-javascript">        //应该。。。
         $this-&gt;assertNotEmpty($rs);
         $this-&gt;assertArrayHasKey('code', $rs);
         $this-&gt;assertArrayHasKey('msg', $rs);
@@ -173,15 +173,15 @@ $ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Publ
 <h3>(2)Domain层和Model层的单元测试</h3>
 <p>下面继续简单补充一下之前没谈及到的Domain层和Model层的单元测试。   </p>
 <p>显然，这两层的开发，已经在前面的接口测试驱动开发的指导下很好地完成了。现在可以快速追加对这两层的单元测试。得益于我们的生成测试骨架的脚本，操作如下：</p>
-<pre><code>$ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Domain/User.php Domain_User &gt; ./Demo/Tests/Domain/Domain_User_Test.php
+<pre><code class="language-javascript">$ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Domain/User.php Domain_User &gt; ./Demo/Tests/Domain/Domain_User_Test.php
 $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Model/User.php Model_User &gt; ./Demo/Tests/Model/Model_User_Test.php</code></pre>
 <p>接着，修改一下测试环境 <strong>test_env.php</strong>的引用路径：</p>
-<pre><code>//$ vim ./Demo/Tests/Domain/Domain_User_Test.php 
+<pre><code class="language-javascript">//$ vim ./Demo/Tests/Domain/Domain_User_Test.php 
 //$ vim ./Demo/Tests/Model/Model_User_Test.php
 
 require_once dirname(__FILE__) . '/../test_env.php';</code></pre>
 <p>各自完善一下单元测试：</p>
-<pre><code>//$ vim ./Demo/Tests/Domain/Domain_User_Test.php
+<pre><code class="language-javascript">//$ vim ./Demo/Tests/Domain/Domain_User_Test.php
 
     /**
      * @group testGetBaseInfo
@@ -199,7 +199,7 @@ require_once dirname(__FILE__) . '/../test_env.php';</code></pre>
         $this-&gt;assertEquals('dogstar', $rs['name']);
     }</code></pre>
 <p>执行一下：</p>
-<pre><code>$ phpunit ./Demo/Tests/Domain/Domain_User_Test.php 
+<pre><code class="language-javascript">$ phpunit ./Demo/Tests/Domain/Domain_User_Test.php 
 PHPUnit 4.3.4 by Sebastian Bergmann.
 
 .
@@ -211,7 +211,7 @@ OK (1 test, 4 assertions)</code></pre>
 <p>Model层的单元测试类似，不再赘述。</p>
 <h2>2.14.7 更进一步的单元测试套件</h2>
 <p>到目前为止，我们有了如下的产品代码：</p>
-<pre><code>dogstar@ubuntu:Demo$ tree
+<pre><code class="language-javascript">dogstar@ubuntu:Demo$ tree
 .
 ├── Api
 │   └── User.php
@@ -220,7 +220,7 @@ OK (1 test, 4 assertions)</code></pre>
 ├── Model
 │   └── User.php</code></pre>
 <p>并拥有了与之平行对应的单元测试：</p>
-<pre><code>dogstar@ubuntu:Tests$ tree
+<pre><code class="language-javascript">dogstar@ubuntu:Tests$ tree
 .
 ├── Api
 │   └── Api_User_Test.php
@@ -230,7 +230,7 @@ OK (1 test, 4 assertions)</code></pre>
 │   └── Model_User_Test.php
 └── test_env.php</code></pre>
 <p>这样是一个很好的开始，但若我们每次测试都分别调用三次这些不同层次的单元测试，显然有点不科学。所以，利用PHPUnit的配置文件，我们可以轻松管理我们的测试套件，如：</p>
-<pre><code>dogstar@ubuntu:Tests$ vim ./phpunit_user_getbaseinfo.xml 
+<pre><code class="language-javascript">dogstar@ubuntu:Tests$ vim ./phpunit_user_getbaseinfo.xml 
 
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 
@@ -246,7 +246,7 @@ OK (1 test, 4 assertions)</code></pre>
     &lt;/testsuites&gt;
 &lt;/phpunit&gt;</code></pre>
 <p>啊哈！终于，当需要调用这些分布在不同目录位置的单元测试时，只需要这么简单的一行命令：</p>
-<pre><code>dogstar@ubuntu:Tests$ phpunit -c ./phpunit_user_getbaseinfo.xml 
+<pre><code class="language-javascript">dogstar@ubuntu:Tests$ phpunit -c ./phpunit_user_getbaseinfo.xml 
 PHPUnit 4.3.4 by Sebastian Bergmann.
 
 .....

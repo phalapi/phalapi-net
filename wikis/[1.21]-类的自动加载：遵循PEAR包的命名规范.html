@@ -64,11 +64,11 @@
 <p><img src="http://webtools.qiniudn.com/20150411005257_cec1c175fa70c8bc904389be30712bc3" alt="0215" /><br />
 或者查看（里面有很好的代码风格编写说明）： <a href="http://www.php-fig.org/psr/psr-0/">Autoloading Standard</a>  </p>
 <p>而PhalApi则更简单，我们暂时还不使用命名空间，所以namespace这一块省去。例如：  </p>
-<pre><code>Api_User
+<pre><code class="language-javascript">Api_User
 Domain_User
 Model_User</code></pre>
 <p>对应以下路径的文件：</p>
-<pre><code>.
+<pre><code class="language-javascript">.
 |-- Api
 |   `-- User.php
 |-- Domain
@@ -76,16 +76,16 @@ Model_User</code></pre>
 |-- Model
 |   `-- User.php</code></pre>
 <p>再举一个模拟的示例，如类Api_Game_User_Equitment对应以下文件路径：</p>
-<pre><code>./Api/Game/User/Equitment.php</code></pre>
+<pre><code class="language-javascript">./Api/Game/User/Equitment.php</code></pre>
 <p>此外，还需注意区分大小写。  </p>
 <h2>1.21.3 挂靠式自动加载</h2>
 <p>然后在我们准备了这些类和文件后，我们怎么才能让这些类被框架所自动加载呢？  </p>
 <p>我们提供的方式是：  <strong>挂靠式自动加载</strong> 。  </p>
 <p>熟悉Linux系统的同学可能很容易明白，还没接触到Linux的同学也是可以很快理解的。这里稍微说明一下。  </p>
 <p>所谓的 <strong>挂靠</strong> 就是把你代码的目录放在项目的目录下（或者其他任何一个地方），随后简单地将此目录添加到自动加载器即可。如上面的：</p>
-<pre><code>DI()-&gt;loader-&gt;addDirs('Demo');</code></pre>
+<pre><code class="language-javascript">DI()-&gt;loader-&gt;addDirs('Demo');</code></pre>
 <p>当有多个目录时，可以这样：</p>
-<pre><code>DI()-&gt;loader-&gt;addDirs(array('Demo', 'Library'));</code></pre>
+<pre><code class="language-javascript">DI()-&gt;loader-&gt;addDirs(array('Demo', 'Library'));</code></pre>
 <p>需要注意的是，上面相对路径的都需要放置在应用项目的目录API_ROOT下面。如果非API_ROOT目录下的， 需要使用绝对路径。</p>
 <hr />
 <h4><a href="/wikis/%5b1.20%5d-DB%e6%93%8d%e4%bd%9c%ef%bc%9a%e6%95%b0%e6%8d%ae%e5%ba%93%e5%9f%ba%e6%9c%ac%e6%93%8d%e4%bd%9c%e9%80%9f%e6%9f%a5.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.22%5D-%E7%AD%BE%E5%90%8D%E9%AA%8C%E8%AF%81%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AD%BE%E5%90%8D%E8%A7%84%E5%88%99.html">下一章</a></h4>
