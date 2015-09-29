@@ -212,18 +212,19 @@ class Model_Demo extends PhalApi_Model_NotORM {
 $row = $model-&gt;get('3', 'id');
 $row = $model-&gt;get('10', 'id');
 $row = $model-&gt;get('2', 'id');</code></pre>
-<p>更进一步，我们可以通过$this-&gt;getORM($id)来获取分表的实例进行分表的操作，如：<br />
-···javascript
-&lt;?php</p>
-<p>class Model_Demo extends PhalApi_Model_NotORM {</p>
-<pre><code>//... ...
+<p>更进一步，我们可以通过$this-&gt;getORM($id)来获取分表的实例进行分表的操作，如：  </p>
+<pre><code class="language-javascript">&lt;?php
 
-public function getNameById($id) {
-    $row = $this-&gt;getORM($id)-&gt;select('name')-&gt;fetchRow(); //假设$id为3，则 $this-&gt;getORM($id) 等效于 DI()-&gt;notorm-&gt;demo_0
-return !empty($row) ? $row['name'] : '';
+class Model_Demo extends PhalApi_Model_NotORM {
+
+    //... ...
+
+    public function getNameById($id) {
+        $row = $this-&gt;getORM($id)-&gt;select('name')-&gt;fetchRow(); //假设$id为3，则 $this-&gt;getORM($id) 等效于 DI()-&gt;notorm-&gt;demo_0
+    return !empty($row) ? $row['name'] : '';
+    }
+
 }</code></pre>
-<p>}
-···</p>
 <h2>2.12.5 与主从数据库的有机结合</h2>
 <p>虽然这是专门为海量数据设计的存储方案，但也是可以结合主从配置来获得更庞大强壮的方案，当然为之付出的是复杂性的引入。  </p>
 <p>简单地，可以将dbs.php复制一份dbs_slave.php出来给从库使用，然后注册一个从库的服务：</p>
