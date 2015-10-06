@@ -55,6 +55,7 @@
             <div class="grid__cell">
                 <h4><a href="/wikis/%5B1.18%5D-%E5%BF%AB%E9%80%9F%E5%87%BD%E6%95%B0%EF%BC%9A%E4%BA%BA%E6%80%A7%E5%8C%96%E7%9A%84%E5%85%B3%E6%80%80.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b1.20%5d-DB%e6%93%8d%e4%bd%9c%ef%bc%9a%e6%95%b0%e6%8d%ae%e5%ba%93%e5%9f%ba%e6%9c%ac%e6%93%8d%e4%bd%9c%e9%80%9f%e6%9f%a5.html">下一章</a></h4>
 <hr />
+<p>“完成，好过完美。”  -- 脸谱书文化之一  </p>
 <h2>1.19.1 一览表</h2>
 <table>
 <thead>
@@ -153,6 +154,24 @@
 </tr>
 </tbody>
 </table>
+<h2>1.19.2 DI服务是否已注册的判断误区</h2>
+<h3>(1)错误的判断方法</h3>
+<p>当需要判断一个DI服务是否已被注册，出于常识会这样判断：  </p>
+<pre><code>if (isset(DI()-&gt;cache)) {</code></pre>
+<p>但这样的判断永远为false，不管注册与否。  </p>
+<p>追其原因在于，DI类使用了魔法方法的方式来提供类成员属性，并存放于PhalApi_DI::$data中。  </p>
+<p>这就导致了如果直接使用isset(DI()-&gt;cache)的话，首先不会触发魔法方法 PhalApi_DI::__get($name)的调用，其次也确实没有PhalApi_DI::$cache这个成员属性，最终判断是否存在时都为false。  </p>
+<p>简单来说，以下两种判断，永远都为false：  </p>
+<pre><code>//永远为false
+var_dump(isset(DI()-&gt;XXX));
+var_dump(!empty(DI()-&gt;XXX));</code></pre>
+<h3>(2)正确判断的写法：先获取，再判断</h3>
+<p>正确的用法应该是：  </p>
+<pre><code>//先获取，再判断
+$XXX = DI()-&gt;XXX;
+var_dump(isset($XXX));
+var_dump(!empty($XXX));</code></pre>
+<p>这里，可能会对大家带来一定的困惑，所以在这里特别进行说明。也对框架中这一点不合理的设计深感抱歉。  </p>
 <hr />
 <h4><a href="/wikis/%5B1.18%5D-%E5%BF%AB%E9%80%9F%E5%87%BD%E6%95%B0%EF%BC%9A%E4%BA%BA%E6%80%A7%E5%8C%96%E7%9A%84%E5%85%B3%E6%80%80.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b1.20%5d-DB%e6%93%8d%e4%bd%9c%ef%bc%9a%e6%95%b0%e6%8d%ae%e5%ba%93%e5%9f%ba%e6%9c%ac%e6%93%8d%e4%bd%9c%e9%80%9f%e6%9f%a5.html">下一章</a></h4>
             </div>
@@ -178,7 +197,7 @@
             </font>
 			</p>
 			<p align="left">
-				<font size="2px">&copy;PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<font size="2px">&copy;2015 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
 				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 			</p>
 		</div>	

@@ -60,12 +60,48 @@
 <p>对于请求，正如前面所看到的，我们可以使用$_GET，也可以使用$_POST，也可以两者都使用，还可以在测试时自己指定模拟的请求数据包。  </p>
 <p>或者，在实际项目开发中，我们还需要根据自身的需求，跟我们自己的客户端作一些约定。如通常地，我们会要求客户端 <strong>service参数必须用GET方式</strong> ，以便服务器返回500时定位接口服务位置。对此，简单的我们把$_POST['service']去掉即可，如在入口文件前面添加：</p>
 <pre><code class="language-javascript">unset($_POST['service']);   //只接收GET方式的service参数</code></pre>
-<h3>(1)当需要指定数据源时</h3>
+<h3>(1)在index.php入口处指定数据源</h3>
 <p>很多时间，不同的项目对数据接收有不同的需求。如简单地，如果客户端是通过JSON后再传递的话，我们可以这样在入口处进行代码调整：</p>
-<pre><code class="language-javascript">$HTTP_RAW_POST_DATA = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "{}";
+<pre><code class="language-javascript">//vim ./index.php
+
+$HTTP_RAW_POST_DATA = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "{}";
 DI()-&gt;request = new PhalApi_Request(array_merge($_GET,json_decode($HTTP_RAW_POST_DATA, true))); </code></pre>
-<p>对于先进行加密再进行传递的参数的处理方式也一样，或者其他途径的参数来源也一样。即：  </p>
-<pre><code class="language-javascript">DI()-&gt;request = new PhalApi_Request(数据源);</code></pre>
+<h3>(2)单元测试时指定数据源</h3>
+<p>在进行单元测试时，我们需要模拟接口的请求动作，也需要提供接口参数。这时的参数的指定更为灵活。可通过以下代码来实现，即：  </p>
+<pre><code class="language-javascript">//数据源
+$data = array(...);
+
+DI()-&gt;request = new PhalApi_Request($data);</code></pre>
+<p>或者使用PhalApi封装的测试类来快速模拟调用接口：  </p>
+<pre><code>    public function testIndexByRunner()
+    {
+        //Step 1. 构建请求URL
+        $url = 'service=Default.Index&amp;username=dogstar';
+        $params = array();
+
+        //Step 2. 执行请求  
+        $rs = PhalApi_Helper_TestRunner::go($url, $params);</code></pre>
+<h3>(3)接口数据的加密传送</h3>
+<p>有时，出于安全性的考虑，项目需要对请求的接口参数进行对称加密传送。这时可以通过重载PhalApi_Request::genData()来轻松实现。<br />
+假设，我们现在需要把全部的参数base64编码序列化后通过_POST['data']来传递，则相应的解析代码如下。  </p>
+<p>第一步，先定义自己的扩展请求类，在里面完成对称解析的动作：  </p>
+<pre><code>&lt;?php
+
+class Common_Request extends PhalApi_Request {
+
+    public function genData($data) {
+        if (!isset($data) || !is_array($data)) {
+            return $_POST; //改成只接收POST
+        }
+
+        $postData = isset($data['data']) ? base64_decode($data['data']) : array();
+    }
+}</code></pre>
+<p>第二步，在index.php入口文件中重新注册请求类（即添加以下代码）：  </p>
+<pre><code>//重新注册request
+DI()-&gt;request = 'Common_Request'; </code></pre>
+<p>然后，就可以轻松实现了接口参数的对称加密传送。<br />
+至此，你也许已经发现：指定数据源和对称加密是可以结合来使用的。  </p>
 <h2>1.23.2 响应</h2>
 <p>当前默认使用JSON的格式返回，但项目需要其他返回格式也是可以的。只需要实现PhalApi_Response抽象中的formatResult($result)格式化返回结果，然后也是重新注册DI()-&gt;response服务即可。如：  </p>
 <h3>(1)JSONP的返回</h3>
@@ -77,7 +113,7 @@ if (!empty($_GET['callback'])) {
 }</code></pre>
 <p>在接口访问时再带上&amp;callback=XXX参数即可。  </p>
 <p>这里在创建响应服务时，可以看到是用了回调函数的名字进行初始化。考虑到会存在XSS（跨站脚本攻击），对回调函数要进行相应的过滤，可以用黑名单或者白名单的方式。黑名单方式暂时还没提供，白名单相对简单但需要项目自己实现，如：</p>
-<pre><code class="language-javascript">class MyResponse_JsonP extends PhalApi_Response_JsonP {
+<pre><code class="language-javascript">class Common_JsonP extends PhalApi_Response_JsonP {
 
     protected function clearXss($callback) {
         return in_array($callback, array('fun1', 'func2', 'func3')) ? $callback : '';
@@ -91,7 +127,9 @@ if (!empty($_GET['callback'])) {
 </ul>
 <p>这里以扩展XML返回格式为例，简单说明。  </p>
 <p>首先，添加实现一个XML响应子类：</p>
-<pre><code class="language-javascript">class MyResponse_XML extends PhalApi_Response {
+<pre><code class="language-javascript">&lt;?php
+
+class Common_Response_XML extends PhalApi_Response {
 
     protected function formatResult($result) {
         return ArrayToXML::toXml($result);
@@ -99,7 +137,7 @@ if (!empty($_GET['callback'])) {
 }</code></pre>
 <p>关于ArrayToXML，请查看： <a href="http://www.oschina.net/code/snippet_54100_1548">将PHP数组转成XML</a>  </p>
 <p>然后，重新注册：</p>
-<pre><code class="language-javascript">DI()-&gt;response = new MyResponse_XML();</code></pre>
+<pre><code class="language-javascript">DI()-&gt;response = new Common_Response_XML();</code></pre>
 <p>done!</p>
 <hr />
 <h4><a href="/wikis/%5B1.22%5D-%E7%AD%BE%E5%90%8D%E9%AA%8C%E8%AF%81%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AD%BE%E5%90%8D%E8%A7%84%E5%88%99.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.24%5D-%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5%EF%BC%9A%E6%9B%B4%E7%81%B5%E6%B4%BB%E5%9C%B0%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%8C%96%E7%9A%84%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98.html">下一章</a></h4>
@@ -126,7 +164,7 @@ if (!empty($_GET['callback'])) {
             </font>
 			</p>
 			<p align="left">
-				<font size="2px">&copy;PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<font size="2px">&copy;2015 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
 				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 			</p>
 		</div>	

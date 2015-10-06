@@ -98,23 +98,12 @@
 <h4>执行流程</h4>
 <p>由上图可以看出，一个完整的计划任务流程为：</p>
 <ul>
-<li>
-<ol>
-<li>应用产生一条新的计划任务，并存放于MQ队列</li>
-</ol>
-</li>
-<li>
-<ol>
-<li>计划任务定时或者不停扫描新的计划任务；若有，则进行调度</li>
-</ol>
-</li>
-<li>
-<ol>
-<li>计划任务API完成需要的工作，并将结果返回调度器</li>
-</ol>
-</li>
+<li>1、应用产生一条新的计划任务，并存放于MQ队列</li>
+<li>2、计划任务定时或者不停扫描新的计划任务；若有，则进行调度</li>
+<li>3、计划任务API完成需要的工作，并将结果返回调度器</li>
 </ul>
 <h3>(3)单个添加，批量处理</h3>
+<p>这里只支持单个MQ添加，而处理则是批量的，且每批处理的数据可指定配置。  </p>
 <h3>(4)MQ共享</h3>
 <p>无论是分布式还是本地一体化，MQ队列都应该是可以共享访问的，以便为应用节点、计划任务调度节点所访问，如下图所示：
 <img src="http://webtools.qiniudn.com/20150514225632.jpg" alt="a pic" />   </p>
@@ -261,7 +250,7 @@ $taskLite-&gt;add('MyTask.DoSth', array('id' =&gt; 888));</code></pre>
             </font>
 			</p>
 			<p align="left">
-				<font size="2px">&copy;PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<font size="2px">&copy;2015 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
 				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 			</p>
 		</div>	

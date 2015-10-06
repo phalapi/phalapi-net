@@ -79,16 +79,27 @@ return array(
 <p>翻译不存在，有两种场景：一是指定的语言包不存在；二是语言包存在但翻译不存在。无论何种情况，找不到翻译时，都会用代码硬编码的内容返回。</p>
 <h2>1.25.3 语言的设定</h2>
 <p>当我们拥有了多种语言时，则可以在入口/初始化文件中，选择设定需要的语言。</p>
-<pre><code class="language-javascript">PhalApi_Translator::setLanguage('zh_cn');</code></pre>
-<p>参数即为语言包的路径名，如下面的en, zh_cn：</p>
+<pre><code class="language-javascript">SL('zh_cn');    //SL()函数等效于PhalApi_Translator::setLanguage()</code></pre>
+<p>参数即为语言包的路径名，如下面的en, zh_cn：  </p>
 <pre><code class="language-javascript">.
 |-- en
 |   `-- common.php
 `-- zh_cn
     `-- common.php</code></pre>
 <p>此处，也可以通过客户端传递参数来自行选择语言。简单地：</p>
-<pre><code class="language-javascript">PhalApi_Translator::setLanguage($_GET['lan']);</code></pre>
-<h2>1.25.4 建议</h2>
+<pre><code class="language-javascript">SL($_GET['lan']);</code></pre>
+<h2>1.25.4 添加语言翻译包</h2>
+<p>有时需要手动添加语言翻译包，因为对应的翻译不一定在项目的./Language下，如扩展类库。  </p>
+<p>当需要添加额外的语言翻译包时，可以这样添加：  </p>
+<pre><code>        PhalApi_Translator::addMessage(API_ROOT . '/Library/User');</code></pre>
+<p>在User这个目录下的翻译包类似地，为：  </p>
+<pre><code>./Language/
+└── zh_cn
+    └── common.php
+
+1 directory, 1 file</code></pre>
+<p>相当于追加一个额外的项目路径，其他的加载过程和原来的一样。  </p>
+<h2>1.25.5 建议</h2>
 <p>所以，你可以轻松看到，所谓的翻译也只是通过数组下标找一下对应的内容而已，没有太多的技术性，也没有过多的性能问题。  </p>
 <p>但正是有这样提前周到的国际化准备，我们可以对外（如像产品、BOSS和外界）传送这样一个隐喻： <strong>我们的项目可以快速支持国际翻译</strong> 。<br />
 这听起来多么高大尚啊！因为那些不懂技术的人，根本不在乎是用PHP的数组来存放还是什么技术，而在于能不能走向国际化。  </p>
@@ -123,7 +134,7 @@ return array(
             </font>
 			</p>
 			<p align="left">
-				<font size="2px">&copy;PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<font size="2px">&copy;2015 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
 				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 			</p>
 		</div>	

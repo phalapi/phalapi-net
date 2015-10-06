@@ -148,7 +148,7 @@
 <h3>(2)取消缓存的方法2： 查询中的缓存控制</h3>
 <p>在项目层次，我们可以统一构造自己的查询基类，以实现对缓存的控制。  </p>
 <p>如：</p>
-<pre><code class="language-javascript">class My_ModelQuery extends PhalApi_ModelQuery {
+<pre><code class="language-javascript">class Common_ModelQuery extends PhalApi_ModelQuery {
 
     public function __construct($queryArr = array()) {
         parent::__construct($queryArr);
@@ -169,7 +169,62 @@ if (isset($_GET['debug']) &amp;&amp; $_GET['debug'] == 1) {
 <h2>1.27.5 何时使用此方案？</h2>
 <p>可以看到，此方案是在缓存策略（包括单点缓存、低高速缓存、多级缓存）和广义Model层基础上扩展的，以便应对重量级的业务数据获取。此方案有一定的优势，但作为代价则是额外的代码编写以及层级复杂性。并且，我们还没谈及到数据变更时的处理。    </p>
 <p>所以，请在确切需要统一封装高成本的数据获取时，才使用此方案。</p>
-<hr />
+<h2>1.27.6 扩展：多接口参数传递的优雅处理方案</h2>
+<p>当接口的查询参数过多时，我们需要手工重复地将接口参数从Api层传递到Domain层，再通过Query对象传递到Model层，这中间任何一个环节的缺失或遗漏都会造成一个BUG。  </p>
+<p>为此，项目可以考虑使用一种更为优雅的方案来进行整合，并实现自动化参数获取，但又保留接口原来的参数验证。  </p>
+<p>假设，我们需要以下多个接口参数：  </p>
+<pre><code>function getRules() {
+    return array(
+        'getList' =&gt; array(
+            'keyword' =&gt; array(...),
+            'filed' =&gt; array(...),
+            'page' =&gt; array(...),
+            'perpage' =&gt; array(...),
+            'order' =&gt; array(...),
+        ),
+    );
+} </code></pre>
+<p>为避免出现以下这样的手工调用（而且也不符合值对象的特征）：  </p>
+<pre><code>$query = new Query_Demo();
+$query-&gt;keyword = $this-&gt;keyword;
+$query-&gt;filed = $this-&gt;filed;
+$query-&gt;page = $this-&gt;page;
+$query-&gt;perpage = $this-&gt;perpage;
+$query-&gt;order = $this-&gt;order;
+
+$domain = new Domain_Demo();
+$list = $domain-&gt;getList($query);</code></pre>
+<p>我们首先需要提取出一个层超类：  </p>
+<pre><code>class Query_Demo extends PhalApi_ModelQuery {
+    public $keyWord;
+    public $filed;
+    public $page;
+    public $perpage;
+    public $order;
+
+    public function __construct($api) {
+        //按需获取，自动初始化
+        $vars = get_object_vars($api);
+        foreach ($vars as $key =&gt; $var) {
+            if (isset($api-&gt;$key)) {
+                $this-&gt;$key = $api-&gt;$key;
+            }
+        }
+    }
+}</code></pre>
+<p>然后，在接口Api中对Domain层的调用就会简化成：  </p>
+<pre><code>$query = new Query_Demo($this); //自动初始化
+
+$domain = new Domain_Demo();
+$list = $domain-&gt;getList($query); //通过查询对象传递众多参数</code></pre>
+<p>这样的好处在于：</p>
+<ul>
+<li>1、更方便职能的划分</li>
+<li>2、易于测试</li>
+<li>3、实现简单（可提取一个Query的层超类来完成自动填充）</li>
+<li>4、便于IDE时的参数提示，同时可以提供默认值
+<hr /></li>
+</ul>
 <h4><a href="/wikis/%5B1.26%5D-%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E6%96%B9%E6%A1%88.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.28%5D-COOKIE%EF%BC%9A%E5%AF%B9COOKIE%E5%8E%9F%E7%94%9F%E6%80%81%E7%9A%84%E6%94%AF%E6%8C%81%E5%8F%8A%E8%AE%B0%E5%BF%86%E5%8A%A0%E5%AF%86%E5%8D%87%E7%BA%A7%E7%89%88.html">下一章</a></h4>
             </div>
         </div>
@@ -194,7 +249,7 @@ if (isset($_GET['debug']) &amp;&amp; $_GET['debug'] == 1) {
             </font>
 			</p>
 			<p align="left">
-				<font size="2px">&copy;PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<font size="2px">&copy;2015 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
 				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 			</p>
 		</div>	
