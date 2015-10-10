@@ -75,7 +75,14 @@ return array(
 <pre><code class="language-javascript">'hello {name}' =&gt; '您好，{name}',</code></pre>
 <p>将会看到输出：</p>
 <pre><code class="language-javascript">您好，dogstar</code></pre>
-<h3>(2)当翻译不存在时？</h3>
+<h3>(2)当多个动态变量时，还可以这样省略变量名</h3>
+<p>如果要简化动态变量的传递，可以这样：  </p>
+<pre><code class="language-javascript">echo T('{0} I love you because {1}', array('PhalApi', 'no reasons'));</code></pre>
+<p>如果对应的中文翻译是：</p>
+<pre><code class="language-javascript">'{0} I love you because {1}' =&gt; '{0} 我爱你因为{1}',</code></pre>
+<p>将会看到输出：</p>
+<pre><code class="language-javascript">PhalApi 我爱你因为no reasons</code></pre>
+<h3>(3)当翻译不存在时？</h3>
 <p>翻译不存在，有两种场景：一是指定的语言包不存在；二是语言包存在但翻译不存在。无论何种情况，找不到翻译时，都会用代码硬编码的内容返回。</p>
 <h2>1.25.3 语言的设定</h2>
 <p>当我们拥有了多种语言时，则可以在入口/初始化文件中，选择设定需要的语言。</p>
