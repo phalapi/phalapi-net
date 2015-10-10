@@ -321,7 +321,7 @@ return array(
 <pre><code class="language-javascript">//接口参数为： &amp;type=N
 
 //接口参数规则为：
-array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(0, 1, 2))
+array('name' =&gt; 'type', 'type' =&gt; 'enum', 'range' =&gt; array(0, 1, 2))
 
 //误判，因为：
 var_dump(in_array('N', array(0, 1, 2))); //结果为true，因为 'N' == 0</code></pre>
