@@ -56,7 +56,19 @@
                 <h4><a href="/wikis/%5B1.1%5D-%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85.html">上一章</a>    <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.3%5D-%E5%9C%A8%E7%BA%BF%E4%BD%93%E9%AA%8C.html">下一章</a></h4>
 <hr />
 <p><em>有梦想的人学习能力特别强，而且不拒绝任何新东西。 -- 《理想丰满》</em>  </p>
-<h2>1.2.1 手动创建</h2>
+<h2>1.2.1 可视化安装</h2>
+<p>将代码上传到服务器并解压后，访问： ./Public/install/ 下的安装向导，如在浏览器打开：  </p>
+<pre><code>http://dev.phalapi.com/install/</code></pre>
+<p>然后按照提示，一步步操作即可：  </p>
+<h3>(1)第一步：环境检查</h3>
+<p><img src="http://7qnay5.com1.z0.glb.clouddn.com/step1_20151012221011.png" alt="a pic" />  </p>
+<h3>(2)第二步：系统配置</h3>
+<p><img src="http://7qnay5.com1.z0.glb.clouddn.com/step2_20151012221122.jpg" alt="a pic" />  </p>
+<h3>(3)第三步：接口请求</h3>
+<p><img src="http://7qnay5.com1.z0.glb.clouddn.com/step3_20151012221144.jpg" alt="a pic" /></p>
+<h3>(4)运行效果</h3>
+<p><img src="http://7qnay5.com1.z0.glb.clouddn.com/step6_20151012223516.jpg" alt="a pic" /></p>
+<h2>1.2.2 手动创建</h2>
 <p>在Windowns系统下，可以手动创建一个新的项目。  </p>
 <p>假设目录为：  F:\xampp\htdocs\PhalApi<br />
 以下是简单的创建操作：</p>
@@ -77,7 +89,7 @@
 <pre><code>http://localhost/phalapi/public/myapp/</code></pre>
 <p>应该可以看到：  </p>
 <p><img src="http://webtools.qiniudn.com/20150411005257_33f51b3efcd0938bb7fc36bb813f4808" alt="QQ截图20150404004959" /></p>
-<h2>12.2 自动生成</h2>
+<h2>12.3 自动生成</h2>
 <p>在Linux系统下，我们可以使用脚本快速生成一个项目结构，此过程只需要1分钟左右。  </p>
 <p>简明操作如下：  </p>
 <h3>(1)使用phalapi-buildapp脚本</h3>
@@ -128,7 +140,7 @@ Time: 7 ms, Memory: 5.75Mb
 
 OK (3 tests, 13 assertions)
 </code></pre>
-<h2>1.2.3 更多技巧</h2>
+<h2>1.2.4 更多技巧</h2>
 <h3>(1)日记目录需要0777权限</h3>
 <p>请确保日记目录Runtime拥有写入的权限，可以给0777 。</p>
 <h3>(2)脚本加执行权限和软链</h3>
