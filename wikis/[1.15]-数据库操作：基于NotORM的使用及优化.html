@@ -68,7 +68,8 @@ DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;update($data);
 
 //插入
 $data = array('name' =&gt; 'phalapi');
-$id = DI()-&gt;user-&gt;insert($data);
+DI()-&gt;user-&gt;insert($data);
+$id = DI()-&gt;user-&gt;insert_id();
 
 //删除
 DI()-&gt;user-&gt;where('id', 1)-&gt;delete();</code></pre>
