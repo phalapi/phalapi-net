@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="cn" style="">
 <head>
-	<title>[6.1]-基于接口查询语言的SDK包 | PhalApi - PHP轻量级开源接口框架</title>
+	<title>[6.3]-SDK包（PHP版） | PhalApi - PHP轻量级开源接口框架</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
 	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
@@ -55,131 +55,66 @@
             <div class="grid__cell">
                 <h4><a href="/wikis/#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/#">下一章</a></h4>
 <hr />
-<h2>6.1.1 用一句话来描述接口请求</h2>
-<p>为了给客户端统一接口请求调用的规范性、流畅性和简单易懂，我们特别为此使用了内部领域特定语言： <strong>接口查询语言</strong> （Api Structured Query Language） 。  </p>
-<p>根据此设计理念，各客户端语言都可以实现此接口请求的操作。  </p>
-<h2>6.1.2 接口查询语言设计理念与示例</h2>
-<h3>(1)文法：create -&gt; with -&gt; request</h3>
-<p>所用到的查询文法如下（通常从上往下依次操作，顺序不强制）：  </p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>参数</th>
-<th>是否必须</th>
-<th>是否可重复调用</th>
-<th>作用说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>create</td>
-<td>无</td>
-<td>必须</td>
-<td>可以，重复调用时新建一个实例，非单例模式</td>
-<td>需要先调用此操作创建一个接口实例</td>
-</tr>
-<tr>
-<td>withHost</td>
-<td>接口域名</td>
-<td>必须</td>
-<td>可以，重复时会覆盖</td>
-<td>设置接口域名，如：<a href="http://demo.phalapi.net/">http://demo.phalapi.net/</a></td>
-</tr>
-<tr>
-<td>withFilter</td>
-<td>过滤器</td>
-<td>可选</td>
-<td>可以，重复时会覆盖</td>
-<td>设置过滤器，与服务器的DI().filter对应，需要实现PhalApiClientFilter接口</td>
-</tr>
-<tr>
-<td>withParser</td>
-<td>解析器</td>
-<td>可选</td>
-<td>可以，重复时会覆盖</td>
-<td>设置结果解析器，仅当不是JSON返回格式时才需要设置，需要实现PhalApiClientParser接口</td>
-</tr>
-<tr>
-<td>withService</td>
-<td>接口服务名称</td>
-<td>通常必选</td>
-<td>可以，重复时会覆盖</td>
-<td>设置将在调用的接口服务名称，如：Default.Index</td>
-</tr>
-<tr>
-<td>withParams</td>
-<td>接口参数名、值</td>
-<td>可选</td>
-<td>可以，累加参数</td>
-<td>设置接口参数，此方法是唯一一个可以多次调用并累加参数的操作</td>
-</tr>
-<tr>
-<td>withTimeout</td>
-<td>超时时间</td>
-<td>可选</td>
-<td>可以，重复时会覆盖</td>
-<td>设置超时时间，单位毫秒，默认3秒</td>
-</tr>
-<tr>
-<td>request</td>
-<td>无</td>
-<td>必选</td>
-<td>可以，重复发起接口请求</td>
-<td>最后执行此操作，发起接口请求</td>
-</tr>
-</tbody>
-</table>
-<p>从上面可以看出查询的规律是：</p>
-<pre><code class="language-javascript">create
+<h2>6.2.1 使用说明</h2>
+<p>将框架目录下的 ./SDK/PHP/PhalApiClient 目录中的全部代码拷贝到项目里面即可使用。  </p>
+<h2>6.2.2 代码示例</h2>
+<p>如下是使用的代码场景片段。  </p>
+<p>首先，我们需要导入SDK包：</p>
+<pre><code class="language-javascript">&lt;?php
 
-with
+require_once dirname(__FILE__) . '/PhalApiClient.php';
 
-request</code></pre>
-<h3>(2)JAVA示例</h3>
-<p>以JAVA版本为例，演示如何调用：<br />
-最简单的调用，也就是默认接口的调用：  </p>
-<pre><code class="language-javascript">PhalApiClientResponse response = PhalApiClient.create()
-       .withHost("http://demo.phalapi.net/")
-       .request();</code></pre>
-<p>通常的调用，即有设置接口服务名称、接口参数和超时：</p>
-<pre><code class="language-javascript">PhalApiClientResponse response = PhalApiClient.create()
-       .withHost("http://demo.phalapi.net/")
-       .withService("Default.Index")  //接口服务
-       .withParams("username", "dogstar") //接口参数
-       .withTimeout(3000) //接口超时
-       .request();</code></pre>
-<p>高级复杂调用，即设置了过滤器、解析器的操作：  </p>
-<pre><code class="language-javascript">PhalApiClientResponse response = PhalApiClient.create()
-       .withHost("http://demo.phalapi.net/")
-       .withService("Default.Index")
-       .withParser(new PhalApiClientParserJson()) //设置JSON解析，默认已经是此解析，这里仅作演示
-       .withParams("username", "dogstar")
-       .withTimeout(3000)
-       .request();</code></pre>
-<h2>6.1.3 更好的建议</h2>
-<h3>(1)不支持面向对象的实现方式</h3>
-<p>此接口查询的用法是属于基础的用法，其实现与宿主语言有强依赖关系，在不支持面向语言中，如javascript，可以使用函数序列的方式，如：  </p>
-<pre><code class="language-javascript">create();
-withHost('http://demo.phalapi.net/');
-withService('Default.Index');
-withParams('username', 'dogstar');
-withTimeout(3000);
-var rs = request();</code></pre>
-<h3>(2)封装自己的接口实例</h3>
-<p>通常，在一个项目里面我们只需要一个接口实例即可，但此语言没默认使用单例模式，是为了大家更好的自由度。<br />
-基于此，大家在项目开发时，可以再进行封装：提供一个全局的接口查询单例，并组装基本的接口公共查询属性。  </p>
-<p>即分两步：初始化接口实例，以及接口具体的查询操作。  </p>
-<p>如第一步先初始化：</p>
-<pre><code class="language-javascript">PhalApiClient client = PhalApiClient.create()
-     .withHost("http://demo.phalapi.net/")
-     .withParser(new PhalApiClientParserJson());</code></pre>
-<p>第二步进行具体的接口请求：  </p>
-<pre><code class="language-javascript">PhalApiClientResponse response = client.withService("Default.Index")
-     .withParams("username", "dogstar")
-     .withTimeout(3000)
-     .request();</code></pre>
-<p>这样，在其他业务场景下就不需要再重复设置这些共同的属性（如过滤器、解析器）或者共同的接口参数。</p>
+$rs = PhalApiClient::create()
+    -&gt;withHost('http://demo.phalapi.net/')
+    -&gt;withService('Default.Index')
+    -&gt;withParams('username', 'dogstar')
+    -&gt;withTimeout(3000)
+    -&gt;request();
+
+var_dump($rs-&gt;getRet());
+echo "\n";
+var_dump($rs-&gt;getData());
+echo "\n";
+var_dump($rs-&gt;getMsg());</code></pre>
+<h2>6.2.3 运行效果</h2>
+<p>运行后，可以看到：  </p>
+<pre><code class="language-javascript">int(200)
+
+array(4) {
+    ["title"]=&gt;
+    string(12) "Hello World!"
+    ["content"]=&gt;
+    string(36) "dogstar您好，欢迎使用PhalApi！"
+    ["version"]=&gt;
+    string(5) "1.2.1"
+    ["time"]=&gt;
+    int(1444925238)
+}
+
+string(0) ""</code></pre>
+<h2>6.2.4 扩展你的过滤器和结果解析器</h2>
+<h3>(1)扩展过滤器</h3>
+<p>当服务端接口需要接口签名验证，或者接口参数加密传送，或者压缩传送时，可以实现此过滤器，以便和服务端操持一致。  </p>
+<p>当需要扩展时，分两步。首先，需要实现过滤器接口：  </p>
+<pre><code class="language-javascript">&lt;?php
+
+class MyFilter implements PhalApiClientFilter {
+
+        public function filter($service, array &amp;$params) {
+            //TODO ...
+        }
+}</code></pre>
+<p>然后设置过滤器：</p>
+<pre><code class="language-javascript">&lt;?php
+
+               $rs = PhalApiClient.create()
+                           .withHost("http://demo.phalapi.net/")
+                           .withFilter(new MyFilter())
+                           // ...
+                           .request();</code></pre>
+<h3>(2)扩展结果解析器</h3>
+<p>当返回的接口结果不是JSON格式时，可以重新实现此接口。  </p>
+<p>当需要扩展时，同样分两步。类似过滤器扩展，这里不再赘述。</p>
 <hr />
 <h4><a href="/wikis/#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/#">下一章</a></h4>
             </div>
