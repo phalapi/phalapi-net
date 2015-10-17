@@ -101,6 +101,13 @@
 <td>设置结果解析器，仅当不是JSON返回格式时才需要设置，需要实现PhalApiClientParser接口</td>
 </tr>
 <tr>
+<td>reset</td>
+<td>无</td>
+<td>通常必须</td>
+<td>可以</td>
+<td>重复查询时须重置请求状态，包括接口服务名称、接口参数和超时时间</td>
+</tr>
+<tr>
 <td>withService</td>
 <td>接口服务名称</td>
 <td>通常必选</td>
@@ -130,12 +137,23 @@
 </tr>
 </tbody>
 </table>
+<h3>从外部DSL的角度来看待接口查询的操作</h3>
 <p>从上面可以看出查询的规律是：</p>
-<pre><code class="language-javascript">create
+<pre><code class="language-javascript">
+create
 
-with
+withHost host
+withFilter filter
+withParser parser
 
-request</code></pre>
+reset   #特别注意：重复查询时须重置请求状态
+
+withService service
+withParams params
+withTimeout timeout
+
+request
+</code></pre>
 <h3>(2)JAVA示例</h3>
 <p>以JAVA版本为例，演示如何调用：<br />
 最简单的调用，也就是默认接口的调用：  </p>
@@ -175,7 +193,8 @@ var rs = request();</code></pre>
      .withHost("http://demo.phalapi.net/")
      .withParser(new PhalApiClientParserJson());</code></pre>
 <p>第二步进行具体的接口请求：  </p>
-<pre><code class="language-javascript">PhalApiClientResponse response = client.withService("Default.Index")
+<pre><code class="language-javascript">PhalApiClientResponse response = client.reset()  #重复查询时须重置
+     .withService("Default.Index")
      .withParams("username", "dogstar")
      .withTimeout(3000)
      .request();</code></pre>

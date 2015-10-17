@@ -64,8 +64,10 @@
 
 require_once dirname(__FILE__) . '/PhalApiClient.php';
 
-$rs = PhalApiClient::create()
-    -&gt;withHost('http://demo.phalapi.net/')
+$client = PhalApiClient::create()
+        -&gt;withHost('http://demo.phalapi.net/');
+
+$rs = $client-&gt;reset()
     -&gt;withService('Default.Index')
     -&gt;withParams('username', 'dogstar')
     -&gt;withTimeout(3000)
@@ -92,7 +94,62 @@ array(4) {
 }
 
 string(0) ""</code></pre>
-<h2>6.2.4 扩展你的过滤器和结果解析器</h2>
+<h2>6.2.4 更多调用</h2>
+<p>当需要重复调用时，需要先进行 <strong>重置操作</strong> ，如：</p>
+<pre><code class="language-javascript">//one more time
+$rs = $client-&gt;reset()
+    -&gt;withService("User.GetBaseInfo")
+    -&gt;withParams("user_id", "1")
+    -&gt;request();
+
+var_dump($rs-&gt;getRet());
+echo "\n";
+var_dump($rs-&gt;getData());
+echo "\n";
+var_dump($rs-&gt;getMsg());</code></pre>
+<p>当请求有异常时，返回的 ret!= 200，如：</p>
+<pre><code class="language-javascript">//illegal request
+$rs = $client-&gt;reset()
+    -&gt;withService("XXX.XXXXX")
+    -&gt;withParams("user_id", "1")
+    -&gt;request();
+
+var_dump($rs-&gt;getRet());
+echo "\n";
+var_dump($rs-&gt;getData());
+echo "\n";
+var_dump($rs-&gt;getMsg());</code></pre>
+<p>以上的输出为： </p>
+<pre><code class="language-javascript">--------------------
+int(200)
+
+array(3) {
+  ["code"]=&gt;
+  int(0)
+  ["msg"]=&gt;
+  string(0) ""
+  ["info"]=&gt;
+  array(3) {
+    ["id"]=&gt;
+    string(1) "1"
+    ["name"]=&gt;
+    string(7) "dogstar"
+    ["from"]=&gt;
+    string(7) "oschina"
+  }
+}
+
+string(0) ""
+
+--------------------
+int(400)
+
+array(0) {
+}
+
+string(45) "非法请求：接口服务XXX.XXXXX不存在"
+</code></pre>
+<h2>6.2.5 扩展你的过滤器和结果解析器</h2>
 <h3>(1)扩展过滤器</h3>
 <p>当服务端接口需要接口签名验证，或者接口参数加密传送，或者压缩传送时，可以实现此过滤器，以便和服务端操持一致。  </p>
 <p>当需要扩展时，分两步。首先，需要实现过滤器接口：  </p>
@@ -107,11 +164,11 @@ class MyFilter implements PhalApiClientFilter {
 <p>然后设置过滤器：</p>
 <pre><code class="language-javascript">&lt;?php
 
-               $rs = PhalApiClient.create()
-                           .withHost("http://demo.phalapi.net/")
-                           .withFilter(new MyFilter())
-                           // ...
-                           .request();</code></pre>
+$rs = PhalApiClient.create()
+       .withHost("http://demo.phalapi.net/")
+       .withFilter(new MyFilter())
+       // ...
+       .request();</code></pre>
 <h3>(2)扩展结果解析器</h3>
 <p>当返回的接口结果不是JSON格式时，可以重新实现此接口。  </p>
 <p>当需要扩展时，同样分两步。类似过滤器扩展，这里不再赘述。</p>
