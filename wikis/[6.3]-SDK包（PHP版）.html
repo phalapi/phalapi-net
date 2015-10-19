@@ -55,9 +55,9 @@
             <div class="grid__cell">
                 <h4><a href="/wikis/%5B6.2%5D-SDK%E5%8C%85%EF%BC%88JAVA%E7%89%88%EF%BC%89.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B6.4%5D-SDK%E5%8C%85%EF%BC%88object-c%E7%89%88%EF%BC%89.html">下一章</a></h4>
 <hr />
-<h2>6.2.1 使用说明</h2>
+<h2>6.3.1 使用说明</h2>
 <p>将框架目录下的 ./SDK/PHP/PhalApiClient 目录中的全部代码拷贝到项目里面即可使用。  </p>
-<h2>6.2.2 代码示例</h2>
+<h2>6.3.2 代码示例</h2>
 <p>如下是使用的代码场景片段。  </p>
 <p>首先，我们需要导入SDK包：</p>
 <pre><code class="language-javascript">&lt;?php
@@ -78,7 +78,7 @@ echo "\n";
 var_dump($rs-&gt;getData());
 echo "\n";
 var_dump($rs-&gt;getMsg());</code></pre>
-<h2>6.2.3 运行效果</h2>
+<h2>6.3.3 运行效果</h2>
 <p>运行后，可以看到：  </p>
 <pre><code class="language-javascript">int(200)
 
@@ -94,7 +94,7 @@ array(4) {
 }
 
 string(0) ""</code></pre>
-<h2>6.2.4 更多调用</h2>
+<h2>6.3.4 更多调用</h2>
 <p>当需要重复调用时，需要先进行 <strong>重置操作</strong> ，如：</p>
 <pre><code class="language-javascript">//one more time
 $rs = $client-&gt;reset()
@@ -149,7 +149,7 @@ array(0) {
 
 string(45) "非法请求：接口服务XXX.XXXXX不存在"
 </code></pre>
-<h2>6.2.5 扩展你的过滤器和结果解析器</h2>
+<h2>6.3.5 扩展你的过滤器和结果解析器</h2>
 <h3>(1)扩展过滤器</h3>
 <p>当服务端接口需要接口签名验证，或者接口参数加密传送，或者压缩传送时，可以实现此过滤器，以便和服务端操持一致。  </p>
 <p>当需要扩展时，分两步。首先，需要实现过滤器接口：  </p>
