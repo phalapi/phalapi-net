@@ -57,7 +57,25 @@
 <hr />
 <h2>6.1.1 用一句话来描述接口请求</h2>
 <p>为了给客户端统一接口请求调用的规范性、流畅性和简单易懂，我们特别为此使用了内部领域特定语言： <strong>接口查询语言</strong> （Api Structured Query Language） 。  </p>
-<p>根据此设计理念，各客户端语言都可以实现此接口请求的操作。  </p>
+<h3>从外部DSL的角度来看待接口查询的操作</h3>
+<pre><code class="language-javascript">
+create
+
+withHost host
+withFilter filter
+withParser parser
+
+reset   #特别注意：重复查询时须重置请求状态
+
+withService service
+withParams paramName1 paramValue1
+withParams paramName2 paramValue2
+withParams ... ...
+withTimeout timeout
+
+request
+</code></pre>
+<p>根据此设计理念，各客户端语言都可以实现此接口请求的操作。 </p>
 <h2>6.1.2 接口查询语言设计理念与示例</h2>
 <h3>(1)文法：create -&gt; with -&gt; request</h3>
 <p>所用到的查询文法如下（通常从上往下依次操作，顺序不强制）：  </p>
@@ -137,23 +155,6 @@
 </tr>
 </tbody>
 </table>
-<h3>从外部DSL的角度来看待接口查询的操作</h3>
-<p>从上面可以看出查询的规律是：</p>
-<pre><code class="language-javascript">
-create
-
-withHost host
-withFilter filter
-withParser parser
-
-reset   #特别注意：重复查询时须重置请求状态
-
-withService service
-withParams paramName paramValue
-withTimeout timeout
-
-request
-</code></pre>
 <h3>(2)JAVA示例</h3>
 <p>以JAVA版本为例，演示如何调用：<br />
 最简单的调用，也就是默认接口的调用：  </p>
