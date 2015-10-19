@@ -58,8 +58,7 @@
 <h2>6.1.1 用一句话来描述接口请求</h2>
 <p>为了给客户端统一接口请求调用的规范性、流畅性和简单易懂，我们特别为此使用了内部领域特定语言： <strong>接口查询语言</strong> （Api Structured Query Language） 。  </p>
 <h3>从外部DSL的角度来看待接口查询的操作</h3>
-<pre><code class="language-javascript">
-create
+<pre><code class="language-javascript">create
 
 withHost host
 withFilter filter
@@ -159,14 +158,14 @@ request
 <p>以JAVA版本为例，演示如何调用：<br />
 最简单的调用，也就是默认接口的调用：  </p>
 <pre><code class="language-javascript">PhalApiClientResponse response = PhalApiClient.create()
-       .withHost("http://demo.phalapi.net/")
-       .request();</code></pre>
+       .withHost("http://demo.phalapi.net/")  //接口域名
+       .request();                            //发起请求</code></pre>
 <p>通常的调用，即有设置接口服务名称、接口参数和超时：</p>
 <pre><code class="language-javascript">PhalApiClientResponse response = PhalApiClient.create()
        .withHost("http://demo.phalapi.net/")
-       .withService("Default.Index")  //接口服务
-       .withParams("username", "dogstar") //接口参数
-       .withTimeout(3000) //接口超时
+       .withService("Default.Index")          //接口服务
+       .withParams("username", "dogstar")     //接口参数
+       .withTimeout(3000)                     //接口超时
        .request();</code></pre>
 <p>高级复杂调用，即设置了过滤器、解析器的操作：  </p>
 <pre><code class="language-javascript">PhalApiClientResponse response = PhalApiClient.create()
@@ -200,6 +199,17 @@ var rs = request();</code></pre>
      .withTimeout(3000)
      .request();</code></pre>
 <p>这样，在其他业务场景下就不需要再重复设置这些共同的属性（如过滤器、解析器）或者共同的接口参数。</p>
+<h3>(3)超时重试</h3>
+<p>当接口请求超时时，统一返回 ret = 408，表示接口请求超时。此时可进行接口重试。  </p>
+<p>如：  </p>
+<pre><code class="language-javascript">PhalApiClient client = PhalApiClient.create()
+     .withHost("http://demo.phalapi.net/")
+
+PhalApiClientResponse response = client.request();
+
+if (response.getRet() == 408) {
+     response = client.request(); //请求重试
+}</code></pre>
 <hr />
 <h4><a href="/wikis/%E9%99%84%E5%BD%951%EF%BC%9A%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E5%8F%82%E8%80%83%E6%A8%A1%E6%9D%BF.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B6.2%5D-SDK%E5%8C%85%EF%BC%88JAVA%E7%89%88%EF%BC%89.html">下一章</a></h4>
             </div>
