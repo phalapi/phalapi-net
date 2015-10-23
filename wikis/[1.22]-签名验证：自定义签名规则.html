@@ -97,6 +97,10 @@ DI()-&gt;filter = 'PhalApi_Filter_SimpleMD5';</code></pre>
     "data": [],
     "msg": "非法请求：签名错误"
 }</code></pre>
+<blockquote>
+<p>温馨提示：签名错误情况下，可以查看日记获得正确的sign，如：<br />
+2015-10-23 23:16:16|DEBUG|Wrong Sign|{&quot;needSign&quot;:&quot;35321cc43cfc1e4008bf6f1bf9b7e3b8&quot;}</p>
+</blockquote>
 <p>正常请求下（带sign签名）：  </p>
 <pre><code>http://localhost/phalapi/public/demo/?service=Default.Index&amp;username=dogstar&amp;sign=35321cc43cfc1e4008bf6f1bf9b7e3b8</code></pre>
 <p>如果不想使用sign作为关键的签名参数，可以在注册时指定，如使用缩写s：  </p>
