@@ -76,14 +76,37 @@
             $filter-&gt;check();
         }
     }</code></pre>
+<h3>默认直接可用的接口验证</h3>
+<p>基于很多同学对接口签名验证比较陌生，从框架推出签名验证以来，很长一段时间内，很多同学对于如何实现一个接口签名依然不知如何下手。<br />
+为了给大家更好的便利性，我们提供了一个基本版的接口验证服务。  </p>
+<p>主要是基于md5进行的签名生成，这个只能作为一般性的参考。大家可以在此基础上进行调整延伸。  </p>
+<p>默认情况下，可以去掉注释开启使用PhalApi_Filter_SimpleMD5进行接口验证，即：  </p>
+<pre><code class="language-javascript">//签名验证服务
+DI()-&gt;filter = 'PhalApi_Filter_SimpleMD5';</code></pre>
+<p>其验签的算法如下（如注释所示）：  </p>
+<pre><code class="language-javascript">1、排除签名参数（默认是sign）
+2、将剩下的全部参数，按参数名字进行字典排序
+3、将排序好的参数，全部用字符串拼接起来
+4、进行md5运算</code></pre>
+<p>下面是两个调用示例，错误请求下（即签名失败）：  </p>
+<pre><code>http://localhost/phalapi/public/demo/?service=Default.Index&amp;username=dogstar
+
+返回：
+{
+    "ret": 406,
+    "data": [],
+    "msg": "非法请求：签名错误"
+}</code></pre>
+<p>正常请求下（带sign签名）：  </p>
+<pre><code>http://localhost/phalapi/public/demo/?service=Default.Index&amp;username=dogstar&amp;sign=35321cc43cfc1e4008bf6f1bf9b7e3b8</code></pre>
+<p>如果不想使用sign作为关键的签名参数，可以在注册时指定，如使用缩写s：  </p>
+<pre><code>DI()-&gt;filter = new PhalApi_Filter_SimpleMD5('s');</code></pre>
+<h2>1.22.2 微信签名示例</h2>
 <p>所以，如果我们需要实现签名验证，只需要简单的两步即可：  </p>
 <ul>
-<li>
-<p>1、实现过滤器接口 <strong>PhalApi_Filter::check()</strong>；</p>
-</li>
+<li>1、实现过滤器接口 <strong>PhalApi_Filter::check()</strong>；</li>
 <li>2、注册过滤器服务 <strong>DI()-&gt;filter</strong>；</li>
 </ul>
-<h2>1.22.2 微信签名示例</h2>
 <p>下面以大家熟悉的 <a href="http://mp.weixin.qq.com/wiki/17/2d4265491f12608cd170a95559800f2d.html">微信验签</a> 为例，进行示例说明。</p>
 <h3>(1)实现过滤器接口 PhalApi_Filter::check()</h3>
 <p>通常我们约定返回ret = 402表示验证失败，所以当签名失败时，我们可以返回ret = 402以告知客户端签名不对。根据微信的检验signature的PHP示例代码，我们可以快速实现自定义签名规则，如：</p>
