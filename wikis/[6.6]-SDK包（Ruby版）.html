@@ -75,7 +75,7 @@ puts a_response.ret, a_response.data, a_response.msg</code></pre>
 </code></pre>
 <h2>6.5.4 更多调用</h2>
 <p>当需要重复调用时，需要先进行 <strong>重置操作</strong> ，如：</p>
-<pre><code class="language-javascript">//one more time
+<pre><code class="language-javascript">#one more time
 a_response = a_client.reset \
     .withService("User.GetBaseInfo") \
     .withParams("user_id", "1") \
@@ -83,7 +83,7 @@ a_response = a_client.reset \
 
 puts a_response.ret, a_response.data, a_response.msg</code></pre>
 <p>当请求有异常时，返回的 ret!= 200，如：</p>
-<pre><code class="language-javascript">//illegal request
+<pre><code class="language-javascript">#illegal request
 a_response = a_client.reset.withService('XXXX.noThisMethod').request
 
 puts a_response.ret, a_response.data, a_response.msg</code></pre>
