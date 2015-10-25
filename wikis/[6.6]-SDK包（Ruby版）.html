@@ -55,9 +55,9 @@
             <div class="grid__cell">
                 <h4><a href="/wikis/%5B6.5%5D-SDK%E5%8C%85%EF%BC%88javascript%E7%89%88%EF%BC%89.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B6.4%5D-SDK%E5%8C%85%EF%BC%88object-c%E7%89%88%EF%BC%89.html">下一章</a></h4>
 <hr />
-<h2>6.5.1 使用说明</h2>
+<h2>6.6.1 使用说明</h2>
 <p>将框架目录下的 ./SDK/Ruby/PhalApiClient 目录中的全部代码拷贝到项目里面即可使用。  </p>
-<h2>6.5.2 代码示例</h2>
+<h2>6.6.2 代码示例</h2>
 <p>如下是使用的代码场景片段。  </p>
 <p>首先，我们需要导入SDK包：</p>
 <pre><code class="language-javascript">#demo.rb
@@ -68,7 +68,7 @@ a_client = PhalApi::Client.create.withHost('http://demo.phalapi.net')
 a_response = a_client.withService('Default.Index').withParams('username', 'dogstar').withTimeout(3000).request()
 
 puts a_response.ret, a_response.data, a_response.msg</code></pre>
-<h2>6.5.3 运行效果</h2>
+<h2>6.6.3 运行效果</h2>
 <p>运行后，可以看到：  </p>
 <pre><code class="language-javascript">200
 {"title"=&gt;"Hello World!", "content"=&gt;"dogstar您好，欢迎使用PhalApi！", "version"=&gt;"1.2.1", "time"=&gt;1445741092}
@@ -92,7 +92,7 @@ puts a_response.ret, a_response.data, a_response.msg</code></pre>
 400
 非法请求：接口服务XXXX.noThisMethod不存在
 </code></pre>
-<h2>6.5.5 扩展你的过滤器和结果解析器</h2>
+<h2>6.6.5 扩展你的过滤器和结果解析器</h2>
 <h3>(1)扩展过滤器</h3>
 <p>当服务端接口需要接口签名验证，或者接口参数加密传送，或者压缩传送时，可以实现此过滤器，以便和服务端操持一致。  </p>
 <p>当需要扩展时，分两步。首先，需要实现过滤器接口：  </p>
@@ -109,6 +109,9 @@ puts a_response.ret, a_response.data, a_response.msg</code></pre>
 <h3>(2)扩展结果解析器</h3>
 <p>当返回的接口结果不是JSON格式时，可以重新实现此接口。  </p>
 <p>当需要扩展时，同样分两步。类似过滤器扩展，这里不再赘述。</p>
+<h2>6.6.6 一如既往的单元测试</h2>
+<p>最后，附一张单元测试运行的效果图：<br />
+<img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151025123152.png" alt="" /> </p>
 <hr />
 <h4><a href="/wikis/%5B6.5%5D-SDK%E5%8C%85%EF%BC%88javascript%E7%89%88%EF%BC%89.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B6.4%5D-SDK%E5%8C%85%EF%BC%88object-c%E7%89%88%EF%BC%89.html">下一章</a></h4>
             </div>
