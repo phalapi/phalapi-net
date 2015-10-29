@@ -68,11 +68,11 @@ DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;update($data);
 
 //插入
 $data = array('name' =&gt; 'phalapi');
-DI()-&gt;user-&gt;insert($data);
-$id = DI()-&gt;user-&gt;insert_id();
+DI()-&gt;notorm-&gt;user-&gt;insert($data);
+$id = DI()-&gt;notorm-&gt;user-&gt;insert_id();
 
 //删除
-DI()-&gt;user-&gt;where('id', 1)-&gt;delete();</code></pre>
+DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;delete();</code></pre>
 <h3>(2)update相同的数据的判断</h3>
 <p>在使用update操作时，如果更新的数据和原来的一样，则会返回0（影响0行）。这时，会和更新失败（同样影响0行）混淆。  </p>
 <p>但NotORM是一个优秀的类库，所以提供了优秀的解决文案。我们在使用update时，只须了解这两者返回的结果的微妙区别即可。<br />
