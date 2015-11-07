@@ -33,6 +33,8 @@ do
 
     echo "add $line ..."
 
+    echo "#"${line/.md/} >> $ALL_IN_ONE
+
     cat $WIKI_PATH/$line >> $ALL_IN_ONE
 done < $BASE_PATH/pdf_config.txt
 
