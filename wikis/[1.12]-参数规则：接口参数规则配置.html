@@ -244,7 +244,7 @@ return array(
 <td>date</td>
 <td>true/false，默认false</td>
 <td>会按格式转换</td>
-<td>可选</td>
+<td>可选，仅当为timestamp时才判断</td>
 <td>格式：format 为timestamp时会将字符串的日期转换</td>
 </tr>
 <tr>
@@ -252,7 +252,7 @@ return array(
 <td>array</td>
 <td>true/false，默认false</td>
 <td>为非数组会自动转换/解析成数组</td>
-<td>---</td>
+<td>可选，判断数组元素个数</td>
 <td>格式：format 为explode时，会根据separator将字符串分割成数组, 为json时，会json解析</td>
 </tr>
 <tr>
@@ -270,6 +270,13 @@ return array(
 <td>数组类型</td>
 <td>min和max表示文件大小范围</td>
 <td>range下标表示允许上传的文件类型</td>
+</tr>
+<tr>
+<td>回调</td>
+<td>callable</td>
+<td>true/false，默认false</td>
+<td>---</td>
+<td>callback设置回调函数，params为回调函数的第三个参数，第一个为参数值，第二个为所配置的规则</td>
 </tr>
 </tbody>
 </table>
@@ -348,6 +355,20 @@ array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1
 <li>$_FILES[&quot;upfile&quot;][&quot;error&quot;] - 由文件上传导致的错误代码</li>
 </ul>
 <p>若需要配置默认值default选项，则也应为一数组，且其格式应类似如上。</p>
+<h3>(9)回调 callable</h3>
+<p>当需要利用已有函数进行自定义验证时，可采用回调参数规则，如：  </p>
+<pre><code>array('name' =&gt; 'version', 'type' =&gt; 'callable', 'callback' =&gt; 'formatVersion')
+
+//新增一个自定义的版本检测函数
+function formatVersion($value, $rule) {
+    if (count(explode('.', $value)) &lt; 3) {
+        throw new PhalApi_Exception_BadRequest('版本号格式错误');
+    }
+}</code></pre>
+<blockquote>
+<p>温馨提示：
+第一个为参数值，第二个为所配置的规则，第三个参数为配置规则中的params（可忽略）</p>
+</blockquote>
 <h2>1.12.8 关于参数设计的原则</h2>
 <h3>(1)通配的$_REQUEST</h3>
 <p>使用$_REQUEST获取参数，便于在不同场合下GET/POST之间的切换，同时在初始化DI()-&gt;request服务时，可以指定传递的参数，以便于灵活的单元测试；</p>
@@ -363,6 +384,49 @@ array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1
 )</code></pre>
 <h3>(3)异常返回</h3>
 <p>对于客户端参数不合法时，以异常失败返回，而不是隐性地转换，是因为后台接口往往需要手动对传递的参数进行人工的验证，而不是希望得到隐性转换的值。即当客户端参数对时，我们需要明确提示说：参数非法。</p>
+<h2>1.12.9 扩展你的参数</h2>
+<p>当PhalApi提供的参数规则不能满足接口参数的规则验证时，除了使用callable类型进行扩展外，还可以扩展PhalApi_Request_Formatter接口来定制项目需要的类型。  </p>
+<p>一如既往，分两步：  </p>
+<ul>
+<li>1、扩展实现PhalApi_Request_Formatter接口</li>
+<li>2、在DI注册你的类型</li>
+</ul>
+<p>下面以大家所熟悉的邮件类型为例，说明扩展的步骤。  </p>
+<p>首先，我们需要一个实现了邮件类型验证的功能类：  </p>
+<pre><code>&lt;?php
+
+class Common_MyFormatter_Email implements PhalApi_Request_Formatter {
+
+    public function parse($value, $rule) {
+        if (!preg_match('/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/', $value)) {
+            throw new PhalApi_Exception_BadRequest('邮箱地址格式错误');
+        }
+
+        return $value;
+    }
+}  </code></pre>
+<p>然后，注册一下：  </p>
+<pre><code>DI()-&gt;_formatterEmail = 'Common_MyFormatter_Email';</code></pre>
+<blockquote>
+<p>温馨提示：
+在DI中手动注册服务时，名称的格式为： 下划线(&quot;_&quot;) + 统一前缀（&quot;formatter&quot;) + 参数类型（全部小写后，首字母大写）；<br />
+若需要实现自动注册，扩展的类名格式须为：  </p>
+<pre><code>class PhalApi_Request_Formatter_{类型名称} implements PhalApi_Request_Formatter { ...</code></pre>
+</blockquote>
+<p>系统已自动注册的格式化服务有：  </p>
+<ul>
+<li>_formatterArray 数组格式化服务</li>
+<li>_formatterBoolean 布尔值格式化服务</li>
+<li>_formatterCallable 回调格式化服务</li>
+<li>_formatterDate 日期格式化服务</li>
+<li>_formatterEnum 枚举格式化服务</li>
+<li>_formatterFile 上传文件格式化服务</li>
+<li>_formatterFloat 浮点数格式化服务</li>
+<li>_formatterInt 整数格式化服务</li>
+<li>_formatterString 字符串格式化服务</li>
+</ul>
+<p>至此，便可使用自己定制的类型规则了，  </p>
+<pre><code>array('name' =&gt; 'user_email', 'type' =&gt; 'email')</code></pre>
 <hr />
 <h4><a href="/wikis/%5B1.11%5D-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%28backup%29.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.13%5D-%E7%BB%9F%E4%B8%80%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%EF%BC%9A_sevice=XXX.XXX.html">下一章</a></h4>
             </div>
