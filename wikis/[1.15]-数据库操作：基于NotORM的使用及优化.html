@@ -281,6 +281,43 @@ PDOException: Unknown column 'wrong_username' in 'field list'</code></pre>
         $rows = $this-&gt;getORM()-&gt;queryAll($sql, array());
 </code></pre>
 <p>注意，此时的表需要使用全名，即自带前缀。这样也可以实现更自由的关联查询。   </p>
+<h3>(10)事务操作</h3>
+<p>关于事务操作，可以参考 <a href="http://www.notorm.com/#api">NotORM官网</a> 的说明：  </p>
+<pre><code>$db-&gt;transaction = $command Assign 'BEGIN', 'COMMIT' or 'ROLLBACK' to start or stop transaction </code></pre>
+<p>即：  </p>
+<pre><code>//第一步：先指定待进行事务的数据库（通过获取一个notorm表实例来指定；否则会提示：PDO There is no active transaction）
+$user = DI()-&gt;notorm-&gt;user;
+
+//第二步：开启事务开关（此开关会将当前全部打开的数据库都进行此设置）
+DI()-&gt;notorm-&gt;transaction = 'BEGIN';
+
+//第三步：进行数据库操作
+$user-&gt;insert(array('name' =&gt; 'test1',));
+$user-&gt;insert(array('name' =&gt; 'test2',));
+
+//第四：提交/回滚
+DI()-&gt;notorm-&gt;transaction = 'COMMIT';
+//DI()-&gt;notorm-&gt;transaction = 'ROLLBACK';</code></pre>
+<h4>推荐使用PhalApi的事务操作方式</h4>
+<p>PhalApi一开始对事务这块考虑不周，后来发现很多同学、很多项目都需要用到数据库事务操作。<br />
+基于此，在不破坏原来的代码基础上，我们决定在PhalApi_DB_NotORM上添加对数据库维度的事务操作支持。  </p>
+<p>示例简单如下：  </p>
+<pre><code>    public function testTransactionCommit()
+    {
+        //Step 1: 开启事务
+        $this-&gt;notorm-&gt;beginTransaction('db_demo');
+
+        //Step 2: 数据库操作
+        $this-&gt;notorm-&gt;user&gt;insert(array('name' =&gt; 'test1'));
+        $this-&gt;notorm-&gt;user&gt;insert(array('name' =&gt; 'test2'));
+
+        //Step 3: 提交事务
+        $this-&gt;notorm-&gt;commit('db_demo');
+
+    }</code></pre>
+<blockquote>
+<p>温馨提示： 以上操作，须PhalApi 1.3.1 及以上版本才能支持。  </p>
+</blockquote>
 <h2>1.15.3 可选的Model基类</h2>
 <h3>(1)表数据入口模式</h3>
 <p>我们一直在考虑，是否应该提供数据库的基本操作支持，以减少开发人员重复手工编写基本的数据操作。  </p>
