@@ -318,6 +318,25 @@ DI()-&gt;notorm-&gt;transaction = 'COMMIT';
 <blockquote>
 <p>温馨提示： 以上操作，须PhalApi 1.3.1 及以上版本才能支持。  </p>
 </blockquote>
+<h3>(11)扩展对非MySQL数据库的支持</h3>
+<p>PhalApi使用的是NotORM来进行数据库操作，而NotORM底层则是采用了PDO。目前，NotORM支持： MySQL, SQLite, PostgreSQL, MS SQL, Oracle (Dibi support is obsolete)。  </p>
+<p>但需要注意的是，PhalApi本身对NotORM进行了修改，需要调整一下代码才能更好地支持除MySQL外的数据库。
+即使NotORM不支持的数据库，你也可以轻松通过添加扩展的方式来支持。如：   </p>
+<p>首先，定制自己的数据库连接的PDO。  </p>
+<pre><code>class Common_MyDB extends PhalApi_DB_NotORM {
+
+    protected function createPDOBy($dbCfg) {
+        /* Connect to an ODBC database using driver invocation */
+    $dsn = 'uri:file:///usr/local/dbconnect';
+    return new PDO($dsn, $dbCfg['user'], $dbCfg['password']);
+    }
+}</code></pre>
+<p>随后，在初始化文件init.php中重新注册DI()-&gt;notorm即可，如：</p>
+<pre><code>//数据操作 - 基于NotORM，$_GET['__sql__']可自行改名
+DI()-&gt;notorm = function() {
+    $debug = !empty($_GET['__sql__']) ? true : false;
+    return new Common_MyDB(DI()-&gt;config-&gt;get('dbs'), $debug);
+};</code></pre>
 <h2>1.15.3 可选的Model基类</h2>
 <h3>(1)表数据入口模式</h3>
 <p>我们一直在考虑，是否应该提供数据库的基本操作支持，以减少开发人员重复手工编写基本的数据操作。  </p>
