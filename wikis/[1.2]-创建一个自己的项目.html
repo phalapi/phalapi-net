@@ -91,7 +91,7 @@
 <pre><code>http://localhost/phalapi/public/myapp/</code></pre>
 <p>应该可以看到：  </p>
 <p><img src="http://webtools.qiniudn.com/20150411005257_33f51b3efcd0938bb7fc36bb813f4808" alt="QQ截图20150404004959" /></p>
-<h2>12.3 自动生成</h2>
+<h2>1.2.3 自动生成</h2>
 <p>在Linux系统下，我们可以使用脚本快速生成一个项目结构，此过程只需要1分钟左右。  </p>
 <p>简明操作如下：  </p>
 <h3>(1)使用phalapi-buildapp脚本</h3>
@@ -129,7 +129,11 @@ $ tree
     ├── checkApiParams.php
     └── index.php</code></pre>
 <p>在浏览器访问：</p>
-<pre><code>http://dev.phalapi.com/myapp/</code></pre>
+<pre><code>#根目录设置为./Public
+http://dev.phalapi.com/myapp/
+
+#或没设置根目录为./Public时访问
+http://dev.phalapi.com/Public/myapp/</code></pre>
 <p>可以看到接口结果输出。</p>
 <h3>(3)执行单元测试</h3>
 <p>如果安装了PHPUnit，执行一下单元测试，也是通过的！</p>
