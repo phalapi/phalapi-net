@@ -15,8 +15,10 @@
         <template name="clean"/>
     </transformations>
     <files>
-        <directory>/mnt/hgfs/F/PHP/PhalApi/PhalApi</directory>
+        <directory>/mnt/hgfs/F/PHP/PhalApi/PhalApi/PhalApi</directory>
         <file>/mnt/hgfs/F/PHP/PhalApi/PhalApi.php</file>
+        <ignore>/mnt/hgfs/F/PHP/PhalApi/PhalApi/Tests</ignore>
+        <ignore>/mnt/hgfs/F/PHP/PhalApi/PhalApi/NotORM</ignore>
         <!--
         <ignore>./../PhalApi/Tests/*</ignore>
         <ignore>./../PhalApi/NotORM/*</ignore>
