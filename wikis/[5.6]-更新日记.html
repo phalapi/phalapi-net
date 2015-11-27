@@ -64,13 +64,14 @@
 <li>dev 开发分支，当前用于协同开发的分支，以存放共享未完成的代码</li>
 </ul>
 <h2>更新日记</h2>
-<h3>2015-11-xx</h3>
+<h3>2015-11-27</h3>
 <pre><code>1、重构并设计格式化类：PhalApi_Request_Var，使之支持项目扩展定制化；并添加callable回调类型、为数组和日期补充最值检测
-2、PhalApi_DB_NotORM上添加对数据库维度的事务操作支持
+2、PhalApi_DB_NotORM上添加对数据库维度的事务操作支持 感谢@研究研究 反馈
 3、重构PhalApi_DB_NotORM，以便支持定制MySQL外的数据库操作
-4、bugfixed NotORM_Result::fetchPairs()的错误: Argument 1 passed to iterator_to_array() must implement interface Traversable, array given
+4、bugfixed NotORM_Result::fetchPairs()的错误: Argument 1 passed to iterator_to_array() must implement interface Traversable, array given 感谢@scott 反馈
 5、提供了Redis扩展类型，由 @喵了个咪 提供
-6、添加支持Yaconf扩展读取配置</code></pre>
+6、添加支持Yaconf扩展读取配置
+7、版本更新到v1.3.1 (感恩版)</code></pre>
 <h3>2015-11-07</h3>
 <pre><code>1、添加Ruby版SDK包
 2、完善listAllApis.php，可按注释进行字典排列，支持多级目录扫描
@@ -91,7 +92,8 @@
 11、提供基于接口查询语言的SDK包，并有JAVA版、PHP版、C#版、Objective-c版（由@Aevit 提供）、JS版（由@喵了个咪 提供）
 12、PhalApi基础教程的编写 由@喵了个咪 提供，请见：http://my.oschina.net/wenzhenxi/blog/513004
 13、添加了默认接口签名过滤器：PhalApi_Filter_SimpleMD5
-14、加强对DI()-&gt;filter的类型检测，避免出现non-object的错误，增加容错能力</code></pre>
+14、加强对DI()-&gt;filter的类型检测，避免出现non-object的错误，增加容错能力
+15、版本更新到v1.3.0 (1024狂欢版)</code></pre>
 <h3>2015-09-07</h3>
 <pre><code>1、添加扩展类库：基于FastRoute的快速路由
 2、一些轻量bugfixed</code></pre>
