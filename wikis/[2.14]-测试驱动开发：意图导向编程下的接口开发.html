@@ -59,7 +59,10 @@
 <h2>2.14.1 测试驱动开发</h2>
 <p>做正确的事，比把事情做正确更为重要。  </p>
 <p>当明确需要做何事后，再通过事先编写单元测试来准确表达我们将要实现的功能，是相当具有指导意义的。你会发现接下来你的开发历程就是：单元测试-设计-重构，而且这种正向循环是很有创造性的，并且进行到一定程度后会慢慢体会到浮现式设计的乐趣。  </p>
-<p>关于测试驱动开发TDD，有很多资料已进行了说明，这里不再赘述。</p>
+<p>关于测试驱动开发TDD，有很多资料已进行了说明，这里不再赘述。  </p>
+<p>如果还没了解PHPUnit，可先阅读：<a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html">PHPUnit 手册</a><br />
+如果还没了解PHPUnit，可先阅读：<a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html">PHPUnit 手册</a><br />
+如果还没了解PHPUnit，可先阅读：<a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html">PHPUnit 手册</a>  </p>
 <h2>2.14.2 意图导向编程</h2>
 <p><img src="http://webtools.qiniudn.com/20150411005257_2bc8683a50ac1d620cef4e39918ed3e5" alt="apic" />  </p>
 <p>在编写代码前，先写测试代码，更容易提高 <strong>关注点</strong> 。  </p>
@@ -134,6 +137,25 @@ $ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Publ
         $this-&gt;assertEquals('oschina', $rs['info']['from']);
     }</code></pre>
 <p>上面的验证意思简单明了，结合 <strong>构造-操作-检验（BUILD-OPERATE-CHECK）模式</strong> 加以说明一下。  </p>
+<p>或者可以使用PhalApi提供的接口调度器来进行模拟接口的白盒调度：  </p>
+<pre><code>    public function testIndexByRunner()
+    {
+        //Step 1. 构建请求URL
+        $url = 'service=Default.Index&amp;username=dogstar';
+
+        //Step 2. 执行请求  
+        $rs = PhalApi_Helper_TestRunner::go($url);
+
+        //Step 3. 验证
+        $this-&gt;assertNotEmpty($rs);
+        $this-&gt;assertArrayHasKey('title', $rs);
+        $this-&gt;assertArrayHasKey('content', $rs);
+        $this-&gt;assertArrayHasKey('version', $rs);
+        $this-&gt;assertArrayHasKey('time', $rs);
+
+        $this-&gt;assertEquals('dogstar您好，欢迎使用PhalApi！', $rs['content']);
+    }</code></pre>
+<p>这样，可以更接近真实模拟接口被客户端调用，而且不需要进行手动的初始化，推荐使用！  </p>
 <h3>构造</h3>
 <pre><code class="language-javascript">        $str = 'service=User.GetBaseInfo&amp;user_id=1';</code></pre>
 <p>此参数即对应接口请求的URL参数，我们将此参数追加在接口入口并在浏览器打开可以得到同样的接口执行效果。但这样的好处更在于通过单元测试帮我们记住了各种接口测试的业务场景。而不再是像以前那样打开N个浏览器窗口人工进行调试，也不用像以前那样苦苦寻找浏览器记录。</p>
