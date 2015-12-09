@@ -66,10 +66,11 @@ $row = DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;fetch();
 $data = array('name' =&gt; 'test', 'update_time' =&gt; time());
 DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;update($data);
 
-//插入
+//插入（须是同一个对象才能正确获取插入的ID）
 $data = array('name' =&gt; 'phalapi');
-DI()-&gt;notorm-&gt;user-&gt;insert($data);
-$id = DI()-&gt;notorm-&gt;user-&gt;insert_id();
+$userORM = DI()-&gt;notorm-&gt;user;
+$userORM-&gt;insert($data);
+$id = $userORM-&gt;insert_id();
 
 //删除
 DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;delete();</code></pre>
