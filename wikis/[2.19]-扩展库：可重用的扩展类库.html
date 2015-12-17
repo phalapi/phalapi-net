@@ -55,29 +55,98 @@
             <div class="grid__cell">
                 <h4><a href="#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.20%5D-%E7%BA%A6%E5%AE%9A%E7%BC%96%E7%A8%8B%EF%BC%9A%E6%9E%B6%E6%9E%84%E6%98%8E%E6%98%BE%E7%9A%84%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC.html">下一章</a></h4>
 <hr />
-<h2>2.19.1 PhalApi框架扩展类库</h2>
+<h2>PhalApi框架扩展类库</h2>
+<h3>-- 致力于与开源项目一起提供企业级的解决方案！</h3>
 <p>此部分类库为 <a href="http://git.oschina.net/dogstar/PhalApi">PhalAPi框架</a> 下的扩展类库包，各个扩展包各自独立，可以根据需要自动下载安装。</p>
 <p>虽然此部分的扩展很多都是基于已有的第三方开源实现，或者开发同学自己实现分享的，但我们所做的不只是代码的搬运工，更多的是在系统架构上的组件库重用，以及在此引入 <strong>防腐层</strong> ，避免进入 <strong>供应商锁定（Vendor Lock-In）</strong> 。  </p>
 <p>除此之外，可以在PhalApi框架的基础上，快速引入符合我们国内实际项目开发需要的各种扩展。如时，您会发现，原来编程本来就是一件如此简单的事情，就像搭积木一样。  </p>
 <p>正如我们一直推荐的：</p>
 <pre><code>接口，从简单开始！</code></pre>
-<h2>2.19.2 目前已提供的扩展类库 - 针对使用者</h2>
-<h3>(1)微信开发</h3>
+<h2>目前已提供的扩展类库 - 针对使用者</h2>
+<h3>1、微信开发</h3>
 <p>此扩展可用于微信的服务号、订阅号、设备号等功能开发，则PhalApi框架下简单配置即可开发使用。  </p>
 <p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.1%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91">更多请点这里查看使用文档</a></p>
-<h3>(2)代理模式下phprpc协议的轻松支持</h3>
+<h3>2、代理模式下phprpc协议的轻松支持</h3>
 <p>此扩展可用于phprpc协议的调用，服务端只需要简单添加入口即可完美切换。  </p>
 <p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.2%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E4%B8%8Bphprpc%E5%8D%8F%E8%AE%AE%E7%9A%84%E8%BD%BB%E6%9D%BE%E6%94%AF%E6%8C%81">更多请点这里查看使用文档</a></p>
-<h3>(3)基于PHPMailer的邮件发送</h3>
+<h3>3、基于PHPMailer的邮件发送</h3>
 <p>此扩展可用于发送邮件。  </p>
 <p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.3%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%9F%BA%E4%BA%8EPHPMailer%E7%9A%84%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81">更多请点这里查看使用文档</a>  </p>
-<h3>(4)优酷开放平台接口调用</h3>
+<h3>4、优酷开放平台接口调用</h3>
 <p>此扩展可用于调用优酷开放平台的接口。</p>
 <p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.4%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%BC%98%E9%85%B7%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8">更多请点这里查看使用文档</a>  </p>
-<h3>(5)七牛云存储接口调用</h3>
+<h3>5、七牛云存储接口调用</h3>
 <p>此扩展可以用于将图片上传到七牛CDN，或者其他七牛接口的调用。  </p>
 <p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.5%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%B8%83%E7%89%9B%E4%BA%91%E5%AD%98%E5%82%A8%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8">更多请点这里查看使用文档</a></p>
-<h2>1.19.3 扩展开发指南 - 针对开发者</h2>
+<h3>6、用户、会话和第三方登录集成</h3>
+<p>此类库主要特点有：</p>
+<ul>
+<li>1、可以和第三方登录集成，包括：微信登录、新浪登录、QQ登录</li>
+<li>2、为客户端提供了直接可以调用的登录接口</li>
+<li>3、为服务端提供了直接可以检测用户登录态的操作</li>
+<li>4、支持token落地、高效缓存和分布式的数据库存储  </li>
+<li>
+<p>5、展示了如何开发一个项目级的类库、包括数据库配置、翻译等</p>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.8%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E7%94%A8%E6%88%B7%E3%80%81%E4%BC%9A%E8%AF%9D%E5%92%8C%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%E9%9B%86%E6%88%90">更多请点这里查看使用文档</a></p>
+</li>
+</ul>
+<h3>7、swoole支持下的长链接和异步任务实现</h3>
+<p>目前，此扩展类库提供了：</p>
+<ul>
+<li>长链接的接口调用</li>
+<li>
+<p>异步计划任务的调用</p>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.9%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9Aswoole%E6%94%AF%E6%8C%81%E4%B8%8B%E7%9A%84%E9%95%BF%E9%93%BE%E6%8E%A5%E5%92%8C%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E5%AE%9E%E7%8E%B0">更多请点这里查看使用文档</a></p>
+</li>
+</ul>
+<h3>8、新型计划任务</h3>
+<p>此扩展类型用于后台计划任务的调度，主要功能点有：</p>
+<ul>
+<li>1、提供了Redis/文件/数据库三种MQ队列</li>
+<li>2、提供了本地和远程两种调度方式</li>
+<li>3、以接口的形式实现计划任务</li>
+</ul>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.6%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E6%96%B0%E5%9E%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1">更多请点这里查看使用文档</a></p>
+<h3>9、Auth 权限扩展 (由@黄苗笋提供)</h3>
+<p>实现了基于用户与组的权限认证功能，与RBAC权限认证类似，主要用于对服务级别的功能进行权限控制，主要功能点有：</p>
+<ul>
+<li>1、提供了接口服务维度的权限验证</li>
+<li>2、提供了可配置的组与规则</li>
+<li>3、支持免检用户</li>
+</ul>
+<p><a href="http://git.oschina.net/dogstar/PhalApi-Library/wikis/Auth-%E6%9D%83%E9%99%90%E6%89%A9%E5%B1%95%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3">更多请点这里查看使用文档</a></p>
+<h3>11、FastRoute快速路由</h3>
+<p>此扩展基于 <img src="https://github.com/nikic/FastRoute" alt="FastRoute" /> 实现，需要 <strong>PHP 5.4.0</strong> 及以上版本，可以通过配置实现自定义路由配置，从而轻松映射到PhalApi中的service接口服务。，主要有：</p>
+<ul>
+<li>1、基于FastRoute实现</li>
+<li>2、需要PHP 5.4.0 及以上版本  </li>
+<li>3、通过配置文件来实现自定义路由，并映射到service</li>
+<li>
+<p>4、可兼容无路由的历史URI</p>
+<p><a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.11%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%9F%BA%E4%BA%8EFastRoute%E7%9A%84%E5%BF%AB%E9%80%9F%E8%B7%AF%E7%94%B1">更多请点这里查看使用文档</a></p>
+</li>
+</ul>
+<h3>12、基于PhalApi的DB集群拓展DB_Cluster (由@喵了个咪提供)</h3>
+<p>为应对海量数据分析与统计，提供针对分表分库统一封装的数据库操作接口，主要用于解决大量数据写入分析的问题。请注意：V0.1bate版本,很多功能尚不完善,只提供技术交流使用,请不要用户生产环境。主要特点有：</p>
+<ul>
+<li>1、适用于大量select和大量的insert的业务场景</li>
+<li>2、基于架构思维的实现</li>
+<li>3、分表分库算法介绍</li>
+<li>
+<p>4、基准测试对比</p>
+<p><a href="http://git.oschina.net/dogstar/PhalApi-Library/tree/master/DB_Cluster/?dir=1&amp;filepath=DB_Cluster&amp;oid=a50865e4e86d8105bdc30c12a8193db1f119cdb5&amp;sha=8c16393c1286f3921cb920dd21a4aab5eb05f8a3">更多请点这里查看使用文档</a></p>
+</li>
+</ul>
+<h3>13、基于PhalApi的Redis_Base拓展 (由@喵了个咪提供)</h3>
+<p>主要提供更丰富的Redis操作,并且进行了分库处理可以自由搭配</p>
+<ul>
+<li>1、适用于对Redis需要其他数据类型操作的业务</li>
+<li>
+<p>2、可以用于队列脚本,封装了队列处理</p>
+<p><a href="http://git.oschina.net/dogstar/PhalApi-Library/wikis/%E5%9F%BA%E4%BA%8EPhalApi%E7%9A%84Redis%E6%8B%93%E5%B1%95--%E6%96%87%E6%A1%A3">更多请点这里查看使用文档</a></p>
+</li>
+</ul>
+<h2>扩展开发指南 - 针对开发者</h2>
 <p>为了统一扩展类库的风格、便于用户更容易使用，这里建议：  </p>
 <ul>
 <li>代码：统一放置在Library目录下，各扩展包各自一个目录，尽量Lite.php入口类，遵循PEAR包命名规范；</li>
