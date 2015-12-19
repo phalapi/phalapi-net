@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.13]-phalapi-进阶篇7(使用缓存以及用redis拓展解决实际问题) | PhalApi - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流群：421032344</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-进阶篇7(使用缓存以及用redis拓展解决实际问题)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>当我们在开发一个项目时,我们可能会遇到很多问题,比如消息推送,发送邮件,发送短信,以及并发跟不上,这个时候就该轮到常用的缓存出手解救我们了,我们接下来来讲讲缓存Redis在实际中的使用,解决实际问题.在这里是基于redis的基本知识,和简单看一下PhalApi的redis拓展文档在前来阅读此小节. </p>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<p>开源中国扩展Git地址:<a href="http://git.oschina.net/dogstar/PhalApi-Library"开源中国扩展Git地址""><a href="http://git.oschina.net/dogstar/PhalApi-Library">http://git.oschina.net/dogstar/PhalApi-Library</a></a></p>
+<h2>1. 能解决什么问题</h2>
+<p>当我们使用一门技术的时候,我们当然是为了解决问题才去使用它的,那么我们使用缓存技术Redis能解决什么具体的问题呢?</p>
+<h2>1.1 缓存结果集</h2>
+<p>这里给一个例子大家看一下就会明白缓存结果集是什么意思</p>
+<pre><code>//从缓存redis的clubcache库中查询club表where条件是city,city值是$city
+$cache = DI()-&gt;redis-&gt;get_Time('club'.'city'.$city,'clubcache');
+//如果查询到了就直接返回缓存的结果
+if($cache){
+    return $cache;
+}
+//如果不存在从数据库里面获取结果然后存入redis缓存key的条件和取值时一样,最后一个参数为过期时间
+$rs = $this-&gt;getORM()-&gt;select('*')-&gt;where('city',$city)-&gt;fetchAll();
+DI()-&gt;redis-&gt;set_Time('club'.'city'.$city,$rs,'clubcache',600);</code></pre>
+<p>上面做的事情就是把结果保存600秒,600秒内的再次查询会获取一样的结果</p>
+<h2>1.2 队列处理</h2>
+<p>Redis运用到时间中有一个比较关键的作用就是他的队列</p>
+<p>我们先过一下几个特殊的redis函数</p>
+<pre><code>//写入队列左边
+set_lPush
+//写入队列左边 如果value已经存在，则不添加 
+set_lPushx
+//写入队列右边
+set_rPush
+//写入队列右边 如果value已经存在，则不添加
+set_rPushx
+
+//读取队列左边
+get_lPop
+//读取队列右边
+get_rPop
+//读取队列左边 如果没有读取到阻塞一定时间
+get_blPop
+//读取队列右边 如果没有读取到阻塞一定时间
+get_brPop</code></pre>
+<p>比如我们在做消息推送,发送邮件,发送短信这类业务的时候,我们需要请求第三方接口,请求的速度是第三方来决定的,比如微信一个推送接口就是200ms,如果放到我们的API业务里面就会出现一个巨大的问题,用户访问速度极度下降,解决这类问题的方案就是队列流程如下</p>
+<pre><code>当我们接收到用户的推送请求时
+            ↓
+把推送请求加入到队列API里面不做任何操作(比如加入到左边)
+            ↓
+在后台有一个PHP脚本运行一直在读取队列(读取右边就是后进后出,如果读取左边就是先进先出)
+            ↓
+然后执行响应的推送逻辑</code></pre>
+<p>一般我们的脚本是一个死循环,或者shell定时请求,我们会采用读取不到数据是阻塞来解决去不到值循环过快的问题</p>
+<h2>1.3 临时数据存储</h2>
+<p>临时数据就不需要太多的说明了,举个例子就够了</p>
+<p>比如我们获取验证码,我们需要把验证码存到库中吗,我觉得是没有必要的,而且数据库并不好做过期的操作只能我们自己判断</p>
+<p>那么我们使用redis把验证码存入redis 然后给一个过期时间就很好的解决这个问题了</p>
+<h2>1.4 数据库</h2>
+<p>把redis作为数据库用算是比较深入的使用了,这里聊下思想</p>
+<p>大家之后service可以分布式,但是对于大部分数据库的分布式并不容易,所以导致了很多系统到后面拼接堆积在数据库,当然可以使用缓存存储结果集,但是这种解决方便治标不治本,在和童鞋们探讨的时候得出了一个解决方便,就是把redis作为第一数据库mysql作为元数据库</p>
+<p>做了这种操作之后服务器会自动把热数据同步到redis,把冷数据存放到mysql,当使用到冷数据了在存放到redis,用户大部分的操作基本是基于redis进行的操作</p>
+<p>当作这样实现的成本比较高要实现redis 数据同步 封装使用 where查询 等等需要很大的精力去做,在后期笔者有打算做一个通用的拓展</p>
+<h2>2. 规范化使用</h2>
+<p>其实以上的类容已经讲的差不多了,为什么还有单独拿出一段来讲一讲规范呢,因为缓存不像是数据库当你需要去查看缓存的时候,如果所有的数据都堆积在redis的一个库,你会非常痛苦</p>
+<p>但是redis支持多库所以需要一套规范来划分,这里分享一下我这边是如何使用的</p>
+<p>0~10库 作为正常业务库,也就是推送队列,临时数据,每一个库都只存储一种业务的数据,比如微信推送就存在5库,而邮件推送的数据就存在6库,发送验证码的临时数据存储在3库,一次类推,如果觉得10个库还不够用可以根据业务增加</p>
+<p>10库以上作为cache库用来存储每张表的结果集数据,或者是其余的数据</p>
+<p>所有的key的命名规范必须带有类型+表名+条件</p>
+<h2>3. 总结</h2>
+<p>看了本小节之后相信大家都对缓存在时间开发中起到了什么样的作用有了个了解,这一小节的完成,我们的进阶篇也步入尾声了,下一篇是对于进阶篇的总结了,也多谢大家一路的陪伴!</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+            </div>
+        </div>
+    </div>
+    
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7qnay5.com1.z0.glb.clouddn.com/走向开源的第一年%20-%20PhalApi%202015年度开源总结%20-%20官方出品%20-%2020151214.pdf" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/PhalApi20151213-2.jpg"></a>
+		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">
+				<font size="2px">&copy;2015 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+
+			<p>
+				<!-- JiaThis Button BEGIN -->
+				<div id="ckepop">
+				<span class="jiathis_txt">分享到：</span>
+				<a class="jiathis_button_tsina">新浪微博</a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+				<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+				
+				&nbsp;&nbsp;
+				<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=19a39de7950ee074cdc92d8684962666107d8401191789b9ac3bda80b9efb705"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="PhalApi交流群" title="PhalApi交流群"></a>
+			</p>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','aizsj_k8pkmMmqLWzayG','2.0.0');
+</script>
+
+</html>

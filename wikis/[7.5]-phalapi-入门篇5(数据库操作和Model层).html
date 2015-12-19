@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.5]-phalapi-入门篇5(数据库操作和Model层) | PhalApi - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流群：421032344</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-入门篇5(数据库操作和Model层)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>本小节主要讲解基于notorm的数据库操作以及使用Model层进行快速的数据层的开发,请确保装有PDO拓展.</p>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1. 基于PDO的notorm进行的数据库操作</h2>
+<p>phalapi的数据库操作是使用的开源的notorm进行的,notorm是基于PDO链接数据库,在框架内部默认链接的是mysql数据库,如需修改<strong>链接其他数据库</strong>请修改 <strong>/PhalApi/PhalApi/DB/NotORM.php</strong>中的<strong>getPdo</strong>方法:</p>
+<pre><code> $dsn = sprintf('mysql:dbname=%s;host=%s;port=%d',
+                $dbCfg['name'], 
+                isset($dbCfg['host']) ? $dbCfg['host'] : 'localhost', 
+                isset($dbCfg['port']) ? $dbCfg['port'] : 3306
+            );</code></pre>
+<p>再讲之前其实这里是有一个坑的,机智的童鞋应该发现了<strong>框架自带的user数据库里面有一个以from命名字段,</strong>应为在notorm<strong>生成sql语句的时候不会给自动自动加上引号</strong> ,所以在修改添加删除有涉及这个字段的时候会报错,所以我们在这里把它<strong>改成phone</strong>(所以大家要注意字段名不能为关键字)</p>
+<p>下面我们正式来讲解如何使用,我们先在Demo/Api下面创建一个DB.php文件作为我们的DB模块,</p>
+<pre><code>&lt;?php
+/**
+ * 数据库接口服务类
+ */
+class Api_DB extends PhalApi_Api{
+    public function getRules(){
+        return array(
+            'insert' =&gt; array(
+                'id'    =&gt; array('name' =&gt; 'id', 'require' =&gt; true, 'desc' =&gt; '用户Id'),
+                'name'  =&gt; array('name' =&gt; 'name', 'require' =&gt; true, 'desc' =&gt; '用户名称'),
+                'phone' =&gt; array('name' =&gt; 'phone', 'require' =&gt; true, 'desc' =&gt; '用户手机号码'),
+            ),
+            'select' =&gt; array(
+                'id' =&gt; array('name' =&gt; 'id', 'require' =&gt; true, 'desc' =&gt; '用户Id'),
+            ),
+            'update' =&gt; array(
+                'id'    =&gt; array('name' =&gt; 'id', 'require' =&gt; true, 'desc' =&gt; '用户Id'),
+                'name'  =&gt; array('name' =&gt; 'name', 'require' =&gt; true, 'desc' =&gt; '用户名称'),
+                'phone' =&gt; array('name' =&gt; 'phone', 'require' =&gt; true, 'desc' =&gt; '用户手机号码'),
+            ),
+            'delete' =&gt; array(
+                'id' =&gt; array('name' =&gt; 'id', 'require' =&gt; true, 'desc' =&gt; '用户Id'),
+            ),
+        );
+    }</code></pre>
+<p>一共是增删改查四个接口代表四种操作(这里一定要配置好数据库,以及运行框架自带的sql文件<strong>phalapi_test.sql</strong>)</p>
+<h3>1.1 insert接口</h3>
+<p>我们先写增加接口如下:</p>
+<pre><code>/**
+ * 新增表服务
+ * @return int id 新增列的Id
+ */
+public function insert(){
+    $data = array(                                               //用数组构成需要插入键值一一对应
+        'id'    =&gt; $this-&gt;id,
+        'name'  =&gt; $this-&gt;name,
+        'phone' =&gt; $this-&gt;phone,
+    );
+    $rs   = DI()-&gt;notorm-&gt;user-&gt;insert($data);                  //执行数据库操作user代表的是表,返回结果是插入成功的值
+    return $rs['id'];                                           //返回插入的id
+}</code></pre>
+<p>重要的是 $rs   = DI()-&gt;notorm-&gt;user-&gt;insert($data); 这段代码执行了sql语句,<strong>user是表名</strong>(这里的表名会加下在dbs中配置的表前缀组成一个完整的表名)我们试着运行一下<a href="http://localhost/Public/?service=DB.insert&amp;name=miaomi&amp;phone=13010001000&amp;id=2" title="http://localhost/Public/?service=DB.insert&name=miaomi&phone=13010001000&id=2"><a href="http://localhost/Public/?service=DB.insert&name=miaomi&phone=13010001000&id=2">http://localhost/Public/?service=DB.insert&name=miaomi&phone=13010001000&id=2</a></a>会得到以下结果</p>
+<p><img src="http://i.imgur.com/V2L6Q3u.png" alt="" /></p>
+<h3>1.2 select接口</h3>
+<p>查询接口如下:</p>
+<pre><code>/**
+ * 查询
+ * @return array data 结果集
+ */
+public function select(){
+    $data   = array();
+    $data[] = DI()-&gt;notorm-&gt;user-&gt;select('name,phone')-&gt;where('id', $this-&gt;id)-&gt;fetch();
+    $data[] = DI()-&gt;notorm-&gt;user-&gt;select('name,phone')-&gt;where('id = ?', $this-&gt;id)-&gt;fetchAll();
+    $data[] = DI()-&gt;notorm-&gt;user-&gt;select('name,phone')-&gt;where('id != ?', $this-&gt;id)-&gt;fetchRows();
+    return $data;
+}</code></pre>
+<p>执行<a href="http://localhost/Public/?service=DB.select&amp;id=2" title="http://localhost/Public/?service=DB.select&id=2"><a href="http://localhost/Public/?service=DB.select&id=2">http://localhost/Public/?service=DB.select&id=2</a></a>会得到以下结果</p>
+<p><img src="http://i.imgur.com/cI8kBXr.png" alt="" /></p>
+<p>为什么会有这样的区别,通过下面的一些小提示大家就能看到区别在哪里:</p>
+<h4>1.2.1 select方法</h4>
+<p>select方法主要是用来指定返回值,接受的是一个string他的作用于真正查询语句select和from之间填充,大家如果把<strong>select('name,phone')</strong> 改为 select('*') 就会得到包括id的所有字段的返回</p>
+<h4>1.2.2 where方法和排序</h4>
+<p>where方法是查询中的重要的一个环节</p>
+<p><strong>where('id', $this-&gt;id)</strong>等同于<strong>where('id = ?', $this-&gt;id)</strong></p>
+<p><strong>where('id != ?', $this-&gt;id)</strong>这种方式只要是为了指定条件<strong>大于,等于,小于,不等于</strong>等</p>
+<p>当然如果是需要有多个条件就使用连续的where就可以<strong>-&gt;where('id != ?',1)-&gt;where('phone','1301000100')</strong>这种形式</p>
+<p>关于排序的使用其实和where差不多使用<strong>-&gt;order('字段名')</strong>如果要反排序在字段名后面加上DESC</p>
+<h4>1.2.3 fetch,fetchAll和fetchRows</h4>
+<p>大家有看到上面执行的三条查询语句后面的结束放到都不同这里讲解一下他们的区别和怎么用他们使用单独去执行sql语句</p>
+<p>fetch方法是获取单独的一条数据<strong>返回结果是不带下标的数组</strong> ,fetchAll和fetchRows不同在于他们<strong>返回的是包含多条数据一个带下标的数组</strong>,可以看到在条件一样的情况下第一条和第二条查询出来的结果区别是第二条多了一个0的下标,从此可得到如果是确定返回结果只有一条优先使用fetch,如果是多条结果优先使用fetchAll和fetchRows.</p>
+<p>fetchAll和fetchRows还提供了一个功能就是<strong>单独执行sql语句</strong></p>
+<pre><code>$sql = 'select * from tbl_user where id = :id';
+$params = array(':id' =&gt; $this-&gt;id);                 //替换:id为请求参数的id
+DI()-&gt;notorm-&gt;user-&gt;queryAll($sql, $params);         //或fetchRows($sql, $params)</code></pre>
+<p>这样就可以执行sql语句,包括一些复杂的查询sql可以使用此内方法执行(<strong>关联查询应当优先使用这种形式</strong>)</p>
+<h3>1.3 update接口</h3>
+<p>修改接口如下:</p>
+<pre><code>/**
+ * 修改
+ */
+public function update(){
+    $data = array(
+        'name'  =&gt; $this-&gt;name,
+        'phone' =&gt; $this-&gt;phone,
+    );
+    $rs   = DI()-&gt;notorm-&gt;user-&gt;where('id', $this-&gt;id)-&gt;update($data);
+    if($rs === false){
+        throw new PhalApi_Exception_BadRequest('修改数据失败');
+    }
+}</code></pre>
+<p>大家可以试一试执行之后是否有修改数据库<a href="http://localhost/Public/?service=DB.update&amp;id=2&amp;phone=13011112222&amp;name=wenwenwen" title="http://localhost/Public/?service=DB.update&id=2&phone=13011112222&name=wenwenwen"><a href="http://localhost/Public/?service=DB.update&id=2&phone=13011112222&name=wenwenwen">http://localhost/Public/?service=DB.update&id=2&phone=13011112222&name=wenwenwen</a></a></p>
+<p>使用其实和添加接口差不多只是一个是吧id作为值,一个是作为条件</p>
+<p>比较值得讲一下的是为什么使用<strong>if($rs === false)</strong></p>
+<p>原因是这样的,这里执行update方法之后获取得是影响行数,如果原本值就是一样的那就回返回0,只有在真正语句失败的时候会返回false所以这里使用全等于false作为判断是否执行成功的条件</p>
+<h3>1.4 delete接口</h3>
+<p>删除接口如下:</p>
+<pre><code>/**
+ * 删除
+ */
+public function delete(){
+    $rs   = DI()-&gt;notorm-&gt;user-&gt;where('id', $this-&gt;id)-&gt;delete();
+    if($rs === false){
+        throw new PhalApi_Exception_BadRequest('删除数据失败');
+    }
+}</code></pre>
+<p><a href="http://localhost/Public/?service=DB.delete&amp;id=2" title="http://localhost/Public/?service=DB.delete&id=2"><a href="http://localhost/Public/?service=DB.delete&id=2">http://localhost/Public/?service=DB.delete&id=2</a></a></p>
+<p>删除的操作也很简单,不过<strong>if($rs === false)</strong>就算没有删除到数据也会返回成功,只有当语句失败会反悔false,如果需要未删除到数据提示出错的同学可以把等号减少一个</p>
+<h3>1.5 打印sql语句</h3>
+<p>有的时候光靠自己去看代码很难确定是不是哪里写的有问题,但是如果查看生成出来的sql语句就能很快的确定问题出现在哪里</p>
+<p>大家可以试试在请求参数中加上<img src="http://i.imgur.com/o4ah1NW.png" alt="" /> 就可以打印出来生成的sql语句方便调试</p>
+<p><img src="http://i.imgur.com/jEtQJWb.png" alt="" /></p>
+<p>包括执行时间和先后顺序也一同打印出来了,也可以帮助大家找到慢查询在哪里</p>
+<h2>2. 使用Model进行数据库操作</h2>
+<p>使用Model操作是为了提高开发效率,让同样数据库操作可以进行高度的复用,也便于修改起来改一处则全改这种效果</p>
+<h3>2.1 传统的Model操作</h3>
+<p>所谓传统的Model操作也就是把数据操作封装起来,方便调用比如<strong>/Model/User.php</strong>下面的getByUserId方法</p>
+<pre><code>public function getByUserId($userId) {
+    return DI()-&gt;notorm-&gt;user-&gt;select('*')-&gt;where('id = ?', $userId)-&gt;fetch();
+}</code></pre>
+<p>在内部直接封装数据库操作使用如下代码调用</p>
+<pre><code>    $model = new Model_User();
+    $rs = $model-&gt;getByUserId($userId);</code></pre>
+<h3>2.2 框架自带的Model操作</h3>
+<p>当然这里介绍model的目的当然是解读一下phalapi内部提供的model操作</p>
+<p>使用自带model操作只需要继承<strong>PhalApi_Model_NotORM </strong>在实现如下方法</p>
+<pre><code>protected function getTableName($id) {
+    return 'user';
+}</code></pre>
+<p>这个方法主要作用是为了添加这个model 的表名,其实这两个操作在<strong>/Model/User.php</strong>中已经实现了,我们来重构一下getByUserId方法如下</p>
+<pre><code>public function getByUserId($userId) {
+    return $this-&gt;getORM()-&gt;select('*')-&gt;where('id = ?', $userId)-&gt;fetch();
+}</code></pre>
+<p><strong>$this-&gt;getORM()</strong>相当于<strong>DI()-&gt;notorm-&gt;</strong>(getTableName中设置的表名)</p>
+<p>然后我们重写select接口如下:</p>
+<pre><code>public function select(){
+    $model = new Model_User();
+    return $model-&gt;getByUserId($this-&gt;id);
+}</code></pre>
+<p>可以获得以下结果</p>
+<p><img src="http://i.imgur.com/O8CH0P0.png" alt="" /></p>
+<p>在这里phalapi自带的model和传统的model对比起来区别在于,phalapi统一制定表名不会应为方法果断导致的表名写错的失误</p>
+<p>另一方面phalapi自带的model提供了很多字基础操作,利用自动提示功能可以看到</p>
+<p><img src="http://i.imgur.com/7gc9Val.png" alt="" /></p>
+<p>我们来再次改造一下selete接口使用model自带的方法</p>
+<pre><code>public function select(){
+    $model = new Model_User();
+    return $model-&gt;get($this-&gt;id);
+}</code></pre>
+<p>执行结果和上面是一样的,这里注意一点这里Id的名字是dbs中配置的<strong>'key' =&gt; 'id',</strong>要和数据库中的ID字段名对应,但是这样会有一些问题会在后面进阶篇提及到</p>
+<h2>3. 总结</h2>
+<p>在本小节着重讲了CURD操作,以及其中的一些操作的使用和怎么使用phalapi的model层,希望大家看完本小节之后进行一些练习来熟练的掌握使用phalapi对数据库的操作,关于数据库操作的一些小技巧会单独在进阶篇中抽出一小节来讲讲在实际项目开发中遇到的问题以及如何解决,希望大家进一步关注!</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+            </div>
+        </div>
+    </div>
+    
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7qnay5.com1.z0.glb.clouddn.com/走向开源的第一年%20-%20PhalApi%202015年度开源总结%20-%20官方出品%20-%2020151214.pdf" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/PhalApi20151213-2.jpg"></a>
+		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">
+				<font size="2px">&copy;2015 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+
+			<p>
+				<!-- JiaThis Button BEGIN -->
+				<div id="ckepop">
+				<span class="jiathis_txt">分享到：</span>
+				<a class="jiathis_button_tsina">新浪微博</a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+				<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+				
+				&nbsp;&nbsp;
+				<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=19a39de7950ee074cdc92d8684962666107d8401191789b9ac3bda80b9efb705"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="PhalApi交流群" title="PhalApi交流群"></a>
+			</p>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','aizsj_k8pkmMmqLWzayG','2.0.0');
+</script>
+
+</html>

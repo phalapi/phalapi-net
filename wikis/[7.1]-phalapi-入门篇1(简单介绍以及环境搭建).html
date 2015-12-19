@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.1]-phalapi-入门篇1(简单介绍以及环境搭建) | PhalApi - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流群：421032344</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-入门篇1(简单介绍以及环境搭建)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>笔者也是在进行接口开发时,寻找一个方便的针对与API开发的框架时,发现了这个框架,经过了短时间的尝试,发现确实很便捷效率很高
+后面就立即运用到了正式的项目上,而且在后面的项目仍在一直使用,在其间也和很多希望了解这个框架的朋友有过很多交流,所以决定
+写一篇关于这个框架的教程,一方面是为了帮助一些初学者快速了解,一方面是希望把自己在实际上运用的一些小技巧分享出来希望对大家受用!</p>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1. 简单的介绍</h2>
+<p>官网上面有一句话让我特别有感受--<strong>接口，从简单开始！</strong> </p>
+<p>如何的一个感受呢,在最近进行一个项目开发的时候,应为项目比较紧急需要快速的开发,从定完需求以及接口之后,仅仅花了8个小时就完成了
+整个项目的接口(差不多20来个),我觉得从这点可以看出,如果这个框架用的熟练的话效率是及其高的.</p>
+<p>其实接口最关心的就是性能,通过测试下来phalapi相对于的消耗相对于比较小,引入文件在10个左右空框架返回2核2G并发点击数在1700左右很给力,
+在2核2G正常请求数据库接口相对于一套完整的业务平均下来最快的1000并发最慢的600并发,所以我觉得性能方面完全没问题(压力测试使用的是Loadrunner,ab压力基本是Loadrunner的3倍不太清楚为什么).</p>
+<p><strong>引用:</strong></p>
+<p><strong>勿忘初心，方得始终</strong></p>
+<p>虽然现在这个社会的节奏很快，但如果有时间时，我们不妨静下来，稍微思考一下，然后你会发现：慢慢来，比较快。</p>
+<p><strong>PhalApi 的初衷:</strong></p>
+<p>我们之所以开源这个框架，是因为我们想致力于提供可以快速进行开发后台接口的框架，并且通过这个框架分享更多开发的最佳实践、原则和模式！这就是我们的初心，也希望我们能一直坚持下去。</p>
+<p><strong>PhalApi命名的来源</strong></p>
+<p>得益于开源社区，现在有很多优秀的开源框架。确实有很多框架值得我们去学习和使用，其中高性能的Phalcon框架和可视化代码评审工具 Phabricator都是相当令人敬佩和认可的。前者在思想、模式和原则上有很好的文档说明；后者在包管理、命名写法等都非常好地体现了代码重用。受此两个框架的影响，故取名为：PhalApi。</p>
+<p><strong>通过PhalApi，我们希望可以</strong></p>
+<p>撑轻量级项目后台接口的快速开发；阐明如何进行框架设计、对应复杂领域业务、支撑海量服务等，以及分享好的思想、技巧工具和最佳实践。最后，争取成为国内主流的PHP接口开发框架。</p>
+<h2>2. 环境搭建</h2>
+<p>在这里推荐使用(我后面有些配置等都会基于以下环境)lnmp:</p>
+<p>Liunx+Nginx+php5.4以上+mysql</p>
+<p>我使用的是centos6.5</p>
+<p>有三种方式配置环境</p>
+<pre><code>1.手动编译安装(网上资料也挺多的但是容易出一些依赖什么什么的问题,新手不推荐)
+
+2.yum或apt-get安装(yum安装无法指定目录都会装到/etc下面去不方便管理,但是要玩liunx必须要会)
+
+3.lnmp一键安装工具(推荐:但是推荐基于上面几种都尝试过,这个安装方式基于--编译安装)</code></pre>
+<p>我推荐一个lnmp一键配置软件:</p>
+<p>官网:OneinStack – 一键PHP/JAVA安装工具:<a href="http://oneinstack.com/" title="OneinStack – 一键PHP/JAVA安装工具"><a href="http://oneinstack.com/">http://oneinstack.com/</a></a></p>
+<p>因为官网介绍的比较详细,在这里就不再多做说明!其余几种方式教程都比较多也不做说明!</p>
+<p>那不了解liunx怎么办那就用wampserver在windows下还是比较好用的.</p>
+<h2>3. 总结</h2>
+<p>最后希望大家能够可以先了解了解此框架的文档通读一下在接着看下面的文章更容易理解一下,在这一套教程中会以构建一个完整的项目为基础
+拓展开来讲解一些框架的机制,所以希望大家可以跟着一起做,能够收获的更多.</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+            </div>
+        </div>
+    </div>
+    
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7qnay5.com1.z0.glb.clouddn.com/走向开源的第一年%20-%20PhalApi%202015年度开源总结%20-%20官方出品%20-%2020151214.pdf" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/PhalApi20151213-2.jpg"></a>
+		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">
+				<font size="2px">&copy;2015 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+
+			<p>
+				<!-- JiaThis Button BEGIN -->
+				<div id="ckepop">
+				<span class="jiathis_txt">分享到：</span>
+				<a class="jiathis_button_tsina">新浪微博</a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+				<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+				
+				&nbsp;&nbsp;
+				<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=19a39de7950ee074cdc92d8684962666107d8401191789b9ac3bda80b9efb705"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="PhalApi交流群" title="PhalApi交流群"></a>
+			</p>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','aizsj_k8pkmMmqLWzayG','2.0.0');
+</script>
+
+</html>

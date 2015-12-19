@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.12]-phalapi-进阶篇6(解决大量数据存储数据库分表分库拓展) | PhalApi - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流群：421032344</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-进阶篇6(解决大量数据存储数据库分表分库拓展)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p>时隔半个月随着PHP7的推出为PHP打了一瓶兴奋剂,在性能提升了一倍的情况下我们会逐渐发现,瓶颈会集中在数据库操作,那我们的内容就接着数据库读写分离,来聊聊分表分库应该怎么玩,应为PhalApi的分表分库并不是非常方便,笔者在这里提供了一个分表分库数据库集群的拓展,详细文档请见博客<strong>基于PhalApi的DB集群拓展 V0.1bate</strong>
+大家可以自行在<strong>开源中国扩展Git地址</strong>中找到<strong>Cluster</strong>进行下载使用.</p>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<p>开源中国扩展Git地址:<a href="http://git.oschina.net/dogstar/PhalApi-Library"开源中国扩展Git地址""><a href="http://git.oschina.net/dogstar/PhalApi-Library">http://git.oschina.net/dogstar/PhalApi-Library</a></a></p>
+<h2>1. 场景</h2>
+<p>在实际工作中,我信奉一句话<strong>一切抛开业务的架构设计都是耍流氓</strong>所以我们从场景进行开篇</p>
+<h3>1.1 单条数据多查多写多改</h3>
+<p>这里做的例子,大家都在玩游戏把,玩游戏里面是不是有角色,角色是不是有装备,经验,物品以及等等,而且他会有一个特别的要求就是实时(因为我角色打了一个怪物获得了100xp我们不可能告诉他你等6个小时缓存时间结束了再来看,必须是实时的),当然我们可以使用缓存来解决这个问题我们下节会说道这个问题</p>
+<p>那么在这种场景下,一个用户对于角色的操作非常频繁而且唯一我们就很好采用分表分库的操作了,相对于单表操作他会把所有的操作分散到各各数据库去操作,这样对于单个数据库总执行sql语句量就会有个指数级的下降,以及数据量也会均衡分配到每个数据库,但是当我们进行这类单条数据操作的时候根本不会对性能有任何的影响,因为只是通过算法得出了这条记录存在于那个库那张表而已,</p>
+<h3>1.2 日志记录分析</h3>
+<p>就已上面的例子我们继续讲,如果有一天你的领导过来提了个需求,我需要一个数据分析系统来统计用户每天什么时间段最活跃.用户平均没人充值了多少钱啊,多少等级下用户冲钱最多啊,如果遇到这种问题你们会怎么办?三分钟思考</p>
+<p>我们先来看看我们会遇到什么样子的问题,数据量大积累当1000w+之后数据库执行sql基本没法看,大量的写入数据对数据库压力大</p>
+<p>我们再来看看分表分库怎么解决这个问题,1000w+数据库的情况下 比如你是4表4库一共16张表,那每张表的数量就是1000w/16=62w也就是每张表只需要存储62w的数据就ok了,当写入数据的时候会根据ID的顺序均衡写入4库执行sql的压力也就分布到了4个数据库,唯一的问题就是在执行where条件的时候可能需要对前置表进行遍历,而前置表的数据量就是1000w,当然前置表里面只存放ID和where条件的字段</p>
+<h2>2. 实现思路</h2>
+<p>就笔者在工作中接触到了很多案例的分表分库使用了根据城市,或者是其他的特性进行分表分库规则,这样一定会出现用户分布不均匀导致的莫一个库表压力巨大,我这里使用了均等分分割</p>
+<p>大家先看一组图就会明白了</p>
+<p><img src="http://i.imgur.com/CND3AL2.png" alt="" /></p>
+<ol>
+<li>
+<p>当我们进行插入的时候的操作如下:</p>
+<p>插入前置表获取主键,通过id得出应该存入几库几表在相应的地方写入数据</p>
+</li>
+<li>
+<p>当我们进行单条读取操作的时候操作如下:</p>
+<p>通过id获取应该在几库几表在相应的地方获取数据</p>
+</li>
+<li>
+<p>当我们使用where查询的时候操作如下:</p>
+<p>如果where条件在前置表存在从前置表通过where获取结果集ID,通过ID分组到库和表,然后进行查询在拼接结果集统一返回</p>
+</li>
+</ol>
+<h2>3. 优缺点</h2>
+<ol>
+<li>
+<p>优点:</p>
+<p>很好的避开了数据库存放数据过多效率底下的瓶颈</p>
+<p>在单条记录操作性能指数及提升</p>
+<p>数据量大的情况下where条件查询性能提高基本</p>
+<p>能对亿级的数据进行处理而且效率较高</p>
+<p>不需要考虑分表分库规则数据均等分布</p>
+</li>
+<li>
+<p>缺点</p>
+<p>where查询字段必须预先添加到,前置表不然就必须遍历数据库数量 * 表数量才能得到想要的结果</p>
+<p>where查询就算有前置表的情况下最坏的情况也需要遍历数据库数量 * 表数量才能得到想要的结果</p>
+<p>对一些特定查询天生不足比如排序</p>
+</li>
+</ol>
+<h2>4. 总结</h2>
+<p>在本小节的最好简单提及一下,<strong>基于PhalApi的DB集群拓展 V0.1bate</strong>功能展示比较局限童鞋们可以根据自己的业务需求来觉得是否使用,笔者也会在后期继续更新维护完善为一个比较方便的集群拓展.</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+            </div>
+        </div>
+    </div>
+    
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7qnay5.com1.z0.glb.clouddn.com/走向开源的第一年%20-%20PhalApi%202015年度开源总结%20-%20官方出品%20-%2020151214.pdf" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/PhalApi20151213-2.jpg"></a>
+		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">
+				<font size="2px">&copy;2015 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+
+			<p>
+				<!-- JiaThis Button BEGIN -->
+				<div id="ckepop">
+				<span class="jiathis_txt">分享到：</span>
+				<a class="jiathis_button_tsina">新浪微博</a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+				<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+				
+				&nbsp;&nbsp;
+				<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=19a39de7950ee074cdc92d8684962666107d8401191789b9ac3bda80b9efb705"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="PhalApi交流群" title="PhalApi交流群"></a>
+			</p>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','aizsj_k8pkmMmqLWzayG','2.0.0');
+</script>
+
+</html>

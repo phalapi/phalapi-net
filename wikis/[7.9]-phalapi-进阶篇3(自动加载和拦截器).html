@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.9]-phalapi-进阶篇3(自动加载和拦截器) | PhalApi - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流群：421032344</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-进阶篇3(自动加载和拦截器)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>最近工作上事情比较多所以更新比较慢希望大家见谅!这一次带来的是对于此框架自动加载机制的一个小引导,简单的聊聊是如何实现此类机制的,了解之后要如何使用,在就一同探讨一下如何使用自动加载来构建自己的公用函数以及拦截器,和如何使用拦截器,在这里在此强调一下,在进阶篇中谈论思想会比较多大家可以慢慢消化很多地方都是此框架优秀的地方,拿出来分享是为了大家更好的了解框架并且可以运用到自己的代码中去!</p>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1. 自动加载机制</h2>
+<p>关于自动加载使用phalapi框架的大家已经特别熟悉了,三层结构自动加载请求调用大家基本上感觉不到自动加载机制的存在,其实我们早就已经注册我们的文件,只是有一套完整的机制来封装这类事务让我们摸不着,我们的接口文件就是在<strong>index.php</strong>已经注册了</p>
+<pre><code>//装载你的接口
+DI()-&gt;loader-&gt;addDirs(array('Demo', 'Library'));</code></pre>
+<p>大家不妨进入到<strong>addDirs</strong>里面瞧瞧</p>
+<pre><code>public function addDirs($dirs) {
+    if(!is_array($dirs)) {
+        $dirs = array($dirs);
+    }
+    $this-&gt;dirs = array_merge($this-&gt;dirs, $dirs);
+}</code></pre>
+<p>其实当我们使用到addDirs的时候框架内部只是把我们定义好的路径存了起来,其实关键的地方已经在初始化<strong>PhalApi_Loader</strong>的时候被触发了,我们来一起看下<strong>PhalApi_Loader</strong>的构造函数</p>
+<pre><code>public function __construct($basePath, $dirs = array()) {
+    $this-&gt;setBasePath($basePath);
+    if (!empty($dirs)) {
+        $this-&gt;addDirs($dirs);
+    }
+    spl_autoload_register(array($this, 'load'));
+}</code></pre>
+<p>第一句方法的意思是设置根目录,后面一个判断条件和我们使用addDirs是一样的作用,那么问题来了<strong>spl_autoload_register</strong>做了什么,官方给出的解释是这样的</p>
+<p><strong>将函数注册到SPL__autoload函数队列中。如果该队列中的函数尚未激活，则激活它们</strong></p>
+<p><strong>参数</strong></p>
+<p><strong>欲注册的自动装载函数。如果没有提供任何参数，则自动注册autoload的默认实现函数spl_autoload()</strong></p>
+<p>其实说白了就是当实例化类的时候找不到可以用的类的时候会来请求在<strong>spl_autoload_register</strong>中定义好的处理方法,在此框架汇中配置的处理函数也就是<strong>PhalApi_Loader/load</strong>函数</p>
+<p>关于具体的如何实现如果匹配如果找到路径在如何引入这里就不一一说明了,当我们每次是new 一个类的时候都会去匹配有没有合适的,当没有合适的情况的时候,我们new的类名就是传递到<strong>PhalApi_Loader/load</strong>函数中去处理,根据框架规则引入我们需要的文件.</p>
+<h2>2. 公用函数和拦截器</h2>
+<p>当我们会使用自动加载机制了之后我们就可以来构建我们项目的公用函数和拦截器了,为什么要使用公用函数呢,在大部分请求下我们一套框架可能支持多个项目,当然项目与项目之间有不同的方法函数等等,但是也有公用的比如debug啊发送短信啊等等一些所有项目都可能去用到的一些功能性函数,或者是一些针对项目的拦截器啊</p>
+<h3>2.1 公共函数</h3>
+<p>首先在我们的根目录建立一个文件夹叫做<strong>general</strong>通用的意思,里面分别有两个文件夹Common(受TP的影响)和Intercept两个文件,我们在里面放入我们自己的文件,当然需要按照正确的规则比如Common_Base等</p>
+<p>然后我们要使用的话当然要注册我们这个general文件作为自带加载文件,然后注册自己需要用的类,如下:</p>
+<pre><code>//加载项目通用文件
+DI()-&gt;loader-&gt;addDirs('General');
+//通用函数基础类
+DI()-&gt;base = new Common_Base();</code></pre>
+<h3>2.2 拦截器</h3>
+<p>对于API来说拦截器的意义是巨大了,为什么这么说呢应为API是提供服务器的,我们可以用拦截器做很多的时候,比如限制开放接口,参数转移,json解包,请求解密,token校验等等一些处理都可以在内部进行.</p>
+<pre><code>//拦截器
+$Intercept           = new Intercept_app_default();
+//转换参数
+$_REQUEST            = $Intercept-&gt;turnparameter($_REQUEST);</code></pre>
+<p>可以作为参考,拦截器接受所有的post和get参数然后再内部统一做处理,参数转换,请求解密,token校验这些都是日常用到的不详提,这里哪一个有代表性的来说明一下就是json解包,为什么要json解包呢,应为在很多公司使用请求传参的时候都是封装成一个json请求过来的,框架接受是能接受到,但是无法使用框架自带的参数完整性校验机制了,令我非常难受(也有很多朋友也遇到此类问题),所有自己写了一个解包方法</p>
+<pre><code>//递归解包
+function test($params, $server){
+    if(is_array($params)){
+        foreach($params as $k =&gt; $v){
+            $server[$k] = $v;
+            $server = test($v, $server);
+        }
+    }
+    return $server;
+}
+//模拟一个json数组
+$params = array(
+    'a' =&gt; array(
+        'c' =&gt; 3,
+        'd' =&gt; 4
+    ),
+    'b' =&gt; 2,
+);
+$server = array();
+var_dump(test($params, $server));</code></pre>
+<p>我们获取到的返回结果是<strong>array(4) { [&quot;a&quot;]=&gt; array(2) { [&quot;c&quot;]=&gt; int(3) [&quot;d&quot;]=&gt; int(4) } [&quot;c&quot;]=&gt; int(3) [&quot;d&quot;]=&gt; int(4) [&quot;b&quot;]=&gt; int(2) }</strong>也就是把数组中的底层元素全部浮到了和a,b同级的目录并且也保证了a的数组完整性,这边必须要注意啊同名问题</p>
+<h2>3. 总结</h2>
+<p>本小节,主要讲述了一下关于自动加载的机制,以及为什么要使用拦截器已经目的和怎么让json通过拦截器也能使用框架的校验机制,那么今天就到这里了,希望此教程能够给你们带来帮助,在下一小节将会model层和事务进行已经深入的了解,祝大家天天开心~</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+            </div>
+        </div>
+    </div>
+    
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7qnay5.com1.z0.glb.clouddn.com/走向开源的第一年%20-%20PhalApi%202015年度开源总结%20-%20官方出品%20-%2020151214.pdf" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/PhalApi20151213-2.jpg"></a>
+		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi是一个PHP轻量级后台接口开发框架。<br/>
+                我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！
+            </font>
+			</p>
+			<p align="left">
+				<font size="2px">&copy;2015 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+
+			<p>
+				<!-- JiaThis Button BEGIN -->
+				<div id="ckepop">
+				<span class="jiathis_txt">分享到：</span>
+				<a class="jiathis_button_tsina">新浪微博</a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+				<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+				
+				&nbsp;&nbsp;
+				<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=19a39de7950ee074cdc92d8684962666107d8401191789b9ac3bda80b9efb705"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="PhalApi交流群" title="PhalApi交流群"></a>
+			</p>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','aizsj_k8pkmMmqLWzayG','2.0.0');
+</script>
+
+</html>
