@@ -53,7 +53,7 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                <h4><a href="/wikis/%5B5.5%5D-%E8%81%94%E7%B3%BB%E5%92%8C%E5%8A%A0%E5%85%A5%E6%88%91%E4%BB%AC.html">上一章</a>     <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B5.8%5D-%E8%87%B4%E6%A1%86%E6%9E%B6%E8%B4%A1%E7%8C%AE%E8%80%85%EF%BC%9A%E5%8A%A0%E5%85%A5PhalApi%E5%BC%80%E6%BA%90%E6%8C%87%E5%8D%97.html">下一章</a></h4>
+                <p>ti####<a href="/wikis/%5B5.5%5D-%E8%81%94%E7%B3%BB%E5%92%8C%E5%8A%A0%E5%85%A5%E6%88%91%E4%BB%AC.html">上一章</a>     <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B5.8%5D-%E8%87%B4%E6%A1%86%E6%9E%B6%E8%B4%A1%E7%8C%AE%E8%80%85%EF%BC%9A%E5%8A%A0%E5%85%A5PhalApi%E5%BC%80%E6%BA%90%E6%8C%87%E5%8D%97.html">下一章</a> </p>
 <hr />
 <p>PhalApi从1.2版本进入多人协助开发和项目使用后，也开始遵守严格的版本控制。我们平均每周会修复已发现的BUG，每2-4周发布一个小版本。  </p>
 <h2>分支说明</h2>
@@ -64,8 +64,12 @@
 <li>dev 开发分支，当前用于协同开发的分支，以存放共享未完成的代码</li>
 </ul>
 <h2>更新日记</h2>
+<h3>2015-12-26</h3>
+<pre><code>1.修改notorm使用sql语句使用:和?替换执行sql时,对于int,bool,null进行单独处理</code></pre>
 <h3>2015-12-xx</h3>
-<pre><code>1、listAllApis.php在线接口列表，追加对“更多说明”的使用支持，即使用注释@desc</code></pre>
+<pre><code>1、listAllApis.php在线接口列表，追加对“更多说明”的使用支持，即使用注释@desc
+2、添加PhalApi基础教程到官方wiki，感谢 @喵了个咪 提供
+3、添加Object-C的SDK包XSHttpTool，感谢 @garden！ 提供</code></pre>
 <h3>2015-11-27</h3>
 <pre><code>1、重构并设计格式化类：PhalApi_Request_Var，使之支持项目扩展定制化；并添加callable回调类型、为数组和日期补充最值检测
 2、PhalApi_DB_NotORM上添加对数据库维度的事务操作支持 感谢@研究研究 反馈

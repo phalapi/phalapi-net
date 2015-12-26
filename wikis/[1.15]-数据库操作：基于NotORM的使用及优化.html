@@ -186,7 +186,8 @@ array(3) {
 <p>即可获取全部的数据，不再受限于分页。<br />
 这里提供了fetchAll()和fetchRows()两种等效的操作，是为了减少记忆的痛苦，下同。  </p>
 <h3>(3)提供更灵活的查询方式 - queryAll() / queryRows()</h3>
-<p>当需要进行复杂的SQL查询时，可以使用此接口，如：  </p>
+<p>当需要进行复杂的SQL查询时，可以使用此接口，如：<br />
+(注意:limit替换值:start和:num必须使用int类型)</p>
 <pre><code class="language-javascript">$sql = 'select * from example AS ep LEFT JOIN user AS u ON ep.ui
 d = u.id  where ep.touid = :userId ORDER BY dateline desc LIMIT :start,:num';
 $params = array(':userId' =&gt; $userId, ':start' =&gt; $start, ':num' =&gt; $num);
