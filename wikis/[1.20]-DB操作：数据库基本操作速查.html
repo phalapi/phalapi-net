@@ -60,7 +60,116 @@
 君掌盛无边，<br />
 刹那含永劫。</em></p>
 <p><em>-- 《天真的预兆》</em></p>
-<h2>1.20.1 数据库基本操作速查表</h2>
+<h2>1.20.1 前提</h2>
+<p>为了让大家更为明确数据库NotORM的使用，我们假设有以下数据库表：</p>
+<pre><code>-- ----------------------------
+-- Table structure for `tbl_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_user`;
+CREATE TABLE `tbl_user` (
+  `id` int(11) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `age` int(3) DEFAULT NULL,
+  `note` varchar(45) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tbl_user
+-- ----------------------------
+INSERT INTO `tbl_user` VALUES ('1', 'dogstar', '18', 'oschina', '2015-12-01 09:42:31');
+INSERT INTO `tbl_user` VALUES ('2', 'Tom', '21', 'USA', '2015-12-08 09:42:38');
+INSERT INTO `tbl_user` VALUES ('3', 'King', '100', 'game', '2015-12-23 09:42:42');</code></pre>
+<p>并且，假设我们已获得了tbl_user表对应的notorm实例$user，此NotORM表实例可从两种方式获得：  </p>
+<ul>
+<li>1、使用原生态的notorm，即：$user = DI()-&gt;notorm-&gt;user  </li>
+<li>2、使用PhalApi_Model_NotORM基类的方式，即：$user = $this-&gt;getORM()，如：</li>
+</ul>
+<pre><code>&lt;?php
+class Model_User extends PhalApi_Model_NotORM {
+    protected function getTableName($id) {
+        return 'user';
+    }
+
+    public function doSth() {
+        $user = $this-&gt;getORM(); //获取NotORM表实例
+    }
+}</code></pre>
+<p>下面，就让我们结合实例来尝试一下数据库的操作吧！</p>
+<h2>1.20.2 基本操作</h2>
+<h3>(1)SELECT</h3>
+<p>单个字段：</p>
+<pre><code>//SELECT id FROM `tbl_user`
+$user-&gt;select('id') </code></pre>
+<p>多个字段获取：</p>
+<pre><code>//SELECT id, name, age FROM `tbl_user`
+$user-&gt;select('id, name, age') </code></pre>
+<p>字段别名获取：</p>
+<pre><code>//SELECT id, name, MAX(age) AS max_age FROM `tbl_user`
+$user-&gt;select('id, name, MAX(age) AS max_age') </code></pre>
+<p>全部字段（缺省）获取：</p>
+<pre><code>//SELECT * FROM `tbl_user`
+$user-&gt;select('*') </code></pre>
+<h3>(2)WHERE</h3>
+<p>单个字段查询：</p>
+<pre><code>//WHERE id = 1
+$user-&gt;where('id', 1)
+$user-&gt;where('id = ?', 1)
+$user-&gt;where(array('id', 1))</code></pre>
+<p>多个字段查询：</p>
+<pre><code>//WHERE id &gt; 1 AND age &gt; 18
+$user-&gt;where('id &gt; ?', 1)-&gt;where('age &gt; ?', 18)
+$user-&gt;and('id &gt; ?', 1)-&gt;and('age &gt; ?', 18)
+$user-&gt;where('id &gt; ? AND age &gt; ?', 1, 18)
+$user-&gt;where(array('id &gt; ?' =&gt; 1, 'age &gt; ?' =&gt; 10))
+
+//WHERE name = 'dogstar' AND age = 18
+$user-&gt;where(array('name' =&gt; 'dogstar', 'age' =&gt; 18))
+
+//WHERE name = 'dogstar' OR age = 18
+$user-&gt;or('name', 'dogstar')-&gt;or('age', 18)</code></pre>
+<p>IN查询：</p>
+<pre><code>//WHERE id IN (1, 2, 3)
+$user-&gt;where('id', array(1, 2, 3))
+
+//WHERE id NOT IN (1, 2, 3)
+$user-&gt;where('NOT id', array(1, 2, 3))
+
+//WHERE (id, age) IN ((1, 18), (2, 20))
+$user-&gt;where('(id, age)', array(array(1, 18), array(2, 20)))</code></pre>
+<p>模糊匹配查询：</p>
+<pre><code>//WHERE name LIKE '%dog%'
+$user-&gt;where('name LIKE ?', '%dog%')</code></pre>
+<p>NULL判断查询：</p>
+<pre><code>//WHERE (name IS NULL)
+$user-&gt;where('name', null)</code></pre>
+<h3>(3)ORDER BY</h3>
+<p>单个字段排序：</p>
+<pre><code>//ORDER BY age
+$user-&gt;order('age')
+
+//ORDER BY age DESC
+$user-&gt;order('age DESC')</code></pre>
+<p>多个字段排序：</p>
+<pre><code>//ORDER BY id, age DESC
+$user-&gt;order('id')-&gt;order('age DESC')
+$user-&gt;order('id', age DESC')</code></pre>
+<h3>(4)LIMIT</h3>
+<p>按数量限制：</p>
+<pre><code>//LIMIT 10
+$user-&gt;limit(10)</code></pre>
+<p>按数量和偏移量限制（请注意：先偏移量、再数量）：</p>
+<pre><code>//LIMIT 2,10
+$user-&gt;limit(2, 10)</code></pre>
+<h3>(5)GROUP BY和HAVING</h3>
+<p>不带HAVING：</p>
+<pre><code>//GROUP BY note
+$user-&gt;group('note')</code></pre>
+<p>带HAVING：</p>
+<pre><code>//GROUP BY note HAVING age &gt; 10
+$user-&gt;group('note', 'age &gt; 10')</code></pre>
+<h2>1.20.3 CURD之查询类</h2>
 <table>
 <thead>
 <tr>
@@ -93,6 +202,13 @@
 <td>是</td>
 </tr>
 <tr>
+<td>fetchPairs()</td>
+<td>获取键值对</td>
+<td>$row = $user-&gt;fetchPairs('id', 'name');</td>
+<td>第二个参数为空时，可取多个值，并且多条纪录</td>
+<td>否</td>
+</tr>
+<tr>
 <td>fetchAll()</td>
 <td>获取全部的行</td>
 <td>$rows = $user-&gt;where('id', array(1, 2, 3))-&gt;fetchAll();</td>
@@ -107,19 +223,58 @@
 <td>是</td>
 </tr>
 <tr>
-<td>queryAll($)</td>
-<td>复杂查询下获取全部的行</td>
+<td>queryAll()</td>
+<td>复杂查询下获取全部的行，默认下以主键为下标</td>
 <td>$rows = $user-&gt;queryAll($sql, $parmas);</td>
 <td>等效于queryRows()</td>
 <td>是</td>
 </tr>
 <tr>
 <td>queryRows()</td>
-<td>复杂查询下获取全部的行</td>
+<td>复杂查询下获取全部的行，默认下以主键为下标</td>
 <td>$rows = $user-&gt;queryRows($sql, $parmas);</td>
 <td>等效于queryAll()</td>
 <td>是</td>
 </tr>
+<tr>
+<td>count()</td>
+<td>查询总数</td>
+<td>$total = $user-&gt;count('id');</td>
+<td>第一参数可省略</td>
+<td>否</td>
+</tr>
+<tr>
+<td>min()</td>
+<td>取最小值</td>
+<td>$minId = $user-&gt;min('id');</td>
+<td>否</td>
+</tr>
+<tr>
+<td>max()</td>
+<td>取最大值</td>
+<td>$maxId = $user-&gt;max('id');</td>
+<td>否</td>
+</tr>
+<tr>
+<td>sum()</td>
+<td>计算总和</td>
+<td>$sum = $user-&gt;sum('age');</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<h2>1.20.4 CURD之插入类</h2>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>说明</th>
+<th>示例</th>
+<th>备注</th>
+<th>是否PhalApi新增</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td>insert()</td>
 <td>插入数据</td>
@@ -135,19 +290,47 @@
 <td>否</td>
 </tr>
 <tr>
-<td>update()</td>
-<td>更新数据</td>
-<td>$user-&gt;where('id', 1)-&gt;update($data);</td>
-<td>更新异常时返回fals，数据无变化时返回0，成功更新返回1</td>
-<td>否</td>
-</tr>
-<tr>
 <td>insert_update()</td>
 <td>插入/更新</td>
 <td>接口签名：insert_update(array $unique, array $insert, array $update = array()</td>
 <td>不存时插入，存在时更新</td>
 <td>否</td>
 </tr>
+</tbody>
+</table>
+<h2>1.20.5 CURD之更新类</h2>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>说明</th>
+<th>示例</th>
+<th>备注</th>
+<th>是否PhalApi新增</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>update()</td>
+<td>更新数据</td>
+<td>$user-&gt;where('id', 1)-&gt;update($data);</td>
+<td>更新异常时返回fals，数据无变化时返回0，成功更新返回1</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<h2>1.20.6 CURD之删除类</h2>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>说明</th>
+<th>示例</th>
+<th>备注</th>
+<th>是否PhalApi新增</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td>delete()</td>
 <td>删除</td>
@@ -157,12 +340,9 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>温馨提示：<br />
-上表中的$user变量为NotORM表实例，可以通过两种方式获得：<br />
-1、使用原生态的notorm，即：$user = DI()-&gt;notorm-&gt;user<br />
-2、使用PhalApi_Model_NotORM基类的方式，即：$user = $this-&gt;getORM()  </p>
-</blockquote>
+<h3>更多请参考 <a href="http://www.notorm.com/#api">NotORM官网接口说明</a></h3>
+<h3>更多请参考 <a href="http://www.notorm.com/#api">NotORM官网接口说明</a></h3>
+<h3>更多请参考 <a href="http://www.notorm.com/#api">NotORM官网接口说明</a></h3>
 <hr />
 <h4><a href="/wikis/%5B1.19%5D-DI%E6%9C%8D%E5%8A%A1%E9%80%9F%E6%9F%A5%EF%BC%9A%E5%90%84%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E4%B8%80%E8%A7%88%E8%A1%A8.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.21%5D-%E7%B1%BB%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%BD%BD%EF%BC%9A%E9%81%B5%E5%BE%AAPEAR%E5%8C%85%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83.html">下一章</a></h4>
             </div>
