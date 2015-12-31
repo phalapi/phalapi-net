@@ -66,10 +66,11 @@
 <h2>更新日记</h2>
 <h3>2015-12-26</h3>
 <pre><code>1.修改notorm使用sql语句使用:和?替换执行sql时,对于int,bool,null进行单独处理</code></pre>
-<h3>2015-12-xx</h3>
+<h3>2015-12-xx （非100%完美兼容）</h3>
 <pre><code>1、listAllApis.php在线接口列表，追加对“更多说明”的使用支持，即使用注释@desc
 2、添加PhalApi基础教程到官方wiki，感谢 @喵了个咪 提供
-3、添加Object-C的SDK包XSHttpTool，感谢 @garden！ 提供</code></pre>
+3、添加Object-C的SDK包XSHttpTool，感谢 @garden！ 提供
+4、默认采用以数组的形式返回结果集，1.3.1及以下版本需要保持原来主键为下标的返回时，需要在init.php文件手动切换：DI()-&gt;notorm-&gt;keepPrimaryKeyIndex();</code></pre>
 <h3>2015-11-27</h3>
 <pre><code>1、重构并设计格式化类：PhalApi_Request_Var，使之支持项目扩展定制化；并添加callable回调类型、为数组和日期补充最值检测
 2、PhalApi_DB_NotORM上添加对数据库维度的事务操作支持 感谢@研究研究 反馈
