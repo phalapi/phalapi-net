@@ -337,7 +337,7 @@ var_dump(in_array('N', array(0, 1, 2))); //结果为true，因为 'N' == 0</code
 array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1`, `2`))</code></pre>
 <h3>(8)文件 file</h3>
 <p>在需要对上传的文件进行过滤、接收和处理时，可以使用文件类型，如：</p>
-<pre><code class="language-javascript">array('name' =&gt; 'upfile', 'type' =&gt; 'file', 'min' =&gt; '', 'max' =&gt; '', 'range' =&gt; array('image/jpeg', 'image/png'))</code></pre>
+<pre><code class="language-javascript">array('name' =&gt; 'upfile', 'type' =&gt; 'file', 'min' =&gt; '', 'max' =&gt; '', 'range' =&gt; array('image/jpeg', 'image/png') , 'ext' =&gt; array('txt','xml'))</code></pre>
 <p>其中，min和max分别对应文件大小的范围，单位为：字节；range为允许的文件类型，使用数组配置，且不区分大小写。 </p>
 <p>如果成功，返回的值对应的是$_FILES[&quot;upfile&quot;]，即会返回：</p>
 <pre><code class="language-javascript">array(
@@ -355,6 +355,18 @@ array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1
 <li>$_FILES[&quot;upfile&quot;][&quot;error&quot;] - 由文件上传导致的错误代码</li>
 </ul>
 <p>若需要配置默认值default选项，则也应为一数组，且其格式应类似如上。</p>
+<p>其中,ext是对文件后缀名进行验证,当如果上传文件后缀名不匹配时将抛出异常。文件扩展名的过滤可以类似这样进行配置：</p>
+<pre><code>//单个后缀名 - 数组形式
+'ext' =&gt; array('jpg')
+
+//单个后缀名 - 字符串形式
+'ext' =&gt; 'jpg'
+
+//多个后缀名 - 数组形式
+'ext' =&gt; array('jpg', 'jpeg', 'png', 'bmp')
+
+//多个后缀名 - 字符串形式（以英文逗号分割）
+'ext' =&gt; 'jpg,jpeg,png,bmp'</code></pre>
 <h3>(9)回调 callable</h3>
 <p>当需要利用已有函数进行自定义验证时，可采用回调参数规则，如：  </p>
 <pre><code>//配置规则
