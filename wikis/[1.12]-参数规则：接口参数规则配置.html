@@ -337,8 +337,15 @@ var_dump(in_array('N', array(0, 1, 2))); //结果为true，因为 'N' == 0</code
 array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1`, `2`))</code></pre>
 <h3>(8)文件 file</h3>
 <p>在需要对上传的文件进行过滤、接收和处理时，可以使用文件类型，如：</p>
-<pre><code class="language-javascript">array('name' =&gt; 'upfile', 'type' =&gt; 'file', 'min' =&gt; '', 'max' =&gt; '', 'range' =&gt; array('image/jpeg', 'image/png') , 'ext' =&gt; array('txt','xml'))</code></pre>
-<p>其中，min和max分别对应文件大小的范围，单位为：字节；range为允许的文件类型，使用数组配置，且不区分大小写。 </p>
+<pre><code class="language-javascript">array(
+    'name' =&gt; 'upfile', 
+    'type' =&gt; 'file', 
+    'min' =&gt; 0, 
+    'max' =&gt; 1024 * 1024, 
+    'range' =&gt; array('image/jpeg', 'image/png') , 
+    'ext' =&gt; array('txt','xml')
+)</code></pre>
+<p>其中，min和max分别对应文件大小的范围，单位为字节；range为允许的文件类型，使用数组配置，且不区分大小写。 </p>
 <p>如果成功，返回的值对应的是$_FILES[&quot;upfile&quot;]，即会返回：</p>
 <pre><code class="language-javascript">array(
      'name' =&gt; '',
