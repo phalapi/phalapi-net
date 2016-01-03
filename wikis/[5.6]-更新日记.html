@@ -64,14 +64,19 @@
 <li>dev 开发分支，当前用于协同开发的分支，以存放共享未完成的代码</li>
 </ul>
 <h2>更新日记</h2>
-<h3>2016-01-xx （非100%完美兼容）</h3>
+<h3>2016-01-02</h3>
+<pre><code>1、修改notorm使用sql语句使用:和?替换执行sql时,对于int,bool,null进行单独处理
+2、优化了PhalApi_Request_Formatter_File,支持了对文件上传类型验证增加了ext后缀名验证
+3、提供CHM格式的wiki文档
+4、初始化文件init.php简化，并默认装载扩展类库Library目录
+5、修正install可视化安装中对listAllApis.php 和 checkApiParams.php 文件中的项目名称
+6、其他一些轻量bugfixed</code></pre>
+<h3>2015-12-31（非100%完美兼容）</h3>
 <pre><code>1、listAllApis.php在线接口列表，追加对“更多说明”的使用支持，即使用注释@desc
 2、添加PhalApi基础教程到官方wiki，感谢 @喵了个咪 提供
 3、添加Object-C的SDK包XSHttpTool，感谢 @garden！ 提供
-4、默认采用以数组的形式返回结果集，1.3.1及以下版本需要保持原来主键为下标的返回时，需要在init.php文件手动切换：DI()-&gt;notorm-&gt;keepPrimaryKeyIndex();
-5、修改notorm使用sql语句使用:和?替换执行sql时,对于int,bool,null进行单独处理
-6、优化了PhalApi_Request_Formatter_File,支持了对文件上传类型验证增加了ext后缀名验证</code></pre>
-<h3>2015-11-27</h3>
+4、默认采用以数组的形式返回结果集，1.3.1及以下版本需要保持原来主键为下标的返回时，需要在init.php文件手动切换：DI()-&gt;notorm-&gt;keepPrimaryKeyIndex();</code></pre>
+<h3>2015-11-27 - v1.3.1</h3>
 <pre><code>1、重构并设计格式化类：PhalApi_Request_Var，使之支持项目扩展定制化；并添加callable回调类型、为数组和日期补充最值检测
 2、PhalApi_DB_NotORM上添加对数据库维度的事务操作支持 感谢@研究研究 反馈
 3、重构PhalApi_DB_NotORM，以便支持定制MySQL外的数据库操作
@@ -85,7 +90,7 @@
 3、添加了DB_Cluster扩展类库，由 @喵了个咪 提供
 4、添加了Medoo扩展类库，由 @转身.满目疮痍 提供
 5、DI()-&gt;notorm::queryAll()与DI()-&gt;notorm::queryRows()第二个参数$parmas改成缺省默认为array()</code></pre>
-<h3>2015-10-25</h3>
+<h3>2015-10-25 - v1.3.0</h3>
 <pre><code>1、用户扩展类库的完善，添加创建会话的入口，与文档完善
 2、初始化文件init.php简化
 3、提供可视化安装向导
