@@ -154,7 +154,7 @@ array(3) {
 </blockquote>
 <p>-&gt;select('expires_time, user.username, user.nickname')这一行调用将会【自动产生关联操作】，而ON 的字段，则是这个字段关联你配置的【表结构】，外键默认为： 表名_id 。</p>
 <h3>(4)加1操作</h3>
-<p>NortORM已提供了NotORM_Literal，其用法如下：  </p>
+<p>NotORM已提供了NotORM_Literal，其用法如下：  </p>
 <pre><code class="language-javascript">DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;update(array('age' =&gt; new NotORM_Literal("age + 1")));</code></pre>
 <p>当需要更新为当前时间，可以：  </p>
 <pre><code class="language-javascript">$array = array(
@@ -258,7 +258,7 @@ string(4) "test"
 
 //纪录不存在时，返回 bool(false)</code></pre>
 <h3>(8)显式的SQL语法异常提示</h3>
-<p>很多时候，在开发时，我们对数据库操作一开始会存在一些SQL语法的问题，PDO会返回false,且原来NotORM也是使用 <strong>静默方式</strong> 来处理这类错误，从而使得开人员有时难以发现这些问题，除非将调试的SQL手动放到数据加执行才能发现问题所在。  </p>
+<p>很多时候，在开发时，我们对数据库操作一开始会存在一些SQL语法的问题，PDO会返回false,且原来NotORM也是使用 <strong>静默方式</strong> 来处理这类错误，从而使得开发人员有时难以发现这些问题，除非将调试的SQL手动放到数据库执行才能发现问题所在。  </p>
 <p>为了能给开发同学更早、更直观的方式查看问题的所在，这里对NotORM底层进行了调整，使用了 <strong>显式方式</strong> 的策略来处理，即：直接抛出PDO异常。  </p>
 <p>如：</p>
 <pre><code class="language-javascript">$userId = 1;
@@ -422,7 +422,7 @@ $model-&gt;delete(1);</code></pre>
      * 对LOB的ext_data字段进行格式化(序列化)
      */
     protected function formatExtData(&amp;$data) {
-        if (isset($data['ext_data']) &amp;&amp; !is_string($data['ext_data'])) {
+        if (isset($data['ext_data'])) {
             $data['ext_data'] = serialize($data['ext_data']);
         }
     }
@@ -431,7 +431,7 @@ $model-&gt;delete(1);</code></pre>
      * 对LOB的ext_data字段进行解析(反序列化)
      */
     protected function parseExtData(&amp;$data) {
-        if (isset($data['ext_data']) &amp;&amp; !is_string($data['ext_data'])) {
+        if (isset($data['ext_data'])) {
             $data['ext_data'] = unserialize($data['ext_data'], true);
         }
     }
@@ -450,7 +450,7 @@ class Model_User extends Common_Model_NotORM {
 
 //带有ext_data的更新
 $extData = array('level' =&gt; 3, 'coins' =&gt; 256);
-$data = array('name' =&gt; 'test', 'update_time' =&gt; time(), 'ext_data' =&gt; $$extData);
+$data = array('name' =&gt; 'test', 'update_time' =&gt; time(), 'ext_data' =&gt; $extData);
 $model-&gt;update(1, $data); //基于主键的快速更新
 </code></pre>
 <h3>(2)分表处理</h3>
