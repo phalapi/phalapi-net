@@ -451,7 +451,17 @@ var_dump($id); //新增的ID
 $model = new Model_User();
 var_dump($model-&gt;insert($data)); //输出新增的ID</code></pre>
 <h4>批量插入：</h4>
-<pre><code>// TODO</code></pre>
+<pre><code>// INSERT INTO tbl_user (name, age, note) VALUES ('A君', 12, 'AA'), ('B君', 14, 'BB'), ('C君', 16, 'CC')
+$rows = array(
+    array('name' =&gt; 'A君', 'age' =&gt; 12, 'note' =&gt; 'AA'),
+    array('name' =&gt; 'B君', 'age' =&gt; 14, 'note' =&gt; 'BB'),
+    array('name' =&gt; 'C君', 'age' =&gt; 16, 'note' =&gt; 'CC'),
+);
+$rs = $user-&gt;insert_multi($rows);
+var_dump($rs);
+
+// 输出
+int(3) //成功插入的条数</code></pre>
 <h4>插入/更新：</h4>
 <pre><code>// INSERT INTO tbl_user (id, name, age, note) VALUES (8, 'PhalApi', 1, 'framework') ON DUPLICATE KEY UPDATE age = 2
 $unique = array('id' =&gt; 8);
