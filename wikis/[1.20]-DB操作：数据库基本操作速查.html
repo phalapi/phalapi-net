@@ -365,7 +365,7 @@ array(2) {
 <h4>获取全部的行：</h4>
 <pre><code>// SELECT * FROM tbl_user
 var_dump($user-&gt;fetchAll());  //全部表数据输出，输出结果略，相当于$user-&gt;fetchRows()</code></pre>
-<h4>复杂查询下获取全部的行（默认下以主键为下标）：</h4>
+<h4>复杂查询下获取全部的行（1.3.1及以前版本默认下以主键为下标，1.3.1以后的版本则默认采用数组方式）：</h4>
 <pre><code>// SELECT name FROM tbl_user WHERE age &gt; :age LIMIT 1
 $sql = 'SELECT name FROM tbl_user WHERE age &gt; :age LIMIT 1';
 $params = array(':age' =&gt; 18);
