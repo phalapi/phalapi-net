@@ -181,7 +181,7 @@ $mq = new Task_MQ_File(new PhalApi_Cache_File(array('path' =&gt; '/tmp/cache')))
 $mq = new Task_MQ_DB();
 
 //Array MQ队列
-$mq = new Task_MQ_DB();</code></pre>
+$mq = new Task_MQ_Array();</code></pre>
 <h3>(3)模板方法 - 本地和远程两种调度策略</h3>
 <p>在完成底层的实现后，我们可以再来关注如何调度的问题，目前可以有本地调度和远程调度两种方式。  </p>
 <ul>
@@ -199,7 +199,7 @@ $mq = new Task_MQ_DB();</code></pre>
 <p>再下一层，则是具体的实现，即我们所说的实现层。<br />
 客户可以根据自己的需要进行选取使用，他们也可以扩展他们需要的MQ。重要的是，他们需要自己实现计划任务的接口服务。  </p>
 <p>根据爱因斯坦说的，要保持简单，但不要过于简单。<br />
-所以，为了更好地理解计划任务的运行过程，我们提前了简单的时序图：<br />
+所以，为了更好地理解计划任务的运行过程，我们提供了简单的时序图：<br />
 <img src="http://webtools.qiniudn.com/task_5.jpg" alt="a pic" />  </p>
 <p>上图主要体现了两个操作流程：加入MQ和MQ消费。<br />
 其中，注意这两个流程是共享同一个MQ的，否则不能共享数据。同时调度是会进行循环式的调度，并且穷极之。</p>

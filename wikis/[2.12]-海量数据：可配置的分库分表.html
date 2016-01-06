@@ -137,7 +137,7 @@
   tbl_demo_1      db_demo
   tbl_demo_2      db_demo</code></pre>
 <h3>(2)准备需要创建表的基本SQL语句</h3>
-<p>这里说的基本SQL语句是指：仅是这个表所特有的字段，排队已固定公共有的自增主键id，和扩展字段ext_data。下面是一个示例：</p>
+<p>这里说的基本SQL语句是指：仅是这个表所特有的字段，排除已固定公共有的自增主键id，和扩展字段ext_data。下面是一个示例：</p>
 <pre><code class="language-javascript">`name` varchar(11) DEFAULT NULL,</code></pre>
 <h3>(3)生成并导入SQL语句</h3>
 <p>由于拆分后的数据库表数量众多，这里提供了一个快捷的脚本工具来生成所需要创建的数据库表。</p>
