@@ -1,0 +1,342 @@
+<HTML>
+ <HEAD>
+  <META name="GENERATOR" content="htm2chm 3.0.9.3">
+  <!-- Sitemap 1.0 -->
+ </HEAD>
+<BODY>
+ <OBJECT type="text/site properties">
+  <PARAM name="Window Styles" value="0x800027">
+  <PARAM name="ImageType" value="Folder">
+  <PARAM name="Font" value="微软雅黑,9,1">
+ </OBJECT>
+<UL>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="&Auml;&iquest;&Acirc;&frac14;">
+  <PARAM name="Local" value="index.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="&frac12;&Oacute;&iquest;&Uacute;&pound;&not;&acute;&Oacute;&frac14;&ograve;&micro;&yen;&iquest;&ordf;&Ecirc;&frac14;&pound;&iexcl;">
+  <PARAM name="Local" value="接口，从简单开始！.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.1]-&Iuml;&Acirc;&Ocirc;&Oslash;&Oacute;&euml;&deg;&sup2;&times;&deg;">
+  <PARAM name="Local" value="[1.1]-下载与安装.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.2]-&acute;&acute;&frac12;&die;&Ograve;&raquo;&cedil;&ouml;&times;&Ocirc;&frac14;&ordm;&micro;&Auml;&Iuml;&icirc;&Auml;&iquest;">
+  <PARAM name="Local" value="[1.2]-创建一个自己的项目.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.3]-&Ocirc;&Uacute;&Iuml;&szlig;&Igrave;&aring;&Ntilde;&eacute;">
+  <PARAM name="Local" value="[1.3]-在线体验.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.4]-&Icirc;&Auml;&micro;&micro;&iexcl;&cent;&deg;&iuml;&Ouml;&uacute;&ordm;&Iacute;&sup1;&Ugrave;&Iacute;&oslash;">
+  <PARAM name="Local" value="[1.4]-文档、帮助和官网.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.10]-&para;&Ocirc;PhalApi&iquest;&ograve;&frac14;&Uuml;&micro;&Auml;&frac34;&ntilde;&Ocirc;&ntilde;">
+  <PARAM name="Local" value="[1.10]-对PhalApi框架的抉择.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.11]-&iquest;&igrave;&Euml;&Ugrave;&Egrave;&euml;&Atilde;&Aring;(backup)">
+  <PARAM name="Local" value="[1.11]-快速入门(backup).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.12]-&sup2;&Icirc;&Ecirc;&yacute;&sup1;&aelig;&Ocirc;&ograve;&pound;&ordm;&frac12;&Oacute;&iquest;&Uacute;&sup2;&Icirc;&Ecirc;&yacute;&sup1;&aelig;&Ocirc;&ograve;&Aring;&auml;&Ouml;&Atilde;">
+  <PARAM name="Local" value="[1.12]-参数规则：接口参数规则配置.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.13]-&Iacute;&sup3;&Ograve;&raquo;&micro;&Auml;&frac12;&Oacute;&iquest;&Uacute;&Ccedil;&euml;&Ccedil;&oacute;&middot;&frac12;&Ecirc;&frac12;&pound;&ordm;_sevice=XXX.XXX">
+  <PARAM name="Local" value="[1.13]-统一的接口请求方式：_sevice=XXX.XXX.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.14]-&Iacute;&sup3;&Ograve;&raquo;&micro;&Auml;&middot;&micro;&raquo;&Oslash;&cedil;&ntilde;&Ecirc;&frac12;&ordm;&Iacute;&frac12;&aacute;&sup1;&sup1;&pound;&ordm;ret-data-msg">
+  <PARAM name="Local" value="[1.14]-统一的返回格式和结构：ret-data-msg.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.15]-&Ecirc;&yacute;&frac34;&Yacute;&iquest;&acirc;&sup2;&Ugrave;&times;&divide;&pound;&ordm;&raquo;&ugrave;&Oacute;&Uacute;NotORM&micro;&Auml;&Ecirc;&sup1;&Oacute;&Atilde;&frac14;&deg;&Oacute;&Aring;&raquo;&hibar;">
+  <PARAM name="Local" value="[1.15]-数据库操作：基于NotORM的使用及优化.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.16]-&Aring;&auml;&Ouml;&Atilde;&para;&Aacute;&Egrave;&iexcl;&pound;&ordm;&Auml;&Uacute;&Iacute;&acirc;&Iacute;&oslash;&raquo;&middot;&frac34;&sup3;&Aring;&auml;&Ouml;&Atilde;&micro;&Auml;&Iacute;&ecirc;&Atilde;&Agrave;&Ccedil;&Dstrok;&raquo;&raquo;">
+  <PARAM name="Local" value="[1.16]-配置读取：内外网环境配置的完美切换.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.17]-&Egrave;&Otilde;&frac14;&Ccedil;&frac14;&Iacute;&Acirc;&frac14;&pound;&ordm;&frac14;&ograve;&raquo;&hibar;&deg;&aelig;&micro;&Auml;&Egrave;&Otilde;&frac14;&Ccedil;&frac12;&Oacute;&iquest;&Uacute;">
+  <PARAM name="Local" value="[1.17]-日记纪录：简化版的日记接口.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.18]-&iquest;&igrave;&Euml;&Ugrave;&ordm;&hibar;&Ecirc;&yacute;&pound;&ordm;&Egrave;&Euml;&Dstrok;&Ocirc;&raquo;&hibar;&micro;&Auml;&sup1;&Oslash;&raquo;&sup3;">
+  <PARAM name="Local" value="[1.18]-快速函数：人性化的关怀.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.19]-DI&middot;&thorn;&Icirc;&ntilde;&Euml;&Ugrave;&sup2;&eacute;&pound;&ordm;&cedil;&divide;&times;&Ecirc;&Ocirc;&acute;&middot;&thorn;&Icirc;&ntilde;&Ograve;&raquo;&Agrave;&Agrave;&plusmn;&iacute;">
+  <PARAM name="Local" value="[1.19]-DI服务速查：各资源服务一览表.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.20]-DB&sup2;&Ugrave;&times;&divide;&pound;&ordm;&Ecirc;&yacute;&frac34;&Yacute;&iquest;&acirc;&raquo;&ugrave;&plusmn;&frac34;&sup2;&Ugrave;&times;&divide;&Euml;&Ugrave;&sup2;&eacute;">
+  <PARAM name="Local" value="[1.20]-DB操作：数据库基本操作速查.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.21]-&Agrave;&agrave;&micro;&Auml;&times;&Ocirc;&para;&hibar;&frac14;&Oacute;&Ocirc;&Oslash;&pound;&ordm;&times;&ntilde;&Ntilde;&shy;PEAR&deg;&uuml;&micro;&Auml;&Atilde;&uuml;&Atilde;&ucirc;&sup1;&aelig;&middot;&para;">
+  <PARAM name="Local" value="[1.21]-类的自动加载：遵循PEAR包的命名规范.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.22]-&Ccedil;&copy;&Atilde;&ucirc;&Ntilde;&eacute;&Ouml;&curren;&pound;&ordm;&times;&Ocirc;&para;&die;&Ograve;&aring;&Ccedil;&copy;&Atilde;&ucirc;&sup1;&aelig;&Ocirc;&ograve;">
+  <PARAM name="Local" value="[1.22]-签名验证：自定义签名规则.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.23]-&Ccedil;&euml;&Ccedil;&oacute;&ordm;&Iacute;&Iuml;&igrave;&Oacute;&brkbar;&pound;&ordm;GET&ordm;&Iacute;POST&Aacute;&frac12;&Otilde;&szlig;&frac12;&Ocirc;&iquest;&Eacute;&micro;&Atilde;&frac14;&deg;&sup3;&not;&Ocirc;&frac12;JSON&cedil;&ntilde;&Ecirc;&frac12;&middot;&micro;&raquo;&Oslash;">
+  <PARAM name="Local" value="[1.23]-请求和响应：GET和POST两者皆可得及超越JSON格式返回.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.24]-&raquo;&ordm;&acute;&aelig;&sup2;&szlig;&Acirc;&Ocirc;&pound;&ordm;&cedil;&uuml;&Aacute;&eacute;&raquo;&icirc;&micro;&Oslash;&iquest;&Eacute;&Aring;&auml;&Ouml;&Atilde;&raquo;&hibar;&micro;&Auml;&para;&agrave;&frac14;&para;&raquo;&ordm;&acute;&aelig;">
+  <PARAM name="Local" value="[1.24]-缓存策略：更灵活地可配置化的多级缓存.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.25]-&sup1;&uacute;&frac14;&Ecirc;&raquo;&hibar;&middot;&shy;&Ograve;&euml;&pound;&ordm;&Icirc;&ordf;&times;&szlig;&Iuml;&ograve;&sup1;&uacute;&frac14;&Ecirc;&raquo;&hibar;&Igrave;&aacute;&Ccedil;&deg;&times;&ouml;&ordm;&Atilde;&middot;&shy;&Ograve;&euml;&times;&frac14;&plusmn;&cedil;">
+  <PARAM name="Local" value="[1.25]-国际化翻译：为走向国际化提前做好翻译准备.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.26]-&Ecirc;&yacute;&frac34;&Yacute;&deg;&sup2;&Egrave;&laquo;&pound;&ordm;&Ecirc;&yacute;&frac34;&Yacute;&para;&Ocirc;&sup3;&AElig;&frac14;&Oacute;&Atilde;&Uuml;&middot;&frac12;&deg;&cedil;">
+  <PARAM name="Local" value="[1.26]-数据安全：数据对称加密方案.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.27]-&frac34;&laquo;&Ograve;&aelig;&iquest;&ordf;&middot;&cent;&pound;&ordm;&cedil;&uuml;&cedil;&raquo;&plusmn;&iacute;&Iuml;&Ouml;&Aacute;&brkbar;&micro;&Auml;Model&sup2;&atilde;&ordm;&Iacute;&Ouml;&Oslash;&Aacute;&iquest;&frac14;&para;&Ecirc;&yacute;&frac34;&Yacute;&raquo;&ntilde;&Egrave;&iexcl;&micro;&Auml;&Oacute;&brkbar;&para;&Ocirc;&middot;&frac12;&deg;&cedil;">
+  <PARAM name="Local" value="[1.27]-精益开发：更富表现力的Model层和重量级数据获取的应对方案.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.28]-COOKIE&pound;&ordm;&para;&Ocirc;COOKIE&Ocirc;&shy;&Eacute;&uacute;&Igrave;&not;&micro;&Auml;&Ouml;&sect;&sup3;&Ouml;&frac14;&deg;&frac14;&Ccedil;&Ograve;&auml;&frac14;&Oacute;&Atilde;&Uuml;&Eacute;&yacute;&frac14;&para;&deg;&aelig;">
+  <PARAM name="Local" value="[1.28]-COOKIE：对COOKIE原生态的支持及记忆加密升级版.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.29]-&iquest;&ordf;&middot;&Aring;&Oacute;&euml;&middot;&acirc;&plusmn;&Otilde;&pound;&ordm;&para;&agrave;&Egrave;&euml;&iquest;&Uacute;&ordm;&Iacute;&Iacute;&sup3;&Ograve;&raquo;&sup3;&otilde;&Ecirc;&frac14;&raquo;&hibar;">
+  <PARAM name="Local" value="[1.29]-开放与封闭：多入口和统一初始化.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.30]-&plusmn;&pound;&sup3;&Ouml;&micro;&Auml;&Aacute;&brkbar;&Aacute;&iquest;&pound;&ordm;&frac12;&Oacute;&iquest;&Uacute;&iquest;&ordf;&middot;&cent;&times;&icirc;&frac14;&Ntilde;&Ecirc;&micro;&frac14;&ugrave;">
+  <PARAM name="Local" value="[1.30]-保持的力量：接口开发最佳实践.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[1.31]-&Dstrok;&Acirc;&Dstrok;&Iacute;&frac14;&AElig;&raquo;&reg;&Egrave;&Icirc;&Icirc;&ntilde;&pound;&ordm;&Ograve;&Ocirc;&frac12;&Oacute;&iquest;&Uacute;&Dstrok;&Icirc;&Ecirc;&frac12;&Ecirc;&micro;&Iuml;&Ouml;&micro;&Auml;&frac14;&AElig;&raquo;&reg;&Egrave;&Icirc;&Icirc;&ntilde;">
+  <PARAM name="Local" value="[1.31]-新型计划任务：以接口形式实现的计划任务.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[2.11]-&ordm;&Euml;&Dstrok;&Auml;&Euml;&frac14;&Iuml;&euml;&pound;&ordm;DI&Ograve;&Agrave;&Agrave;&micro;&times;&cent;&Egrave;&euml;-&Egrave;&Atilde;&times;&Ecirc;&Ocirc;&acute;&cedil;&uuml;&iquest;&Eacute;&iquest;&Oslash;">
+  <PARAM name="Local" value="[2.11]-核心思想：DI依赖注入-让资源更可控.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[2.12]-&ordm;&pound;&Aacute;&iquest;&Ecirc;&yacute;&frac34;&Yacute;&pound;&ordm;&iquest;&Eacute;&Aring;&auml;&Ouml;&Atilde;&micro;&Auml;&middot;&Ouml;&iquest;&acirc;&middot;&Ouml;&plusmn;&iacute;">
+  <PARAM name="Local" value="[2.12]-海量数据：可配置的分库分表.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[2.13]-&frac12;&Oacute;&iquest;&Uacute;&micro;&divide;&Ecirc;&Ocirc;&pound;&ordm;&Ocirc;&Uacute;&Iuml;&szlig;SQL&Oacute;&iuml;&frac34;&auml;&sup2;&eacute;&iquest;&acute;&Oacute;&euml;&Dstrok;&Ocirc;&Auml;&Uuml;&Oacute;&Aring;&raquo;&hibar;">
+  <PARAM name="Local" value="[2.13]-接口调试：在线SQL语句查看与性能优化.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[2.14]-&sup2;&acirc;&Ecirc;&Ocirc;&Ccedil;&yacute;&para;&hibar;&iquest;&ordf;&middot;&cent;&pound;&ordm;&Ograve;&acirc;&Iacute;&frac14;&micro;&frac14;&Iuml;&ograve;&plusmn;&agrave;&sup3;&Igrave;&Iuml;&Acirc;&micro;&Auml;&frac12;&Oacute;&iquest;&Uacute;&iquest;&ordf;&middot;&cent;">
+  <PARAM name="Local" value="[2.14]-测试驱动开发：意图导向编程下的接口开发.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[2.15]-&Ntilde;&Yacute;&frac12;&oslash;&pound;&ordm;&Dstrok;&Acirc;&Dstrok;&Iacute;&frac14;&AElig;&raquo;&reg;&Egrave;&Icirc;&Icirc;&ntilde;&Dstrok;&oslash;&AElig;&ordf;">
+  <PARAM name="Local" value="[2.15]-演进：新型计划任务续篇.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[2.16]-&Aacute;&igrave;&Oacute;&ograve;&Ccedil;&yacute;&para;&hibar;&Eacute;&egrave;&frac14;&AElig;&pound;&ordm;&Oacute;&brkbar;&para;&Ocirc;&cedil;&acute;&Ocirc;&Oacute;&Aacute;&igrave;&Oacute;&ograve;&Ograve;&micro;&Icirc;&ntilde;&micro;&Auml;Domain&sup2;&atilde;">
+  <PARAM name="Local" value="[2.16]-领域驱动设计：应对复杂领域业务的Domain层.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[2.17]-&Icirc;&cent;&middot;&thorn;&Icirc;&ntilde;&pound;&ordm;Api&frac12;&Oacute;&iquest;&Uacute;&middot;&thorn;&Icirc;&ntilde;&sup2;&atilde;">
+  <PARAM name="Local" value="[2.17]-微服务：Api接口服务层.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[2.19]-&Agrave;&copy;&Otilde;&sup1;&iquest;&acirc;&pound;&ordm;&iquest;&Eacute;&Ouml;&Oslash;&Oacute;&Atilde;&micro;&Auml;&Agrave;&copy;&Otilde;&sup1;&Agrave;&agrave;&iquest;&acirc;">
+  <PARAM name="Local" value="[2.19]-扩展库：可重用的扩展类库.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[2.20]-&Ocirc;&frac14;&para;&die;&plusmn;&agrave;&sup3;&Igrave;&pound;&ordm;&frac14;&Uuml;&sup1;&sup1;&Atilde;&divide;&Iuml;&Ocirc;&micro;&Auml;&plusmn;&agrave;&sup3;&Igrave;&middot;&ccedil;&cedil;&ntilde;">
+  <PARAM name="Local" value="[2.20]-约定编程：架构明显的编程风格.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[2.21]-&middot;&thorn;&Icirc;&ntilde;&AElig;&divide;&Iacute;&sup3;&Ograve;&raquo;&sup2;&iquest;&Ecirc;&eth;&middot;&frac12;&deg;&cedil;&frac14;&ograve;&Atilde;&divide;&deg;&aelig;&pound;&ordm;CentOs---Nginx---php-fpm---MySql-[--Memcached]">
+  <PARAM name="Local" value="[2.21]-服务器统一部署方案简明版：CentOs---Nginx---php-fpm---MySql-[--Memcached].html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[2.22]-&cedil;&uuml;&para;&agrave;&sup1;&curren;&frac34;&szlig;&pound;&ordm;&frac34;&laquo;&Ograve;&aelig;&Iuml;&icirc;&Auml;&iquest;&ordm;&Iacute;&Iacute;&Aring;&para;&Oacute;&frac12;&die;&Eacute;&egrave;">
+  <PARAM name="Local" value="[2.22]-更多工具：精益项目和团队建设.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[3.1]-&Agrave;&copy;&Otilde;&sup1;&Agrave;&agrave;&iquest;&acirc;&pound;&ordm;&Icirc;&cent;&Dstrok;&Aring;&iquest;&ordf;&middot;&cent;">
+  <PARAM name="Local" value="[3.1]-扩展类库：微信开发.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[3.2]-&Agrave;&copy;&Otilde;&sup1;&Agrave;&agrave;&iquest;&acirc;&pound;&ordm;&acute;&uacute;&Agrave;&iacute;&Auml;&pound;&Ecirc;&frac12;&Iuml;&Acirc;phprpc&Dstrok;&shy;&Ograve;&eacute;&micro;&Auml;&Ccedil;&aacute;&Euml;&Eacute;&Ouml;&sect;&sup3;&Ouml;">
+  <PARAM name="Local" value="[3.2]-扩展类库：代理模式下phprpc协议的轻松支持.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[3.3]-&Agrave;&copy;&Otilde;&sup1;&Agrave;&agrave;&iquest;&acirc;&pound;&ordm;&raquo;&ugrave;&Oacute;&Uacute;PHPMailer&micro;&Auml;&Oacute;&Ecirc;&frac14;&thorn;&middot;&cent;&Euml;&Iacute;">
+  <PARAM name="Local" value="[3.3]-扩展类库：基于PHPMailer的邮件发送.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[3.4]-&Agrave;&copy;&Otilde;&sup1;&Agrave;&agrave;&iquest;&acirc;&pound;&ordm;&Oacute;&Aring;&iquest;&aacute;&iquest;&ordf;&middot;&Aring;&AElig;&frac12;&Igrave;&die;&frac12;&Oacute;&iquest;&Uacute;&micro;&divide;&Oacute;&Atilde;">
+  <PARAM name="Local" value="[3.4]-扩展类库：优酷开放平台接口调用.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[3.5]-&Agrave;&copy;&Otilde;&sup1;&Agrave;&agrave;&iquest;&acirc;&pound;&ordm;&AElig;&szlig;&Aring;&pound;&Ocirc;&AElig;&acute;&aelig;&acute;&cent;&frac12;&Oacute;&iquest;&Uacute;&micro;&divide;&Oacute;&Atilde;">
+  <PARAM name="Local" value="[3.5]-扩展类库：七牛云存储接口调用.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[3.6]-&Agrave;&copy;&Otilde;&sup1;&Agrave;&agrave;&iquest;&acirc;&pound;&ordm;&Dstrok;&Acirc;&Dstrok;&Iacute;&frac14;&AElig;&raquo;&reg;&Egrave;&Icirc;&Icirc;&ntilde;">
+  <PARAM name="Local" value="[3.6]-扩展类库：新型计划任务.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[3.8]-&Agrave;&copy;&Otilde;&sup1;&Agrave;&agrave;&iquest;&acirc;&pound;&ordm;&Oacute;&Atilde;&raquo;&sect;&iexcl;&cent;&raquo;&aacute;&raquo;&deg;&ordm;&Iacute;&micro;&Uacute;&Egrave;&yacute;&middot;&frac12;&micro;&Ccedil;&Acirc;&frac14;&frac14;&hibar;&sup3;&Eacute;">
+  <PARAM name="Local" value="[3.8]-扩展类库：用户、会话和第三方登录集成.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[3.9]-&Agrave;&copy;&Otilde;&sup1;&Agrave;&agrave;&iquest;&acirc;&pound;&ordm;swoole&Ouml;&sect;&sup3;&Ouml;&Iuml;&Acirc;&micro;&Auml;&sup3;&curren;&Aacute;&acute;&frac12;&Oacute;&ordm;&Iacute;&Ograve;&igrave;&sup2;&frac12;&Egrave;&Icirc;&Icirc;&ntilde;&Ecirc;&micro;&Iuml;&Ouml;">
+  <PARAM name="Local" value="[3.9]-扩展类库：swoole支持下的长链接和异步任务实现.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[3.11]-&Agrave;&copy;&Otilde;&sup1;&Agrave;&agrave;&iquest;&acirc;&pound;&ordm;&raquo;&ugrave;&Oacute;&Uacute;FastRoute&micro;&Auml;&iquest;&igrave;&Euml;&Ugrave;&Acirc;&middot;&Oacute;&Eacute;">
+  <PARAM name="Local" value="[3.11]-扩展类库：基于FastRoute的快速路由.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[4.2]-&iquest;&ordf;&middot;&cent;&Ecirc;&micro;&Otilde;&frac12;2&pound;&ordm;&Auml;&pound;&Auml;&acirc;&Oacute;&Aring;&iquest;&aacute;&iquest;&ordf;&middot;&Aring;&AElig;&frac12;&Igrave;&die;&frac12;&Oacute;&iquest;&Uacute;&Iuml;&icirc;&Auml;&iquest;&iquest;&ordf;&middot;&cent;">
+  <PARAM name="Local" value="[4.2]-开发实战2：模拟优酷开放平台接口项目开发.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[4.3]-&iquest;&ordf;&middot;&cent;&Ecirc;&micro;&Otilde;&frac12;3&pound;&ordm;&Ograve;&raquo;&cedil;&ouml;&frac14;&ograve;&micro;&yen;&micro;&Auml;&Dstrok;&iexcl;&Dstrok;&Iacute;&Iuml;&icirc;&Auml;&iquest;&iquest;&ordf;&middot;&cent;&pound;&die;&plusmn;&frac14;&Aring;&Uuml;&deg;&Eacute;&Dstrok;&Ouml;&micro;&Uuml;&Iacute;&para;&AElig;&plusmn;&raquo;&icirc;&para;&hibar;&pound;&copy;">
+  <PARAM name="Local" value="[4.3]-开发实战3：一个简单的小型项目开发（奔跑吧兄弟投票活动）.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[5.1]-&frac14;&Uuml;&sup1;&sup1;&Oacute;&euml;&Euml;&frac14;&Iuml;&euml;&pound;&ordm;PhalApi&ordm;&Euml;&Dstrok;&Auml;&Eacute;&egrave;&frac14;&AElig;&ordm;&Iacute;&Euml;&frac14;&Iuml;&euml;&frac12;&acirc;&para;&Aacute;">
+  <PARAM name="Local" value="[5.1]-架构与思想：PhalApi核心设计和思想解读.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[5.2]-&Ocirc;&Oacute;&Igrave;&cedil;&pound;&ordm;&sup3;&para;&Ograve;&raquo;&Dstrok;&copy;PhalApi&micro;&Auml;&Ccedil;&deg;&Ecirc;&Agrave;&ordm;&Iacute;&frac12;&ntilde;&Eacute;&uacute;">
+  <PARAM name="Local" value="[5.2]-杂谈：扯一些PhalApi的前世和今生.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[5.3]-&iquest;&ograve;&frac14;&Uuml;&times;&Uuml;&frac12;&aacute;&pound;&ordm;&Ecirc;&otilde;&Oacute;&iuml;&plusmn;&iacute;&ordm;&Iacute;PHP&iquest;&ordf;&middot;&cent;&frac12;&die;&Ograve;&eacute;">
+  <PARAM name="Local" value="[5.3]-框架总结：术语表和PHP开发建议.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[5.4]-&Dstrok;&iacute;&iquest;&Eacute;">
+  <PARAM name="Local" value="[5.4]-许可.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[5.5]-&Aacute;&ordf;&Iuml;&micro;&ordm;&Iacute;&frac14;&Oacute;&Egrave;&euml;&Icirc;&Ograve;&Atilde;&Ccedil;">
+  <PARAM name="Local" value="[5.5]-联系和加入我们.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[5.6]-&cedil;&uuml;&Dstrok;&Acirc;&Egrave;&Otilde;&frac14;&Ccedil;">
+  <PARAM name="Local" value="[5.6]-更新日记.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[5.8]-&Ouml;&Acirc;&iquest;&ograve;&frac14;&Uuml;&sup1;&plusmn;&Iuml;&times;&Otilde;&szlig;&pound;&ordm;&frac14;&Oacute;&Egrave;&euml;PhalApi&iquest;&ordf;&Ocirc;&acute;&Ouml;&cedil;&Auml;&Iuml;">
+  <PARAM name="Local" value="[5.8]-致框架贡献者：加入PhalApi开源指南.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[6.1]-&raquo;&ugrave;&Oacute;&Uacute;&frac12;&Oacute;&iquest;&Uacute;&sup2;&eacute;&Ntilde;&hibar;&Oacute;&iuml;&Ntilde;&Ocirc;&micro;&Auml;SDK&deg;&uuml;">
+  <PARAM name="Local" value="[6.1]-基于接口查询语言的SDK包.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[6.2]-SDK&deg;&uuml;&pound;&die;JAVA&deg;&aelig;&pound;&copy;">
+  <PARAM name="Local" value="[6.2]-SDK包（JAVA版）.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[6.3]-SDK&pound;&die;PHP&deg;&aelig;&pound;&copy;">
+  <PARAM name="Local" value="[6.3]-SDK（PHP版）.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[6.3]-SDK&deg;&uuml;&pound;&die;PHP&deg;&aelig;&pound;&copy;">
+  <PARAM name="Local" value="[6.3]-SDK包（PHP版）.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[6.4]-SDK&deg;&uuml;&pound;&die;object-c&deg;&aelig;&pound;&copy;">
+  <PARAM name="Local" value="[6.4]-SDK包（object-c版）.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[6.4]-SDK&deg;&uuml;&pound;&die;Objective-C&deg;&aelig;&pound;&copy;">
+  <PARAM name="Local" value="[6.4]-SDK包（Objective-C版）.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[6.5]-SDK&deg;&uuml;&pound;&die;javascript&deg;&aelig;&pound;&copy;">
+  <PARAM name="Local" value="[6.5]-SDK包（javascript版）.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[6.6]-SDK&deg;&uuml;&pound;&die;Ruby&deg;&aelig;&pound;&copy;">
+  <PARAM name="Local" value="[6.6]-SDK包（Ruby版）.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.1]-phalapi-&Egrave;&euml;&Atilde;&Aring;&AElig;&ordf;1(&frac14;&ograve;&micro;&yen;&frac12;&eacute;&Eacute;&Uuml;&Ograve;&Ocirc;&frac14;&deg;&raquo;&middot;&frac34;&sup3;&acute;&icirc;&frac12;&die;)">
+  <PARAM name="Local" value="[7.1]-phalapi-入门篇1(简单介绍以及环境搭建).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.10]-phalapi-&frac12;&oslash;&frac12;&times;&AElig;&ordf;4(notorm&frac12;&oslash;&frac12;&times;&Ograve;&Ocirc;&frac14;&deg;&Ecirc;&Acirc;&Icirc;&ntilde;&sup2;&Ugrave;&times;&divide;)">
+  <PARAM name="Local" value="[7.10]-phalapi-进阶篇4(notorm进阶以及事务操作).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.10]-phalapi-&frac12;&oslash;&frac12;&times;&AElig;&ordf;4(notrom&frac12;&oslash;&frac12;&times;&Ograve;&Ocirc;&frac14;&deg;&Ecirc;&Acirc;&Icirc;&ntilde;&sup2;&Ugrave;&times;&divide;)">
+  <PARAM name="Local" value="[7.10]-phalapi-进阶篇4(notrom进阶以及事务操作).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.11]-phalapi-&frac12;&oslash;&frac12;&times;&AElig;&ordf;5(&Ecirc;&yacute;&frac34;&Yacute;&iquest;&acirc;&para;&Aacute;&Dstrok;&acute;&middot;&Ouml;&Agrave;&euml;)">
+  <PARAM name="Local" value="[7.11]-phalapi-进阶篇5(数据库读写分离).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.12]-phalapi-&frac12;&oslash;&frac12;&times;&AElig;&ordf;6(&frac12;&acirc;&frac34;&ouml;&acute;&oacute;&Aacute;&iquest;&Ecirc;&yacute;&frac34;&Yacute;&acute;&aelig;&acute;&cent;&Ecirc;&yacute;&frac34;&Yacute;&iquest;&acirc;&middot;&Ouml;&plusmn;&iacute;&middot;&Ouml;&iquest;&acirc;&Iacute;&Oslash;&Otilde;&sup1;)">
+  <PARAM name="Local" value="[7.12]-phalapi-进阶篇6(解决大量数据存储数据库分表分库拓展).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.13]-phalapi-&frac12;&oslash;&frac12;&times;&AElig;&ordf;7(&Ecirc;&sup1;&Oacute;&Atilde;&raquo;&ordm;&acute;&aelig;&Ograve;&Ocirc;&frac14;&deg;&Oacute;&Atilde;redis&Iacute;&Oslash;&Otilde;&sup1;&frac12;&acirc;&frac34;&ouml;&Ecirc;&micro;&frac14;&Ecirc;&Icirc;&Ecirc;&Igrave;&acirc;)">
+  <PARAM name="Local" value="[7.13]-phalapi-进阶篇7(使用缓存以及用redis拓展解决实际问题).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.14]-phalapi-&frac12;&oslash;&frac12;&times;&AElig;&ordf;8(PhalApi&Auml;&Uuml;&acute;&oslash;&Agrave;&acute;&Ecirc;&sup2;&Atilde;&acute;&ordm;&Iacute;&frac12;&oslash;&frac12;&times;&AElig;&ordf;&times;&Uuml;&frac12;&aacute;)">
+  <PARAM name="Local" value="[7.14]-phalapi-进阶篇8(PhalApi能带来什么和进阶篇总结).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.2]-phalapi-&Egrave;&euml;&Atilde;&Aring;&AElig;&ordf;2(&deg;&Ntilde;&Euml;&uuml;&Iacute;&aelig;&AElig;&eth;&Agrave;&acute;)">
+  <PARAM name="Local" value="[7.2]-phalapi-入门篇2(把它玩起来).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.3]-phalapi-&Egrave;&euml;&Atilde;&Aring;&AElig;&ordf;3(&Ccedil;&euml;&Ccedil;&oacute;&ordm;&Iacute;&middot;&micro;&raquo;&Oslash;)">
+  <PARAM name="Local" value="[7.3]-phalapi-入门篇3(请求和返回).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.4]-phalapi-&Egrave;&euml;&Atilde;&Aring;&AElig;&ordf;4(&sup1;&uacute;&frac14;&Ecirc;&raquo;&hibar;&cedil;&szlig;&iquest;&Eacute;&Oacute;&Atilde;&ordm;&Iacute;&times;&Ocirc;&para;&hibar;&Eacute;&uacute;&sup3;&Eacute;&Icirc;&Auml;&micro;&micro;)">
+  <PARAM name="Local" value="[7.4]-phalapi-入门篇4(国际化高可用和自动生成文档).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.5]-phalapi-&Egrave;&euml;&Atilde;&Aring;&AElig;&ordf;5(&Ecirc;&yacute;&frac34;&Yacute;&iquest;&acirc;&sup2;&Ugrave;&times;&divide;&ordm;&Iacute;Model&sup2;&atilde;)">
+  <PARAM name="Local" value="[7.5]-phalapi-入门篇5(数据库操作和Model层).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.6]-phalapi-&Egrave;&euml;&Atilde;&Aring;&AElig;&ordf;6(&Dstrok;&iexcl;&frac14;&frac14;&Ccedil;&Eacute;&ordm;&Iacute;&Ccedil;&sup3;&Igrave;&cedil;API&Ecirc;&Ecirc;&Oacute;&Atilde;&middot;&para;&Icirc;&sect;&Ograve;&Ocirc;&frac14;&deg;&Egrave;&euml;&Atilde;&Aring;&AElig;&ordf;&times;&Uuml;&frac12;&aacute;)">
+  <PARAM name="Local" value="[7.6]-phalapi-入门篇6(小技巧和浅谈API适用范围以及入门篇总结).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.7]-phalapi-&frac12;&oslash;&frac12;&times;&AElig;&ordf;1(&Egrave;&yacute;&sup2;&atilde;&frac12;&aacute;&sup1;&sup1;Api,Domain,&ordm;&Iacute;Model)">
+  <PARAM name="Local" value="[7.7]-phalapi-进阶篇1(三层结构Api,Domain,和Model).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.8]-phalapi-&frac12;&oslash;&frac12;&times;&AElig;&ordf;2(DI&Ograve;&Agrave;&Agrave;&micro;&times;&cent;&Egrave;&euml;&ordm;&Iacute;&micro;&yen;&Agrave;&yacute;&Auml;&pound;&Ecirc;&frac12;)">
+  <PARAM name="Local" value="[7.8]-phalapi-进阶篇2(DI依赖注入和单例模式).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="[7.9]-phalapi-&frac12;&oslash;&frac12;&times;&AElig;&ordf;3(&times;&Ocirc;&para;&hibar;&frac14;&Oacute;&Ocirc;&Oslash;&ordm;&Iacute;&Agrave;&sup1;&frac12;&Oslash;&AElig;&divide;)">
+  <PARAM name="Local" value="[7.9]-phalapi-进阶篇3(自动加载和拦截器).html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="&cedil;&frac12;&Acirc;&frac14;1&pound;&ordm;&frac12;&Oacute;&iquest;&Uacute;&Icirc;&Auml;&micro;&micro;&sup2;&Icirc;&iquest;&frac14;&Auml;&pound;&deg;&aring;">
+  <PARAM name="Local" value="附录1：接口文档参考模板.html">
+ </OBJECT>
+ <LI><OBJECT type="text/sitemap">
+  <PARAM name="Name" value="&Aacute;&ordf;&Iuml;&micro;&Icirc;&Ograve;&Atilde;&Ccedil;">
+  <PARAM name="Local" value="联系我们.html">
+ </OBJECT>
+</BODY>
+</HTML>
