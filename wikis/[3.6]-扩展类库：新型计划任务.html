@@ -119,7 +119,7 @@ PhalApi需要PhaApi 1.2.0及以上版本。</p>
 <p>同时，需要将 ./Data/phalapi_task_mq.sql 文件的SQL建表语句导入到你的数据库。你也可以将利用脚本来生成。</p>
 <h2>3.6.3 入门使用</h2>
 <h3>(1)加入MQ队列</h3>
-<p>首先，我们需要在入门文件进行对Task的初始化：</p>
+<p>首先，我们需要在入口文件进行对Task的初始化：</p>
 <pre><code class="language-javascript">DI()-&gt;loader-&gt;addDirs('Library');
 $mq = new Task_MQ_Redis();  //可以选择你需要的MQ
 DI()-&gt;taskLite = new Task_Lite($mq);</code></pre>
@@ -305,7 +305,7 @@ $mq = new Task_MQ_File();
 
 //方法二：外部依赖注入
 $fileCache = new PhalApi_Cache_File(array('path' =&gt; '/tmp/cache'));
-$mq = new Task_MQ_Redis($fileCache);</code></pre>
+$mq = new Task_MQ_File($fileCache);</code></pre>
 <h4>数据库MQ队列</h4>
 <p>数据库MQ队列需要的配置为：</p>
 <pre><code class="language-javascript">    'tables' =&gt; array(

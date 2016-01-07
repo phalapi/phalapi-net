@@ -63,7 +63,7 @@
 <p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
 <p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
 <h2>1. 进一步了解notorm</h2>
-<p>在notorm有很多方便并没有在PhalApi官方文档中有并没有非常详细的介绍过,在这里把一些可能会用到的notorm函数坐下介绍以及功能</p>
+<p>notorm中很多操作在PhalApi官方文档中并没有非常详细的介绍,在这里把一些可能会用到的notorm函数坐下介绍以及功能</p>
 <h3>1.1 fetchPairs</h3>
 <p>fetchPairs的使用和fetchAll相似但是他有一个特别之处,fetchPairs需要传递一个参数,这个参数是字符串的key值(比如 name id)当传递之后会出现这样的对比效果</p>
 <pre><code>DI()-&gt;notorm-&gt;user-&gt;fetchPairs('name');</code></pre>
@@ -77,7 +77,7 @@
 改成
 $values = array_values($row);</code></pre>
 <h3>1.2 lock</h3>
-<p>lock操作是一种锁的行为,对于整表进行锁定,在当前用户释放锁之前此表不能在被操作,lock接受一个bool参数,默认是true锁表,使用如下</p>
+<p>lock操作是一种锁的行为,对于整表进行锁定,在当前用户释放锁之前此表不能再被操作,lock接受一个bool参数,默认是true锁表,使用如下</p>
 <pre><code>$userdb = DI()-&gt;notorm-&gt;user-&gt;lock(); //锁定表
 $rs     = $userdb-&gt;fetchAll();</code></pre>
 <p>生成的sql语句如下:</p>
@@ -88,7 +88,7 @@ $rs     = $userdb-&gt;fetchAll();</code></pre>
 <p>这样就可以生成不带引号的操作了</p>
 <pre><code>UPDATE user SET phone = sum + 1 WHERE (id = 1);</code></pre>
 <h3>1.4 group</h3>
-<p>group是去重操作,在notorm里面也封装的有,我们可以使用group用于统计有多少同名的用户等一些统计操作,或者是找出库里面不重复的城市名</p>
+<p>group是去重操作,在notorm里面也封装的,我们可以使用group用于统计有多少同名的用户等一些统计操作,或者是找出库里面不重复的城市名</p>
 <pre><code>DI()-&gt;notorm-&gt;user-&gt;select('name , count(*) as count')-&gt;group('name')-&gt;fetchAll();</code></pre>
 <p>会获得如下结果</p>
 <p><img src="http://i.imgur.com/aYJ229P.png" alt="" /></p>
@@ -99,16 +99,16 @@ $rs     = $userdb-&gt;fetchAll();</code></pre>
   return DI()-&gt;notorm-&gt;user-&gt;min('id');  //获取这个key中最小的值
   return DI()-&gt;notorm-&gt;user-&gt;count();    //统计一共几条数据</code></pre>
 <h2>2. 事务操作</h2>
-<p>其实很大一部分使用事务的目的是应为害怕并发的情况下导致,对数据库造成重复的操作,比如如下场景:</p>
-<p>应用审核,有两个管理者对同一个应用审核,一个成功一个失败,然后是同时请求过来的,一起到了查询应用状态发现都是未审核,然后都去进行了审核操作,这个时候两个操作返回的都是审核成功,但是有一个人会看到审核状态和自己的审核结果不同,这个就是问题了,大部分解决此类问题时都会考虑到使用数据库事务操作,其实对于事务操作我的建议是能不用尽量不要使用,我简单聊一下我的几个观点</p>
+<p>其实很大一部分使用事务的目的是应为害怕并发的情况下导致对数据库造成重复的操作,比如如下场景:</p>
+<p>应用审核,有两个管理者对同一个应用审核,一个成功一个失败,然后是同时请求过来的,一起到了查询应用状态发现都是未审核,然后都去进行了审核操作,这个时候两个操作返回的都是审核成功,但是有一个人会看到审核状态和自己的审核结果不同,这个就是问题了,大部分解决此类问题时都会考虑到使用数据库事务操作,其实对于事务操作我的建议是能不用尽量不要使用,我简单聊一下我的几个观点：</p>
 <ol>
 <li>
 <p>是否真的那么重要,对于上面的问题也许乍一看上去感觉,这样怎么可以呢,但是仔细想一想,这两个操作都是属于我们管理者的正常的操作,真正对于业务来说我认为是没有问题的,当然这是因为影响不大,如果是付款,一个订单从两个地方同时付款然后都发现是未付款,然后都进行了付款,这种业务就必须有处理方式了,所以是否使用事务要看业务是否非常需求</p>
 </li>
 <li>
-<p>概率是怎么样的,对于一个程序来说,两条请求刚好通过了查询过程,一同到了修改的时候,不管是什么场景发生这种并发冲突的可能性是极其微小的,我觉得几乎可以忽略(当然前提是重要性没有那么的高,我们不能<strong>以偏概全</strong>)</p>
+<p>概率是怎么样的,对于一个程序来说,两条请求刚好通过了查询过程,一同到了修改的时候,不管是什么场景发生这种并发冲突的可能性是极其微小的,我觉得几乎可以忽略(当然前提是重要性没有那么的高,我们不能 <strong>以偏概全</strong> )</p>
 </li>
-<li><strong>曲线救国</strong>其实我们可以使用其他方式避免这种问题,我们可以把我们需要验证条件加入到Update的条件中这样两条语句总归会有一条语句执行失败</li>
+<li><strong>曲线救国</strong>其实我们可以使用其他方式避免这种问题,我们可以把我们需要验证条件加入到Update的条件中，这样两条语句总归会有一条语句执行失败</li>
 </ol>
 <p>那么我们使用notorm中解决此类需要用到事务的问题呢</p>
 <p>notorm提供了常规的事务操作如下</p>
