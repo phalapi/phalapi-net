@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-    <title><![CDATA[PhalApi docs - 1.3.1]]></title>
+    <title><![CDATA[PhalApi docs - 1.3.2]]></title>
     <parser>
         <target>phalapi_docs_parser</target>
         <encoding>utf8</encoding>
