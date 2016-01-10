@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" style="">
+<head>
+	<title>1.1-create-your-project | PhalApi - A light-weight PHP framework for API</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApiis A light-weight PHP framework for API!">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi API develop,backend framework,restful,web services,saas,microservice,API framework,open API framework,PHP API framework,php web framework">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../..//css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+                <li class="menu-item"><a title="PhalApi官方网站中文版" href="/" class="menu-item__link">Chinese</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">chanzonghuang@gmail.com</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">Community</a></li>
+					<li class="menu-item"><a href="https://github.com/phalapi/phalapi" class="menu-item__link insights-spec" target="_blank">Download</a></li>
+					<li class="menu-item"><a href="/wikis/en/" class="menu-item__link events-spec" target="_blank">Wikis</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">Classes docs</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">Demo</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">About us</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>1.1.1 Create your project</h2>
+<p>You can create a project in 3 ways:  </p>
+<ul>
+<li>create follow visual installation tutorial</li>
+<li>create by cmd phalapi-buildapp</li>
+<li>create manually</li>
+</ul>
+<h2>1.1.2 Create follow visual installation tutorial</h2>
+<p>Visit /path/to/PhalApi/Public/install on your browser after unpack PhalApi, for example:  </p>
+<pre><code>http://dev.phalapi.com/install/</code></pre>
+<p>Then following the installation step by step:  </p>
+<h3>Step 0: agree to install</h3>
+<p><img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151024155002.jpg" alt="a pic" />  </p>
+<h3>Step 1: environment check</h3>
+<p><img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151024155015.jpg" alt="a pic" />  </p>
+<h3>Step 2: system configure</h3>
+<p><img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151024155030.jpg" alt="a pic" />  </p>
+<h3>Step 3: test api request</h3>
+<p><img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151024155041.jpg" alt="a pic" /></p>
+<h3>Step 4: finally</h3>
+<p><img src="http://7qnay5.com1.z0.glb.clouddn.com/step7_20151012223516.png" alt="a pic" /></p>
+<h2>1.1.3 Create by cmd phalapi-buildapp</h2>
+<p>On linux, we can create a projects in serval seconds. </p>
+<p>Firstly, we need to</p>
+<pre><code>$ chmod +x /path/to/PhalApi/PhalApi/phalapi-buildapp</code></pre>
+<p>Secondly, </p>
+<pre><code>$ cd /path/to/PhalApi
+$ ./PhalApi/phalapi-buildapp MyApp
+
+OK!
+</code></pre>
+<p>Then you can see a folder named MyApp at /path/to/PhalApi, it looks like:</p>
+<pre><code>$ cd MyApp/
+$ tree
+.
+├── Api
+│   └── Default.php
+├── Common
+├── Domain
+├── Model
+└── Tests
+    ├── Api
+    │   └── Api_Default_Test.php
+    ├── Common
+    ├── Domain
+    ├── Model
+    ├── phpunit.xml
+    └── test_env.php
+
+9 directories, 4 files
+</code></pre>
+<p>Meanwhile, here is an entrance under ./Public :</p>
+<pre><code>└── myapp
+    ├── checkApiParams.php
+    └── index.php</code></pre>
+<p>Finally, you can also visit it by:</p>
+<pre><code>http://dev.phalapi.com/myapp/</code></pre>
+<h2>1.1.4 Create manually</h2>
+<p>On windowns, we can also create a project manually. It's easy to do this.  </p>
+<p>Assume our web root is: F:\xampp\htdocs\PhalApi  </p>
+<h3>(1) Create an new project folder</h3>
+<p>For example, we create an MyApp project:<br />
+<img src="http://webtools.qiniudn.com/20150411005257_929b7fdc7e966f54608b25c2e17def29" alt="QQ截图20150404004219" />  </p>
+<p>Then add folder Api, Domain, Model, Common inside MyApp,<br />
+<img src="http://webtools.qiniudn.com/20150411005257_9008ecb3491a703442f3522a86ffd624" alt="QQ截图20150404004458" /></p>
+<h3>(2) Prepare a API</h3>
+<p>All the API classes should be located at ./MyApp/Api , you can try to develop an simple API, or copy ./Demo/Api/Default.php to ./MyApp/Api/Default.php.  </p>
+<h3>(3) Create entrance</h3>
+<p>In order to visit the API service, we need to add an entrance for MyApp,<br />
+<img src="http://webtools.qiniudn.com/20150411005257_e78908f60d6b34c7f932ba15eff1c1a2" alt="QQ截图20150404004653" />  </p>
+<p>Please remmember to alter the app name in those tow file:  </p>
+<pre><code>$vim ./Public/myapp/index.php
+$vim ./Public/myapp/checkApiParams.php</code></pre>
+<p><img src="http://webtools.qiniudn.com/20150411005257_92bff2ed15c72380c54dff46ed800544" alt="QQ截图20150404004731" /></p>
+<h3>(4) Visit it!</h3>
+<p>Open the follow link on browser,</p>
+<pre><code>http://localhost/phalapi/public/myapp/</code></pre>
+<p>And you will see:<br />
+<img src="http://webtools.qiniudn.com/20150411005257_33f51b3efcd0938bb7fc36bb813f4808" alt="QQ截图20150404004959" /></p>
+            </div>
+        </div>
+    </div>
+    
+ <!-- 广告位 -->
+<!--
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7qnay5.com1.z0.glb.clouddn.com/走向开源的第一年%20-%20PhalApi%202015年度开源总结%20-%20官方出品%20-%2020151214.pdf" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/PhalApi20151213-2.jpg"></a>
+		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
+	</p>
+</div>
+-->
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi is a light-weight PHP framework for API.<br/>
+                We try to keep PhalApi as stuip simple as possible!
+            </font>
+			</p>
+			<p align="left">
+				<font size="2px">&copy;2015-2016 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>Thanks!</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">Open Source China</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">支付宝&nbsp;</a>开源捐赠：</strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+
+			<p>
+				<!-- JiaThis Button BEGIN -->
+				<div id="ckepop">
+				<span class="jiathis_txt">分享到：</span>
+				<a class="jiathis_button_tsina">新浪微博</a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+				<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+				
+				&nbsp;&nbsp;
+			</p>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','aizsj_k8pkmMmqLWzayG','2.0.0');
+</script>
+
+</html>
