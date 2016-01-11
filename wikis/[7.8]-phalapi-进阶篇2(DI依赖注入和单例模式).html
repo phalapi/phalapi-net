@@ -63,15 +63,15 @@
 <p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
 <p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
 <h2>1. 单例模式</h2>
-<p>单例模式对于长期进行过面向对象编程的童鞋应该不算陌生,在学习php的童鞋也应该有听过,这里简单的聊一聊单例模式到底是一个怎么样东西,解决了什么问题,并且在PhalApi中是如何实现的.</p>
-<p>单例单例,所谓单例也就是有且只有一个存在,这就是单例,不难看出他的好处资源利用少因为只有一个,大家都是知道要使用一个类必须要实例他也就是new在每次new一个对象的时候都会在内存中生成一块区域来存放这个实例,如果在程序一次运行中使用了很多的new实例化了同一个对象,那就比较消耗资源了,但是如果是通用一个使用全局变量<strong>global</strong>程序又会显得不优雅而且会很乱,在这种情况下单例模式就产生了.</p>
-<p>单例模式就是一个两全其美的一个方法既可以全局通用,二不用担心占用过多的资源,三又非常优雅,我们来一起看看在PhalApi中是如何实现单例模式的:</p>
+<p>单例模式对于长期进行过面向对象编程的童鞋应该不算陌生,对学习php的童鞋也应该有听过,这里简单的聊一聊单例模式它到底是一个怎么样的东东,解决了怎么样的问题,并且在PhalApi中它是如何实现的.</p>
+<p>单例单例,所谓单例也就是保证一个类仅有一个实例，并提供一个访问它的全局访问点,这就是单例,不难看出他的好处：资源利用少，因为只有一个,大家都是知道要使用一个类必须要实例他，也就是new，在每次new一个对象的时候都会在内存中生成一块区域来存放这个实例,如果在程序一次运行中使用了很多的new实例化了同一个对象,那就比较消耗资源了,但是如果是通用一个使用全局变量<strong>global</strong>程序又会显得不那么优雅而且会很乱,在这种情况下，单例模式就产生了.</p>
+<p>单例模式是一个很好的解决方案，既可以全局通用,又不必担心占用过多的资源,且非常优雅。我们来一起看看在PhalApi中是如何实现单例模式的:</p>
 <pre><code>//大家看到我们常用的DI方法内部实现的是PhalApi_DI中的静态方法one方法
 function DI() {
     return PhalApi_DI::one();
 }</code></pre>
 <p>然后我们看向one方法内部</p>
-<p>每当我们请求过来的时候先验证静态变量instance是不是没有被初始化,如果是第一次调用他会在内部去实例化<strong>PhalApi_DI</strong>类然后负值给<strong>$instance</strong>然后返回实例好的这个静态变量,当我们下次在请求过来的时候这个静态变量已经被实例化好了就会直接跳过实例的过程直接返回这个对象,也就是我们在PhalApi框架所有的地方使用的DI方法其实都是一个对象,在内存中只存在一块区域,代码如下:</p>
+<p>每当请求过来时先验证静态变量instance是否已被类初始化赋值，若无，则会在内部去实例化<strong>PhalApi_DI</strong>类，然后赋值给<strong>$instance</strong>并返回,若有，则当下次请求过来时，直接返回已实例化的对象。简言之，PhalApi框架所有的地方使用的DI方法，其实都是返回同一个对象实例,在内存中只存在一块区域,代码如下:</p>
 <pre><code>public static function one(){
     if(self::$instance == NULL){
         self::$instance = new PhalApi_DI();
@@ -80,16 +80,15 @@ function DI() {
 
     return self::$instance;
 }</code></pre>
-<p>其实不难我们只用吧<strong>new</strong>一个类的操作封装到我们需要new的类的静态方法在向上面一样的去判断,就可以很简单的去实现单例模式.</p>
 <h2>2. 依赖注入</h2>
-<p>依赖注入又称之为<strong>&quot;控制反转&quot;</strong>,如果是熟悉javaweb开发的<strong>spring</strong>框架应该有比较深的感触,在这里也不往深的讲,就简单讲解一下PhalApi中DI依赖注入的实现让大家了解这种设计模式如何实现以及自此基础上实现的惰性加载机制.</p>
+<p>依赖注入又称之为<strong>&quot;控制反转&quot;</strong>,如果是熟悉javaweb开发的<strong>spring</strong>框架应该有比较深的感触,在这里也不往深的讲,就简单讲解一下PhalApi中DI依赖注入的实现，以便让大家了解这种设计模式实现原理以及自此基础上实现的惰性加载机制.</p>
 <h3>2.1 DI依赖注入实现</h3>
-<p>大家在PhalApi中常用的<strong>DI()</strong>方法,也就是采用我们上面所谓的单例模式不用多说了,也就是我们每次使用DI()其实就是在使用<strong>PhalApi_DI</strong>类,那么我们依赖注入的关键也就是在PhalApi_DI之中</p>
-<p>先来讲一下他的一个实现方式在来讲具体实现,这里举个例子:</p>
+<p>大家在PhalApi中常用的<strong>DI()</strong>方法,也就是采用我们上面所谓的单例模式,我们每次使用DI()就是在使用<strong>PhalApi_DI</strong>类,其实我们依赖注入的关键也就是在PhalApi_DI之中</p>
+<p>先来讲一下他的一个实现方式再来讲具体实现,这里举个例子:</p>
 <pre><code>//配置
 DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');</code></pre>
-<p>其实在内部有一个数组,它吧<strong>config作为了key</strong>,吧<strong>new PhalApi_Config_File(API_ROOT . '/Config')作为了value</strong>然后保存了起来当我们下一次使用DI-&gt;config-&gt;get();的时候它就会根据key值config拿出开始new好的类,所以可以说<strong>config操作是依赖于DI()</strong>,而且在使用DI()-&gt;config的时候永远都是在使用的一个实例,也能减少资源的消耗.</p>
-<p>有的童鞋就好奇了为什么DI()-&gt;config会存到数组需要的时候会拿出来呢,感兴趣的童鞋可以百度一下魔法方法<strong><strong>ser和</strong>get</strong></p>
+<p>其实在内部有一个数组,它把<strong>config</strong>作为了key,把<strong>new PhalApi_Config_File(API_ROOT . '/Config')</strong>作为了value，然后保存了起来。当我们下一次使用<strong>DI-&gt;config-&gt;get()</strong>的时候，它就会根据key值config拿出开始new好的类,所以可以说<strong>config操作是依赖于DI()</strong>,而且在使用DI()-&gt;config的时候永远都是在使用同一个实例,减少资源的消耗.</p>
+<p>有的童鞋就好奇了为什么DI()-&gt;config会存到数组里而在需要的时候会拿出来？感兴趣的童鞋可以百度一下魔法方法<strong><strong>set和</strong>get</strong></p>
 <pre><code>/**大家可以看到这是PhalApi_DI中的魔法方法__set
  * 也就是当使用DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');的时候
  * 获得的name值就是config,获得的value也就是new PhalApi_Config_File(API_ROOT . '/Config');
@@ -101,9 +100,9 @@ public function __set($name, $value){
 public function __get($name){
     return $this-&gt;get($name, NULL);
 }</code></pre>
-<p>看完之后大家是不是觉得很简单啊,大家以后也可以在自己设计类的时候采用这种灵活的魔法方法实现.</p>
+<p>看完之后大家是不是觉得很简单啊,大家以后也可以在设计自己的类的时候采用这种灵活的魔法方法实现.</p>
 <h3>2.2 惰性加载</h3>
-<p>在PhalApi中的DI()方法也提供惰性加载,惰性加载如字意也就是当类没有被使用到的时候不会加载,这样的操作也是为了避免浪费不必要的资源,当我们不是用的时候永远不会去实例化只有当你使用到的时候才会去new这个类然后实例化之后使用,我们来看看是如何实现的.</p>
+<p>在PhalApi中的DI()方法也提供惰性加载,惰性加载如字意也就是当类没有被使用到的时候不会被加载,这样的操作也是为了避免浪费不必要的资源,当我们不使用的时候永远不会去实例化，只有当你使用到的时候才会去实例化。接下来，我们来看看是如何实现的.</p>
 <pre><code>//当我们执行以下语句的时候,在依赖注入的时候存的是value值是字符串的test
 DI()-&gt;test = 'test';
 
@@ -123,8 +122,8 @@ if($config instanceOf Closure){
     $rs = $config;
 }</code></pre>
 <h2>3. 总结</h2>
-<p>在本节中简单的讲解了关于单例模式,依赖注入以及惰性加载,这几种设计模式都是常用的能后减少资源利用率的有效的方法,希望大家看了这篇介绍能够实地的去体验一下PhalApi中的这几种模式,在下一小节就讲解如何构建自己的拦截器,希望大家能够持续关注!</p>
-<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p>在本节中简单的讲解了关于单例模式,依赖注入以及惰性加载,这几种设计模式都是常用的，能够减少资源利用率,希望大家看了这篇介绍能够亲自地去体验一下PhalApi中的这几种模式。在下一小节就讲解如何构建自己的拦截器,希望大家能够继续关注!</p>
+<p>注:笔者能力有限，有说的不对的地方，希望大家能够指出,也希望多多交流!</p>
 <p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
 <h4><a href="/wikis/%5b7.7%5d-phalapi-%e8%bf%9b%e9%98%b6%e7%af%871(%e4%b8%89%e5%b1%82%e7%bb%93%e6%9e%84Api%2cDomain%2c%e5%92%8cModel).html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b7.9%5d-phalapi-%e8%bf%9b%e9%98%b6%e7%af%873(%e8%87%aa%e5%8a%a8%e5%8a%a0%e8%bd%bd%e5%92%8c%e6%8b%a6%e6%88%aa%e5%99%a8).html">下一章</a></h4>
             </div>
