@@ -128,7 +128,7 @@ $ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Publ
         $this-&gt;assertEquals(0, $rs['code']);
 
         $this-&gt;assertEquals('dogstar', $rs['info']['name']);
-        $this-&gt;assertEquals('oschina', $rs['info']['from']);
+        $this-&gt;assertEquals('oschina', $rs['info']['note']);
     }</code></pre>
 <p>上面的验证意思简单明了，结合 <strong>构造-操作-检验（BUILD-OPERATE-CHECK）模式</strong> 加以说明一下。  </p>
 <h3>构造：构建请求URL</h3>
@@ -174,7 +174,7 @@ class PhalApi_Helper_TestRunner {
         $this-&gt;assertEquals(0, $rs['code']);
 
         $this-&gt;assertEquals('dogstar', $rs['info']['name']);
-        $this-&gt;assertEquals('oschina', $rs['info']['from']);</code></pre>
+        $this-&gt;assertEquals('oschina', $rs['info']['note']);</code></pre>
 <p>由于测试环境的数据变动频繁，所以我们可以针对个别的接口进行更精确的验证，而对类似列表获取这样的大批量的数据，则校验其结构格式。<br />
 除此之外，还有一种情况也是需要纳入检验，即除了上面的正常请求情况下的 <strong>异常请求</strong> 。  </p>
 <p>接下来的即是之前文档里面所说的单元测试执行和接口开发，此处略。  </p>
@@ -202,7 +202,7 @@ require_once dirname(__FILE__) . '/../test_env.php';</code></pre>
 
         $this-&gt;assertArrayHasKey('id', $rs);
         $this-&gt;assertArrayHasKey('name', $rs);
-        $this-&gt;assertArrayHasKey('from', $rs);
+        $this-&gt;assertArrayHasKey('note', $rs);
 
         $this-&gt;assertEquals('dogstar', $rs['name']);
     }</code></pre>

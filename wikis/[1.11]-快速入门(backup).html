@@ -75,7 +75,7 @@ http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=帐号ID
         "info": {      //用户信息
             "id": "1",    //用户ID
             "name": "dogstar",   //帐号
-            "from": "oschina"   //来源
+            "note": "oschina"   //来源
         }
     },
     "msg": ""
@@ -189,7 +189,7 @@ require_once dirname(__FILE__) . '/../test_env.php';</code></pre>
         $this-&gt;assertEquals(0, $rs['code']);
 
         $this-&gt;assertEquals('dogstar', $rs['info']['name']);
-        $this-&gt;assertEquals('oschina', $rs['info']['from']);
+        $this-&gt;assertEquals('oschina', $rs['info']['note']);
     }</code></pre>
 <p>此时，单元测试是预期失败的：  </p>
 <pre><code class="language-javascript">$ phpunit ./Api_User_Test.php 
@@ -287,10 +287,10 @@ class Domain_User
 <pre><code class="language-javascript">CREATE TABLE `phalapi_test`.`tbl_user` (
   `id` INT NOT NULL,
   `name` VARCHAR(45) NULL,
-  `from` VARCHAR(45) NULL,
+  `note` VARCHAR(45) NULL,
   PRIMARY KEY (`id`));
 
-INSERT INTO `phalapi_test`.`tbl_user` (`id`, `name`, `from`) VALUES ('1', 'dogstar', 'oschina');</code></pre>
+INSERT INTO `phalapi_test`.`tbl_user` (`id`, `name`, `note`) VALUES ('1', 'dogstar', 'oschina');</code></pre>
 <p>然后，编写需要的Model代码，即利用NotORm实现对数据的操作：</p>
 <pre><code class="language-javascript">//$ vim ./Demo/Model/User.php 
 
@@ -369,7 +369,7 @@ return array(
         "info": {
             "id": "1",
             "name": "dogstar",
-            "from": "oschina"
+            "note": "oschina"
         }
     },
     "msg": ""

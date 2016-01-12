@@ -75,13 +75,13 @@ DI()-&gt;notorm = function() {
 <p>请求：  </p>
 <pre><code class="language-javascript">http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=1</code></pre>
 <p>返回： </p>
-<pre><code class="language-javascript">{"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","from":"oschina"}},"msg":""}</code></pre>
+<pre><code class="language-javascript">{"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","note":"oschina"}},"msg":""}</code></pre>
 <h3>(2)带&amp;debug=1调试下</h3>
 <p>请求：</p>
 <pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=1&amp;debug=1</code></pre>
 <p>返回：</p>
 <pre><code class="language-javascript">[1 - 0.00057s]SELECT * FROM tbl_user WHERE (id = ?); -- 1
-{"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","from":"oschina"}},"msg":""}</code></pre>
+{"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","note":"oschina"}},"msg":""}</code></pre>
 <h2>2.13.3 一个错误的接口开发</h2>
 <p>有时，在进行接口开发时，会需要进行批量获取的功能，如列表。但很多开发的同学可能会因为时间赶或者没有意识去对SQL查询进行优化，或者甚至不知道自己的接口背后隐藏着多少问题。下面是一个错误的开发示例。  </p>
 <h3>(1)新增的批量获取接口</h3>
@@ -128,17 +128,17 @@ class Api_User extends PhalApi_Api {
             {
                 "id": "1",
                 "name": "dogstar",
-                "from": "oschina"
+                "note": "oschina"
             },
             {
                 "id": "2",
                 "name": "Tom",
-                "from": "USA"
+                "note": "USA"
             },
             {
                 "id": "3",
                 "name": "King",
-                "from": "game"
+                "note": "game"
             }
         ]
     },
@@ -156,7 +156,7 @@ INSERT INTO `tbl_user` VALUES ('3', 'King', 'game');</code></pre>
 <pre><code class="language-javascript">[1 - 0.0005s]SELECT * FROM tbl_user WHERE (id = ?); -- 1
 [2 - 0.00042s]SELECT * FROM tbl_user WHERE (id = ?); -- 2
 [3 - 0.00038s]SELECT * FROM tbl_user WHERE (id = ?); -- 3
-{"ret":200,"data":{"code":0,"msg":"","list":[{"id":"1","name":"dogstar","from":"oschina"},{"id":"2","name":"Tom","from":"USA"},{"id":"3","name":"King","from":"game"}]},"msg":""}</code></pre>
+{"ret":200,"data":{"code":0,"msg":"","list":[{"id":"1","name":"dogstar","note":"oschina"},{"id":"2","name":"Tom","note":"USA"},{"id":"3","name":"King","note":"game"}]},"msg":""}</code></pre>
 <p>上面输出的调试信息，简单补充一个格式：</p>
 <pre><code class="language-javascript">[序号 - 所耗时间]SQl语句 -- [参数1, 参数2]</code></pre>
 <h3>(4)如何改进？</h3>
@@ -194,7 +194,7 @@ INSERT INTO `tbl_user` VALUES ('3', 'King', 'game');</code></pre>
         foreach ($rs['list'] as $item) {
             $this-&gt;assertArrayHasKey('id', $item);
             $this-&gt;assertArrayHasKey('name', $item);
-            $this-&gt;assertArrayHasKey('from', $item);
+            $this-&gt;assertArrayHasKey('note', $item);
         }
     }</code></pre>
 <p>执行单元测试的效果：</p>
