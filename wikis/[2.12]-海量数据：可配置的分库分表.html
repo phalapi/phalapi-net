@@ -59,18 +59,10 @@
 <p>为了应对产品海量用户的愿景需求，这里将设计一个分布式的数据库存储方案，以便能满足数据量的骤增、云服务的横向扩展、后台接口开发的兼容性，以及数据迁移等问题，避免日后因为全部数据都存放在单台服务器上的限制。</p>
 <h2>2.12.2 主要思想</h2>
 <ul>
-<li>
-<p>1、分库分表</p>
-</li>
-<li>
-<p>2、路由规则</p>
-</li>
-<li>
-<p>3、扩展字段</p>
-</li>
-<li>
-<p>4、可配置</p>
-</li>
+<li>1、分库分表</li>
+<li>2、路由规则</li>
+<li>3、扩展字段</li>
+<li>4、可配置</li>
 <li>5、SQL语句自动生成</li>
 </ul>
 <h3>(1)分库分表</h3>
@@ -96,7 +88,6 @@
      * avaiable db servers
      */
     'servers' =&gt; array(
-        /**
         'db_demo' =&gt; array(
             'host'      =&gt; 'localhost',             //数据库域名
             'name'      =&gt; 'test',                  //数据库名字
@@ -104,14 +95,12 @@
             'password'  =&gt; '123456',                //数据库密码
             'port'      =&gt; '3306',                  //数据库端口
         ),
-         */
     ),
 
     /**
      * custom table map
      */
     'tables' =&gt; array(
-        /**
         '__default__' =&gt; array(
             'prefix' =&gt; 'tbl_',
             'key' =&gt; 'id',
@@ -127,7 +116,6 @@
                 array('start' =&gt; 0, 'end' =&gt; 2, 'db' =&gt; 'db_demo'),
             ),
         ),
-         */
     ),
 );</code></pre>
 <p>上面示例配置的意思是：</p>
@@ -225,12 +213,126 @@ class Model_Demo extends PhalApi_Model_NotORM {
     }
 
 }</code></pre>
-<h2>2.12.5 与主从数据库的有机结合</h2>
+<h2>2.12.5 多个数据库的配置方式</h2>
+<p>当需要使用多个数据库时，可以先在servers中可以配置多组数据库的信息，然后在tables为不同的数据库表指定不同的数据库服务器。  </p>
+<p>假设我们有两台数据库服务器，分别叫做db_A、db_B，即：  </p>
+<pre><code class="language-javascript">return array(
+    /**
+     * DB数据库服务器集群
+     */
+    'servers' =&gt; array(
+        'db_A' =&gt; array(                              //db_A
+            'host'      =&gt; '192.168.0.1',             //数据库域名
+            // ... ...
+        ),
+        'db_B' =&gt; array(                              //db_B
+            'host'      =&gt; '192.168.0.2',             //数据库域名
+            // ... ...
+        ),
+    ),
+
+    //... ...</code></pre>
+<p>若db_A服务器中的数据库有表a_table_user、a_table_friends，而db_B服务器中的数据库有表b_table_article、b_table_comments，则：  </p>
+<pre><code class="language-javascript">&lt;?php
+return array(
+
+    //... ...
+
+    /**
+     * 自定义路由表
+     */
+    'tables' =&gt; array(
+        //通用路由
+        '__default__' =&gt; array(
+            'prefix' =&gt; 'a_',  //以 a_ 为表前缀
+            'key' =&gt; 'id',
+            'map' =&gt; array(
+                array('db' =&gt; 'db_A'),  //默认，使用db_A数据库
+            ),
+        ),
+
+        'table_article' =&gt; array(                                     //表b_table_article
+            'prefix' =&gt; 'b_',                                         //表名前缀
+            'key' =&gt; 'id',                                            //表主键名
+            'map' =&gt; array(                                           //表路由配置
+                array('db' =&gt; 'db_B'),                                // b_table_article表使用db_B数据库
+            ),
+        ),
+
+        'table_comments' =&gt; array(                                    //表b_table_article
+            'prefix' =&gt; 'b_',                                         //表名前缀
+            'key' =&gt; 'id',                                            //表主键名
+            'map' =&gt; array(                                           //表路由配置
+                array('db' =&gt; 'db_B'),                                // b_table_comments表使用db_B数据库
+            ),
+        ),
+    ),
+</code></pre>
+<p>如果项目存在分表的情况，可结合上述的分表的说明进行配置。<br />
+这里为了让大家更为明了，假设db_A服务器中的数据库有表a_table_user、a_table_friends_0到a_table_friends_9（共10张表），
+而db_B服务器中的数据库有表b_table_article、b_table_comments_0到b_table_comments_19（共20张表），则结合起来的完整配置为：</p>
+<pre><code class="language-javascript">&lt;?php
+return array(
+    /**
+     * DB数据库服务器集群
+     */
+    'servers' =&gt; array(
+        'db_A' =&gt; array(                              //db_A
+            'host'      =&gt; '192.168.0.1',             //数据库域名
+            // ... ...
+        ),
+        'db_B' =&gt; array(                              //db_B
+            'host'      =&gt; '192.168.0.2',             //数据库域名
+            // ... ...
+        ),
+    ),
+
+    /**
+     * 自定义路由表
+     */
+    'tables' =&gt; array(
+        //通用路由
+        '__default__' =&gt; array(
+            'prefix' =&gt; 'a_',  //以 a_ 为表前缀
+            'key' =&gt; 'id',
+            'map' =&gt; array(
+                array('db' =&gt; 'db_A'),  //默认，使用db_A数据库
+            ),
+        ),
+
+        'table_friends' =&gt; array(                                     //分表配置
+            'prefix' =&gt; 'a_',                                         //表名前缀
+            'key' =&gt; 'id',                                            //表主键名
+            'map' =&gt; array(                                           //表路由配置
+                array('db' =&gt; 'db_A'),                                // b_table_comments表使用db_B数据库
+                array('start' =&gt; 0, 'end' =&gt; 9, 'db' =&gt; 'db_A'),      //分表配置（共10张表）
+            ),
+        ),
+
+        'table_article' =&gt; array(                                     //表b_table_article
+            'prefix' =&gt; 'b_',                                         //表名前缀
+            'key' =&gt; 'id',                                            //表主键名
+            'map' =&gt; array(                                           //表路由配置
+                array('db' =&gt; 'db_B'),                                // b_table_article表使用db_B数据库
+            ),
+        ),
+
+        'table_comments' =&gt; array(                                    //表b_table_article
+            'prefix' =&gt; 'b_',                                         //表名前缀
+            'key' =&gt; 'id',                                            //表主键名
+            'map' =&gt; array(                                           //表路由配置
+                array('db' =&gt; 'db_B'),                                // b_table_comments表使用db_B数据库
+                array('start' =&gt; 0, 'end' =&gt; 19, 'db' =&gt; 'db_B'),     //分表配置（共20张表）
+            ),
+        ),
+    ),
+);</code></pre>
+<h2>2.12.6 与主从数据库的有机结合</h2>
 <p>虽然这是专门为海量数据设计的存储方案，但也是可以结合主从配置来获得更庞大强壮的方案，当然为之付出的是复杂性的引入。  </p>
 <p>简单地，可以将dbs.php复制一份dbs_slave.php出来给从库使用，然后注册一个从库的服务：</p>
 <pre><code class="language-javascript">DI()-&gt;slaveNotorm = new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('slave_dbs'));</code></pre>
 <p>最后，在需要使用从库来读取时，使用slaveNotorm 服务即可。</p>
-<h2>2.12.6 不足与注意点</h2>
+<h2>2.12.7 不足与注意点</h2>
 <p>这样的设计是有明显的灵活性的，因为在后期如果需要迁移数据库服务器，我们可以在框架支持的情况下轻松应对，但依然需要考虑到一些问题和不足。</p>
 <h3>(1)DB变更</h3>
 <p>DB变更，这块是必不可少的，但一旦数据库表被拆分后，表数量的骤增导致变更执行困难，所以这里暂时使用了一个折中的方案，即提供了一个ext_data 扩展字段用于存放后期可能需要的字段信息，建议采用json格式，因为通用且长度比序列化的短。但各开发可以根据自己的需要决定格式。即使如此，扩展字段 明显做不到一些SQL的查询及其他操作。</p>
