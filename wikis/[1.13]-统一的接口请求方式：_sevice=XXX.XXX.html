@@ -87,11 +87,11 @@ http://dev.phalapi.com   +   /demo/  +  ?service=User.GetBaseInfo</code></pre>
 </ul>
 <h2>1.13.4 测试下的模拟参数</h2>
 <p>默认地，PhalApi框架会将$_REQUEST作为接口参数的来源：</p>
-<pre><code class="language-javascript">$this-&gt;request = 'PhalApi_Request';</code></pre>
-<p>当我们需要统一强制用$_GET，可以这样简单定制：</p>
-<pre><code class="language-javascript">$this-&gt;request = new PhalApi_Request($_GET);</code></pre>
-<p>同样，也可以强制用$_POST：</p>
-<pre><code class="language-javascript">$this-&gt;request = new PhalApi_Request($_POST);</code></pre>
+<pre><code class="language-javascript">DI()-&gt;request = 'PhalApi_Request';</code></pre>
+<p>当我们需要统一强制用$_GET，可以在init.php文件中这样简单定制：</p>
+<pre><code class="language-javascript">DI()-&gt;request = new PhalApi_Request($_GET);</code></pre>
+<p>同样，也可以在init.php文件中强制用$_POST：</p>
+<pre><code class="language-javascript">DI()-&gt;request = new PhalApi_Request($_POST);</code></pre>
 <p>在测试环境下，为了模拟接口请求，我们需要人工提供接口参数，因此可以这样轻松模拟：</p>
 <pre><code class="language-javascript">$str = 'service=User.GetBaseInfo&amp;user_id=1';
 

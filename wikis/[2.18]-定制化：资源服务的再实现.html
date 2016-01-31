@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="cn" style="">
 <head>
-	<title>[1.2]-创建一个自己的项目 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<title>[2.18]-定制化：资源服务的再实现 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
 	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
@@ -53,130 +53,103 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                <h4><a href="/wikis/%5B1.1%5D-%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85.html">上一章</a>    <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.3%5D-%E5%9C%A8%E7%BA%BF%E4%BD%93%E9%AA%8C.html">下一章</a></h4>
+                <h4><a href="/wikis/%5B2.17%5D-%E5%BE%AE%E6%9C%8D%E5%8A%A1%EF%BC%9AApi%E6%8E%A5%E5%8F%A3%E6%9C%8D%E5%8A%A1%E5%B1%82.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.19%5D-%E6%89%A9%E5%B1%95%E5%BA%93%EF%BC%9A%E5%8F%AF%E9%87%8D%E7%94%A8%E7%9A%84%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93.html">下一章</a></h4>
 <hr />
-<p><em>有梦想的人学习能力特别强，而且不拒绝任何新东西。 -- 《理想丰满》</em>  </p>
-<h2>1.2.1 可视化安装</h2>
-<p>将代码上传到服务器并解压后，访问： ./Public/install/ 下的安装向导，如在浏览器打开：  </p>
-<pre><code>http://dev.phalapi.com/install/</code></pre>
-<p>然后按照提示，一步步操作即可：  </p>
-<h3>(0)第零步：同意安装</h3>
-<p><img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151024155002.jpg" alt="a pic" />  </p>
-<h3>(1)第一步：环境检查</h3>
-<p><img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151024155015.jpg" alt="a pic" />  </p>
-<h3>(2)第二步：系统配置</h3>
-<p><img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151024155030.jpg" alt="a pic" />  </p>
-<h3>(3)第三步：接口请求</h3>
-<p><img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151024155041.jpg" alt="a pic" /></p>
-<h3>(4)运行效果</h3>
-<p><img src="http://7qnay5.com1.z0.glb.clouddn.com/step7_20151012223516.png" alt="a pic" /></p>
-<h2>1.2.2 手动创建</h2>
-<p>在Windows系统下，可以手动创建一个新的项目。  </p>
-<p>假设目录为：  F:\xampp\htdocs\PhalApi<br />
-以下是简单的创建操作：</p>
-<h3>(1)新建项目目录</h3>
-<p>在./PhalApi目录下新建一个自己的项目目录，通常以项目名称命名，如项目MyApp对应：  </p>
-<p><img src="http://webtools.qiniudn.com/20150411005257_929b7fdc7e966f54608b25c2e17def29" alt="QQ截图20150404004219" />  </p>
-<p>然后，再分别在里面添加接口目录Api、领域目录Domain、数据源目录Model和通用目录Common，即：  </p>
-<p><img src="http://webtools.qiniudn.com/20150411005257_9008ecb3491a703442f3522a86ffd624" alt="QQ截图20150404004458" /></p>
-<h3>(2)准备一个接口</h3>
-<p>全部的接口类文件需要放置到./Api 目录下，你可以尝试编写一个简单的Default.Index接口，也可以直接将./Demo/Api/Default.php文件复制过来。  </p>
-<h3>(3)创建访问入口</h3>
-<p>将./Public/demo目录复制一份为对应项目名称小写的目录，如这里的myapp：  </p>
-<p><img src="http://webtools.qiniudn.com/20150411005257_e78908f60d6b34c7f932ba15eff1c1a2" alt="QQ截图20150404004653" /></p>
-<p>注意！这里需要修改./Public/myapp/index.php和./Public/myapp/checkApiParams.php中的目录：  </p>
-<p><img src="http://webtools.qiniudn.com/20150411005257_92bff2ed15c72380c54dff46ed800544" alt="QQ截图20150404004731" /></p>
-<h3>(4)浏览器访问</h3>
-<p>在浏览器输入以下链接：</p>
-<pre><code>http://localhost/phalapi/public/myapp/</code></pre>
-<p>应该可以看到：  </p>
-<p><img src="http://webtools.qiniudn.com/20150411005257_33f51b3efcd0938bb7fc36bb813f4808" alt="QQ截图20150404004959" /></p>
-<h2>1.2.3 自动生成</h2>
-<p>在Linux系统下，我们可以使用脚本快速生成一个项目结构，此过程只需要1分钟左右。  </p>
-<p>简明操作如下：  </p>
-<h3>(1)使用phalapi-buildapp脚本</h3>
-<p>phalapi-buildapp脚本用于创建项目，进入 ./PhalApi/PhalApi/ 后，可以看到这个脚本。  </p>
-<p>不过，首先，需要为这个脚本添加执行权限：</p>
-<pre><code class="language-javascript">$ chmod +x ./phalapi-buildapp</code></pre>
-<p>然后，调用脚本创建一个MyApp的项目：</p>
-<pre><code class="language-javascript">$ ./phalapi-buildapp MyApp
+<p><em>美到极致不是无可增加，而是无可减少。  -- Antonie de Saint-Exupery</em></p>
+<h2>2.18.1 资源服务</h2>
+<p>资源可以理解成接口开发过程中所使用到的第三方系统、功能，如数据库，COOKIE、缓存；而服务则是指领域驱动设计中无状态的服务操作，如加密、过滤器、加载器等。<br />
+而在PhalApi中，资源和服务更多是通过DI来统一进行管理。并且我们使用资源服务来统称这两者。  </p>
+<p>在使用PhalApi进行开发时，应该分别从以下三个层面来使用资源服务。</p>
+<ul>
+<li>1、基本使用</li>
+<li>2、高级应用</li>
+<li>3、定制扩展</li>
+</ul>
+<p>其中，基本使用是指使用框架默认提供的特性、功能，只需要稍微修改调整一下配置（甚至连配置都不需要修改）即可使用；
+高级应用是指切换使用具有同类特性、功能的资源服务，对客户端而言，其实现的功能是等价的，只在于内部实现不同，通常此层面适用于有不同需求的应用场景；
+最后是，定制扩展则是充满活力、生气的做法，对于项目需要用到而框架未提供的，都可以通过此方式进行定制、扩展。</p>
+<h2>2.18.2 仍然以缓存为例</h2>
+<p>下面以大家熟悉的缓存为例，分别说明这三个层面的演进使用。  </p>
+<h3>(1)基本使用</h3>
+<p>在./Public/init.php初始化文件中，我们可以去掉对Memcache的注释，从而在项目启用cache这一资源服务。</p>
+<pre><code class="language-javascript">//缓存 - Memcache/Memcached
+DI()-&gt;cache = function () {
+    return new PhalApi_Cache_Memcache(DI()-&gt;config-&gt;get('sys.mc'));
+};</code></pre>
+<p>或者，我们还需要根据配置的MC不同，稍微更改一下./Config/sys.php中对应的配置：</p>
+<pre><code class="language-javascript">    /**
+     * MC缓存服务器参考配置
+     */
+     'mc' =&gt; array(
+           'host' =&gt; '127.0.0.1',
+           'port' =&gt; 11211,
+     ),</code></pre>
+<p>然后，就可以在项目中如前面说的那样使用cache进行对缓存进行操作。</p>
+<pre><code class="language-javascript">//设置缓存
+DI()-&gt;cache-&gt;set($key, $value, $expireTime);
 
-OK!
-</code></pre>
-<h3>(2)查看生成的项目及访问</h3>
-<p>回到 /path/to/PhalApi 目录，你会发现生成了一个MyApp目录，并且里面的文件如下：  </p>
-<pre><code class="language-javascript">$ cd MyApp/
-$ tree
-.
-├── Api
-│   └── Default.php
-├── Common
-├── Domain
-├── Model
-└── Tests
-    ├── Api
-    │   └── Api_Default_Test.php
-    ├── Common
-    ├── Domain
-    ├── Model
-    ├── phpunit.xml
-    └── test_env.php
+//读取缓存
+$rs = DI()-&gt;cache-&gt;get($key);</code></pre>
+<h3>(2)高级应用</h3>
+<p>但是我们都知道，缓存的实现方案以及存储的方式多种多样，包括但不限于：数据库缓存、文件缓存、COOKIE/session缓存、Redis缓存、APC缓存。  </p>
+<p>假设我们需要切换到Redis缓存，则可以在init.php初始化中，把DI()-&gt;cache注册成Redis缓存即可。</p>
+<pre><code class="language-javascript">DI()-&gt;cache = function () {
+    return new PhalApi_Cache_Redis(DI()-&gt;config-&gt;get('sys.redis'));
+};</code></pre>
+<p>同时，在./Config/sys.php中添加对应的配置：</p>
+<pre><code class="language-javascript">     'redis' =&gt; array(
+           'host' =&gt; '127.0.0.1',
+           'port' =&gt; 9527,
+     ),</code></pre>
+<h3>(3)定制扩展</h3>
+<p>毫无疑义，实际项目需要面对的开发场景更为复杂，可能需要使用到加密、压缩、分片或者其他处理手段，又可能使用其他存储媒介。  </p>
+<p>当框架基本的特性无法满足时，这时就需要考虑进行定制扩展了。值得庆幸的是，实现这一点并不难。一如往常那样，我们需要 <strong>先实现、再注册</strong> 。   </p>
+<h4>实现资源服务接口</h4>
+<p>很多通常的资源服务，我们都统一了接口规约。在[1.19]-DI服务速查：各资源服务一览表 中可以查到每个资源服务所需要实现的接口。  </p>
+<p>如这次的缓存接口类是：</p>
+<pre><code class="language-javascript">&lt;?php
 
-9 directories, 4 files
-</code></pre>
-<p>在Public目录下，则会有myapp的访问入口：</p>
-<pre><code class="language-javascript">└── myapp
-    ├── checkApiParams.php
-    └── index.php</code></pre>
-<p>在浏览器访问：</p>
-<pre><code>#根目录设置为./Public
-http://dev.phalapi.com/myapp/
+interface PhalApi_Cache {
 
-#或没设置根目录为./Public时访问
-http://dev.phalapi.com/Public/myapp/</code></pre>
-<p>可以看到接口结果输出。</p>
-<h3>(3)执行单元测试</h3>
-<p>如果安装了PHPUnit，执行一下单元测试，也是通过的！</p>
-<pre><code class="language-javascript">$ phpunit ./Tests/
-PHPUnit 4.3.4 by Sebastian Bergmann.
+    /**
+     * 设置缓存
+     * 
+     * @param string $key 缓存key
+     * @param mixed $value 缓存的内容
+     * @param int $expire 缓存有效时间，单位秒，非时间戳
+     */
+    public function set($key, $value, $expire = 600);
 
-...
+    /**
+     * 读取缓存
+     * 
+     * @param string $key 缓存key
+     * @return mixed 失败情况下返回NULL
+     */
+    public function get($key);
 
-Time: 7 ms, Memory: 5.75Mb
-
-OK (3 tests, 13 assertions)
-</code></pre>
-<h2>1.2.4 更多技巧</h2>
-<h3>(1)日记目录需要0777权限</h3>
-<p>请确保日记目录Runtime拥有写入的权限，可以给0777 。</p>
-<h3>(2)脚本加执行权限和软链</h3>
-<p>对于脚本命令，需要添加执行权限和软链，便于日后使用：</p>
-<pre><code class="language-javascript">$ cd /pah/to/PhalApi/PhalApi
-
-$ chmod +x ./phalapi-buildapp
-$ sudo ln -s /path/to/phalapi-buildapp /usr/bin/phalapi-buildapp
-
-$ chmod +x ./phalapi-buildsqls
-$ sudo ln -s /path/to/phalapi-buildsqls /usr/bin/phalapi-buildsqls
-
-$ chmod +x ./phalapi-buildtest
-$ sudo ln -s /path/to/phalapi-buildtest /usr/bin/phalapi-buildtest</code></pre>
-<h3>(3)No such file or directory的解决方案</h3>
-<h4>解决方案一：增加 /usr/bin/php软链</h4>
-<p>可以将php的执行路径追加到/usr/bin下，即类似：</p>
-<pre><code>ln -s /usr/local/php/bin/php /usr/bin/php</code></pre>
-<h4>解决方案二：使用alias起别名</h4>
-<p>或者通过使用别名 alias 的方式来注册脚本命令：</p>
-<pre><code class="language-javascript"># vim /etc/bashrc 
-
-#PhalApi - 自动生成SQL语句
-alias phalapi-buildsqls='/usr/local/php/bin/php /path/to/PhalApi/phalapi-buildsqls'</code></pre>
-<p>需要注意的是，保存后，需要source一下，即：</p>
-<pre><code class="language-javascript"># source /etc/bashrc
-
-$ source /etc/bashrc</code></pre>
+    /**
+     * 删除缓存
+     * 
+     * @param string $key
+     */
+    public function delete($key);
+}</code></pre>
+<p>我们可以先在项目中，实现此接口，如：</p>
+<pre><code class="language-javascript">class Common_MyCache implements PhalApi_Cache {
+     // ... ...
+}</code></pre>
+<p>具体的实现，这里不再举例。  </p>
+<h4>再注册</h4>
+<p>当实现好子类后，我们便可以在init.php初始化文件中，切换到我们自己的定制类。</p>
+<pre><code class="language-javascript">DI()-&gt;cache = 'Common_MyCache';</code></pre>
+<h2>2.18.3 实现、定制化你的资源服务</h2>
+<p>正如《项目百态》书中隐藏的美模式一节中写道的“恰恰相反，只有减少特性才能提升设计的美感。最好的设计都是功能明确又留有答题，也是易于测试的，即使要作修改，也不会带来新的麻烦。”  </p>
+<p>是以，作为一个框架，我们应当以发散的方式去设计；但为了能为应用提供可用的功能，我们又应当以收敛的方式去实现。如果我们提供的功能不足以满足大部分主流的业务场景，那么我们至少需要提供可扩展的空间。  </p>
+<p>类似的场景，还包括有接口签名、对接口参数的获取与接口结果的返回。当大家在进行项目开发过程中，有不同的场景需求时，可以按上面介绍的三个层面分别进行。<br />
+先尝试使用简单、默认的方式进行配置解决，再切换到框架或已有的解决方案，最后再尝试扩展自己的定制类。</p>
 <hr />
-<h4><a href="/wikis/%5B1.1%5D-%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85.html">上一章</a>    <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.3%5D-%E5%9C%A8%E7%BA%BF%E4%BD%93%E9%AA%8C.html">下一章</a></h4>
+<h4><a href="/wikis/%5B2.17%5D-%E5%BE%AE%E6%9C%8D%E5%8A%A1%EF%BC%9AApi%E6%8E%A5%E5%8F%A3%E6%9C%8D%E5%8A%A1%E5%B1%82.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.19%5D-%E6%89%A9%E5%B1%95%E5%BA%93%EF%BC%9A%E5%8F%AF%E9%87%8D%E7%94%A8%E7%9A%84%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93.html">下一章</a></h4>
             </div>
         </div>
     </div>
