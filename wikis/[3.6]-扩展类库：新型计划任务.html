@@ -140,7 +140,7 @@ if ($argc &lt; 2) {
 
 $service = trim($argv[1]);
 
-$mq = new Task_Redis();
+$mq = new Task_MQ_Redis();
 $runner = new Task_Runner_Local($mq);
 $rs = $runnter-&gt;go($service);
 
