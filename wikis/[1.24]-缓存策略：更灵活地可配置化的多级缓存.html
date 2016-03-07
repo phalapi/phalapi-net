@@ -74,7 +74,7 @@ DI()-&gt;cache-&gt;delete('thisYear');</code></pre>
 <h2>1.24.3 高速缓存</h2>
 <p>高速缓存通常具备分布式的能力，并能进驻内存，因此性能高。但同样此优点所带来的则是需要另外部署缓存扩展，如常见的Memcached、Redis。若需要考虑缓存落地，还要进一点筛选和配置。  </p>
 <p>如使用Memcached：</p>
-<pre><code class="language-javascript">DI()-&gt;cache = new PhalApi_Cache_Memecahced(array('host' =&gt; '127.0.0.1', 'port' =&gt; 11211, 'prefix' =&gt; 'demo_'));
+<pre><code class="language-javascript">DI()-&gt;cache = new PhalApi_Cache_Memcached(array('host' =&gt; '127.0.0.1', 'port' =&gt; 11211, 'prefix' =&gt; 'demo_'));
 
 // 设置
 DI()-&gt;cache-&gt;set('thisYear', 2015, 600);
@@ -93,7 +93,7 @@ DI()-&gt;cache-&gt;delete('thisYear');</code></pre>
 <p>以下是结合文件缓存和MC缓存的多级缓存示例：</p>
 <pre><code class="language-javascript">$cache = PhalApi_Cache_Multi();
 
-$mcCache = new PhalApi_Cache_Memecahced(array('host' =&gt; '127.0.0.1', 'port' =&gt; 11211, 'prefix' =&gt; 'demo_'));
+$mcCache = new PhalApi_Cache_Memcached(array('host' =&gt; '127.0.0.1', 'port' =&gt; 11211, 'prefix' =&gt; 'demo_'));
 $cache-&gt;addCache($mcCache);
 
 $fileCache = new PhalApi_Cache_File(array('path' =&gt; API_ROOT . '/Runtime', 'prefix' =&gt; 'demo'));
