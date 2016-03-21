@@ -177,7 +177,7 @@ DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime',
 
 class Common_Logger_DB extends PhalApi_Logger {
 
-    public function function log($type, $msg, $data) {
+    public function log($type, $msg, $data) {
         //TODO 数据库的日记写入 ...
     } </code></pre>
 <p>随后，利用DI注册一下即可：</p>
