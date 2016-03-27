@@ -77,7 +77,7 @@ $data = array('username' =&gt; 'dogstar');
 $rs = $curl-&gt;post('http://phalapi.oschina.mopaas.com/Public/demo/?service=Default.Index', $data);</code></pre>
 <h3>1.2 log日志类</h3>
 <p>在大部分时候都没办法实时知道报错信息,但是如果发生了错误我们需要记录起来,来提供给自己日后分析,或者是在运营环境中有个问题但是自己不是很确定可以通过debug日志的形式写入文件进行分析,框架有提供这方面的功能,在接口init.php中已经有下面这段话了</p>
-<pre><code>//日记纪录
+<pre><code>//日志纪录
 DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime', 
     PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</code></pre>
 <p>这样就已经注册了日志类<strong>API_ROOT . '/Runtime'</strong>这个是表示日志存放的路径(一定要保证有写入权限才能正常使用)使用如下</p>

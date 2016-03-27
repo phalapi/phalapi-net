@@ -55,7 +55,7 @@
             <div class="grid__cell">
                 <h4><a href="/wikis/%5B1.12%5D-%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99%EF%BC%9A%E6%8E%A5%E5%8F%A3%E5%8F%82%E6%95%B0%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.14%5D-%E7%BB%9F%E4%B8%80%E7%9A%84%E8%BF%94%E5%9B%9E%E6%A0%BC%E5%BC%8F%E5%92%8C%E7%BB%93%E6%9E%84%EF%BC%9Aret-data-msg.html">下一章</a></h4>
 <hr />
-<p><em>有句话说得好，最可怕的事情不是别人比你优秀，而是优秀的人竟然还比你更努力。  --《考拉小巫的留学成长日记》</em>  </p>
+<p><em>有句话说得好，最可怕的事情不是别人比你优秀，而是优秀的人竟然还比你更努力。  --《考拉小巫的留学成长日志》</em>  </p>
 <p>此篇章主要是讲述接口统一请求的方式，以及提供一个PHP实现的简单客户端。</p>
 <h2>1.13.1 指定接口服务：?service=XXX.XXX</h2>
 <p>我们统一固定用service参数来表示需要请求获得的服务，并通过GET方式传递，即请求的URI格式为：</p>
@@ -63,7 +63,7 @@
 
 如：
 http://dev.phalapi.com   +   /demo/  +  ?service=User.GetBaseInfo</code></pre>
-<p>当我们在浏览器以GET方式请求时，可以在nignx看到这样的日记：</p>
+<p>当我们在浏览器以GET方式请求时，可以在nignx看到这样的日志：</p>
 <pre><code class="language-javascript">127.0.0.1 - - [07/Feb/2015:22:46:46 -0800] "GET /demo/?service=User.GetBaseInfo&amp;sign=&amp;user_id=1 HTTP/1.1" 200 107 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:11.0) Gecko/20100101 Firefox/11.0"</code></pre>
 <p>如果通过接口用POST方式请求，则会看到：</p>
 <pre><code class="language-javascript">127.0.0.1 - - [07/Feb/2015:19:32:05 -0800] "POST /demo/?service=User.GetBaseInfo&amp;sign= HTTP/1.1" 200 135 "-" "-"</code></pre>
@@ -77,7 +77,7 @@ http://dev.phalapi.com   +   /demo/  +  ?service=User.GetBaseInfo</code></pre>
 <p>在一个项目中，会有很多公共的接口参数，如客户端、版本号、密钥等。这些同样可以纳入GET参数里面，或者也可以放到POST里面。  </p>
 <blockquote>
 <p>温馨提示：<br />
-这样要求是有目的的，因为这样的话可以在nginx的access日记里面查看来自客户端的快照信息，以便统计或者定位问题。  </p>
+这样要求是有目的的，因为这样的话可以在nginx的access日志里面查看来自客户端的快照信息，以便统计或者定位问题。  </p>
 </blockquote>
 <h2>1.13.3 接口参数用POST</h2>
 <p>特别地，接口参数我们建议统一使用POST方式传递，理由很简单：  </p>

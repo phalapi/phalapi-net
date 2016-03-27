@@ -295,7 +295,7 @@ http://api.vote.phalapi.com/vote/?sign=phalapi&amp;service=Act.Vote&amp;team_id=
     },
     "msg": ""
 }</code></pre>
-<p>在进行上面的非法请求后，我们可以同时关注后台的日记：</p>
+<p>在进行上面的非法请求后，我们可以同时关注后台的日志：</p>
 <pre><code class="language-javascript">$ tailf ./Runtime/log/201505/20150517.log 
 2015-05-17 01:35:32|DEBUG|user not login|{"userId":null,"token":null}
 2015-05-17 01:36:01|DEBUG|user can not vote today|{"userId":1,"teamId":5}
