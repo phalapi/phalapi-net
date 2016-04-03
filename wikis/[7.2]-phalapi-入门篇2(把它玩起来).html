@@ -109,7 +109,7 @@ $rs = $api-&gt;response();                                           //执行你
 $rs-&gt;output();                                                    //返回结果</code></pre>
 <p>大家要是进入到$api-&gt;response();里面就会发现有这样一条语句</p>
 <pre><code>$service = DI()-&gt;request-&gt;get('service', 'Default.Index');</code></pre>
-<p>也就是当你没有定义访问莫个接口的时候,它会指向到Default模块下的Index接口</p>
+<p>也就是当你没有定义访问某个接口的时候,它会指向到Default模块下的Index接口</p>
 <p><strong>所以http://localhost/Public/等同于http://localhost/Public/?service=Default.Index试一试会得到一样的结果</strong></p>
 <p>机智的小伙伴一定发现了在项目中的Demo/Api里面有Default.php这样一个文件而恰巧里面有一个index方法,没错就是通过service=Default.Index找到了Default模块中的index方法</p>
 <p>实现这一机制的语句是:</p>
