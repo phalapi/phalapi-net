@@ -39,6 +39,7 @@
 					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
 					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
 					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+					<li class="menu-item"><a href="/wikis/%5b8.1%5d-PhalApi%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b.html" class="menu-item__link events-spec" target="_blank">视频教程</a></li>
     				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
 					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
 					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于我们</a></li>
@@ -59,7 +60,6 @@
 <p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
 <p>在本小节主要讲解如何使用phalapi框架自带的国际化和文档自动生成,以及这样做可以的优点和好处和能解决哪方面的问题</p>
 <p>附上:</p>
-<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
 <p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
 <p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
 <h2>1. 国际化</h2>
@@ -114,17 +114,16 @@ SL('zh_cn');</code></pre>
  * @return int time 当前时间戳
  */</code></pre>
 <p>剖析一下<strong>@return string title</strong> 标题 第一个是必要参数<strong>@return</strong>后面接着一个空格(千万不能多空格否则会失效)返回类型在接着一个空格返回名称</p>
-<p>请求参数会按照接口文档中国<strong>getRules</strong>生成一些限定条件会自动挂生成说明需要加上<strong>'desc' =&gt; 说明就能生成</strong>大家可以试着访问一下user.getBaseInfo接口文档就能看到请求参数是有说明的</p>
+<p>请求参数会按照接口文档中的<strong>getRules</strong>生成一些限定条件会自动生成说明需要加上<strong>'desc' =&gt; 说明就能生成</strong>大家可以试着访问一下user.getBaseInfo接口文档就能看到请求参数是有说明的</p>
 <p>使用自动生成文档的好处在于会时时更新不必在开发过程中要取维护接口文档而烦恼,还有一点就是容错高因为是事实的所以不会出现请求参数接口和文档不同步的情况所以很推荐使用,但是对于返回结果来说需要手工维护不过也比维护文档来的方便,而且不用下载网上直接看,</p>
 <p>其实大家看到/Public/demo/listAllApis.php里面这个相当于一个导航访问<a href="http://localhost/Public/demo/listAllApis.php" title="http://localhost/Public/demo/listAllApis.php"><a href="http://localhost/Public/demo/listAllApis.php">http://localhost/Public/demo/listAllApis.php</a></a>可以看到以下结果</p>
 <p><img src="http://i.imgur.com/GjXtt3P.png" alt="" /></p>
 <p>对于这个文件可以自定义成自己的文档入口文件,可以自己划分模块然后把接口文档的地址写上去名称和说明这样也不需要手动在url里面去输入接口名称了</p>
-<p><strong>注:</strong>在这里有一个坑,如果要使用自动生成文档的话需要关掉一些PHP缓存拓展,应为这些拓展在缓存的时候会<strong>去除掉注释之后在缓存</strong>会导致返回结果无法生成,比如opcache.xcache这类的拓展都会导致此类问题</p>
+<p><strong>注:</strong>在这里有一个坑,如果要使用自动生成文档的话需要关掉一些PHP缓存拓展,因为这些拓展在缓存的时候会<strong>去除掉注释之后在缓存</strong>会导致返回结果无法生成,比如opcache.xcache这类的拓展都会导致此类问题</p>
 <h2>3. 总结</h2>
 <p>本小节主要讲解了一下如何使用国际化使用的好处,以及运用官方工具生成及时文档,在下一章节我们会讲解激动人心的数据库操作希望大家能持续关注!</p>
 <p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
 <p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
-<h4><a href="/wikis/%5b7.3%5d-phalapi-%e5%85%a5%e9%97%a8%e7%af%873(%e8%af%b7%e6%b1%82%e5%92%8c%e8%bf%94%e5%9b%9e).html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b7.5%5d-phalapi-%e5%85%a5%e9%97%a8%e7%af%875(%e6%95%b0%e6%8d%ae%e5%ba%93%e6%93%8d%e4%bd%9c%e5%92%8cModel%e5%b1%82).html">下一章</a></h4>
             </div>
         </div>
     </div>

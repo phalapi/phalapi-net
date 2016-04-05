@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="cn" style="">
 <head>
-	<title>[6.5]-SDK包（javascript版） | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<title>[8.1]-PhalApi视频教程 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
 	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
@@ -54,7 +54,139 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                <p>todo</p>
+                <h2>[8.1] PhalApi视频教程</h2>
+<p><strong><em>先在这里感谢以下录制小组的同学，是你们让世界看到PhalApi的视频教程！</em></strong>  </p>
+<pre><code>A西瓜妹子、听风不语、彩色的雨、Catch、喵了个咪、dogstar</code></pre>
+<p>PhalApi教程视频大纲，分为：基础教程、进阶教程、实战教程三类。  </p>
+<p>附上:  </p>
+<ul>
+<li><a href="w-blog.cn">喵了个咪的博客</a>  </li>
+<li><a href="http://www.phalapi.net/" title="PhalApi官网">PhalApi官网</a>  </li>
+<li><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址">PhalApi Git项目仓库</a>  </li>
+</ul>
+<h2>1 基础教程</h2>
+<h3>1.1 环境搭建,安装和helloword</h3>
+<p><a href="http://pan.baidu.com/s/1gfnUHf9">百度网盘</a>    <a href="http://v.youku.com/v_show/id_XMTUyNDY3NDM3Mg==.html">优酷视频</a>    <a href="#">土豆视频</a>   </p>
+<pre><code>1) phalapi介绍以及使用场景
+2）建议使用liunx和各项环境配置最低
+3）推荐IDE
+4）框架编写的install展示
+5）运行helloword!</code></pre>
+<h3>1.2 初识PhalApi</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）目录功能讲解
+2）数据库建库建表
+3）连接数据库官方DEMO</code></pre>
+<h3>1.3 init介绍以及配置文件讲解log记录</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）init文件作用内容讲解
+2）配置文件使用讲解
+3）以及log记录的活灵活用</code></pre>
+<h3>1.4 请求返回</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）请求的参数验证getRules方法使用讲解
+2）返回json数据讲解
+3）返回报错讲解
+</code></pre>
+<h3>1.5 国际化和自动生成文档</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）返回国际化T方法讲解
+2）自动生成文档规范讲解
+3）如何查看
+4）注意不要使用缓存会出不来</code></pre>
+<h3>1.6 Model操作讲解</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）Model表配置
+2）NotORM的使用
+3）简单的 curd 执行原生sql</code></pre>
+<h3>1.7 简单的小项目</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）对用户的一个登录注册等操作的接口实际项目编写实战
+2）并且总结</code></pre>
+<h2>2 进阶教程</h2>
+<h3>2.1 DI思想讲解</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>一、DI简介
+1)DI的通用说明 
+ + 容器 
+ + Martin Fowler  
+ + 示例
+
+2)DI在π框架的角色 
+ + 汇点
+ + 管理全部服务资源
+ + 形成 **通用语言** ，实现快速开发
+ + 减少重复写一些单例模式的代码，以及泛滥的全局变量
+
+3)π框架开发的使用
+
+二、DI资源服务分类
+1)框架本身的资源服务
+ + 公共服务和内部服务
+ + 公共服务的使用
+
+2)如何自定义资源服务
+ + 三步走：实现 -&gt; 注册 -&gt; 使用
+ + 示例
+
+三、技巧与需要注意的事项
+ + 一行优雅的代码： DI()-&gt;get('filter', 'PhalApi_Filter_None')-&gt;check();
+ + 注意别踩坑！</code></pre>
+<h3>2.2 API,DOMAIN,MODEL灵活使用</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）为什么phalapi要使用三层结构
+2）三层结构的优势</code></pre>
+<h3>2.3 自动加载和拦截器</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）自动加载机制的活灵活用
+2）定义自己的项目功能文件
+3）使用拦截器过滤参数并且使用token验证请求</code></pre>
+<h3>2.4 自定义参数验证规则</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）对getRules自定义参数验证规则
+2）一个邮箱验证的小案例</code></pre>
+<h3>2.5 NotORM进阶细节使用</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）方法补全
+2）事务操作</code></pre>
+<h3>2.6 数据库读写分离以及多库使用</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）数据库实现读写分离
+2）实现跨库使用</code></pre>
+<h3>2.7 使用缓存</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>1）使用缓存来实现缓存API请求结果
+2）使用缓存来实现对数据库查询结果进行缓存</code></pre>
+<h2>3 实战教程</h2>
+<h3>3.1 多项目多版本处理</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>//TODO</code></pre>
+<h3>3.2 核心拓展介绍</h3>
+<p>百度网盘  优酷视频  土豆视频     </p>
+<pre><code>一、π框架中的扩展类库
+1)扩展类库的简单介绍
+ + 即插即用 
+ + 可重用的、业务无关的基础设施类库  
+ + 致力于与开源项目一起提供企业级的解决方案！
+
+2)目前有哪些扩展类库 
+ + 23+个
+
+二、如何使用扩展类库
+1)使用步骤
+ + 1、下载安装
+ + 2、配置
+ + 3、注册
+ + 4、使用
+
+2)扩展类库使用示例
+ + Log4php日志
+ + View视图渲染
+
+三、如何开发、贡献扩展类库
+ + 如何开发尚未提供的扩展类库
+ + 如何分享</code></pre>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
             </div>
         </div>
     </div>
