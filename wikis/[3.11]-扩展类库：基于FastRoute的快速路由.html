@@ -105,7 +105,7 @@ $loader-&gt;addDirs('Library');
 
 //显式初始化，并调用分发
 DI()-&gt;fastRoute = new FastRoute_Lite();
-DI()-&gt;fastRoute-&gt;dispatche();
+DI()-&gt;fastRoute-&gt;dispatch();
 
 /** ---------------- 响应接口请求 ---------------- **/
 
@@ -142,7 +142,7 @@ $rs-&gt;output();</code></pre>
     }
 }</code></pre>
 <p>然后，在分发时指定handler：</p>
-<pre><code class="language-javascript">DI()-&gt;fastRoute-&gt;dispatche(new FastRoute_Handler_App());</code></pre>
+<pre><code class="language-javascript">DI()-&gt;fastRoute-&gt;dispatch(new FastRoute_Handler_App());</code></pre>
 <h3>3.11.4 更多路由配置说明</h3>
 <p>请访问 <a href="https://github.com/nikic/FastRoute">FastRoute</a> ，查看其官方说明。</p>
 <h4><a href="#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>
