@@ -480,7 +480,7 @@ DI()-&gt;userLite = new User_Lite();</code></pre>
 <p>当需要为用户新建一个会话时，可以在接口中执行：  </p>
 <pre><code>DI()-&gt;userLite-&gt;generateSession(1); //假设用户ID为1</code></pre>
 <p>当需要为用户延长登录态有效时间时（默认为一个月），可以在接口进行心跳操作，从而再延长一个月有效时间：  </p>
-<pre><code>DI()-&gt;userLite-&gt;heatbeat();</code></pre>
+<pre><code>DI()-&gt;userLite-&gt;heartbeat();</code></pre>
 <h2>3.8.4 示例</h2>
 <h3>(1)假设在我们的应用的接口中：</h3>
 <pre><code class="language-javascript">&lt;?php
