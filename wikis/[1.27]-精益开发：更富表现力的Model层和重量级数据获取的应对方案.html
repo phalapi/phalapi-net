@@ -54,9 +54,7 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                <h4><a href="/wikis/%5B1.26%5D-%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E6%96%B9%E6%A1%88.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.28%5D-COOKIE%EF%BC%9A%E5%AF%B9COOKIE%E5%8E%9F%E7%94%9F%E6%80%81%E7%9A%84%E6%94%AF%E6%8C%81%E5%8F%8A%E8%AE%B0%E5%BF%86%E5%8A%A0%E5%AF%86%E5%8D%87%E7%BA%A7%E7%89%88.html">下一章</a></h4>
-<hr />
-<p><em>我们能够有意识地推断我们想要在哪一条想法的溪流中遨游，然而此后与那些想法的接触会潜在地塑造我们的习惯和信仰。 -- 《智慧社会》</em>  </p>
+                <p><em>我们能够有意识地推断我们想要在哪一条想法的溪流中遨游，然而此后与那些想法的接触会潜在地塑造我们的习惯和信仰。 -- 《智慧社会》</em>  </p>
 <h2>1.27.1 写在前面的话</h2>
 <p>此篇章有点长，但我认为是值得一读的。因为这里我将逐步讲述如何在已有的基础上演变扩展出更高层次的代码结构和系统架构，而不致于因目前频繁的需求变更而导致代码凌乱不堪。更为重要的是，你将能从中发现，如何在一个框架中持续演变，最终体验浮现式设计的乐趣。如果你的项目亦能如此，我相信你会找到编程如同搭建积木般轻便明了的感觉。</p>
 <h2>1.27.2 更富表现力的Model层</h2>
@@ -160,11 +158,9 @@
             $this-&gt;writeCache = FALSE;
         }
     }
-}
-···
-至于DI()-&gt;debug的设置，则可以在入口文件中根据约定的接口参数设定，简单地如：
-```javascript
-if (isset($_GET['debug']) &amp;&amp; $_GET['debug'] == 1) {
+}</code></pre>
+<p>至于DI()-&gt;debug的设置，则可以在入口文件中根据约定的接口参数设定，简单地如：</p>
+<pre><code class="language-javascript">if (isset($_GET['debug']) &amp;&amp; $_GET['debug'] == 1) {
     DI()-&gt;debug = true;
 }</code></pre>
 <p>这样便可以获得了接口预览和调试的能力。</p>
@@ -224,10 +220,8 @@ $list = $domain-&gt;getList($query); //通过查询对象传递众多参数</cod
 <li>1、更方便职能的划分</li>
 <li>2、易于测试</li>
 <li>3、实现简单（可提取一个Query的层超类来完成自动填充）</li>
-<li>4、便于IDE时的参数提示，同时可以提供默认值
-<hr /></li>
+<li>4、便于IDE时的参数提示，同时可以提供默认值</li>
 </ul>
-<h4><a href="/wikis/%5B1.26%5D-%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E6%96%B9%E6%A1%88.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.28%5D-COOKIE%EF%BC%9A%E5%AF%B9COOKIE%E5%8E%9F%E7%94%9F%E6%80%81%E7%9A%84%E6%94%AF%E6%8C%81%E5%8F%8A%E8%AE%B0%E5%BF%86%E5%8A%A0%E5%AF%86%E5%8D%87%E7%BA%A7%E7%89%88.html">下一章</a></h4>
             </div>
         </div>
     </div>
