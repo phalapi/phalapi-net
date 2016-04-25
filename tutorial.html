@@ -84,9 +84,8 @@ class Api_Welcome extends PhalApi_Api {
 		<p>接口访问的格式为：接口域名 + 入口路径 + ?service=XXX.XXX，此示例中对应的链接为：</p>
 		<pre><code>http://dev.phalapi.com/demo/?service=Welcome.Say
 		
-		#注意！如果没有配置nginx，请使用以下访问链接（千万别访问./Demo/下的源代码，而是应该访问公共入口./Public/demo/）：
-		http://localhost/Public/demo/?service=Welcome.Say
-		</code></pre>
+#注意！如果没有配置nginx，请使用以下访问链接（千万别访问./Demo/下的源代码，而是应该访问公共入口./Public/demo/）：
+http://localhost/Public/demo/?service=Welcome.Say</code></pre>
 		<h3>3、接口返回</h3>
 		<p>结果默认以JSON格式返回，即：</p>
 		<pre><code>{"ret":200,"data":{"title":"Hello World!"},"msg":""}</code></pre>
