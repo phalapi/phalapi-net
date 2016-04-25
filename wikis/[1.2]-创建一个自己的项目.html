@@ -184,9 +184,109 @@ $ source /etc/bashrc</code></pre>
 <h3>(2)生成单元测试骨架代码</h3>
 <p>当需要对某个类进行单元测试时，可使用<code>phalapi-buildtest</code>脚本生成对应的单元测试代码，其使用如下：<br />
 <img src="http://7xiz2f.com1.z0.glb.clouddn.com/3_20160422210251.jpg" alt="" />  </p>
+<p>其中，</p>
+<ul>
+<li>第一个参数file_path：是待测试的源文件相对/绝对路径  </li>
+<li>第二个参数class_name：是待测试的类名  </li>
+<li>第三个参数bootstrap：是测试启动文件，通常是./test_env.php文件  </li>
+<li>第四个参数author：你的名字，默认是dogstar  </li>
+</ul>
+<p>通常，可以先写好类名以及相应的接口，然后再使用此脚本生成单元测试骨架代码。<br />
+以Default.Index默认接口服务为例，需要为此生成测试骨架代码，可以依次这样操作：  </p>
+<pre><code>$ cd /path/to/PhalApi
+$ cd ./Demo/Tests
+$ ../../PhalApi/phalapi-buildtest ../Api/Default.php Api_Default ./test_env.php &gt; ./Api/Api_Default_Test.php</code></pre>
+<p>最后，需要将生成好的代码，重定向保存到你要保存的位置。通常与产品代码对齐，并以“{类名} + _Test.php”方式命名。  </p>
 <h3>(3)生成数据库建表SQL</h3>
 <p>当需要创建数据库表时，可以使用<code>phalapi-buildsqls</code>脚本结合配置文件dbs.php生成建表SQL，这个工具在创建分表时尤其有用，其使用如下：<br />
 <img src="http://7xiz2f.com1.z0.glb.clouddn.com/2_20160422210230.jpg" alt="" />  </p>
+<p>其中，</p>
+<ul>
+<li>第一个参数dbs_config：是指向数据库配置文件./Config/dbs.php的路径，可以使用相对路径  </li>
+<li>第二个参数table：是需要创建sql的表名，每次生成只支持一个  </li>
+<li>第三个参数engine：（可选）是指数据库表的引擎，可以是：Innodb或者MyISAM  </li>
+</ul>
+<blockquote>
+<p>温馨提示：需要提前先将建表的SQL语句（除主键id和ext_data字段外）放置到./Data/目录下，文件名为：{表名}.sql。  </p>
+</blockquote>
+<p>如，我们需要生成10用户user_session表的的建表语句，那么需要添加数据文件./Data/user_session.sql（除主键id和ext_data字段外）：  </p>
+<pre><code>      `user_id` bigint(20) DEFAULT '0' COMMENT '用户id',
+      `token` varchar(64) DEFAULT '' COMMENT '登录token',
+      `client` varchar(32) DEFAULT '' COMMENT '客户端来源',
+      `times` int(6) DEFAULT '0' COMMENT '登录次数',
+      `login_time` int(11) DEFAULT '0' COMMENT '登录时间',
+      `expires_time` int(11) DEFAULT '0' COMMENT '过期时间',</code></pre>
+<p>然后，进入到项目根目录，执行命令：  </p>
+<pre><code>$ php ./PhalApi/phalapi-buildsqls ./Config/dbs.php user_session</code></pre>
+<p>就会看到生成好的SQL语句了，类似：  </p>
+<pre><code>CREATE TABLE `phalapi_user_session_0` (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      ... ...
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `phalapi_user_session_1` (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      ... ...
+      `ext_data` text COMMENT 'json data here',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `phalapi_user_session_2` (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      ... ...
+      `ext_data` text COMMENT 'json data here',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `phalapi_user_session_3` (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      ... ...
+      `ext_data` text COMMENT 'json data here',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `phalapi_user_session_4` (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      ... ...
+      `ext_data` text COMMENT 'json data here',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `phalapi_user_session_5` (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      ... ...
+      `ext_data` text COMMENT 'json data here',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `phalapi_user_session_6` (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      ... ...
+      `ext_data` text COMMENT 'json data here',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `phalapi_user_session_7` (
+      ... ...
+      `ext_data` text COMMENT 'json data here',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `phalapi_user_session_8` (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      ... ...
+      `ext_data` text COMMENT 'json data here',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `phalapi_user_session_9` (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      ... ...
+      `ext_data` text COMMENT 'json data here',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre>
+<p>最后，便可把生成好的SQL语句，导入到数据库，进行建表操作。  </p>
 <h4><a href="/wikis/%5B1.1%5D-%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85.html">上一章</a>    <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.3%5D-%E5%9C%A8%E7%BA%BF%E4%BD%93%E9%AA%8C.html">下一章</a></h4>
             </div>
         </div>
