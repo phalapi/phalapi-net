@@ -90,10 +90,10 @@ PhalApi需要PhaApi 1.2.0及以上版本。</p>
                 'prefix' =&gt; 'phalapi_task',
                 'auth' =&gt; '',
             ),
-        'mc' =&gt; array(
+            'mc' =&gt; array(
                 'host' =&gt; '127.0.0.1',
                 'port' =&gt; 11211,
-        ),
+            ),
         ),
 
         //Runner设置，如果使用远程调度方式，请加此配置
@@ -316,10 +316,10 @@ $mq = new Task_MQ_File($fileCache);</code></pre>
 <pre><code class="language-javascript">    'Task' =&gt; array(
         //MQ队列设置，可根据使用需要配置
         'mq' =&gt; array(
-        'mc' =&gt; array(
+            'mc' =&gt; array(
                 'host' =&gt; '127.0.0.1',
                 'port' =&gt; 11211,
-        ),
+            ),
         ),
     ),</code></pre>
 <p>其中：  </p>
