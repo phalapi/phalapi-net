@@ -90,6 +90,10 @@ PhalApi需要PhaApi 1.2.0及以上版本。</p>
                 'prefix' =&gt; 'phalapi_task',
                 'auth' =&gt; '',
             ),
+        'mc' =&gt; array(
+                'host' =&gt; '127.0.0.1',
+                'port' =&gt; 11211,
+        ),
         ),
 
         //Runner设置，如果使用远程调度方式，请加此配置
@@ -264,7 +268,7 @@ $mq = new Task_MQ_Redis();
 //方法二：外部依赖注入
 $redisCache = new PhalApi_Cache_Redis(array('host' =&gt; '127.0.0.1'));
 $mq = new Task_MQ_Redis($redisCache);</code></pre>
-<h4>文件MQ队列</h4>
+<h4>文件MQ队列（通常不能共享，队列大小不限制，有效期一年）</h4>
 <p>文件MQ需要的配置为：</p>
 <pre><code class="language-javascript">    'Task' =&gt; array(
         //MQ队列设置，可根据使用需要配置
@@ -307,6 +311,49 @@ $mq = new Task_MQ_File();
 //方法二：外部依赖注入
 $fileCache = new PhalApi_Cache_File(array('path' =&gt; '/tmp/cache'));
 $mq = new Task_MQ_File($fileCache);</code></pre>
+<h4>Memcached/Memcache MQ队列（通常队列大小不能超过1M，有效期29天）</h4>
+<p>MC MQ需要的配置为：</p>
+<pre><code class="language-javascript">    'Task' =&gt; array(
+        //MQ队列设置，可根据使用需要配置
+        'mq' =&gt; array(
+        'mc' =&gt; array(
+                'host' =&gt; '127.0.0.1',
+                'port' =&gt; 11211,
+        ),
+        ),
+    ),</code></pre>
+<p>其中：  </p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>是否必须</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>host</td>
+<td>否</td>
+<td>127.0.0.1</td>
+<td>MC的host</td>
+</tr>
+<tr>
+<td>port</td>
+<td>否</td>
+<td>11211</td>
+<td>MC端口</td>
+</tr>
+</tbody>
+</table>
+<p>可以这样创建文件MQ队列：</p>
+<pre><code class="language-javascript">//方法一：使用app.Task.mq.mc配置
+$mq = new Task_MQ_Memcached();
+
+//方法二：外部依赖注入
+$mc = new PhalApi_Cache_Memcached(array('host' =&gt; '127.0.0.1', 'port' =&gt; 11211));
+$mq = new Task_MQ_File($mc);</code></pre>
 <h4>数据库MQ队列</h4>
 <p>数据库MQ队列需要的配置为：</p>
 <pre><code class="language-javascript">    'tables' =&gt; array(
