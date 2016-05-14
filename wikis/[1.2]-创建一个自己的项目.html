@@ -286,6 +286,34 @@ CREATE TABLE `phalapi_user_session_9` (
       `ext_data` text COMMENT 'json data here',
       PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre>
+<h3>(4)生成接口代码 - V1.3.4及以上版本支持</h3>
+<p>当需要编写开发一个接口时，可以使用<code>phalapi-buildcode</code>脚本生成基本的Api、Domain和Model代码。此脚本不是很强悍的，项目可以根据自己的喜欢使用，或者修改定制自己的模板。其使用如下：<br />
+<img src="http://7xiz2f.com1.z0.glb.clouddn.com/4_20160514155143.png" alt="" />  </p>
+<p>其中，</p>
+<ul>
+<li>第一个参数app_path：是指项目根目录到你的项目的相对路径  </li>
+<li>第二个参数api_path：是需要创建接口的相对项目的相对路径，支持多级目录，可不带.php后缀，每次生成只支持一个  </li>
+<li>第三个参数author：（可选）你的名字，默认为空</li>
+<li>第四个参数overwrite：（可选）是否覆盖已有的代码文件，默认为否</li>
+</ul>
+<p>例如，我们要为Demo项目生成一个新的接口文件./AA/BB/CC.php，则可以：  </p>
+<pre><code>$ cd /path/to/PhalApi
+$ ./PhalApi/phalapi-buildcode Demo AA/BB/CC dogstar
+Start to create folder /mnt/hgfs/F/PHP/PhalApi/PhalApi/../Demo/Api/AA/BB ...
+Start to create folder /mnt/hgfs/F/PHP/PhalApi/PhalApi/../Demo/Domain/AA/BB ...
+Start to create folder /mnt/hgfs/F/PHP/PhalApi/PhalApi/../Demo/Model/AA/BB ...
+Start to create file /mnt/hgfs/F/PHP/PhalApi/PhalApi/../Demo/Api/AA/BB/CC.php ...
+Start to create file /mnt/hgfs/F/PHP/PhalApi/PhalApi/../Demo/Domain/AA/BB/CC.php ...
+Start to create file /mnt/hgfs/F/PHP/PhalApi/PhalApi/../Demo/Model/AA/BB/CC.php ...
+
+OK! AA/BB/CC has been created successfully!
+</code></pre>
+<p>可以看到生成的代码有：<br />
+<img src="http://7xiz2f.com1.z0.glb.clouddn.com/cc20160514155950.png" alt="" />   </p>
+<p>在线接口列表，可以看到：<br />
+<img src="http://7xiz2f.com1.z0.glb.clouddn.com/bb20160514160158.png" alt="" />  </p>
+<p>最后，访问接口：<br />
+<img src="http://7xiz2f.com1.z0.glb.clouddn.com/aa20160514160328.png" alt="" />  </p>
 <p>最后，便可把生成好的SQL语句，导入到数据库，进行建表操作。  </p>
 <h4><a href="/wikis/%5B1.1%5D-%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85.html">上一章</a>    <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.3%5D-%E5%9C%A8%E7%BA%BF%E4%BD%93%E9%AA%8C.html">下一章</a></h4>
             </div>
