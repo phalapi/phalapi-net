@@ -296,6 +296,14 @@ return array(
 <pre><code class="language-javascript">{"ret":400,"data":[],"msg":"Illegal Param: username.len should &lt;= 10, but now username.len = 21"}</code></pre>
 <p>但是当需要验证的是类型是中文的话会出现一点问题一个中文字符会占用3个字节所以在min和max验证的时候会出现一些问题,PhalApi提供了format方式对你需要验证长度的string进行指定格式可以排除此问题</p>
 <pre><code class="language-javascript">array('name' =&gt; 'username', 'type' =&gt; 'string','format' =&gt; 'utf8', 'min' =&gt; 1, 'max' =&gt; 10)</code></pre>
+<p>对于正则表达式的验证，一个邮箱的例子是：  </p>
+<pre><code>'email' =&gt; array(
+    'name' =&gt; 'email',
+    'require' =&gt; true,
+    'min' =&gt; '1',
+    'regex' =&gt; "/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i",
+    'desc' =&gt; '邮箱',
+),</code></pre>
 <h3>(2)整型 int</h3>
 <p>如通常数据库中的id，即可配置成：</p>
 <pre><code class="language-javascript">array('name' =&gt; 'id', 'type' =&gt; 'int', 'require' =&gt; true, 'min' =&gt; 1 )</code></pre>
@@ -309,7 +317,7 @@ return array(
 <h3>(5)日期 date</h3>
 <p>日期可以按自己约定的格式传递，当需要将字符串的日期转换成timestamp时，可以这样配置：</p>
 <pre><code class="language-javascript">array('name' =&gt; 'registerData', 'type' =&gt; 'date')</code></pre>
-<p>对应®isterData=2015-01-31%2010:00:00则会被获取到为：&quot;2015-01-31 10:00:00&quot;。</p>
+<p>对应地，risterData=2015-01-31 10:00:00则会被获取到为：&quot;2015-01-31 10:00:00&quot;。</p>
 <p>如果是配置成：</p>
 <pre><code class="language-javascript">array('name' =&gt; 'registerData', 'type' =&gt; 'date', 'format' =&gt; 'timestamp')</code></pre>
 <p>则上面的参数再请求时，则会被转换成：1422669600。</p>
