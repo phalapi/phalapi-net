@@ -16,8 +16,9 @@ $PHPDOC_PATH --ignore "*/Tests/*,/mnt/hgfs/F/PHP/PhalApi/PhalApi/Tests/*" --conf
 
 cp ./imgs/* ./_phalapi_docs_release/images/;
 
-rm $PHALAPI_PATH/docs/* -rf;
-cp ./_phalapi_docs_release/* $PHALAPI_PATH/docs/ -R;
+#框架已不再需要文档
+#rm $PHALAPI_PATH/docs/* -rf;
+#cp ./_phalapi_docs_release/* $PHALAPI_PATH/docs/ -R;
 
 rm $PHALAPI_NET_PATH/docs/* -rf;
 cp ./_phalapi_docs_release/* $PHALAPI_NET_PATH/docs/ -R;
