@@ -111,6 +111,33 @@ $user = $notorm-&gt;user;  //重新获取新的实例
 $user-&gt;where('name LIKE ?', '%dog%');  //此时只有 name LIKE '%dog%'</code></pre>
 <p>关于这两者的使用场景，下面在进行说明时会特别提及。<br />
 下面，就让我们结合实例来尝试一下数据库的操作吧！</p>
+<h2>调试模式</h2>
+<h3>(1)打印SQL语句</h3>
+<p>在请求接口时，当需要查看当前接口所执行的SQL语句时，可以添加参数<code>&amp;__sql__=1</code>。如请求：</p>
+<pre><code>http://demo.phalapi.net/?service=User.getBaseInfo&amp;user_id=1&amp;__sql__=1</code></pre>
+<p>会返回类似这样：</p>
+<pre><code>[1 - 0.00035s]SELECT * FROM tbl_user WHERE (id = ?); -- 1&lt;br&gt;
+{"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","note":"oschina"}},"msg":""}</code></pre>
+<h3>(2)显示数据库连接错误的详细信息</h3>
+<p>普通情况下，数据库连接失败时会这样提示：</p>
+<pre><code>{
+    "ret": 500,
+    "data": [],
+    "msg": "服务器运行错误: 数据库db_demo连接失败"
+}</code></pre>
+<p>考虑到生产环境不方便爆露服务器的相关信息，故这样简化提示。当在开发过程中，需要定位数据库连接失败的原因时，可使用debug调试模式。<br />
+开启调试模式的方法有两种：  </p>
+<ul>
+<li>1、在请求接口时添加 <code>&amp;__debug__=1</code>，开启本次调试  </li>
+<li>2、将配置文件 <code>./Config/sys.php</code>中的debug设置为true，开启全局调试  </li>
+</ul>
+<p>开启后，当再次失败时，会看到类似这样的提示：  </p>
+<pre><code>{
+    "ret": 500,
+    "data": [],
+    "msg": "服务器运行错误: 数据库db_demo连接失败，异常码：1045，错误原因：SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)"
+}</code></pre>
+<p>然后，便可根据具体的错误提示进行排查解决。  </p>
 <h2>1.20.2 基本操作</h2>
 <h3>(1)SELECT</h3>
 <h4>单个字段：</h4>
