@@ -111,14 +111,14 @@ $user = $notorm-&gt;user;  //重新获取新的实例
 $user-&gt;where('name LIKE ?', '%dog%');  //此时只有 name LIKE '%dog%'</code></pre>
 <p>关于这两者的使用场景，下面在进行说明时会特别提及。<br />
 下面，就让我们结合实例来尝试一下数据库的操作吧！</p>
-<h2>调试模式</h2>
-<h3>(1)打印SQL语句</h3>
+<h3>调试模式</h3>
+<h4>(1)打印SQL语句</h4>
 <p>在请求接口时，当需要查看当前接口所执行的SQL语句时，可以添加参数<code>&amp;__sql__=1</code>。如请求：</p>
 <pre><code>http://demo.phalapi.net/?service=User.getBaseInfo&amp;user_id=1&amp;__sql__=1</code></pre>
 <p>会返回类似这样：</p>
 <pre><code>[1 - 0.00035s]SELECT * FROM tbl_user WHERE (id = ?); -- 1&lt;br&gt;
 {"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","note":"oschina"}},"msg":""}</code></pre>
-<h3>(2)显示数据库连接错误的详细信息</h3>
+<h4>(2)显示数据库连接错误的详细信息</h4>
 <p>普通情况下，数据库连接失败时会这样提示：</p>
 <pre><code>{
     "ret": 500,
@@ -138,6 +138,37 @@ $user-&gt;where('name LIKE ?', '%dog%');  //此时只有 name LIKE '%dog%'</code
     "msg": "服务器运行错误: 数据库db_demo连接失败，异常码：1045，错误原因：SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)"
 }</code></pre>
 <p>然后，便可根据具体的错误提示进行排查解决。  </p>
+<h3>默认表名与指定表名</h3>
+<p>当继承PhalApi_Model_NotORM时，如编写Model_User类：  </p>
+<pre><code>&lt;?php
+class Model_User extends PhalApi_Model_NotORM {
+}</code></pre>
+<p>则默认的表名为：<code>user</code>。默认表名的自动匹配规则是：取<code>Model_</code>后面部分的字符全部转小写。转化后框架会另外加上表前缀。    </p>
+<p>在以下场景下，需要重写此方法以指定表名：  </p>
+<ul>
+<li>
+<ol>
+<li>自动匹配的表名与实际表名不符  </li>
+</ol>
+</li>
+<li>
+<ol>
+<li>存在分表   </li>
+</ol>
+</li>
+<li>
+<ol>
+<li>Model类名不含有Model_  </li>
+</ol>
+</li>
+</ul>
+<p>如，当Model_User类对应的表名为：my_user表时，可使用<code>getTableName($id)</code>重新指定表名：  </p>
+<pre><code>&lt;?php
+class Model_User extends PhalApi_Model_NotORM {
+    protected function getTableKey($table) {
+        return 'my_user'; 
+    }
+}</code></pre>
 <h2>1.20.2 基本操作</h2>
 <h3>(1)SELECT</h3>
 <h4>单个字段：</h4>
