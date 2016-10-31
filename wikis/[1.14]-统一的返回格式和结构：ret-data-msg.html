@@ -191,6 +191,12 @@ array是指没有下标的一个数组集合，或者有下标但下标是连续
 <p>但对于服务端的异常，出于对接口隐私的保护，框架在错误信息时没有过于具体地描述；相反，对于客户端的异常，由会进行必要的说明，以提醒客户端该如何进行调用调整。  </p>
 <p>此外，我们根据需要可以考虑是否需要进行国际化的翻译。如果项目在可预见的范围内需要部署到国外时，提前做好翻译的准备是很有帮助的。如下，开发时可以这样返回异常错误信息：</p>
 <pre><code class="language-javascript">throw new PhalApi_Exception_BadRequest(T('wrong sign'), 1);</code></pre>
+<h3>(4)头部信息 header</h3>
+<p>当使用的是HTTP/HTTPS协议时，并且需要设置头部header时，可以使用<code>PhalApi_Response::addHeaders()</code>进行设置。对于JSON格式的返回默认设置的头部有：  </p>
+<pre><code>Content-Type:"application/json;charset=utf-8"</code></pre>
+<p>若需要其他的头部设置，可类似这样，在<code>init.php</code>初始化文件进行设置跨域访问（但通常不建议允许全部跨域，这里仅作演示）：  </p>
+<pre><code>DI()-&gt;response-&gt;addHeaders('Access-Control-Allow-Origin', '*');</code></pre>
+<p>后面相同的头部信息会覆盖前面的。  </p>
 <h2>1.14.3 关于Exception类异常没捕捉的原因</h2>
 <p>我们没有对Exception类的异常进行捕捉，封装返回非200的形式，是因为我们出于以下的考虑：</p>
 <ul>
