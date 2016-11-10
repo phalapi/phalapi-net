@@ -154,7 +154,7 @@ class Model_User extends PhalApi_Model_NotORM {
 <p>如，当Model_User类对应的表名为：my_user表时，可使用<code>getTableName($id)</code>重新指定表名：  </p>
 <pre><code>&lt;?php
 class Model_User extends PhalApi_Model_NotORM {
-    protected function getTableKey($table) {
+    protected function getTableName($table) {
         return 'my_user'; 
     }
 }</code></pre>
