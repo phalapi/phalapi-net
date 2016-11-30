@@ -249,7 +249,7 @@ array(3) {
 
 //对应执行的SQL语句：
 [2 - 0.06544s]SELECT id, username, nickname FROM fami_user WHERE (id &gt; ?) LIMIT 1; -- 0&lt;br&gt;</code></pre>
-<p>如果，我们只需要获取这一行的某个字段，也可以像fecth()那样使用，即：</p>
+<p>如果，我们只需要获取这一行的某个字段，也可以像fetch()那样使用，即：</p>
 <pre><code class="language-javascript">$rs = DI()-&gt;notorm-&gt;user-&gt;select('id, username, nickname')-&gt;where('id &gt; ?', 0)-&gt;fetchRow('nickname'));
 
 var_dump($rs);

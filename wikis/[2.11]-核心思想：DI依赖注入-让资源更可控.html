@@ -200,7 +200,7 @@ $di['cache']-&gt;set('artistList', $artistList);   //缓存数据</code></pre>
 <pre><code class="language-javascript">&lt;?php
 
 //初始化
-$di = Core_DI::one();
+$di = PhalApi_DI::one();
 $di-&gt;cache = new Memcache();
 $di-&gt;cache-&gt;connect('localhost', 11211);
 
@@ -213,7 +213,7 @@ echo $di-&gt;cache-&gt;get('key3');
 <pre><code class="language-javascript">&lt;?php
 
 //初始化
-$di = new Core_DI();
+$di = new PhalApi_DI();
 $di-&gt;cache = function () {
 $ultraFastFrontend = new DataFrontend(array(
     "lifetime" =&gt; 3600
