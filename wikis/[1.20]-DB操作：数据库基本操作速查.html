@@ -205,6 +205,9 @@ $user-&gt;where('name LIKE ?', '%dog%')</code></pre>
 <h4>NULL判断查询：</h4>
 <pre><code>// WHERE (name IS NULL)
 $user-&gt;where('name', null)</code></pre>
+<p>对于非空的判断，则可以：  </p>
+<pre><code>// WHERE (name IS NOT ?) LIMIT 1; -- NULL
+$user-&gt;where('name IS NOT ?', null)</code></pre>
 <h3>(3)ORDER BY</h3>
 <h4>单个字段排序：</h4>
 <pre><code>// ORDER BY age
