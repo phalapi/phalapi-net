@@ -66,9 +66,14 @@ $content = sprintf(
                 %s
             </div>
         </div>
+
+        <div class=\"grid\">
+            <div class=\"grid__cell\">
+                %s
+            </div>
+        </div>
     </div>
 
-    %s
  %s",
     $header, $rs , $duoshuoComment, $footer 
 );
