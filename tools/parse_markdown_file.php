@@ -35,6 +35,28 @@ $header = str_replace(',PHP接口框架">', ',PHP接口框架,phalapi文档,phal
 
 $footer = file_get_contents(dirname(__FILE__) . '/footer.html');
 
+$_ds_id = md5($info['filename']);
+$_ds_title = $info['filename'];
+$_ds_url = 'http://www.phalapi.net/wikis/' . urlencode($info['filename']) . '.html';
+$duoshuoComment =<<<EOT
+<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="{$_ds_id}" data-title="{$_ds_title}" data-url="{$_ds_url}"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"phalapi"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+EOT;
+
 $content = sprintf(
     "%s
 
@@ -45,9 +67,10 @@ $content = sprintf(
             </div>
         </div>
     </div>
-    
+
+    %s
  %s",
-    $header, $rs , $footer 
+    $header, $rs , $duoshuoComment, $footer 
 );
 
 file_put_contents($folder . '/' . $info['filename'] . '.html', $content);
