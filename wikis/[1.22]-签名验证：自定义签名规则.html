@@ -89,6 +89,22 @@ DI()-&gt;filter = 'PhalApi_Filter_SimpleMD5';</code></pre>
 2、将剩下的全部参数，按参数名字进行字典排序
 3、将排序好的参数，全部用字符串拼接起来
 4、进行md5运算</code></pre>
+<p>以下面的示例参数为例，即：  </p>
+<pre><code>1、排除签名参数（默认是sign）
+?service=Default.Index&amp;username=dogstar
+
+2、将剩下的全部参数，按参数名字进行字典排序
+service=Default.Index
+username=dogstar
+
+3、将排序好的参数，全部用字符串拼接起来
+"Default.Indexdogstar" = "Default.Index" + "dogstar"
+
+4、进行md5运算
+sign = 35321cc43cfc1e4008bf6f1bf9b7e3b8 = md5("Default.Indexdogstar")
+
+5、请求时，加上签名参数
+?service=Default.Index&amp;username=dogstar&amp;sign=35321cc43cfc1e4008bf6f1bf9b7e3b8</code></pre>
 <p>下面是两个调用示例，错误请求下（即签名失败）：  </p>
 <pre><code>http://localhost/phalapi/public/demo/?service=Default.Index&amp;username=dogstar
 
