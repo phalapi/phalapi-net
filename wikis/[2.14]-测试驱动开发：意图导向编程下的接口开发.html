@@ -115,7 +115,7 @@ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Public
     public function testGetBaseInfo()
     {
         //Step 1. 构建请求URL
-        $str = 'service=User.GetBaseInfo&amp;user_id=1';
+        $url = 'service=User.GetBaseInfo&amp;user_id=1';
 
         //Step 2. 执行请求  
         $rs = PhalApi_Helper_TestRunner::go($url);
@@ -134,11 +134,11 @@ $ php ./PhalApi/build_phpunit_test_tpl.php ./Demo/Api/User.php Api_User ./Public
 <p>上面的验证意思简单明了，结合 <strong>构造-操作-检验（BUILD-OPERATE-CHECK）模式</strong> 加以说明一下。  </p>
 <h3>构造：构建请求URL</h3>
 <pre><code class="language-javascript">        //Step 1. 构建请求URL
-        $str = 'service=User.GetBaseInfo&amp;user_id=1';</code></pre>
+        $url = 'service=User.GetBaseInfo&amp;user_id=1';</code></pre>
 <p>此参数即对应接口请求的URL参数，我们将此参数追加在接口入口并在浏览器打开可以得到同样的接口执行效果。但这样的好处更在于通过单元测试帮我们记住了各种接口测试的业务场景。而不再是像以前那样打开N个浏览器窗口人工进行调试，也不用像以前那样苦苦寻找浏览器记录。</p>
 <p>如果接口需要POST数据，或者其他更多参数，可以使用$params来传递更多参数，一如：  </p>
 <pre><code>        //Step 1. 构建请求URL
-        $str = 'service=User.GetBaseInfo&amp;user_id=1';
+        $url = 'service=User.GetBaseInfo&amp;user_id=1';
         $params = array(); //更多参数
 
         //Step 2. 执行请求  
