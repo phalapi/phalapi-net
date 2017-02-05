@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[1.32]-在线接口文档：注释规范 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流群(满)：421032344 &nbsp;&nbsp;交流群②：459352221</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+					<li class="menu-item"><a href="/wikis/%5b8.1%5d-PhalApi%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b.html" class="menu-item__link events-spec" target="_blank">视频教程</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">MORE</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="/wikis/%5B1.31%5D-%E6%96%B0%E5%9E%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%9A%E4%BB%A5%E6%8E%A5%E5%8F%A3%E5%BD%A2%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.11%5D-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9ADI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-%E8%AE%A9%E8%B5%84%E6%BA%90%E6%9B%B4%E5%8F%AF%E6%8E%A7.html">下一章</a></h4>
+<hr />
+<h2>1.32.1 在线接口文档</h2>
+<p>在线接口文档，主要有两种：  </p>
+<ul>
+<li>接口列表：用于罗列全部的接口；</li>
+<li>接口文档：针对单个接口的文档，用于显示该接口服务的基本信息、接口说明、接口参数、返回结果以及异常情况等。</li>
+</ul>
+<p>下面分别进行解释。  </p>
+<h2>1.32.2 接口列表</h2>
+<h3>如何访问接口列表？</h3>
+<p>在<a href="/wikis/%5B1.2%5D-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84%E9%A1%B9%E7%9B%AE.html">创建一个自己的项目</a>后，可以通过访问对应项目下的<code>listAllApis.php</code>文件来访问接口列表。<br />
+具体的URL路径，根据项目的部署情况而定，通常是：  </p>
+<pre><code>#域名 + 路径 + 项目名 + listAllApis.php
+http://localhost/Public/demo/listAllApis.php</code></pre>
+<p>如访问：<a href="http://demo.phalapi.net/listAllApis.php"><a href="http://demo.phalapi.net/listAllApis.php">http://demo.phalapi.net/listAllApis.php</a></a>，效果如下：<br />
+<img src="http://7xiz2f.com1.z0.glb.clouddn.com/20170205154748.png" alt="" />  </p>
+<h3>接口列表的注释规范</h3>
+<p>接口列表的注释比较简单，其规范如下：  </p>
+<ul>
+<li>序号：自动生成，按接口服务名称字典排序后从小到大依次编号</li>
+<li>接口服务：自动生成，即service英文接口服务名称</li>
+<li>接口名称：接口中文名称，不带任何注解的注释，通常为第一行注释</li>
+<li>更多说明：对应@desc 注释，注释内容中不能带有空格</li>
+</ul>
+<p>与上面接口列表对应的注释，以<code>User.GetBaseInfo</code>为例，其注释为：  </p>
+<pre><code>class Api_User extends PhalApi_Api {
+
+    /**
+     * 获取用户基本信息
+     * @desc 用于获取单个用户基本信息
+     */
+    public function getBaseInfo() {
+    }
+}</code></pre>
+<p>结合以上示例，可以看出：  </p>
+<ul>
+<li>接口服务：由类名Api_User和方法名getBaseInfo组合而成，即：User.GetBaseInfo</li>
+<li>接口名称：即：获取用户基本信息</li>
+<li>更多说明：对应@desc 注释，即：用于获取单个用户基本信息</li>
+</ul>
+<h2>1.32.3 接口文档</h2>
+<h3>如何访问接口文档？</h3>
+<p>在进入接口列表后，点击对应的接口服务即可跳转到对应的接口文档。或者，也可以手动拼接访问。其URL路径与<code>listAllApis.php</code>，通常是：  </p>
+<pre><code>#域名 + 路径 + 项目名 + checkApiParams.php?service=接口服务
+http://localhost/Public/demo/checkApiParams.php?service=User.GetBaseInfo</code></pre>
+<p>如访问：<a href="http://demo.phalapi.net/checkApiParams.php?service=User.GetBaseInfo"><a href="http://demo.phalapi.net/checkApiParams.php?service=User.GetBaseInfo">http://demo.phalapi.net/checkApiParams.php?service=User.GetBaseInfo</a></a>，效果如下：
+<img src="http://7xiz2f.com1.z0.glb.clouddn.com/20170205155942.jpg" alt="" /><br />
+<img src="http://7xiz2f.com1.z0.glb.clouddn.com/20170205160005.png" alt="" />  </p>
+<h3>接口文档的注释规范</h3>
+<p>接口文档的注释较多，开发人员可在进行项目开发时按需注释。但各部分也很简单明了，如下：  </p>
+<ul>
+<li>接口服务与接口名称：分别对应上面接口列表中接口服务英文名称和的接口中文名称   </li>
+<li>接口说明：对应@desc 注释，注释内容中不能带有空格</li>
+<li>接口参数：由<code>PhalApi_Api::getRules()</code>中具体接口类定义的接口参数自动生成</li>
+<li>返回结果：对应@return 注释，可以有多组，格式为：@return 返回类型 返回字段 说明（不带空格）</li>
+<li>异常情况：对应@exception 注释，可以有多组，格式为：@exception 错误码 错误描述信息</li>
+</ul>
+<blockquote>
+<p>温馨提示，@exception 注释需要PhalApi 1.3.6及以上方能提供</p>
+</blockquote>
+<p>上面示例中，```User.GetBaseInfo````接口文档对应的注释为：  </p>
+<pre><code>class Api_User extends PhalApi_Api {
+
+    public function getRules() {
+        return array(
+            'getMultiBaseInfo' =&gt; array(
+                'userIds' =&gt; array('name' =&gt; 'user_ids', 'type' =&gt; 'array', 'format' =&gt; 'explode', 'require' =&gt; true, 'desc' =&gt; '用户ID，多个以逗号分割'),
+            ),
+        );
+    }
+
+    /**
+     * 批量获取用户基本信息
+     * @desc 用于获取多个用户基本信息
+     * @return int code 操作码，0表示成功
+     * @return array list 用户列表
+     * @return int list[].id 用户ID
+     * @return string list[].name 用户名字
+     * @return string list[].note 用户来源
+     * @return string msg 提示信息
+     * @exception 400 参数传递错误
+     * @exception 500 服务器内部错误
+     */
+    public function getMultiBaseInfo() {
+    }
+}</code></pre>
+<p>其中，  </p>
+<ul>
+<li>接口服务与接口名称：由Api_User类名和getMultiBaseInfo方法名生成英文名称，中文名称为不带任何注解的注释：批量获取用户基本信息</li>
+<li>接口说明：对应@desc 注释，即：用于获取多个用户基本信息</li>
+<li>接口参数：由<code>Api_User::getRules()</code>中定义的接口参数自动生成</li>
+<li>返回结果：对应@return 注释，共有6组</li>
+<li>异常情况：对应@exception 注释，共有2组</li>
+</ul>
+<hr />
+<h4><a href="/wikis/%5B1.31%5D-%E6%96%B0%E5%9E%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%9A%E4%BB%A5%E6%8E%A5%E5%8F%A3%E5%BD%A2%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.11%5D-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9ADI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-%E8%AE%A9%E8%B5%84%E6%BA%90%E6%9B%B4%E5%8F%AF%E6%8E%A7.html">下一章</a></h4>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid__cell">
+                <!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="b6c4d1b8516cd0c7bac9e5ab383727c5" data-title="[1.32]-在线接口文档：注释规范" data-url="http://www.phalapi.net/wikis/%5B1.32%5D-%E5%9C%A8%E7%BA%BF%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%EF%BC%9A%E6%B3%A8%E9%87%8A%E8%A7%84%E8%8C%83.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"phalapi"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+            </div>
+        </div>
+    </div>
+
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
+		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi，简称π框架，专注于接口开发。<br/>
+                支持HTTP、SOAP和RPC协议，可用于快速搭建微服务、RESTful接口或web services，关注测试驱动开发、领域驱动设计、极限编程、敏捷开发以及如何快速、稳定、持续交付有价值的接口服务。
+            </font>
+			</p>
+			<p align="left">
+				<font size="2px">&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a></font>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>在这里，特别感谢</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="http://7xiz2f.com1.z0.glb.clouddn.com/aex08883aixenexjs9kwx6e_12.png" target="_blank">支付宝开源捐赠：&nbsp;</a></strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+
+			<p>
+				<!-- JiaThis Button BEGIN -->
+				<div id="ckepop">
+				<span class="jiathis_txt">分享到：</span>
+				<a class="jiathis_button_tsina">新浪微博</a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+				<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+
+			</p>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+
+</body>
+
+</html>
