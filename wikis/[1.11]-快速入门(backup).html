@@ -229,13 +229,13 @@ class Api_User extends PhalApi_Api
     {
         return array(
             'getBaseInfo' =&gt; array(
-                'userId' =&gt; array('name' =&gt; 'userId', 'type' =&gt; 'int', 'min' =&gt; 1, 'require' =&gt; true),
+                'userId' =&gt; array('name' =&gt; 'user_id', 'type' =&gt; 'int', 'min' =&gt; 1, 'require' =&gt; true),
             ),
         );
     }
 
     //...</code></pre>
-<p>如上，我们就定义了getBaseInfo接口中的userId参数，名字也为userId，整型，最小值为1，必须。</p>
+<p>如上，我们就定义了getBaseInfo接口中的user_id参数，对应的变量名字为userId，整型，最小值为1，必须。</p>
 <h4>接口实现</h4>
 <pre><code class="language-javascript">//$vim ./Demo/Api/User.php
 
