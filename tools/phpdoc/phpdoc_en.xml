@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title><![CDATA[PhalApi docs - 1.3.5 | English]]></title>
+    <parser>
+        <target>phalapi_docs_parser</target>
+        <encoding>utf8</encoding>
+        <extensions>
+            <extension>php</extension>
+        </extensions>
+    </parser>
+    <transformer>
+        <target>_phalapi_docs_release_en</target>
+    </transformer>
+    <transformations>
+        <template name="clean"/>
+    </transformations>
+    <files>
+        <directory>/mnt/hgfs/F/PHP/PhalApi/PhalApi/PhalApi</directory>
+        <file>/mnt/hgfs/F/PHP/PhalApi/PhalApi.php</file>
+        <ignore>/mnt/hgfs/F/PHP/PhalApi/PhalApi/Tests</ignore>
+        <ignore>/mnt/hgfs/F/PHP/PhalApi/PhalApi/NotORM</ignore>
+        <!--
+        <ignore>./../PhalApi/Tests/*</ignore>
+        <ignore>./../PhalApi/NotORM/*</ignore>
+        <ignore>./../PhalApi/log/*</ignore>
+        <ignore>./../PhalApi/build_sqls.php</ignore>
+        <ignore>./../PhalApi/build_phpunit_test_tpl.php</ignore>
+        -->
+    </files>
+</phpdoc>
