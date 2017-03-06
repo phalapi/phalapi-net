@@ -42,7 +42,7 @@
 					<li class="menu-item"><a href="/wikis/%5b8.1%5d-PhalApi%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b.html" class="menu-item__link events-spec" target="_blank">视频教程</a></li>
     				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
 					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
-					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">MORE</a></li>
+					<li class="menu-item"><a href="/donate.html" class="menu-item__link about-us-spec" target="_blank">捐赠</a></li>
 				</ul>
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 <h2>1.11.1 模拟开发：获取开源中国用户信息接口</h2>
 <p>首次使用此接口开发框架时，可以先查看此开发示例。  </p>
 <p>假设，我们需要为开源中国打造一个平放平台，其中有一个接口是可以根据用户ID来获取用户的基本信息。  </p>
-<p>本文，就以模拟获取开源中国用户信息接口开发（即：从数据库获取用户的基本信息并以JSON格式返回给客户端）为例，简明的接口开发中的流程，以及用到的基本功能和操作，主要包括有：统一入口文件、参数规则配置、接口层/领域层/模型持久层、日志纪录、数据库操作、配置读取、国际化翻译等。  </p>
+<p>本文，就以模拟获取开源中国用户信息接口开发（即：从数据库获取用户的基本信息并以JSON格式返回给客户端）为例，简明的接口开发中的流程，以及用到的基本功能和操作，主要包括有：统一入口文件、参数规则配置、接口层/领域层/模型持久层、日记纪录、数据库操作、配置读取、国际化翻译等。  </p>
 <p>以给大家一个感观的认识。  </p>
 <p>最终接口的调用与返回结果如下：  </p>
 <pre><code class="language-javascript">//接口请求格式
@@ -127,7 +127,7 @@ DI()-&gt;loader = $loader;
 //配置
 DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');
 
-//日志纪录
+//日记纪录
 DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime', 
     PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);
 
@@ -355,7 +355,7 @@ return array(
 );</code></pre>
 <blockquote>
 <p>温馨提示：<br />
-为了方便在单元测试时进行调试，和查看日志，对于全部查询、执行的SQL语句都会显示出来，全部的日志改用控制台输出。    </p>
+为了方便在单元测试时进行调试，和查看日记，对于全部查询、执行的SQL语句都会显示出来，全部的日记改用控制台输出。    </p>
 </blockquote>
 <h3>(8)最终接口调用</h3>
 <p>接口调用的链接，这时已经相当明了了，即：域名 + 路径（/demo） + 参数（可从单元测试那直接获取）</p>
@@ -379,15 +379,15 @@ return array(
 <img src="http://webtools.qiniudn.com/20150411005257_a5d0a984e4dd7fcdd1c95026e337003d" alt="show" />  </p>
 <blockquote>
 <p>温馨提示：<br />
-如果提示日志写入失败，请确保./Runtime目录具有写入权限，即0777。  </p>
+如果提示日记写入失败，请确保./Runtime目录具有写入权限，即0777。  </p>
 </blockquote>
 <h2>1.11.3 更多简明的使用</h2>
-<h3>(1)日志纪录</h3>
-<p>当我们访问一个不存在的用户时，将会触发日志纪录：</p>
+<h3>(1)日记纪录</h3>
+<p>当我们访问一个不存在的用户时，将会触发日记纪录：</p>
 <pre><code class="language-javascript">DI()-&gt;logger-&gt;debug('user not found', $this-&gt;userId);</code></pre>
 <p>如访问：</p>
 <pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=2</code></pre>
-<p>然后，可以在Runtime下看到按天分目录的日志：</p>
+<p>然后，可以在Runtime下看到按天分目录的日记：</p>
 <pre><code class="language-javascript">$ tailf ./Runtime/log/201501/20150128.log 
 2015-01-28 00:37:34|DEBUG|user not found|2</code></pre>
 <blockquote>

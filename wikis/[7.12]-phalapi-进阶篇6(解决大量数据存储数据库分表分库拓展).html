@@ -42,7 +42,7 @@
 					<li class="menu-item"><a href="/wikis/%5b8.1%5d-PhalApi%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b.html" class="menu-item__link events-spec" target="_blank">视频教程</a></li>
     				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
 					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
-					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">MORE</a></li>
+					<li class="menu-item"><a href="/donate.html" class="menu-item__link about-us-spec" target="_blank">捐赠</a></li>
 				</ul>
 			</div>
 		</div>
@@ -70,7 +70,7 @@
 <h3>1.1 单条数据多查多写多改</h3>
 <p>这里做的例子,大家都在玩游戏把,玩游戏里面是不是有角色,角色是不是有装备,经验,物品以及等等,而且他会有一个特别的要求就是实时(因为我角色打了一个怪物获得了100xp我们不可能告诉他你等6个小时缓存时间结束了再来看,必须是实时的),当然我们可以使用缓存来解决这个问题我们下节会说到这个问题</p>
 <p>那么在这种场景下,一个用户对于角色的操作非常频繁而且唯一我们就很好采用分表分库的操作了,相对于单表操作他会把所有的操作分散到各个数据库去操作,这样对于单个数据库总执行sql语句量就会有个指数级的下降,以及数据量也会均衡分配到每个数据库,但是当我们进行这类单条数据操作的时候根本不会对性能有任何的影响,因为只是通过算法得出了这条记录存在于那个库那张表而已,</p>
-<h3>1.2 日志记录分析</h3>
+<h3>1.2 日记记录分析</h3>
 <p>就已上面的例子我们继续讲,如果有一天你的领导过来提了个需求,我需要一个数据分析系统来统计用户每天什么时间段最活跃.用户平均每人充值了多少钱啊,多少等级下用户充钱最多啊,如果遇到这种问题你们会怎么办?三分钟思考</p>
 <p>我们先来看看我们会遇到什么样子的问题,数据量大积累当1000w+之后数据库执行sql基本没法看,大量的写入数据对数据库压力大</p>
 <p>我们再来看看分表分库怎么解决这个问题,1000w+数据库的情况下 比如你是4表4库一共16张表,那每张表的数量就是1000w/16=62w也就是每张表只需要存储62w的数据就ok了,当写入数据的时候会根据ID的顺序均衡写入4库执行sql的压力也就分布到了4个数据库,唯一的问题就是在执行where条件的时候可能需要对前置表进行遍历,而前置表的数据量就是1000w,当然前置表里面只存放ID和where条件的字段</p>

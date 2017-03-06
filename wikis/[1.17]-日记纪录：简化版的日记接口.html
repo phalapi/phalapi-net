@@ -42,7 +42,7 @@
 					<li class="menu-item"><a href="/wikis/%5b8.1%5d-PhalApi%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b.html" class="menu-item__link events-spec" target="_blank">视频教程</a></li>
     				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
 					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
-					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">MORE</a></li>
+					<li class="menu-item"><a href="/donate.html" class="menu-item__link about-us-spec" target="_blank">捐赠</a></li>
 				</ul>
 			</div>
 		</div>
@@ -56,11 +56,11 @@
             <div class="grid__cell">
                 <h4><a href="/wikis/%5B1.16%5D-%E9%85%8D%E7%BD%AE%E8%AF%BB%E5%8F%96%EF%BC%9A%E5%86%85%E5%A4%96%E7%BD%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%9A%84%E5%AE%8C%E7%BE%8E%E5%88%87%E6%8D%A2.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.18%5D-%E5%BF%AB%E9%80%9F%E5%87%BD%E6%95%B0%EF%BC%9A%E4%BA%BA%E6%80%A7%E5%8C%96%E7%9A%84%E5%85%B3%E6%80%80.html">下一章</a></h4>
 <hr />
-<h2>PHP日志接口规范</h2>
-<p>关于日志系统，PHP规范给出了相当好的说明和定义，请见： <a href="http://www.php-fig.org/psr/psr-3/">Logger Interface</a>  </p>
+<h2>PHP日记接口规范</h2>
+<p>关于日记系统，PHP规范给出了相当好的说明和定义，请见： <a href="http://www.php-fig.org/psr/psr-3/">Logger Interface</a>  </p>
 <p><img src="http://webtools.qiniudn.com/20150411005257_2caf170c179348eca546ba5332837d09" alt="apic" />  </p>
 <h2>1.17.1 简化版</h2>
-<p>但在用过这么多开源框架进行各种项目开发，以及内部框架的开发后，发现实际上日志的分类并没有使用得这么丰富，而通常只是频繁地几类。因此，为了减少不必要的复杂性，这里特地精简为三种，只有：</p>
+<p>但在用过这么多开源框架进行各种项目开发，以及内部框架的开发后，发现实际上日记的分类并没有使用得这么丰富，而通常只是频繁地几类。因此，为了减少不必要的复杂性，这里特地精简为三种，只有：</p>
 <ul>
 <li>error 系统异常类</li>
 <li>info 业务纪录类</li>
@@ -90,7 +90,7 @@ DI()-&gt;logger-&gt;error('fail to insert DB', $data);</code></pre>
 <img src="http://webtools.qiniudn.com/20150411005257_37a0566c79a78c8958d8d00a83c7f840" alt="apic" />  </p>
 <h3>(2)info 业务纪录类</h3>
 <p>此类通常为业务需要进行必要的操作纪录，以便发生系统问题后的回滚处理、问题排查以及数据统计。<br />
-如在有缓存的情况下，可能数据没及时写入数据库而导致数据丢失或者回档，这里可以通过日志简单查看是否可以恢复。以及说明一下操作发生的背景或原由，如通常游戏中用户的经验值添加：  </p>
+如在有缓存的情况下，可能数据没及时写入数据库而导致数据丢失或者回档，这里可以通过日记简单查看是否可以恢复。以及说明一下操作发生的背景或原由，如通常游戏中用户的经验值添加：  </p>
 <pre><code class="language-javascript">//假设：10 + 2 = 12
 DI()-&gt;logger-&gt;info('add user exp', array('name' =&gt; 'dogstar', 'before' =&gt; 10, 'addExp' =&gt; 2, 'after' =&gt; 12, 'reason' =&gt; 'help one more phper'));
 
@@ -107,7 +107,7 @@ DI()-&gt;logger-&gt;info('add user exp', array('name' =&gt; 'dogstar', 'before' 
 ....
 
 2015-02-07 20:52:35|INFO|add user exp|{"name":"dogstar","before":998,"addExp":2,"after":1000,"reason":"help one more phper"}</code></pre>
-<p>所幸我们有日志并及时发现了，随后如何处理就视具体的项目而定了。但当产品来追问时，我们可以及时给出反馈和做出处理。  </p>
+<p>所幸我们有日记并及时发现了，随后如何处理就视具体的项目而定了。但当产品来追问时，我们可以及时给出反馈和做出处理。  </p>
 <p>还有更为重要的是 <strong>数据统计</strong> 。这块就App数据分析和统计这块已经有了很好的第三方服务支持，一如：友盟。但我们仍然可以轻松实现自己的数据统计，以便二次确认和定制化。毕竟，总是依赖第三方不是那么轻便，而且存在敏感数据安全问题。<br />
 这里简单提供一个上报接口，如：</p>
 <pre><code class="language-javascript">    public function getRules() {
@@ -140,49 +140,49 @@ DI()-&gt;logger-&gt;debug('just for test', '一些其他的描述 ...');
 
 DI()-&gt;logger-&gt;debug('just for test', array('name' =&gt; 'dogstar', 'password' =&gt; '******'));</code></pre>
 <h2>1.17.2 使用DI()-&gt;logger-&gt;log()进行更灵活的分类</h2>
-<p>若上面的error/info/debug都不能满足项目的需求时，可以这样更灵活地进行日志纪录：</p>
+<p>若上面的error/info/debug都不能满足项目的需求时，可以这样更灵活地进行日记纪录：</p>
 <pre><code class="language-javascript">DI()-&gt;logger-&gt;log('demo', 'add user exp', array('name' =&gt; 'dogstar', 'after' =&gt; 12));
 DI()-&gt;logger-&gt;log('test', 'add user exp', array('name' =&gt; 'dogstar', 'after' =&gt; 12));
 
-//对应的日志
+//对应的日记
 2015-02-07 21:13:27|DEMO|add user exp|{"name":"dogstar","before":10,"addExp":2,"after":12,"reason":"help one more phper"}
 2015-02-07 21:15:39|TEST|add user exp|{"name":"dogstar","after":12}
 </code></pre>
-<p>注意到，DI()-&gt;logger-&gt;log()第一个参数为日志分类的名称，在写入日志时会自动转换为大写。其接口函数签名为：  </p>
+<p>注意到，DI()-&gt;logger-&gt;log()第一个参数为日记分类的名称，在写入日记时会自动转换为大写。其接口函数签名为：  </p>
 <pre><code class="language-javascript">    /**
-     * 日志纪录
+     * 日记纪录
      *
-     * 可根据不同需要，将日志写入不同的媒介
+     * 可根据不同需要，将日记写入不同的媒介
      *
-     * @param string $type 日志类型，如：info/debug/error, etc
-     * @param string $msg 日志关键描述
+     * @param string $type 日记类型，如：info/debug/error, etc
+     * @param string $msg 日记关键描述
      * @param string/array $data 场景上下文信息
      * @return NULL
      */
     abstract public function log($type, $msg, $data);</code></pre>
-<h2>1.17.3 别忘记了日志的级别设置</h2>
-<p>上面的三类日志分别对应的标识为：</p>
+<h2>1.17.3 别忘记了日记的级别设置</h2>
+<p>上面的三类日记分别对应的标识为：</p>
 <ul>
 <li>error 系统异常类：PhalApi_Logger::LOG_LEVEL_ERROR</li>
 <li>info 业务纪录类：PhalApi_Logger::LOG_LEVEL_INFO</li>
 <li>debug 开发调试类：PhalApi_Logger::LOG_LEVEL_DEBUG</li>
 </ul>
-<p>根据不同的项目在不同环境下的需要，我们可以这样有选择性地将需要的日志分类写入保存：</p>
-<pre><code class="language-javascript">//日志纪录
+<p>根据不同的项目在不同环境下的需要，我们可以这样有选择性地将需要的日记分类写入保存：</p>
+<pre><code class="language-javascript">//日记纪录
 DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime',
     PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</code></pre>
-<p>多个日志级别需要使用或运算进行组合。</p>
-<h2>1.17.4 扩展你的日志存储</h2>
-<p>普遍情况下，我们认为将日志存放在文件是比较合理的，因为便于查看、管理和统计。当然，如果你的项目需要将日志纪录在数据中，也可以快速扩展实现。如实现数据库的存储思路：  </p>
+<p>多个日记级别需要使用或运算进行组合。</p>
+<h2>1.17.4 扩展你的日记存储</h2>
+<p>普遍情况下，我们认为将日记存放在文件是比较合理的，因为便于查看、管理和统计。当然，如果你的项目需要将日记纪录在数据中，也可以快速扩展实现。如实现数据库的存储思路：  </p>
 <pre><code class="language-javascript">//$ vim ./Apps/Common/Logger/DB.php
 
 class Common_Logger_DB extends PhalApi_Logger {
 
     public function log($type, $msg, $data) {
-        //TODO 数据库的日志写入 ...
+        //TODO 数据库的日记写入 ...
     } </code></pre>
 <p>随后，利用DI注册一下即可：</p>
-<pre><code class="language-javascript">//日志纪录 - DB
+<pre><code class="language-javascript">//日记纪录 - DB
 DI()-&gt;logger = new Common_Logger_DB($dbConfig,
     PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</code></pre>
 <hr />

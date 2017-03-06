@@ -42,7 +42,7 @@
 					<li class="menu-item"><a href="/wikis/%5b8.1%5d-PhalApi%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b.html" class="menu-item__link events-spec" target="_blank">视频教程</a></li>
     				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
 					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
-					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">MORE</a></li>
+					<li class="menu-item"><a href="/donate.html" class="menu-item__link about-us-spec" target="_blank">捐赠</a></li>
 				</ul>
 			</div>
 		</div>
@@ -72,7 +72,7 @@
 <li>按不同的项目：同一个应用下可能会存在多个项目，当然更推荐每个项目单独一个系统</li>
 </ul>
 <p>基于此，为不同的维度提供不同的入口就很有现实实用场景了。  </p>
-<p>更为重要的是，这些不同的入口都应该尽可能简单，并能统一共享公共的组件资源、数据库、日志系统这些。一个可能的入口示例如下：  </p>
+<p>更为重要的是，这些不同的入口都应该尽可能简单，并能统一共享公共的组件资源、数据库、日记系统这些。一个可能的入口示例如下：  </p>
 <pre><code class="language-javascript">&lt;?php
 /**
  * Demo 统一入口
@@ -117,7 +117,7 @@ DI()-&gt;loader = $loader;
 //配置
 DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');
 
-//日志纪录
+//日记纪录
 DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime', 
     PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);
 
@@ -133,7 +133,7 @@ DI()-&gt;debug = !empty($_GET['__debug__']) ? true : DI()-&gt;config-&gt;get('sy
 //翻译语言包设定
 SL('zh_cn');</code></pre>
 <h3>(2)常规代码解读</h3>
-<p>上面是框架执行所需的基础服务注册和配置，一般直接可用，但也可以根据需要作些细微的调整。如日志的级别设定、调试的参数修改（改成一个只有自己知道的参数名字，别让外界知道！）等。 </p>
+<p>上面是框架执行所需的基础服务注册和配置，一般直接可用，但也可以根据需要作些细微的调整。如日记的级别设定、调试的参数修改（改成一个只有自己知道的参数名字，别让外界知道！）等。 </p>
 <p>出于让大家对初始化过程有一个更理性的认识，这里补充一下各代码的作用。  </p>
 <p>最开始是利用了PHP原生态的时区设置和宏定义：  </p>
 <pre><code class="language-javascript">date_default_timezone_set('Asia/Shanghai');
@@ -149,7 +149,7 @@ DI()-&gt;loader = $loader;
 //配置
 DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');
 
-//日志纪录
+//日记纪录
 DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime', 
     PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);
 
@@ -158,8 +158,8 @@ DI()-&gt;notorm = function() {
     $debug = !empty($_GET['__sql__']) ? true : false;
     return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), $debug);
 };</code></pre>
-<p>上面的自动加载、配置、日志和数据库操作通常而言，对于一个项目都是必须的。<br />
-但配置文件的路径可自行指定，日志的存储类型也可以自由组合（多个类型采用或运算），还可以选择你合适的数据库配置。
+<p>上面的自动加载、配置、日记和数据库操作通常而言，对于一个项目都是必须的。<br />
+但配置文件的路径可自行指定，日记的存储类型也可以自由组合（多个类型采用或运算），还可以选择你合适的数据库配置。
 注意到，PhalApi_DB_NotORM初始化时，除了配置文件外，还有一个debug参数，此参数的作用是用于控制是否打印显示执行的SQL语句及对应消耗的时间。  </p>
 <p>至此，我们已经为项目完成了绝大部分的基础服务注册，且上面的初始化顺序建议保留不变。因为，前后有依赖关系。  </p>
 <p>但为了让我们的项目更有活力、更具生气、更国际化，我们还可以多加这么两行代码：</p>
