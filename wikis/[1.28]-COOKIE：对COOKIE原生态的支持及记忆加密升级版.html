@@ -85,7 +85,7 @@ DI()-&gt;cookie-&gt;delete('name');</code></pre>
 <h3>(1)注册COOKIE服务</h3>
 <p>和原生态的初始化，有些许不同，在于需要配置指定加解密的服务。如下：</p>
 <pre><code class="language-javascript">$config = array('crypt' =&gt; $crypt, 'key' =&gt; 'a secrect');
-DI()-&gt;cookie = new PhalApi_Cookie($config);</code></pre>
+DI()-&gt;cookie = new PhalApi_Cookie_Multi($config);</code></pre>
 <p>上面中的crypt即为加密解服务，未指定时使用DI()-&gt;crypt，需要实现PhalApi_Crypt接口；key则为对应的密钥。</p>
 <h3>(2)使用COOKIE服务</h3>
 <p>使用同原生态一样，客户端感知不到区别，这里不再赘述。</p>

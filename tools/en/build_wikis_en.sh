@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# ./build_wikis_en.sh /mnt/hgfs/F/github/PhalApi-Wikis/en/
+# ./build_wikis_en.sh /mnt/hgfs/F/PHP/github_PhalApi.wiki/phalapi.wiki
 #
 # @author dogstar 20160110
 #
@@ -15,7 +15,7 @@ fi
 
 ## Env
 #WIKI_PATH=$1
-WIKI_PATH="/mnt/hgfs/F/github/PhalApi-Wikis/en/"
+WIKI_PATH="/mnt/hgfs/F/PHP/github_PhalApi.wiki/phalapi.wiki"
 BASE_PATH=$(cd `dirname $0`; pwd)
 BASE_PATH="/mnt/hgfs/F/PHP/PhalApi-Net/tools/en/"
 PHP_PATH="/usr/bin/php"

@@ -84,10 +84,11 @@ DI()-&gt;request = new PhalApi_Request($data);</code></pre>
         $params = array();
 
         //Step 2. 执行请求  
-        $rs = PhalApi_Helper_TestRunner::go($url, $params);</code></pre>
+        $rs = PhalApi_Helper_TestRunner::go($url, $params);
+    }</code></pre>
 <h3>(3)接口数据的加密传送</h3>
 <p>有时，出于安全性的考虑，项目需要对请求的接口参数进行对称加密传送。这时可以通过重载PhalApi_Request::genData()来轻松实现。<br />
-假设，我们现在需要把全部的参数base64编码序列化后通过_POST['data']来传递，则相应的解析代码如下。  </p>
+假设，我们现在需要把全部的参数base64编码序列化后通过$_POST['data']来传递，则相应的解析代码如下。  </p>
 <p>第一步，先定义自己的扩展请求类，在里面完成对称解析的动作：  </p>
 <pre><code>&lt;?php
 
@@ -95,10 +96,10 @@ class Common_Request extends PhalApi_Request {
 
     public function genData($data) {
         if (!isset($data) || !is_array($data)) {
-            return $_POST; //改成只接收POST
+            $data = $_POST; //改成只接收POST
         }
 
-        $postData = isset($data['data']) ? base64_decode($data['data']) : array();
+        return isset($data['data']) ? base64_decode($data['data']) : array();
     }
 }</code></pre>
 <p>第二步，在index.php入口文件中重新注册请求类（即添加以下代码）：  </p>

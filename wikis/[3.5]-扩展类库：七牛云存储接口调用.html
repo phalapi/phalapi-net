@@ -86,76 +86,33 @@
 <h3>(1)入口注册</h3>
 <pre><code class="language-javascript">//$ vim ./Public/init.php
 
-$loader-&gt;addDirs('Library');
-
 // 其他代码....
 
 DI()-&gt;qiniu = new Qiniu_Lite();</code></pre>
 <p>根据上面所说的，你可以也可以指定配置。</p>
 <pre><code class="language-javascript">//$ vim ./Public/init.php
 
-$loader-&gt;addDirs('Library');
-
 // 其他代码....
 
 $qiniuConfig = array( /* 格式参照配置文件 *);
 DI()-&gt;qiniu = new Qiniu_Lite($qiniuConfig);</code></pre>
 <h2>3.5.4 示例：图片上传</h2>
+<h3>(1)模拟客户端</h3>
 <p>先简单写个测试文件：</p>
 <pre><code class="language-javascript">// vim ./Public/test_qiniu.html 
 
 &lt;html&gt;
-    &lt;form method="POST" action="/demo/?service=CDN.uploadFile" enctype="multipart/form-data"&gt;
+    &lt;form method="POST" action="/demo/?service=Qiniu_CDN.uploadFile" enctype="multipart/form-data"&gt;
         &lt;input type="file" name="file"&gt;
         &lt;input type="submit"&gt;
     &lt;/form&gt;
 &lt;/html&gt;</code></pre>
 <p>效果如下（通常是提供给客户端上传的）：<br />
 <img src="http://webtools.qiniudn.com/20150411005257_d89f36ff2e6956e31226cf245ab0b6d1" alt="p" /></p>
-<h3>(1)文件上传接口</h3>
-<p>然后，我们需要编写文件上传接口：</p>
-<pre><code class="language-javascript">&lt;?php
-/**
- * CDN云端接口
- *
- * @author: dogstar 2015-03-17
- */
-
-class Api_CDN extends PhalApi_Api
-{
-    const CODE_MISS_UPLOAD_FILE = 1;
-    const CODE_FAIL_TO_UPLOAD_FILE = 2;
-    const CODE_FAIL_TO_UPDATE = 3;
-
-    public function uploadFile()
-    {
-        $rs = array('code' =&gt; self::CODE_FAIL_TO_UPLOAD_FILE, 'url' =&gt; '', 'msg' =&gt; T('fail to upload file'));
-
-        if (!isset($_FILES['file'])) {
-            $rs['code'] = self::CODE_MISS_UPLOAD_FILE;
-            $rs['msg'] = T('miss upload file');
-            return $rs;
-        }
-
-        if ($_FILES["file"]["error"] &gt; 0) {
-            $rs['code'] = self::CODE_FAIL_TO_UPLOAD_FILE;
-            $rs['msg'] = T('failed to upload file with error: {error}', array('error' =&gt; $_FILES['file']['error']));
-            DI()-&gt;logger-&gt;debug('failed to upload file with error: ' . $_FILES['file']['error']);
-            return $rs;
-        }
-
-        $url = DI()-&gt;qiniu-&gt;uploadFile($_FILES['file']['tmp_name']);
-        if (!empty($url)) {
-            $rs['code'] = 0;
-            $rs['url'] = $url;
-            $rs['msg'] = '';
-        }
-        @unlink($_FILES['file']['tmp_name']);
-
-        return $rs;
-    }
-}</code></pre>
-<h3>(2)运行一下：</h3>
+<h3>(2)文件上传接口</h3>
+<p>随后，我们使用此七牛扩展提供的编写文件上传接口，通过查看在线接口文档，可以看到：<br />
+<img src="http://7xslqv.com1.z0.glb.clouddn.com/images/b/fb/ff6ff1d6f0fe9940a5cc99284f3e6.png" alt="" />  </p>
+<h3>(3)运行一下：</h3>
 <p>缺少上传文件时：</p>
 <pre><code class="language-javascript">{"ret":200,"data":{"code":1,"url":"","msg":"miss upload file"},"msg":""}</code></pre>
 <p>上传失败时：</p>
