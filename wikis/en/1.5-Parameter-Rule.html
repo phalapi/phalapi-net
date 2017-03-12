@@ -303,6 +303,151 @@ return array(
 <h4>(3)Rule type: float</h4>
 <p>See <code>int</code> in above.  </p>
 <h4>(4)Rule type: boolean</h4>
+<p>PhalApi will treat strings like <code>ok, true, success, on, yes</code> as boolean TRUE, any other strings PHP will parse as TRUE will also turn into TRUE. For example, we can add one more param for <code>login</code> service.  </p>
+<pre><code>array('name' =&gt; 'isRememberMe', 'type' =&gt; 'boolean', 'default' =&gt; true)</code></pre>
+<h4>(4)Rule type: date</h4>
+<p>We can post a date as we want.  </p>
+<pre><code>array('name' =&gt; 'registerData', 'type' =&gt; 'date')</code></pre>
+<p>When client post <code>&amp;risterData=2015-01-31 10:00:00</code>, we will get <code>2015-01-31 10:00:00</code> in API.  </p>
+<p>If we want a timestamp instead of a string, we can configure as below:  </p>
+<pre><code>array('name' =&gt; 'registerData', 'type' =&gt; 'date', 'format' =&gt; 'timestamp')</code></pre>
+<p>At last, we will get 1422669600, which is equals to <code>strtotime('2015-01-31 10:00:00')</code>.  </p>
+<h4>(5)Rule type: array</h4>
+<p>Usually, client need to post serveral items in one request. That's why we need <code>array</code> type. For example:  </p>
+<pre><code>array('name' =&gt; 'uids', 'type' =&gt; 'array', 'format' =&gt; 'explode', 'separator' =&gt; ',')</code></pre>
+<p>Then params <code>&amp;uids=1,2,3</code> will be turned into:  </p>
+<pre><code>array ( 0 =&gt; '1', 1 =&gt; '2', 2 =&gt; '3', )</code></pre>
+<p>If client want to post params in JSON, we need to set <code>format</code> index with <code>json</code>.  </p>
+<pre><code>array('name' =&gt; 'params', 'type' =&gt; 'array', 'format' =&gt; 'json')</code></pre>
+<p>Then params <code>&amp;params={"username":"test","password":"123456"}</code> will be turned into:  </p>
+<pre><code>array ( 'username' =&gt; 'test', 'password' =&gt; '123456', )</code></pre>
+<p>Please note that, if we use array type but without format, it will be turned into an array, which contains one element. For example, <code>&amp;name=test</code> will become <code>array(0 =&gt; 'test')</code>.  </p>
+<h4>(7)Rule type: enum</h4>
+<p>You can use this enum type when you need to limit the range of parameters. Take sex for example.  </p>
+<pre><code>array('name' =&gt; 'sex', 'type' =&gt; 'enum', 'range' =&gt; array('female', 'male'))</code></pre>
+<p>We only allow female/male for <code>sex</code> param. Therefore, any other strings will be treated as illegal param. Let's try to post <code>&amp;sex=unknow</code>. No doubt that we will get something like this.    </p>
+<pre><code>{"ret":400,"data":[],"msg":"Illegal Param: sex should be in female\/male, but now sex = unknow"}</code></pre>
+<p>Please keep in mind, it's better to use string, NOT int/float, for <code>range</code>.<br />
+Because in generally, what we get from GET/POST method are strings, not int/float, otherwise will lead to  unexpected result. Here is an example show how wrong range occur a bug.  </p>
+<pre><code>// Assume client post &amp;type=N
+
+// rule config as below
+array('name' =&gt; 'type', 'type' =&gt; 'enum', 'range' =&gt; array(0, 1, 2))
+
+// wrong result
+var_dump(in_array('N', array(0, 1, 2))); // it prints true, since 'N' == 0 in PHP</code></pre>
+<p>To avoid this kind bug, we should configure as below.  </p>
+<pre><code>// rule config (use STRING, not integer)
+array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1`, `2`))</code></pre>
+<h4>(8)Rule type: file</h4>
+<p>When we want to receive files from client, we can use type <code>file</code>. Let's take an exmaple.  </p>
+<pre><code>array(
+    'name' =&gt; 'upfile', 
+    'type' =&gt; 'file', 
+    'min' =&gt; 0, 
+    'max' =&gt; 1024 * 1024, 
+    'range' =&gt; array('image/jpeg', 'image/png') , 
+    'ext' =&gt; array('jpeg', 'png')
+)</code></pre>
+<p>These config means that, the size of file should be greater than 0B, and less than 1MB, client only can post jpeg/png files in form filed <code>upfile</code>, and the external file name should be jpeg/png. If client upload successfully, we will get <code>$_FILES["upfile"]</code>.  </p>
+<pre><code>array(
+     'name' =&gt; '',
+     'type' =&gt; '',
+     'size' =&gt; '',
+     'tmp_name' =&gt; '',
+)</code></pre>
+<p>More information about <code>$_FILE</code>, please visit <a href="http://php.net/manual/en/reserved.variables.files.php">$_FILE</a>.  </p>
+<p>There are some more examples about <code>ext</code>.  </p>
+<pre><code>// single external name in array
+'ext' =&gt; array('jpg')
+
+// single external name in string
+'ext' =&gt; 'jpg'
+
+// multi external names in array
+'ext' =&gt; array('jpg', 'jpeg', 'png', 'bmp')
+
+// multi external names in string, split with comma
+'ext' =&gt; 'jpg,jpeg,png,bmp'</code></pre>
+<h4>(9)Rule type: callable</h4>
+<p>If we want to verify and parse the client params by ourself, we can use type <code>callable</code>. Let's try to check the version param with <code>Common_MyVersion::formatVersion()</code>.  </p>
+<pre><code>array('name' =&gt; 'version', 'type' =&gt; 'callable', 'callback' =&gt; array('Common_MyVersion', 'formatVersion'))</code></pre>
+<p>Then PhalApi will call <code>Common_MyVersion::formatVersion()</code> client post a version. And we can do anything in <code>Common_MyVersion::formatVersion()</code> as we want.  </p>
+<pre><code>// create an new class
+
+class Common_MyVersion {
+
+    public static function formatVersion($value, $rule) {
+        if (count(explode('.', $value)) &lt; 3) {
+            throw new PhalApi_Exception_BadRequest('Illegal version');
+        }
+    }
+}</code></pre>
+<blockquote>
+<p>NOTE: the first param <code>$value</code> is the origin value from client param, the second param <code>$rule</code> is our rule config as above, the third param(OPTIONAL) equals to the <code>params</code> index in <code>$rule</code>.  </p>
+</blockquote>
+<h3>4.5.7 The principle to design parameter rule</h3>
+<h4>(1) Free to map client param name with backend member name</h4>
+<p>In some case, backend would like to name variable by Camel-Case, while client would prefer name parameters with underline. That's why we need tow name in rule config, one is for backend, anther one is for client.  </p>
+<pre><code>array(
+    'isRememberMe' =&gt; array('name' =&gt; 'is_remember_me', 'type' =&gt; 'boolean', 'default' =&gt; true),
+)</code></pre>
+<p>Here, client post with <code>&amp;is_remember_me=1</code>, and backend get with <code>$this-&gt;isRememberMe</code>. Perfect cooporation between backend and frontend? AhA~ I think so.  </p>
+<p>We can also make a shorter name for client to save network traffic.  </p>
+<pre><code>array(
+    'isRememberMe' =&gt; array('name' =&gt; 're', 'type' =&gt; 'boolean', 'default' =&gt; true),
+)</code></pre>
+<p>Then client can post with <code>&amp;re=1</code> instead.  </p>
+<h4>(2)Returning exception</h4>
+<p>PhalApi will return an exception, which's code is usually <code>4xx</code>, while client post illegal params. This can remind client they post wrong params.  </p>
+<h3>4.5.8 Extend your rule type</h3>
+<p>When PhalApi provides parameter rules that do not meet your need, you can extend the <code>PhalApi_Request_Formatter</code> interface to customize your own type, in addition to using the <code>callable</code> type.  </p>
+<p>There are tow more step before you use your own type.  </p>
+<ul>
+<li>
+<ol>
+<li>Extend and implement the <code>PhalApi_Request_Formatter</code> interface.</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>Register the new type in DI.  </li>
+</ol>
+</li>
+</ul>
+<p>Let's take <code>email</code> type for example.  </p>
+<p>Firstly, we need to implement interface <code>PhalApi_Request_Formatter</code>.  </p>
+<pre><code>&lt;?php
+
+class Common_MyFormatter_Email implements PhalApi_Request_Formatter {
+
+    public function parse($value, $rule) {
+        if (!preg_match('/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/', $value)) {
+            throw new PhalApi_Exception_BadRequest('Illegal email');
+        }
+
+        return $value;
+    }
+}  </code></pre>
+<p>Secondly, register it into DI.  </p>
+<pre><code>DI()-&gt;_formatterEmail = 'Common_MyFormatter_Email';</code></pre>
+<blockquote>
+<p>NOTE: The name of service should follow <code>DI()-&gt;_formatter + type name(first letter is upper case, the rest is lower case)</code>.  </p>
+</blockquote>
+<p>At last, we can use our new type <code>email</code> now as below.  </p>
+<pre><code>array('name' =&gt; 'user_email', 'type' =&gt; 'email')</code></pre>
+<p>There are all the formatting service by now.  </p>
+<ul>
+<li>_formatterArray </li>
+<li>_formatterBoolean </li>
+<li>_formatterCallable </li>
+<li>_formatterDate </li>
+<li>_formatterEnum </li>
+<li>_formatterFile </li>
+<li>_formatterFloat </li>
+<li>_formatterInt </li>
+<li>_formatterString </li>
+</ul>
             </div>
         </div>
     </div>
