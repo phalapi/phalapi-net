@@ -150,7 +150,7 @@ $service = trim($argv[1]);
 
 $mq = new Task_MQ_Redis();
 $runner = new Task_Runner_Local($mq);
-$rs = $runnter-&gt;go($service);
+$rs = $runner-&gt;go($service);
 
 echo "\nDone:\n", json_encode($rs), "\n\n";</code></pre>
 <p>然后使用nohup或者crontab启动即可。  </p>

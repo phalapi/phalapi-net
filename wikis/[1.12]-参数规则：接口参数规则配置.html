@@ -319,10 +319,10 @@ return array(
 <p>布尔值，主要是可以对一些字符串转换成布尔值，如ok, true, success, on, yes, 以及会被PHP解析成true的字符串，都会转换成true，方便调用。如通常的是否记住我：</p>
 <pre><code class="language-javascript">array('name' =&gt; 'isRememberMe', 'type' =&gt; 'boolean', 'default' =&gt; true)</code></pre>
 <h3>(5)日期 date</h3>
-<p>日期可以按自己约定的格式传递，当需要将字符串的日期转换成timestamp时，可以这样配置：</p>
+<p>日期可以按自己约定的格式传递，可以这样配置：</p>
 <pre><code class="language-javascript">array('name' =&gt; 'registerData', 'type' =&gt; 'date')</code></pre>
 <p>对应地，risterData=2015-01-31 10:00:00则会被获取到为：&quot;2015-01-31 10:00:00&quot;。</p>
-<p>如果是配置成：</p>
+<p>当需要将字符串的日期转换成timestamp时，则配置成：</p>
 <pre><code class="language-javascript">array('name' =&gt; 'registerData', 'type' =&gt; 'date', 'format' =&gt; 'timestamp')</code></pre>
 <p>则上面的参数再请求时，则会被转换成：1422669600。</p>
 <h3>(6)数组 array</h3>
@@ -341,7 +341,7 @@ return array(
 <p>当传递的参数不合法时，如&amp;sex=unknow，则会被拦截，返回失败：</p>
 <pre><code class="language-javascript">{"ret":400,"data":[],"msg":"Illegal Param: sex should be in female\/male, but now sex = unknow"}</code></pre>
 <p>关于枚举类型的配置，这里需要特别注意配置时，应尽量使用字符串的值。<br />
-因为通常而言，接口通过GET/POST方式获取到的参数都是字符串的，而如果配置规则时指定范围用了整型，会导致底层规则验证时误。如：  </p>
+因为通常而言，接口通过GET/POST方式获取到的参数都是字符串的，而如果配置规则时指定范围用了整型，会导致底层规则验证时误判。如：  </p>
 <pre><code class="language-javascript">//接口参数为： &amp;type=N
 
 //接口参数规则为：
@@ -360,7 +360,7 @@ array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1
     'min' =&gt; 0, 
     'max' =&gt; 1024 * 1024, 
     'range' =&gt; array('image/jpeg', 'image/png') , 
-    'ext' =&gt; array('txt','xml')
+    'ext' =&gt; array('jpeg', 'png')
 )</code></pre>
 <p>其中，min和max分别对应文件大小的范围，单位为字节；range为允许的文件类型，使用数组配置，且不区分大小写。 </p>
 <p>如果成功，返回的值对应的是$_FILES[&quot;upfile&quot;]，即会返回：</p>
