@@ -192,7 +192,17 @@ $user-&gt;where(array('id &gt; ?' =&gt; 1, 'age &gt; ?' =&gt; 10))
 $user-&gt;where(array('name' =&gt; 'dogstar', 'age' =&gt; 18))
 
 // WHERE name = 'dogstar' OR age = 18
-$user-&gt;or('name', 'dogstar')-&gt;or('age', 18)</code></pre>
+$user-&gt;or('name', 'dogstar')-&gt;or('age', 18)
+
+// WHERE ((name = ? OR id = ?)) AND (note = ?) -- 'dogstar', '1', 'xxx'
+#实现方式1：使用and拼接
+$user-&gt;where('(name = ? OR id = ?)', 'dogstar', '1')-&gt;and('note = ?', 'xxx')
+#实现方式2：只使用where，不用数组传参
+$user-&gt;where('(name = ? OR id = ?) AND note = ?', 'dogstar', '1', 'xxx')
+#实现方式3：只使用where，用下标为顺序数字的数组传参
+$user-&gt;where('(name = ? OR id = ?) AND note = ?', array('dogstar', '1', 'xxx'))
+#实现方式4：只使用where，用下标为标识符的数组传参
+$user-&gt;where('(name = :name OR id = :id) AND note = :note', array(':name' =&gt; 'dogstar', ':id' =&gt; '1', ':note' =&gt; 'xxx'))</code></pre>
 <h4>IN查询：</h4>
 <pre><code>// WHERE id IN (1, 2, 3)
 $user-&gt;where('id', array(1, 2, 3))
