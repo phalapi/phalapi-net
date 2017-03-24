@@ -311,14 +311,14 @@ DI()-&gt;notorm-&gt;transaction = 'COMMIT';
 <pre><code>    public function testTransactionCommit()
     {
         //Step 1: 开启事务
-        $this-&gt;notorm-&gt;beginTransaction('db_demo');
+        DI()-&gt;notorm-&gt;beginTransaction('db_demo');
 
         //Step 2: 数据库操作
-        $this-&gt;notorm-&gt;user&gt;insert(array('name' =&gt; 'test1'));
-        $this-&gt;notorm-&gt;user&gt;insert(array('name' =&gt; 'test2'));
+        DI()-&gt;notorm-&gt;user&gt;insert(array('name' =&gt; 'test1'));
+        DI()-&gt;notorm-&gt;user&gt;insert(array('name' =&gt; 'test2'));
 
         //Step 3: 提交事务
-        $this-&gt;notorm-&gt;commit('db_demo');
+        DI()-&gt;notorm-&gt;commit('db_demo');
 
     }</code></pre>
 <blockquote>
