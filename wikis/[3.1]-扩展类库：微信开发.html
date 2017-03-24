@@ -144,8 +144,10 @@ class Plugin_Money implements Wechat_Plugin_Text {
 }</code></pre>
 <h3>(3)注册插件</h3>
 <p>开发好插件后，需要在配置添加对哪种消息开启使用该新的插件。在 <strong>./Config/app.php</strong> 配置文件中追加以下配置：</p>
-<pre><code class="language-javascript">        // 前面配置略
-        Wechat_InMessage::MSG_TYPE_TEXT =&gt; array('Plugin_Money', 'Plugin_Menu', ), // 在前面追加红包插件，处理顺序由左到右
+<pre><code class="language-javascript">        // 前面配置略 ...
+
+        // 在前面追加红包插件，处理顺序由左到右
+        Wechat_InMessage::MSG_TYPE_TEXT =&gt; array('Plugin_Money', 'Plugin_Menu', ), 
 </code></pre>
 <h3>(4)运行效果</h3>
 <p><img src="http://webtools.qiniudn.com/20150411005257_976929b37873ae51ca54d5cb24a61ff0" alt="webwxgetmsgimg" />  </p>
