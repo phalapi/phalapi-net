@@ -38,23 +38,12 @@ $footer = file_get_contents(dirname(__FILE__) . '/footer.html');
 $_ds_id = md5($info['filename']);
 $_ds_title = $info['filename'];
 $_ds_url = 'http://www.phalapi.net/wikis/' . urlencode($info['filename']) . '.html';
+// 多说，换友言
 $duoshuoComment =<<<EOT
-<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="{$_ds_id}" data-title="{$_ds_title}" data-url="{$_ds_url}"></div>
-<!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"phalapi"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- 多说公共JS代码 end -->
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2128651"></script>
+<!-- UY END -->
 EOT;
 
 $content = sprintf(
