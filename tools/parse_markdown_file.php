@@ -39,12 +39,13 @@ $_ds_id = md5($info['filename']);
 $_ds_title = $info['filename'];
 $_ds_url = 'http://www.phalapi.net/wikis/' . urlencode($info['filename']) . '.html';
 // 多说，换友言
-$duoshuoComment =<<<EOT
+$duoshuoComment = <<<EOT
 <!-- UY BEGIN -->
 <div id="uyan_frame"></div>
 <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2128651"></script>
 <!-- UY END -->
 EOT;
+$duoshuoComment = '<!-- TODO -->';
 
 $content = sprintf(
     "%s
