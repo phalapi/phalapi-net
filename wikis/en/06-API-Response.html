@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" style="">
+<head>
+	<title>06-API-Response | PhalApi - A light-weight PHP framework for API</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApiis A light-weight PHP framework for API!">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi API develop,backend framework,restful,web services,saas,microservice,API framework,open API framework,PHP API framework,php web framework">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../..//css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+                <li class="menu-item"><a title="PhalApi官方网站中文版" href="/" class="menu-item__link">Chinese</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">Welcome Here!</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">Community</a></li>
+					<li class="menu-item"><a href="https://github.com/phalapi/phalapi" class="menu-item__link insights-spec" target="_blank">Download</a></li>
+					<li class="menu-item"><a href="/wikis/en/" class="menu-item__link events-spec" target="_blank">Wikis</a></li>
+    				<li class="menu-item"><a href="/docs_en/" class="menu-item__link events-spec" target="_blank">Classes docs</a></li>
+					<li class="menu-item"><a href="http://demo.phalapi.net/" class="menu-item__link products-spec" target="_blank">Demo</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">About us</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>6.1 JSON Response</h2>
+<p>Obviously, we response result to clients with JSON at default.<br />
+<img src="https://camo.githubusercontent.com/52782ceaf6853a891ce306c3021c492524941d7d/687474703a2f2f6769742e6f736368696e612e6e65742f75706c6f6164732f696d616765732f323031372f303231382f3233303331365f34316139366231335f3132313032362e706e67" alt="" />  </p>
+<h2>6.2 Uniform Response Structure</h2>
+<p>As we can see above, default API <code>Default.Index</code> return something like this.  </p>
+<pre><code>{
+    "ret": 200,
+    "data": {
+        "title": "Hello World!",
+        "content": "Hi PHPer, welcome to use PhalApi!",
+        "version": "1.3.6",
+        "time": 1489910945
+    },
+    "msg": ""
+}</code></pre>
+<p>The response is mainly consisted of three parts. <code>ret</code> is returning code, which can tell what status is, <code>data</code> is anything you want to
+transfer to clients, while <code>msg</code> is represent for error message when fail to request. We will explain them one by one in detail.  </p>
+<h3>(1)Returning Code: <code>ret</code></h3>
+<p>Reference to HTTP Status Code, we make a convention.  </p>
+<ul>
+<li><strong>200</strong>: API response successfully and return data in <code>data</code> field as expected.  </li>
+<li><strong>4XX</strong>: Illegal request from clients, the reason why fail to request is displayed in <code>msg</code> field.  </li>
+<li><strong>5XX</strong>: API service internal error, and no data can be provided.  </li>
+</ul>
+<h4><code>ret = 200</code> means response successfully</h4>
+<p>When the <code>ret</code> is equals to 200, it means API response successfully. Then clients can retrieve more business data in <code>data</code> field that API service provide.  </p>
+<h3><code>ret = 4XX</code> means illegal request</h3>
+<p>If clients request incorrectly, such as requesting a non-exists API serivce, missing required API params or failling to pass verification, they will get a returning code range from 400 to 499. When this happen, client developers should adjust how to request the API service and ensure they can request correctly. And the reason why fail to request can be found in <code>msg</code> field.  </p>
+<p>At backend, we can use <a href="https://github.com/phalapi/phalapi/blob/release-en/PhalApi/PhalApi/Exception/BadRequest.php">PhalApi_Exception_BadRequest</a> to specify returning code and error message. Take signature verification as an example. When the signature from client is wrong, we should throw an exception to interupt the request and warn the clients.  </p>
+<pre><code>throw new PhalApi_Exception_BadRequest('wrong sign', 1);</code></pre>
+<p>Finally, clients get a response where <code>ret</code> is 401 and <code>msg</code> is <code>Illegal request: wrong sign</code>. Please note that, PhalApi will add the exception code with 400 automatically, i.e. <code>401 = 1 + 400</code>. That is why we get <code>ret = 401</code>, not <code>ret = 1</code>. Therefore, the exception code passed to <code>PhalApi_Exception_BadRequest</code> should between 1 and 99.</p>
+<h3><code>ret = 5XX</code> means internal error</h3>
+<p>This case should not happen generally. When client developers get this, they usually can do nothing but warn backend developers what's going on. As backend developers, we should fix it as soon as possible according the error message in <code>msg</code> field. We need to check whether we break the rule of PhalApi, or do something wrong such as trying to get an non-exsist field.  </p>
+<p>In this case, PhalApi will occur a <a href="https://github.com/phalapi/phalapi/blob/release-en/PhalApi/PhalApi/Exception/InternalServerError.php">PhalApi_Exception_InternalServerError</a> exception.</p>
+<h2>6.3 Business data: <code>data</code></h2>
+<p>The <code>data</code> field is the bridge between API service and cleint APP. It can be any type, and it's up to backend. But it's a rule of thumb to return <code>data</code> as an array for extendibility and compatibility.  </p>
+<p>When developing an API, we can add annotation to specify clearly what we will return to clients. Then client developers can visit the online document and check them out.  </p>
+<p>Let's look into <code>Default.Index</code> again.  </p>
+<pre><code>    /**
+     * Default API service
+     * @return string title title
+     * @return string content content
+     * @return string version versio with format: X.X.X
+     * @return int time current timestamp
+     */
+    public function index() {
+        return array(
+            'title' =&gt; 'Hello World!',
+            'content' =&gt; T('Hi {name}, welcome to use PhalApi!', array('name' =&gt; $this-&gt;username)),
+            'version' =&gt; PHALAPI_VERSION,
+            'time' =&gt; $_SERVER['REQUEST_TIME'],
+        );
+    }</code></pre>
+<p>Then open one browser and visit the online API detail document as beblow.<br />
+<a href="http://demo.phalapi.net/checkApiParams.php?service=User.getBaseInfo"><a href="http://demo.phalapi.net/checkApiParams.php?service=Default.Index">http://demo.phalapi.net/checkApiParams.php?service=Default.Index</a></a>  </p>
+<p>The document looks like:<br />
+<img src="https://camo.githubusercontent.com/8829812d88782945976414d60319933ebcefa1d2/687474703a2f2f6769742e6f736368696e612e6e65742f75706c6f6164732f696d616765732f323031372f303231382f3233303334375f37373461663063325f3132313032362e706e67" alt="" />  </p>
+<h3>Annotation Format</h3>
+<p>Reference to <code>return</code> annotation in <a href="https://github.com/phpDocumentor/phpDocumentor2">PHP Documentor 2</a>, the annotation format is similar to PHPDocs.  </p>
+<pre><code>@return  [Type] [The path of field name, split with dot] [Description of the field]</code></pre>
+<p>In above, the <code>type</code> should be one of these.  </p>
+<table>
+<thead>
+<tr>
+<th>keyword</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>string</td>
+<td>String, such as &quot;PhalApi&quot;.</td>
+</tr>
+<tr>
+<td>int</td>
+<td>Integer, such as 2017.</td>
+</tr>
+<tr>
+<td>float</td>
+<td>Float number, such as 3.17.</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>Boolean, i.e. true or false.</td>
+</tr>
+<tr>
+<td>date</td>
+<td>Date and timestamp, such as &quot;2017-03-19 17:40:50&quot; or 1489916450.</td>
+</tr>
+<tr>
+<td>array</td>
+<td>Array, such as <code>[1, 2, 3]</code></td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>Fixed value</td>
+</tr>
+<tr>
+<td>enum</td>
+<td>Enumeration type</td>
+</tr>
+<tr>
+<td>object</td>
+<td>Object, such as <code>{'name' : 'PhalApi'}</code></td>
+</tr>
+</tbody>
+</table>
+<p>NOTE: The difference between <code>array</code> and <code>object</code> is that there are no string but only naturnal number indexes in <code>array</code> and each item has the same type, while <code>object</code> is stand for a structure, something like a map.  </p>
+<p>Here are some examples of an <code>array</code>.   </p>
+<pre><code>["dogstar", "Aevit", "uwin"]  // all item are string
+
+[28, 27, 23]  // all item are integer  
+
+// all item are structure with same fields name and age
+[
+    {
+        "name": "dogstar",
+        "age": 28
+    },
+    {
+        "name": "Aevit",
+        "age": 27
+    },
+    {
+        "name": "uwin",
+        "age": 23
+    }
+]
+</code></pre>
+<p>Here is an example of a <code>object</code>.</p>
+<pre><code>{
+    "name": "dogstar",
+    "age": 28
+}</code></pre>
+<p>In order to tell client developers clearly what kind of type we will return to them, especially from <code>array</code> or <code>object</code>, we recommend add square brackets behind the field name.  </p>
+<pre><code>     * @return array list user info list
+     * @return int list[].id user ID
+     * @return string list[].name username
+     * @return string list[].note user note</code></pre>
+<p>Here, we make it clear that we will return <code>list</code> as an array to clients. Besides, these square brackets indicate that <code>id</code>, <code>name</code>, and <code>note</code> come from an <code>array</code>, not a <code>object</code>, which also indicates it's possible there are multiple user in the list.  </p>
+<blockquote>
+<p>NOTE: You can add more description for API service with <code>@desc</code> annotation.  </p>
+</blockquote>
+<h2>6.4 Error Message: <code>msg</code></h2>
+<p>As all know, <code>msg</code> is short for message, i.e. error message. When the returning code is not equals to 200, the <code>msg</code> should not be empty. If there is something wrong, probably illegal client request or server interal error, PhalApi will automatically transfer exception message as <code>msg</code>.  </p>
+<p>NOTE: Only exception class which extends from <code>PhalApi_Exception</code> can reponse with <code>ret</code>, <code>data</code> and <code>msg</code>. Throwing any other exception classes which not extend from <a href="https://github.com/phalapi/phalapi/blob/release-en/PhalApi/PhalApi/Exception.php">PhalApi_Exception</a> will response nothing to clients, no <code>ret</code>, no <code>data</code>, neither <code>msg</code>.  </p>
+<p>If we throw a <a href="https://github.com/phalapi/phalapi/blob/release-en/PhalApi/PhalApi/Exception/BadRequest.php">PhalApi_Exception_BadRequest</a> exception as below.  </p>
+<pre><code>throw new PhalApi_Exception_BadRequest(T('wrong sign'), 1);</code></pre>
+<p>The <code>msg</code> will be &quot;Bad Request: wrong sign&quot;, and <code>ret</code> will be 401(<code>401 = 1 + 400</code>).  </p>
+<p>If we throw a <a href="https://github.com/phalapi/phalapi/blob/release-en/PhalApi/PhalApi/Exception/InternalServerError.php">PhalApi_Exception_InternalServerError</a> exception as below. </p>
+<pre><code>throw new PhalApi_Exception_InternalServerError(T('system is busy now'), 2);</code></pre>
+<p>Then the <code>msg</code> will be &quot;Interal Server Error: system is busy now&quot;, and <code>ret</code> will be 502(<code>502 = 2 + 500</code>).</p>
+<h2>6.5 Header Response</h2>
+<p>When response via HTTP/HTTPS, we can use <a href="https://github.com/phalapi/phalapi/blob/release-en/PhalApi/PhalApi/Response.php">PhalApi_Response::addHeaders()</a> to add more header information as we want. Assume that we allow all other domain visiting our API services, we can add <code>Access-Control-Allow-Origin</code> to the headers int file <code>init.php</code> as below.  </p>
+<pre><code>DI()-&gt;response-&gt;addHeaders('Access-Control-Allow-Origin', '*');</code></pre>
+<p>In addition, PhalApi add <code>Content-Type</code> for JSON response.  </p>
+<pre><code>Content-Type:"application/json;charset=utf-8"</code></pre>
+<p>Please note that the same header will cover the former ones, as .</p>
+<h2>6.6 Why PhalApi DO NOT catch Exception</h2>
+<p>As we talk about it before, PhalApi DO NOT catch any exceptions which not extends from <code>PhalApi_Exception</code> for the following considerations.   </p>
+<ul>
+<li>Help backend developers to figure out what's the problem fastly with original PHP  trace infomation in development environment.  </li>
+<li>Besides, allow server to monitor and to record PHP errors.  </li>
+</ul>
+<h2>6.7 Response with other format, such as JSONP</h2>
+<p>When we develop H5 light app, we may need to response with JSONP, allowing JavaScript do more things. If so, we have to register <code>DI()-&gt;response</code> with <code>PhalApi_Response_JsonP</code> in entrace file.  </p>
+<pre><code>if (!empty($_GET['callback'])) {
+    DI()-&gt;response = new PhalApi_Response_JsonP($_GET['callback']);
+}</code></pre>
+<p>When in unit tests, we do not need a real response as in the browser, but a mock response without no affects. Then we can use <a href="https://github.com/phalapi/phalapi/blob/release-en/PhalApi/PhalApi/Response/Explorer.php">PhalApi_Response_Explorer</a>, just displaying result on the console.  </p>
+<pre><code>DI()-&gt;response = 'PhalApi_Response_Explorer';</code></pre>
+<h2>6.8 Extend Your Response</h2>
+<p>If you want to response with other format, such as XML, you should implement your own response firstly, which should extend from <a href="https://github.com/phalapi/phalapi/blob/release-en/PhalApi/PhalApi/Response.php">PhalApi_Response</a>.  </p>
+<pre><code>class MyResponse_XML extends PhalApi_Response {
+
+    protected function formatResult($result) {
+        //TODO: tranfer $result from array into xml ......
+    }
+}</code></pre>
+<p>Secondly, register <code>DI()-&gt;response</code> again.  </p>
+<pre><code>DI()-&gt;response = new MyResponse_XML();</code></pre>
+<h2>6.9 Better Advice</h2>
+<p>In most time, client need to handle different sutiations according to the operation status from server in business scene. But there is only one returning code for client developers, which is not for final users. Consequently, we suggest to add one more status in the field <code>data</code>, which is used for business logic because field <code>ret</code> has been used for technology need.  </p>
+<p>For example, adding a <code>code</code> into <code>data</code>, i.e. the full path is <code>data.code</code>. When code is equals to zero, it means to be successful, otherwise if fails.  </p>
+<p>Take <code>User.Login</code> as an example.  </p>
+<ul>
+<li>data.code = 0, login successfully  </li>
+<li>data.code = 1, user not exist  </li>
+<li>data.code = 2, password wrong  </li>
+<li>data.code = 3, user in the blacklist  </li>
+<li>... ...  </li>
+</ul>
+<h2>6.10 Domain-Specific Designs and Fiat Standard</h2>
+<p>There are four kinds of standard in <a href="https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B00KWGEI64/ref=sr_1_1?ie=UTF8&amp;qid=1489924587&amp;sr=8-1&amp;keywords=RESTful+Web+APIs">RESTful Web APIs</a>. And they are Fiat Standard, Personal Standard, Company Standard, and Open Standard.  </p>
+<p>Obviously, the format <strong> JSON + ret-data-msg </strong> we recommend here, is not belong to Personal Standard, not to Company Standard either. And it's far away from Open Standard. I think it belong to Fiat Standard in some degree.  </p>
+<p>Anyway, we hope we could have a good common sense at API service development.</p>
+            </div>
+        </div>
+    </div>
+    
+ <!-- 广告位 -->
+<!--
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7qnay5.com1.z0.glb.clouddn.com/走向开源的第一年%20-%20PhalApi%202015年度开源总结%20-%20官方出品%20-%2020151214.pdf" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/PhalApi20151213-2.jpg"></a>
+		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
+	</p>
+</div>
+-->
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi is a light-weight PHP framework for API.<br/>
+                We try to keep PhalApi as stuip simple as possible!
+            </font>
+			</p>
+			<p align="left">
+				<font size="2px">&copy;2015-2016 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>Thanks!</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">Open Source China</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">Alipay&nbsp;</a>Donate: </strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+
+			<p>
+				<!-- JiaThis Button BEGIN -->
+				<div id="ckepop">
+				<span class="jiathis_txt">Share: </span>
+				<a class="jiathis_button_tsina">Weibo</a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">More</a>
+				<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+				
+			</p>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>
