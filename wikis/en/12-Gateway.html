@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" style="">
+<head>
+	<title>12-Gateway | PhalApi - A light-weight PHP framework for API</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApiis A light-weight PHP framework for API!">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi API develop,backend framework,restful,web services,saas,microservice,API framework,open API framework,PHP API framework,php web framework">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../..//css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+                <li class="menu-item"><a title="PhalApi官方网站中文版" href="/" class="menu-item__link">Chinese</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">Welcome Here!</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">Community</a></li>
+					<li class="menu-item"><a href="https://github.com/phalapi/phalapi" class="menu-item__link insights-spec" target="_blank">Download</a></li>
+					<li class="menu-item"><a href="/wikis/en/" class="menu-item__link events-spec" target="_blank">Wikis</a></li>
+    				<li class="menu-item"><a href="/docs_en/" class="menu-item__link events-spec" target="_blank">Classes docs</a></li>
+					<li class="menu-item"><a href="http://demo.phalapi.net/" class="menu-item__link products-spec" target="_blank">Demo</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">About us</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>12.1 What Is Gateway in PhalApi ?</h2>
+<p>In general, we wrap our API services and only provide some entrances, which connect internal APIs and the outside world. According to different strategy, clients can visit the APIs by RESTfule, PHPRPC, HTTP, or SOAP. What's more, you can custom the format of response, specify current language, publish accessable APIs, etc. Such entrances are what we call gateway in PhalApi.  </p>
+<p>Some frameworks provide a solid initialization process, which limits developers too much to custom anything else. Instead PhalApi prefer to provide a open initialization process where developers have more freedom to satisfy their business need.  </p>
+<p>When clients request an API, they will go through open entrance and closed initialization.</p>
+<h2>12.2 Open Entrance</h2>
+<p>As an API server system, it need to provide different services for different client terminals and even different user groups usually.  </p>
+<p>For example,</p>
+<ul>
+<li>According to different terminals: iOS, Android, PC, Web, Watch</li>
+<li>According to different user groups: internal admin system, open service platform, A/B Test  </li>
+<li>According to different version: 1.1.1, 1.1.2, ..., 1.1.N  </li>
+<li>According to different projects: maybe there are several projects in the same system  </li>
+</ul>
+<p>Therefore, is's really a good idea to have multiple access protal.  </p>
+<p>The most important thing is that, these entrances should keep KISS, and reuse uniform closed initialization as much as possible. Here is such an simple entrance.  </p>
+<pre><code>&lt;?php
+// $vim ./Public/demo/index.php
+
+/**
+ * Demo entrance
+ */
+
+require_once dirname(__FILE__) . '/../init.php';
+
+// load your API folder
+DI()-&gt;loader-&gt;addDirs('Demo');
+
+/** ---------------- deal with API request ---------------- **/
+
+$api = new PhalApi();
+$rs = $api-&gt;response();
+$rs-&gt;output();</code></pre>
+<p>What happen in the above entrance is mainly three things as below.  </p>
+<ul>
+<li>Firstly, require uniform initialization file <code>init.php</code>.  </li>
+<li>Secondly, add API project folder <code>Demo</code>.  </li>
+<li>At last, create an instance of <code>PhalApi</code> and reponse to client.  </li>
+</ul>
+<p>Let's keep going and see what exactly happen in closed initialization.  </p>
+<h2>12.3 Closed Initialization</h2>
+<p>As we know, even though we provide different entrance for different demension, it's necessary to maintance an uniform initialzation process.    </p>
+<h3>(1) Regular Initialization</h3>
+<p>The uniform initialization file <a href="https://github.com/phalapi/phalapi/blob/release-en/Public/init.php">init.php</a> looks like as before.  </p>
+<pre><code>/** ---------------- define API project root folder, and register autoload ---------------- **/
+
+date_default_timezone_set('Asia/Shanghai');
+
+defined('API_ROOT') || define('API_ROOT', dirname(__FILE__) . '/..');
+
+require_once API_ROOT . '/PhalApi/PhalApi.php';
+$loader = new PhalApi_Loader(API_ROOT, 'Library');
+
+/** ---------------- register &amp; initialize base service components ---------------- **/
+
+// autoload
+DI()-&gt;loader = $loader;
+
+// configuration
+DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');
+
+// debug mode, rename $_GET['__debug__'] as you want
+DI()-&gt;debug = !empty($_GET['__debug__']) ? true : DI()-&gt;config-&gt;get('sys.debug');
+
+if (DI()-&gt;debug) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 'On'); 
+}
+
+// logs
+DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime', PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);
+
+// database operations based on NotORM, rename $_GET['__sql__']as you want
+DI()-&gt;notorm = new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), !empty($_GET['__sql__']));
+
+// setting language, default is English
+SL('en');</code></pre>
+<p>The codes above are a little long, as they finish most of the initialization work.  </p>
+<p>At the beginning of the initialization, we set default timezone with PHP original function. We also define a const variable <code>API_ROOT</code>, which is represent the root path of our project.  </p>
+<pre><code>date_default_timezone_set('Asia/Shanghai');
+
+defined('API_ROOT') || define('API_ROOT', dirname(__FILE__) . '/..');</code></pre>
+<p>Then we introduce PhalApi by requiring file <code>PhalApi.php</code> and creating an instance of <code>PhalApi_Loader</code>. Please note that we load folder <code>`Library</code> at first. Library is very usefull and we talk about later.  </p>
+<pre><code>require_once API_ROOT . '/PhalApi/PhalApi.php';
+$loader = new PhalApi_Loader(API_ROOT, 'Library');</code></pre>
+<p>After that, everything begins to be very interesting and amazing. We have switched from original PHP development to fresh PhalApi development. But if we want to go futher more, we need to prepare some necessary weapons at first.  </p>
+<h4>Autoload Service</h4>
+<pre><code>// autoload
+DI()-&gt;loader = $loader;</code></pre>
+<p>More detail is avaliable on <a href="https://github.com/phalapi/phalapi/wiki/10-Autoload">Autoload</a>.  </p>
+<h4>Config Service</h4>
+<pre><code>// configuration
+DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');</code></pre>
+<p>More detail is avaliable on <a href="https://github.com/phalapi/phalapi/wiki/08-Config">Config</a>.  </p>
+<h4>Debug Mode</h4>
+<pre><code>// debug mode, rename $_GET['__debug__'] as you want
+DI()-&gt;debug = !empty($_GET['__debug__']) ? true : DI()-&gt;config-&gt;get('sys.debug');</code></pre>
+<p>If you want to enable debug mode in the whole project, you can set <code>sys.debug</code> to be true. Otherwise, if you just want to enable debug mode in one request, you can set <code>$_GET['__debug__']</code> to be true.   </p>
+<h4>Logger Service</h4>
+<pre><code>// logs
+DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime', PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</code></pre>
+<p>More detail is avaliable on <a href="https://github.com/phalapi/phalapi/wiki/09-Logger">Logger</a>.  </p>
+<h4>Databse Service</h4>
+<pre><code>// database operations based on NotORM, rename $_GET['__sql__']as you want
+DI()-&gt;notorm = new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), !empty($_GET['__sql__']));</code></pre>
+<p>More detail is avaliable on <a href="https://github.com/phalapi/phalapi/wiki/07-Database-Operations">Logger</a>.  </p>
+<p>Besides, we can set current language as below.  </p>
+<pre><code>// setting language, default is English
+SL('en');</code></pre>
+<p>More detail is avaliable on <a href="https://github.com/phalapi/phalapi/wiki/13-i18n">i18n</a>.  </p>
+<h3>(2) Custom Initialization</h3>
+<p>There is some comment custom service following regular initialization. This part is optional, not necessary.   </p>
+<pre><code>/** ---------------- custom more optional service components ---------------- **/
+
+/**
+// signature verification servcie
+DI()-&gt;filter = 'PhalApi_Filter_SimpleMD5';
+ */
+
+/**
+// cache" Memcache/Memcached
+DI()-&gt;cache = function () {
+    return new PhalApi_Cache_Memcache(DI()-&gt;config-&gt;get('sys.mc'));
+};
+ */
+
+/**
+// support with JsonP reponse
+if (!empty($_GET['callback'])) {
+    DI()-&gt;response = new PhalApi_Response_JsonP($_GET['callback']);
+}
+ */</code></pre>
+<p>If you want verfify whether the request is legal, you can use <code>DI()-&gt;filer</code> service.  </p>
+<pre><code>// signature verification servcie
+DI()-&gt;filter = 'PhalApi_Filter_SimpleMD5';</code></pre>
+<p>More detail is avaliable on <a href="https://github.com/phalapi/phalapi/wiki/04-API-Request#47-api-signature-with-filter">4.7 API signature with filter</a>.  </p>
+<p>If you need a cache service, you can uncomment these lines.  </p>
+<pre><code>// cache" Memcache/Memcached
+DI()-&gt;cache = function () {
+    return new PhalApi_Cache_Memcache(DI()-&gt;config-&gt;get('sys.mc'));
+};</code></pre>
+<p>More detail is avaliable on <a href="https://github.com/phalapi/phalapi/wiki/11-Cache">Cache</a>.  </p>
+<p>If you want to response with JSONP, you should uncomment these lines.  </p>
+<pre><code>// support with JsonP reponse
+if (!empty($_GET['callback'])) {
+    DI()-&gt;response = new PhalApi_Response_JsonP($_GET['callback']);
+}</code></pre>
+<p>More detail is avaliable on <a href="https://github.com/phalapi/phalapi/wiki/06-API-Response#67-response-with-other-format-such-as-jsonp">6.7 Response with other format, such as JSONP</a>.  </p>
+<h2>12.4 The Architecture</h2>
+<p><img src="http://webtools.qiniudn.com/%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98%E9%9D%99%E6%80%81%E7%BB%93%E6%9E%84%E5%9B%BE-%E5%A4%9A%E5%85%A5%E5%8F%A3.jpg" alt="" />  </p>
+            </div>
+        </div>
+    </div>
+    
+ <!-- 广告位 -->
+<!--
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7qnay5.com1.z0.glb.clouddn.com/走向开源的第一年%20-%20PhalApi%202015年度开源总结%20-%20官方出品%20-%2020151214.pdf" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/PhalApi20151213-2.jpg"></a>
+		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
+	</p>
+</div>
+-->
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi is a light-weight PHP framework for API.<br/>
+                We try to keep PhalApi as stuip simple as possible!
+            </font>
+			</p>
+			<p align="left">
+				<font size="2px">&copy;2015-2016 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>Thanks!</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">Open Source China</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">Alipay&nbsp;</a>Donate: </strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+
+			<p>
+				<!-- JiaThis Button BEGIN -->
+				<div id="ckepop">
+				<span class="jiathis_txt">Share: </span>
+				<a class="jiathis_button_tsina">Weibo</a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">More</a>
+				<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+				
+			</p>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>

@@ -56,7 +56,57 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                
+                <h2>13.1 Language Setting</h2>
+<p>When we need to switch to other language for different clients, we can use function <a href="https://github.com/phalapi/phalapi/blob/release-en/PhalApi/PhalApi/functions.php">SL()</a> to set special language.  </p>
+<pre><code>SL('zh_cn');</code></pre>
+<p>We switch to Simple Chinese above, which is the folder name as bebow:  </p>
+<pre><code>.
+|-- en
+|   `-- common.php
+`-- zh_cn
+    `-- common.php</code></pre>
+<p>Of course, we can set the language according to the parameter from clients. Take <code>$_GET['lan']</code> for example.   </p>
+<pre><code>SL($_GET['lan']);</code></pre>
+<h2>13.2 Add Language Translation Message</h2>
+<p>After set the language, we need to add the related translation file into folder <code>./Language</code>. That means, if we set language to <code>en</code>, we need translation file <code>./Language/en/common.php</code>; if <code>zh_cn</code>, then <code>./Language/zh_cn/common.php</code>.  </p>
+<p>The translation file is very simple. It is nothing but a mapping array. The keys are original content, while the value is translation.  </p>
+<p>Here is an example of Simple Chinese.  </p>
+<pre><code>return array(
+    'Hi {name}, welcome to use PhalApi!' =&gt; '{name}您好，欢迎使用PhalApi！',
+    'user not exists' =&gt; '用户不存在',
+);</code></pre>
+<h2>13.3 How to Translate?</h2>
+<p>After set the language and prepare the translation file, we can translate content with fast function <a href="https://github.com/phalapi/phalapi/blob/release-en/PhalApi/PhalApi/functions.php">T()</a> in the project.  </p>
+<h3>(1) Simple Translation Without Any Variable</h3>
+<pre><code>echo T('user not exists');</code></pre>
+<p>It will show:  </p>
+<pre><code>用户不存在</code></pre>
+<h3>(2) Translation With A Variable</h3>
+<p>Sometimes we have to display some dynamic data for different sutiation. Dynemic variable should be inside between with bracketing without any blank.  </p>
+<pre><code>echo T('hello {name}', array('name' =&gt; 'dogstar'));  </code></pre>
+<p>While the translation is:  </p>
+<pre><code>'hello {name}' =&gt; '您好，{name}',</code></pre>
+<p>We will see:  </p>
+<pre><code>您好，dogstar</code></pre>
+<h3>(3) Translation With Multi Variables</h3>
+<p>If there are many variables, we can also use numeric index for convenience.  </p>
+<pre><code>echo T('{0} I love you because {1}', array('PhalApi', 'no reasons'));</code></pre>
+<p>While the translation is:</p>
+<pre><code>'{0} I love you because {1}' =&gt; '{0} 我爱你因为{1}',</code></pre>
+<p>It will print:  </p>
+<pre><code>PhalApi 我爱你因为no reasons</code></pre>
+<h2>13.4 When Happen If No Translation?</h2>
+<p>It is straightforward that when there is no translation, it will output the original content.  </p>
+<h2>13.5 Extend Your Translation</h2>
+<p>In addtion, if translation files are not under folder <code>./Language</code> but other fodler else, we can add the new folder by <a href="https://github.com/phalapi/phalapi/blob/release-en/PhalApi/PhalApi/Translator.php">PhalApi_Translator::addMessage()</a>.  </p>
+<p>Take library User for example,  </p>
+<pre><code>PhalApi_Translator::addMessage(API_ROOT . '/Library/User');</code></pre>
+<p>And under folder <code>/path/to/Library/User</code>, it should be like this:  </p>
+<pre><code>./Language/
+└── zh_cn
+    └── common.php
+
+1 directory, 1 file</code></pre>
             </div>
         </div>
     </div>
