@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en" style="">
+<head>
+	<title>07-Database-Based-NotORM | PhalApi - A light-weight PHP framework for API</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApiis A light-weight PHP framework for API!">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi API develop,backend framework,restful,web services,saas,microservice,API framework,open API framework,PHP API framework,php web framework">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../..//css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+                <li class="menu-item"><a title="PhalApi官方网站中文版" href="/" class="menu-item__link">Chinese</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">Welcome Here!</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">Community</a></li>
+					<li class="menu-item"><a href="https://github.com/phalapi/phalapi" class="menu-item__link insights-spec" target="_blank">Download</a></li>
+					<li class="menu-item"><a href="/wikis/en/" class="menu-item__link events-spec" target="_blank">Wikis</a></li>
+    				<li class="menu-item"><a href="/docs_en/" class="menu-item__link events-spec" target="_blank">Classes docs</a></li>
+					<li class="menu-item"><a href="http://demo.phalapi.net/" class="menu-item__link products-spec" target="_blank">Demo</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">About us</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h2>7.1 Database MySQL Config</h2>
+<p>All the database config should be located at config file <a href="https://github.com/phalapi/phalapi/blob/release-en/Config/dbs.php">dbs.php</a>.  </p>
+<p>It looks like:  </p>
+<pre><code>&lt;?php
+return array(
+    /**
+     * Database Servers
+     */
+    'servers' =&gt; array(
+        'db_demo' =&gt; array(                         // server ID
+            'host'      =&gt; 'localhost',             // database host
+            'name'      =&gt; 'phalapi',               // database name
+            'user'      =&gt; 'root',                  // database username
+            'password'  =&gt; '',                      // database password
+            'port'      =&gt; '3306',                  // database port
+            'charset'   =&gt; 'UTF8',                  // database charset
+        ),
+    ),
+    /**
+     * Customing Table Routes
+     */
+    'tables' =&gt; array(
+        // Common Defatult Routes
+        '__default__' =&gt; array(
+            'prefix' =&gt; 'tbl_',
+            'key' =&gt; 'id',
+            'map' =&gt; array(
+                array('db' =&gt; 'db_demo'),
+            ),
+        ),
+    ),
+);</code></pre>
+<p>In above, all our database tables should start with prefix <code>tbl_</code>, and primary key <code>id</code>. Futhermore, all data store into database <code>db_demo</code>, which is MySQL with host <code>localhost</code>, name <code>phalapi</code>, user <code>root</code>, etc.  </p>
+<h2>7.2 NotORM</h2>
+<p>We use NotORM to operate database in PhalApi. Whether you are familiar with NotORM or not, it's easy to learn.  </p>
+<blockquote>
+<p>Related: <a href="http://www.notorm.com/">NotORM - PHP library for simple working with data in the database</a>  </p>
+</blockquote>
+<h3>(1) Register NotROM</h3>
+<p>It's simple to register NotORM into DI.  </p>
+<pre><code>DI()-&gt;notorm = new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), !empty($_GET['__sql__']));</code></pre>
+<p>We use the config above, and start database debug mode if <code>$_GET['__sql__']</code> is not empty.  </p>
+<h3>(2) Database Debug Mode</h3>
+<h4>Show SQL</h4>
+<p>As we talk before, if <code>$_GET['__sql__']</code> is not empty, it will print all the sql sentences that excuted in the request.  </p>
+<p>For example, if we request <code>?service=User.getBaseInfo</code> with <code>&amp;__sql__=1</code>.  </p>
+<pre><code>http://demo.phalapi.net/?service=User.getBaseInfo&amp;user_id=1&amp;__sql__=1</code></pre>
+<p>It will show:  </p>
+<pre><code>[1 - 0.00035s]SELECT * FROM tbl_user WHERE (id = ?); -- 1&lt;br&gt;
+{"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","note":"oschina"}},"msg":""}</code></pre>
+<h4>Show Exception</h4>
+<p>Usually, when database fail to connect, we will get:  </p>
+<pre><code>{
+    "ret": 500,
+    "data": [],
+    "msg": "can not connect to database: db_demo"
+}</code></pre>
+<p>It is safe to simplify exception message in production environment, but not helpful to find out what really going on in development environment. Instead we need to enable debug mode.  </p>
+<p>There are tow way to enable debug mode.  </p>
+<ul>
+<li>
+<ol>
+<li>Add parameter <code>&amp;__debug__=1</code> in per request.  </li>
+</ol>
+</li>
+<li>
+<ol>
+<li>Set <code>debug =&gt; true,</code> in file <code>./Config/sys.php</code>.  </li>
+</ol>
+</li>
+</ul>
+<p>Then when exception again, we will see more details.  </p>
+<pre><code>{
+    "ret": 500,
+    "data": [],
+    "msg": "can not connect to database: db_demo, code: ：1045, cause: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)"
+}</code></pre>
+<h3>(3) How To Get NotORM</h3>
+<p>By now, we have already know how to configure database and register NotORM. What's next is to get NotORM so that we can do something interesting on database.  </p>
+<p>We can get a <code>notorm</code> instance in tow ways.  </p>
+<ul>
+<li>
+<p>Get NotORM by DI anywhere, but NOT recommend  </p>
+<pre><code>$user = DI()-&gt;notorm-&gt;user; </code></pre>
+</li>
+<li>Get NotORM inside model, and STRONG recommend
+<pre><code>&lt;?php
+class Model_User extends PhalApi_Model_NotORM {
+public function doSth() {
+    $user = $this-&gt;getORM(); // inside model
+}
+}</code></pre></li>
+</ul>
+<blockquote>
+<p>NOTE: The subclass of <code>PhalApi_Model_NotORM</code> should be <code>Model_{table_name_to_lower}</code> at default. If you need a different table name, you can override method <code>getTableName($id)</code> and return custom table name.    </p>
+<pre><code>&lt;?php
+class Model_User extends PhalApi_Model_NotORM {
+protected function getTableName($id) {
+return 'my_user'; 
+}
+}</code></pre>
+</blockquote>
+<p>We can get the instance for table <code>tbl_user</code> by <code>$user = DI()-&gt;notorm-&gt;user;</code> or <code>$user = $this-&gt;getORM();</code>.  </p>
+<p>Table <code>tbl_user</code> is just a simple table as beblow.  </p>
+<pre><code>CREATE TABLE `tbl_user` (
+  `id` int(11) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `age` int(3) DEFAULT NULL,
+  `note` varchar(45) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre>
+<h4>Keep NotORM Query Criteria Or Not</h4>
+<p>Instances of NotORM are mutable, so they can keep all the query criteria in the same instance. For example:  </p>
+<pre><code>$user = DI()-&gt;notorm-&gt;user;
+$user-&gt;where('age &gt; ?', 18);  // age &gt; 18
+$user-&gt;where('name LIKE ?', '%dog%');  // age &gt; 18 AND name LIKE '%dog%'</code></pre>
+<p>If we do not want to keep the state, we should create an new instance.  </p>
+<pre><code>$user = DI()-&gt;notorm-&gt;user;
+$user-&gt;where('age &gt; ?', 18);
+
+$user = DI()-&gt;notorm-&gt;user;
+$user-&gt;where('name LIKE ?', '%dog%');  // name LIKE '%dog%'</code></pre>
+<p>Inside the model, <code>$this-&gt;getORM();</code> will return an new instance each time.  </p>
+<h2>7.3 Databse CURD</h2>
+<p>By far, we move forward a futher more step. We have an instance for table <code>tbl_user</code> now! Let's explore what we can do with it.  </p>
+<h3>(0) Base CURD With Model Using Primary Key</h3>
+<pre><code>$model = new Model_User();
+
+// Retrieve
+$row = $model-&gt;get(1);
+$row = $model-&gt;get(1, 'id, name');
+$row = $model-&gt;get(1, array('id', 'name'));
+
+// Upgrade
+$data = array('name' =&gt; 'test', 'update_time' =&gt; time());
+$model-&gt;update(1, $data);
+
+// Insert
+$data = array('name' =&gt; 'phalapi');
+$id = $model-&gt;insert($data);
+//$id = $model-&gt;insert($data, 5);
+
+// Delete
+$model-&gt;delete(1);</code></pre>
+<h3>(1) Database Creation</h3>
+<h4>Insert Data</h4>
+<pre><code>// INSERT INTO tbl_user (id, name, age, note) VALUES (4, 'PhalApi', 1, 'framework')
+$data = array('id' =&gt; 4, 'name' =&gt; 'PhalApi', 'age' =&gt; 1, 'note' =&gt; 'framework');
+$user-&gt;insert($data);
+$id = $user-&gt;insert_id(); // must be the same instance
+var_dump($id); // new ID
+
+// inside Model
+$model = new Model_User();
+var_dump($model-&gt;insert($data)); // new ID</code></pre>
+<h4>Insert Multi Data</h4>
+<pre><code>// INSERT INTO tbl_user (name, age, note) VALUES ('A君', 12, 'AA'), ('B君', 14, 'BB'), ('C君', 16, 'CC')
+$rows = array(
+    array('name' =&gt; 'A君', 'age' =&gt; 12, 'note' =&gt; 'AA'),
+    array('name' =&gt; 'B君', 'age' =&gt; 14, 'note' =&gt; 'BB'),
+    array('name' =&gt; 'C君', 'age' =&gt; 16, 'note' =&gt; 'CC'),
+);
+$rs = $user-&gt;insert_multi($rows);
+var_dump($rs);
+
+// output
+int(3) // the number of new entry</code></pre>
+<h4>Insert/Upgrade</h4>
+<pre><code>// INSERT INTO tbl_user (id, name, age, note) VALUES (8, 'PhalApi', 1, 'framework') ON DUPLICATE KEY UPDATE age = 2
+$unique = array('id' =&gt; 8);
+$insert = array('id' =&gt; 8, 'name' =&gt; 'PhalApi', 'age' =&gt; 1, 'note' =&gt; 'framework');
+$update = array('age' =&gt; 2);
+$rs = $user-&gt;insert_update($unique, $insert, $update);
+var_dump($rs); // affect rows</code></pre>
+<h3>(2) Database Upgrade</h3>
+<h4>Upgrade</h4>
+<pre><code>// UPDATE tbl_user SET age = 2 WHERE (name = 'PhalApi');
+$data = array('age' =&gt; 2);
+$rs = $user-&gt;where('name', 'PhalApi')-&gt;update($data);
+var_dump($rs);
+
+// output
+int(1) // affect rows if success
+int(0) // nothing affect if nothing change
+boolean(false) // exception</code></pre>
+<h4>Increment</h4>
+<pre><code>// UPDATE tbl_user SET age = age + 1 WHERE (name = 'PhalApi')
+$rs = $user-&gt;where('name', 'PhalApi')-&gt;update(array('age' =&gt; new NotORM_Literal("age + 1")));
+var_dump($rs); // affect rows</code></pre>
+<h3>(3) Database Retrieve</h3>
+<h4>SELECT</h4>
+<p>Single table field:  </p>
+<pre><code>// SELECT id FROM `tbl_user`
+$user-&gt;select('id') </code></pre>
+<p>Multi table fields:  </p>
+<pre><code>// SELECT id, name, age FROM `tbl_user`
+$user-&gt;select('id, name, age') </code></pre>
+<p>Field alias:  </p>
+<pre><code>// SELECT id, name, MAX(age) AS max_age FROM `tbl_user`
+$user-&gt;select('id, name, MAX(age) AS max_age') </code></pre>
+<p>All fileds:  </p>
+<pre><code>// SELECT * FROM `tbl_user`
+$user-&gt;select('*') </code></pre>
+<h4>WHERE</h4>
+<p>Single parameter:  </p>
+<pre><code>// WHERE id = 1
+$user-&gt;where('id', 1)
+$user-&gt;where('id = ?', 1)
+$user-&gt;where(array('id', 1))</code></pre>
+<p>Multi parameters:  </p>
+<pre><code>// WHERE id &gt; 1 AND age &gt; 18
+$user-&gt;where('id &gt; ?', 1)-&gt;where('age &gt; ?', 18)
+$user-&gt;and('id &gt; ?', 1)-&gt;and('age &gt; ?', 18)
+$user-&gt;where('id &gt; ? AND age &gt; ?', 1, 18)
+$user-&gt;where(array('id &gt; ?' =&gt; 1, 'age &gt; ?' =&gt; 10))
+
+// WHERE name = 'dogstar' AND age = 18
+$user-&gt;where(array('name' =&gt; 'dogstar', 'age' =&gt; 18))
+
+// WHERE name = 'dogstar' OR age = 18
+$user-&gt;or('name', 'dogstar')-&gt;or('age', 18)
+
+// WHERE ((name = ? OR id = ?)) AND (note = ?) -- 'dogstar', '1', 'xxx'
+# use AND
+$user-&gt;where('(name = ? OR id = ?)', 'dogstar', '1')-&gt;and('note = ?', 'xxx')
+# or use WHERE without array 
+$user-&gt;where('(name = ? OR id = ?) AND note = ?', 'dogstar', '1', 'xxx')
+# or use WHERE with array
+$user-&gt;where('(name = ? OR id = ?) AND note = ?', array('dogstar', '1', 'xxx'))
+# or use WHERE with array
+$user-&gt;where('(name = :name OR id = :id) AND note = :note', array(':name' =&gt; 'dogstar', ':id' =&gt; '1', ':note' =&gt; 'xxx'))</code></pre>
+<p>IN query:  </p>
+<pre><code>// WHERE id IN (1, 2, 3)
+$user-&gt;where('id', array(1, 2, 3))
+
+// WHERE id NOT IN (1, 2, 3)
+$user-&gt;where('NOT id', array(1, 2, 3))
+
+// WHERE (id, age) IN ((1, 18), (2, 20))
+$user-&gt;where('(id, age)', array(array(1, 18), array(2, 20)))</code></pre>
+<p>Like query:  </p>
+<pre><code>// WHERE name LIKE '%dog%'
+$user-&gt;where('name LIKE ?', '%dog%')</code></pre>
+<p>NULL query:  </p>
+<pre><code>// WHERE (name IS NULL)
+$user-&gt;where('name', null)</code></pre>
+<p>NOT NULL query:  </p>
+<pre><code>// WHERE (name IS NOT ?) LIMIT 1; -- NULL
+$user-&gt;where('name IS NOT ?', null)</code></pre>
+<h4>ORDER BY</h4>
+<p>Sort by single field:  </p>
+<pre><code>// ORDER BY age
+$user-&gt;order('age')
+
+// ORDER BY age DESC
+$user-&gt;order('age DESC')</code></pre>
+<p>Sort by multi fileds:  </p>
+<pre><code>// ORDER BY id, age DESC
+$user-&gt;order('id')-&gt;order('age DESC')
+$user-&gt;order('id, age DESC')</code></pre>
+<h4>LIMIT</h4>
+<p>Limit amount:  </p>
+<pre><code>// LIMIT 10
+$user-&gt;limit(10)</code></pre>
+<p>Limit amount and offset:  </p>
+<pre><code>// LIMIT 2,10
+$user-&gt;limit(2, 10)</code></pre>
+<blockquote>
+<p>NOTE: offset first, then amount.  </p>
+</blockquote>
+<h4>GROUP BY, HAVING</h4>
+<p>No HAVING:  </p>
+<pre><code>// GROUP BY note
+$user-&gt;group('note')</code></pre>
+<p>With HAVING:  </p>
+<pre><code>// GROUP BY note HAVING age &gt; 10
+$user-&gt;group('note', 'age &gt; 10')</code></pre>
+<h3>(4) Database Deletion</h3>
+<h4>Delete Some Records</h4>
+<pre><code>// DELETE FROM tbl_user WHERE (id = 404);
+$user-&gt;where('id', 404)-&gt;delete();</code></pre>
+<h4>Delete All Records</h4>
+<pre><code>// Exception: sorry, you can not delete the whole table
+$user-&gt;delete();</code></pre>
+<blockquote>
+<p>NOTE: It's not allowed to delete all the records in table to proected our data.  </p>
+</blockquote>
+<h3>(5) Database Transaction</h3>
+<p>Transaction in NotORM way, but NOT recommend:</p>
+<pre><code>// Step 1. get an instance
+$user = DI()-&gt;notorm-&gt;user;
+
+// Step 2. start transaction
+DI()-&gt;notorm-&gt;transaction = 'BEGIN';
+
+// Step 3. do something
+$user-&gt;insert(array('name' =&gt; 'test1',));
+$user-&gt;insert(array('name' =&gt; 'test2',));
+
+// Step 4. commit/rollback
+DI()-&gt;notorm-&gt;transaction = 'COMMIT';
+//DI()-&gt;notorm-&gt;transaction = 'ROLLBACK';</code></pre>
+<p>Transaction in PhalApi way:  </p>
+<pre><code>    public function testTransactionCommit()
+    {
+        // Step 1. start transaction
+        DI()-&gt;notorm-&gt;beginTransaction('db_demo');
+
+        // Step 2. do something
+        DI()-&gt;notorm-&gt;user&gt;insert(array('name' =&gt; 'test1'));
+        DI()-&gt;notorm-&gt;user&gt;insert(array('name' =&gt; 'test2'));
+
+        // Step 3. commit/rollback
+        DI()-&gt;notorm-&gt;commit('db_demo');
+        //DI()-&gt;notorm-&gt;rollback('db_demo');
+    }</code></pre>
+<h2>7.4 Multi Tables/Database</h2>
+<p>We can use several different databases in the project. We even can use different databases for different tables. All what we need to do is just configure out database config, and PhalApi will handle it with magic.  </p>
+<p>For example, there are tow database servers: <code>db_A</code>, <code>db_B</code>, i.e:  </p>
+<pre><code>&lt;?php
+return array(
+    /**
+     * Database Servers
+     */
+    'servers' =&gt; array(
+        'db_A' =&gt; array(                              // db_A
+            'host'      =&gt; '192.168.0.1',             // database host
+            // ... ...
+        ),
+        'db_B' =&gt; array(                              // db_B
+            'host'      =&gt; '192.168.0.2',             // database host
+            // ... ...
+        ),
+    ),
+
+    //... ...</code></pre>
+<p>And tables <code>a_table_user</code> and <code>a_table_friends</code> are stored intto <code>db_A</code>, while tables <code>b_table_article</code> and <code>b_table_comments</code> are stored intto <code>db_B</code>, i.e:  </p>
+<pre><code>&lt;?php
+return array(
+
+    //... ...
+
+    /**
+     * Customing Table Routes
+     */
+    'tables' =&gt; array(
+        // Common Defatult Routes
+        '__default__' =&gt; array(
+            'prefix' =&gt; 'a_',
+            'key' =&gt; 'id',
+            'map' =&gt; array(
+                array('db' =&gt; 'db_A'),  // use db_A default
+            ),
+        ),
+
+        'table_article' =&gt; array(                                     // b_table_article
+            'prefix' =&gt; 'b_',                                         
+            'key' =&gt; 'id',                                            
+            'map' =&gt; array(                                           
+                array('db' =&gt; 'db_B'),                                // b_table_article use db_B
+            ),
+        ),
+
+        'table_comments' =&gt; array(                                    // b_table_article
+            'prefix' =&gt; 'b_',                                         
+            'key' =&gt; 'id',                                            
+            'map' =&gt; array(                                           
+                array('db' =&gt; 'db_B'),                                // b_table_comments use db_B
+            ),
+        ),
+    ),</code></pre>
+<h2>7.6 Build SQL</h2>
+<p>Table structure without primary key should locate at folder <code>./Data</code>.  </p>
+<p>Assume we have save the follow SQL into <code>./Data/demo.sql</code>:  </p>
+<pre><code>      `name` VARCHAR(45) NULL,</code></pre>
+<p>If we configure multi tables for user in config file:  </p>
+<pre><code>    'tables' =&gt; array(
+        '__default__' =&gt; array(
+            'prefix' =&gt; 'tbl_',
+            'key' =&gt; 'id',
+            'map' =&gt; array(
+                array('db' =&gt; 'db_demo'),
+            ),
+        ),
+        'demo' =&gt; array(
+            'prefix' =&gt; 'tbl_',
+            'key' =&gt; 'id',
+            'map' =&gt; array(
+                array('db' =&gt; 'db_demo'),
+                array('start' =&gt; 0, 'end' =&gt; 2, 'db' =&gt; 'db_demo'),
+            ),
+        ),
+    ),</code></pre>
+<p>Then we can run:  </p>
+<pre><code>$ php ./PhalApi/phalapi-buildsqls ./Config/dbs.php user_session</code></pre>
+<p>It will print:  </p>
+<pre><code>/**
+ * DB: localhost  db_demo
+ */
+
+CREATE TABLE `demo` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `name` varchar(11) DEFAULT NULL,
+    `ext_data` text COMMENT 'json data here',
+     PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/**
+ * DB: localhost  db_demo
+ */
+
+CREATE TABLE `tpl_demo_0` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `name` varchar(11) DEFAULT NULL,
+    `ext_data` text COMMENT 'json data here',
+     PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tpl_demo_1` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `name` varchar(11) DEFAULT NULL,
+    `ext_data` text COMMENT 'json data here',
+     PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tpl_demo_2` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `name` varchar(11) DEFAULT NULL,
+    `ext_data` text COMMENT 'json data here',
+     PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre>
+<h2>7.7 Extends Your DB With Other Database</h2>
+<p>We can also connect to Oracle, postgreSQL, MS SQL, SQLite, etc.  </p>
+<p>Firstly, we need to override method <code>PhalApi_DB_NotORM::createPDOBy()</code> in our subclass.  </p>
+<pre><code>&lt;?php
+class Common_MyDB extends PhalApi_DB_NotORM {
+
+    protected function createPDOBy($dbCfg) {
+        /* Connect to an ODBC database using driver invocation */
+    $dsn = 'uri:file:///usr/local/dbconnect';
+    return new PDO($dsn, $dbCfg['user'], $dbCfg['password']);
+    }
+}</code></pre>
+<p>Secondly, re-register <code>DI()-&gt;notorm</code> in file <code>./Public/init.php</code>.  </p>
+<pre><code>DI()-&gt;notorm = function() {
+    $debug = !empty($_GET['__sql__']) ? true : false;
+    return new Common_MyDB(DI()-&gt;config-&gt;get('dbs'), $debug);
+};</code></pre>
+            </div>
+        </div>
+    </div>
+    
+ <!-- 广告位 -->
+<!--
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7qnay5.com1.z0.glb.clouddn.com/走向开源的第一年%20-%20PhalApi%202015年度开源总结%20-%20官方出品%20-%2020151214.pdf" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/PhalApi20151213-2.jpg"></a>
+		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
+	</p>
+</div>
+-->
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" height="50"></h3>
+            <p>
+            <font size="3px;">PhalApi is a light-weight PHP framework for API.<br/>
+                We try to keep PhalApi as stuip simple as possible!
+            </font>
+			</p>
+			<p align="left">
+				<font size="2px">&copy;2015-2016 PhalApi All Rights Reserved. 粤ICP备15028808号</font>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+
+		<div class="grid__cell unit-1-2--lap">
+			<h3>Thanks!</h3>
+
+			<div class="nav">
+				<ul class="footer__nav">
+					<li class="menu-item"><a href="http://www.oschina.net/" class="menu-item__link" target="_blank">Open Source China</a></li>
+					<li class="menu-item"><a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a></li>
+					<li class="menu-item"><a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a></li>
+					<li class="menu-item"><a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a></li>
+				</ul>
+			</div>
+
+            <div id="perspectives">
+                <div class="email-signup">
+                    <strong><a href="https://auth.alipay.com/login/index.htm" target="_blank">Alipay&nbsp;</a>Donate: </strong>chanzonghuang@gmail.com
+                </div>
+            </div>
+
+			<p>
+				<!-- JiaThis Button BEGIN -->
+				<div id="ckepop">
+				<span class="jiathis_txt">Share: </span>
+				<a class="jiathis_button_tsina">Weibo</a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">More</a>
+				<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+				
+			</p>
+		</div>
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</html>
