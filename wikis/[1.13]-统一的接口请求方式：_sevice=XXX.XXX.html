@@ -81,13 +81,13 @@ http://dev.phalapi.com   +   /demo/  +  ?service=User.GetBaseInfo</code></pre>
 }</code></pre>
 <h3>其他传递接口服务名称的方式</h3>
 <p>虽然在这里，我们统一使用<code>?service=XXX.XXX</code>的格式来传递接口服务名称，但如果项目有需要，也可以采用其他方式来传递，如使用熟悉的斜杠分割：<code>?service=XXX/XXX</code>，或者使用省略方法名的方式而在服务端自动补全默认方法，又或者使用其他参数名称，如使用<code>?s=XXX.XXX</code>。  </p>
-<p>如果需要采用其他传递接口服务名称的方式，则可以重载<code>PhalApi_Request::getService()</code>方法。以下是改用斜杠分割、并换用<code>s</code>参数名字的实现示例：  </p>
+<p>如果需要采用其他传递接口服务名称的方式，则可以重载<code>PhalApi_Request::getService()</code>方法。以下是改用斜杠分割、并换用<code>r</code>参数名字的实现示例：  </p>
 <pre><code>&lt;?php
 class Common_Request extends PhalApi_Request {
 
     public function getService() {
         // 优先返回自定义格式的接口服务名称
-        $servcie = $this-&gt;get('s');
+        $servcie = $this-&gt;get('r');
         if (!empty($servcie)) {
             return str_replace('/', '.', $servcie);
         } 
@@ -108,11 +108,11 @@ class Common_Request extends PhalApi_Request {
 <tbody>
 <tr>
 <td>?service=Default.Index</td>
-<td>?s=Default/Index</td>
+<td>?r=Default/Index</td>
 </tr>
 <tr>
 <td>?servcie=User.GetBaseInfo</td>
-<td>?s=User/GetBaseInfo</td>
+<td>?r=User/GetBaseInfo</td>
 </tr>
 </tbody>
 </table>
