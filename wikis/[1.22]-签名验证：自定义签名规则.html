@@ -201,7 +201,69 @@ class Api_Default extends PhalApi_Api
     {
     }
 }</code></pre>
-<h2>1.22.4 更好地建议</h2>
+<h2>1.22.4 接口服务白名单配置</h2>
+<p>除了可以像上面这样编码实现，排除个别接口服务的接口验证，还可以使用接口服务白名单配置，通过框架自身实现对指定配置的接口服务排除。即调用的接口服务，如果配置了白名单，则不调用过滤器。  </p>
+<p>接口服务白名单配置是：<code>app.service_whitelist</code>，即配置文件<code>./Config/app.php</code>里面的<code>service_whitelist</code>配置，其默认值是：  </p>
+<pre><code>    'service_whitelist' =&gt; array(
+        'Default.Index',
+    ),</code></pre>
+<p>如源代码里的注释所示，配置的格式有以下四种。  </p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>配置示例</th>
+<th>分类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第1种</td>
+<td><code>*.*</code></td>
+<td>通配，全部接口服务（慎用！）</td>
+<td>如果配置了此规则，即全部的接口服务都不触发过滤器。</td>
+</tr>
+<tr>
+<td>第2种</td>
+<td><code>Default.*</code></td>
+<td>某个类的全部方法</td>
+<td>即Api_Default接口类的全部方法</td>
+</tr>
+<tr>
+<td>第3种</td>
+<td><code>*.Index</code></td>
+<td>全部接口类的某个方法</td>
+<td>即全部接口类的Index方法</td>
+</tr>
+<tr>
+<td>第4种</td>
+<td><code>Default.Index</code></td>
+<td>指定某个接口服务</td>
+<td>即Api_Default::Index()</td>
+</tr>
+</tbody>
+</table>
+<p>如果有多个生效的规则，按短路判断原则，即有任何一个白名单规则匹配后就跳过验证，不触发过滤器。  </p>
+<p>以下是更多的示例：  </p>
+<pre><code>    'service_whitelist' =&gt; array(
+        '*.Index',           // 全部的Index方法
+        'Test.*',            // Api_Test的全部方法
+        'User.GetBaseInfo',  // Api_User::GetBaseInfo()方法
+    ),</code></pre>
+<p>配置好上面的白名单后，以下这些接口服务全部不会触发过滤器：  </p>
+<pre><code>?service=Default.Index
+?service=User.Index
+
+?service=Test.DoSth
+?service=Test.Hello
+?service=Test.GOGOGO
+
+?service=User.GetBaseInfo</code></pre>
+<blockquote>
+<p>温馨揭示：以上白名单配置，需要PhalApi 1.3.7及以上版本，方可支持。</p>
+</blockquote>
+<h2>1.22.5 更好地建议</h2>
 <p>通常关于接口签名这块，我们还需要：  </p>
 <ul>
 <li>

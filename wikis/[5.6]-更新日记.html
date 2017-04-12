@@ -70,6 +70,11 @@
 <li>dev 开发分支，当前用于协同开发的分支，以存放共享未完成的代码</li>
 </ul>
 <h2>更新日记</h2>
+<h3>2017-04-12</h3>
+<pre><code>1、优化重复的代码：DI()-&gt;request-&gt;get('service', 'Default.Index'); 并提取可重用的接口以获取接口服务名称、类名和方法名
+2、支持自定义接口服务请求的方式，即更改：?service=XXX/XXX的传递方式
+3、添加接口服务白名单支持，需要同步添加app.service_whitelist配置 。以上感谢 @秋寒 提供建议
+4、优化有语法上警告的代码 感谢 @Steven 反馈</code></pre>
 <h3>2017-04-06</h3>
 <pre><code>1、支持多个Memcache/Memcached实例配置</code></pre>
 <h3>2017-03-16</h3>

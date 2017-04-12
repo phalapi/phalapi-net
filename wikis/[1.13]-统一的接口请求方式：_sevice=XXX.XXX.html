@@ -79,6 +79,51 @@ http://dev.phalapi.com   +   /demo/  +  ?service=User.GetBaseInfo</code></pre>
     public function getBaseInfo() {
     }
 }</code></pre>
+<h3>其他传递接口服务名称的方式</h3>
+<p>虽然在这里，我们统一使用<code>?service=XXX.XXX</code>的格式来传递接口服务名称，但如果项目有需要，也可以采用其他方式来传递，如使用熟悉的斜杠分割：<code>?service=XXX/XXX</code>，或者使用省略方法名的方式而在服务端自动补全默认方法，又或者使用其他参数名称，如使用<code>?s=XXX.XXX</code>。  </p>
+<p>如果需要采用其他传递接口服务名称的方式，则可以重载<code>PhalApi_Request::getService()</code>方法。以下是改用斜杠分割、并换用<code>s</code>参数名字的实现示例：  </p>
+<pre><code>&lt;?php
+class Common_Request extends PhalApi_Request {
+
+    public function getService() {
+        // 优先返回自定义格式的接口服务名称
+        $servcie = $this-&gt;get('s');
+        if (!empty($servcie)) {
+            return str_replace('/', '.', $servcie);
+        } 
+
+        return parent::getService();
+    }
+}</code></pre>
+<p>实现好自定义的请求类，需要在初始化文件<code>./Public/init.php</code>进行注册：  </p>
+<pre><code>DI()-&gt;request = new Common_Request();</code></pre>
+<p>这样，请求接口服务的方式便可以变成这样了。  </p>
+<table>
+<thead>
+<tr>
+<th>原来的方式</th>
+<th>现在的方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>?service=Default.Index</td>
+<td>?s=Default/Index</td>
+</tr>
+<tr>
+<td>?servcie=User.GetBaseInfo</td>
+<td>?s=User/GetBaseInfo</td>
+</tr>
+</tbody>
+</table>
+<p>这里有几个注意事项：  </p>
+<ul>
+<li>1、需要转换为原始的接口服务格式，即：XXX.XXX  </li>
+<li>2、为保持兼容性，子类需兼容父类的实现。即在取不到自定义的接口服务名称参数时，应该返回原来的。  </li>
+</ul>
+<blockquote>
+<p>温馨提示：以上白名单配置，需要PhalApi 1.3.7及以上版本，方可支持。  </p>
+</blockquote>
 <h2>1.13.2 统一参数用GET</h2>
 <p>在一个项目中，会有很多公共的接口参数，如客户端、版本号、密钥等。这些同样可以纳入GET参数里面，或者也可以放到POST里面。  </p>
 <blockquote>
