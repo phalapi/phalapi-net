@@ -294,6 +294,55 @@ return array(
 全部的参数规则，都可以配置desc下标，对应在线接口文档的”说明“部分。<br />
 如： array('name' =&gt; 'username', 'desc' =&gt; '用户名')</p>
 </blockquote>
+<h3>使用source配置为单个参数指定数据源</h3>
+<p>此外，还有一个特殊的配置，可以用于指定当前单个参数的数据来源。即：<code>source</code>配置。如指定用户在登录时，用户名使用$_GET、密码使用$_POST。  </p>
+<pre><code>public function getRules() {
+    return array(
+        'login' =&gt; array(
+            'username' =&gt; array('name' =&gt; 'username', 'source' =&gt; 'get'),
+            'password' =&gt; array('name' =&gt; 'password', 'source' =&gt; 'post'),
+        ),  
+    );
+}</code></pre>
+<p>这样，PhalApi框架就会从$_GET中提取<code>username</code>参数，从$_POST中提取<code>password</code>参数。 </p>
+<p>目前支持的source与对应的数据源映射关系如下：  </p>
+<table>
+<thead>
+<tr>
+<th>source</th>
+<th>对应的数据源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>post</td>
+<td>$_POST</td>
+</tr>
+<tr>
+<td>get</td>
+<td>$_GET</td>
+</tr>
+<tr>
+<td>cookie</td>
+<td>$_COOKIE</td>
+</tr>
+<tr>
+<td>server</td>
+<td>$_SERVER</td>
+</tr>
+<tr>
+<td>requset</td>
+<td>$_REQUEST</td>
+</tr>
+<tr>
+<td>header</td>
+<td>$_SERVER['HTTP_X']</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>温馨提示：source配置需要PhalApi 1.4.0及以上版本支持。  </p>
+</blockquote>
 <p>下面是对各类型的示例说明。</p>
 <h3>(1)字符串 string</h3>
 <p>当一个参数规则 未指定类型时，默认为string。一个完整的写法可以为：</p>
