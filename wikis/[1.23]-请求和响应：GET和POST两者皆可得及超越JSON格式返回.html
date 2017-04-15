@@ -158,14 +158,25 @@ DI()-&gt;request = 'Common_Request'; </code></pre>
 <p>若需要扩展项目自定义的映射关系，则可以重载<code>PhalApi_Request::getDataBySource($source)</code>方法，如：  </p>
 <pre><code>class My_Request extends PhalApi_Request {
     protected function &amp;getDataBySource($source) {
-        if (strtoupper($source) == 'POST') {
-            return $this-&gt;post;
+        if (strtoupper($source) == 'stream') {
+            // TODO 处理二进制流
         }
 
         return parent::getDataBySource($source);
     }
-}
-</code></pre>
+}</code></pre>
+<p>然后，便可在项目中这样配置使用二进制流的数据源。  </p>
+<pre><code>// 从二进制流中获取密码
+'password' =&gt; array('name' =&gt; 'password', 'source' =&gt; 'stream'),</code></pre>
+<p>若配置的source为无效或非法时，则会抛出异常。<br />
+如故意配置一个错误的数据源source为NOT_FOUND。 </p>
+<pre><code>'password' =&gt; array('name' =&gt; 'password', 'source' =&gt; 'NOT_FOUND'),</code></pre>
+<p>在请求接口时，会遇到这样的异常提示返回。  </p>
+<pre><code>{
+    "ret": 500,
+    "data": [],
+    "msg": "服务器运行错误: 参数规则中未知的数据源：NOT_FOUND"
+}</code></pre>
 <blockquote>
 <p>温馨提示：以上功能需要PhalApi 1.4.0 及以上版本支持。  </p>
 </blockquote>
