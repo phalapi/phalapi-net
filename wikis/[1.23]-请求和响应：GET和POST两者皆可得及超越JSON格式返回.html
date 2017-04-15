@@ -67,11 +67,28 @@
 <p>或者，在实际项目开发中，我们还需要根据自身的需求，跟我们自己的客户端作一些约定。如通常地，我们会要求客户端 <strong>service参数必须用GET方式</strong> ，以便服务器返回500时定位接口服务位置。对此，简单的我们把$_POST['service']去掉即可，如在入口文件前面添加：</p>
 <pre><code class="language-javascript">unset($_POST['service']);   //只接收GET方式的service参数</code></pre>
 <h3>(1) 在index.php入口处指定数据源</h3>
-<p>很多时间，不同的项目对数据接收有不同的需求。如简单地，如果客户端是通过JSON后再传递的话，我们可以这样在入口处进行代码调整：</p>
+<p>很多时间，不同的项目对数据接收有不同的需求。如简单地，强制统一使用$_POST参数，我们可以这样在入口处进行代码调整：</p>
 <pre><code class="language-javascript">//vim ./index.php
 
-$HTTP_RAW_POST_DATA = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "{}";
-DI()-&gt;request = new PhalApi_Request(array_merge($_GET,json_decode($HTTP_RAW_POST_DATA, true))); </code></pre>
+DI()-&gt;request = new PhalApi_Request(array_merge($_POST)); </code></pre>
+<p>对于复杂的情况，如需要使用post_raw数据，则可以继承<code>PhalApi_Request</code>实现相应的数据源解析。如：  </p>
+<pre><code>class My_Request extend PhalApi_Request{
+    public function __construct($data = NULL) {
+        parent::__construct($data);
+
+        // json处理
+        $this-&gt;post = json_decode(file_get_contents('php://input'), TRUE);    
+
+        // 普通xml处理
+        $this-&gt;post = simplexml_load_string (
+            file_get_contents('php://input'),
+            'SimpleXMLElement',
+            LIBXML_NOCDATA
+        );
+        $this-&gt;post = json_decode(json_encode($this-&gt;post), TRUE);
+    }  
+}</code></pre>
+<p>然后在子类实现对各类参数的数据源的准备。可以说，<code>PhalApi_Request::__construct()</code>构造函数用于初始化各类辅助侯选的数据源，而<code>PhalApi_Request::getData()</code>则用于生成主要默认的数据源。  </p>
 <h3>(2) 单元测试时指定数据源</h3>
 <p>在进行单元测试时，我们需要模拟接口的请求动作，也需要提供接口参数。这时的参数的指定更为灵活。可通过以下代码来实现，即：  </p>
 <pre><code class="language-javascript">//数据源
@@ -121,23 +138,6 @@ DI()-&gt;request = 'Common_Request'; </code></pre>
     );
 }</code></pre>
 <p>这样，PhalApi框架就会从$_GET中提取<code>username</code>参数，从$_POST中提取<code>password</code>参数。  </p>
-<p>除此之外，若需要使用post_raw数据，则可以继承<code>PhalApi_Request</code>实现相应的数据源解析。如：  </p>
-<pre><code>class My_Request extend PhalApi_Request{
-    public function __construct($data = NULL) {
-        parent::__construct($data);
-
-        // json处理
-        $this-&gt;post = json_decode(file_get_contents('php://input'), TRUE);    
-
-        // 普通xml处理
-        $this-&gt;post = simplexml_load_string (
-            file_get_contents('php://input'),
-            'SimpleXMLElement',
-            LIBXML_NOCDATA
-        );
-        $this-&gt;post = json_decode(json_encode($this-&gt;post), TRUE);
-    }  
-}</code></pre>
 <p>目前支持的source与对应的数据源映射关系如下：  </p>
 <table>
 <thead>
