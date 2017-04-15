@@ -61,33 +61,166 @@
             <div class="grid__cell">
                 <h4><a href="/wikis/%5B2.12%5D-%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%EF%BC%9A%E5%8F%AF%E9%85%8D%E7%BD%AE%E7%9A%84%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.14%5D-%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%EF%BC%9A%E6%84%8F%E5%9B%BE%E5%AF%BC%E5%90%91%E7%BC%96%E7%A8%8B%E4%B8%8B%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91.html">下一章</a></h4>
 <hr />
-<p>后台接口绝大数情况下，都需要与数据库进行交互，以获取业务数据或者接收保存客户端上报的数据。为方便后台开发同学进行调试，以及实时查看全部执行的SQL语句，这里简单地对全部执行的SQL语句进行调试模式下输出。</p>
-<h2>2.13.1 开启SQL调试</h2>
-<p>开启调试模式很简单，但这里和通常的框架不一样，我们不是全部统一地开启调试模式，因为在接口正常调用情况下返回非法的JSON会导致接口结果解析失败。故我们通过添加调试参数来控制是否开启SQL调试。如下：</p>
-<pre><code class="language-javascript">//$vim ./Public/init.php
-
-//数据操作 - 基于NotORM
-DI()-&gt;notorm = function() {
-    $debug = isset($_GET['debug']) ? true : false;
-    return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('dbs'), $debug);
-};</code></pre>
+<p>本章主要讲解调试模式的相关操作，如何快速排查和定位开发过程中所遇到的问题和线上发生的故障。  </p>
 <blockquote>
-<p>特别注意：
-通常，我们的调试参数不应都简单地使用&amp;debug=1，而是各自定义，如  <strong>复杂一点：&amp;__phalapi_debug__=1</strong> ，或者再添加一个简单的验签，额外带个参数校验，如：&amp;<strong>phalapi</strong>sign__=202cb962ac59075b964b07152d234b70。减少暴露SQL的风险。</p>
+<p>温馨提示：以下内容基于PhalApi 1.4.0 版本及以上。  </p>
 </blockquote>
-<h2>2.13.2 调试示例</h2>
-<p>回到前面获取用户基本信息接口 /demo/?service=User.GetBaseInfo 的示例。</p>
-<h3>(1)正常情况下</h3>
-<p>请求：  </p>
-<pre><code class="language-javascript">http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=1</code></pre>
-<p>返回： </p>
-<pre><code class="language-javascript">{"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","note":"oschina"}},"msg":""}</code></pre>
-<h3>(2)带&amp;debug=1调试下</h3>
-<p>请求：</p>
-<pre><code>http://dev.phalapi.com/demo/?service=User.GetBaseInfo&amp;user_id=1&amp;debug=1</code></pre>
-<p>返回：</p>
-<pre><code class="language-javascript">[1 - 0.00057s]SELECT * FROM tbl_user WHERE (id = ?); -- 1
-{"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","note":"oschina"}},"msg":""}</code></pre>
+<h2>2.13.1 开启调试调试</h2>
+<p>开启调试模式很简单，主要有两种方式：  </p>
+<ul>
+<li><strong>单次请求开启调试</strong>：默认添加请求参数<code>&amp;__debug__=1</code>  </li>
+<li><strong>全部请求开启调试</strong>：把配置文件<code>./Config/sys.php</code>文件中的配置改成<code>'debug' =&gt; true,</code>  </li>
+</ul>
+<p>请特别注意，在实际项目中，调试参数不应使用默认的调试参数，而应各自定义，使用更复杂的参数，从而减少暴露敏感或者调试信息的风险。。例如：   </p>
+<ul>
+<li>不推荐的做法：<code>&amp;__debug__=1</code>  </li>
+<li>一般的做法：<code>&amp;__phalapi_debug__=1</code>  </li>
+<li>更好的做法：<code>&amp;__phalapi_debug__=202cb962ac59075b964b07152d234b70</code>  </li>
+</ul>
+<h2>2.13.2 调试信息有哪些？</h2>
+<blockquote>
+<p>温馨提示：调试信息仅有当在开启调试模式后，才会返回。  </p>
+</blockquote>
+<p>正常响应的情况下，当开启调试模式后，会返回多一个<code>debug</code>字段，里面有相关的调试信息。所下所示：  </p>
+<pre><code>{
+    "ret": 200,
+    "data": {
+    },
+    "msg": "",
+    "debug": {
+        "stack": [  // 自定义埋点信息
+        ],
+        "sqls": [  // 全部执行的SQL语句
+        ]
+    }
+}</code></pre>
+<p>在发生异常时，最初的框架的处理方式是直接报500错误。现在调整为，当开启调试模式后，会将发生的异常转换为对应的结果按结果格式返回，即其结构会变成以下这样：  </p>
+<pre><code>{
+    "ret": 0,  // 异常时的错误码
+    "data": [],
+    "msg": "", // 异常时的错误信息
+    "debug": {
+        "exception": [  // 异常时的详细堆栈信息
+        ],
+        "stack": [  // 自定义埋点信息
+        ],
+        "sqls": [  // 全部执行的SQL语句
+        ]
+    }
+}</code></pre>
+<h3>(1) debug.sqls全部执行的SQL语句</h3>
+<p>所执行的全部SQL语句，会由框架自动搜集并统计。最后显示的信息格式是：  </p>
+<pre><code>[序号 - 当前SQL的执行时间ms]所执行的SQL语句及参数列表</code></pre>
+<p>示例：  </p>
+<pre><code>[1 - 0.32ms]SELECT * FROM tbl_user WHERE (id = ?); -- 1</code></pre>
+<p>表示是第一条执行的SQL语句，消耗了0.32毫秒，SQL语句是<code>SELECT * FROM tbl_user WHERE (id = ?);</code>，其中参数是1。  </p>
+<p>又如，假设我们编写一个这样获取用户总人数的示例接口。  </p>
+<pre><code>// $ vim ./Demo/Api/User.php
+class Api_User extends PhalApi_Api {
+    public function amount() {
+        return DI()-&gt;notorm-&gt;user-&gt;count('id');
+    }   
+}</code></pre>
+<p>然后通过<code>/?service=User.Amount&amp;__debug__=1</code>请求该接口，可以看到类似这样的返回结果。  </p>
+<pre><code>{
+    "ret": 200,
+    "data": "49", // 共49个用户
+    "msg": "",
+    "debug": {
+        "stack": [
+            "[#0 - 0ms]/home/apps/projects/PhalApi/Public/index.php(6)"
+        ],
+        "sqls": [
+            "[1 - 0.3ms]SELECT COUNT(id) FROM tbl_user;" // 本次所执行的SQL语句
+        ]
+    }
+}</code></pre>
+<blockquote>
+<p>温馨提示：这只是一个示例。实际项目中，不推荐直接在Api直接操作数据库，也不推荐返回非数组格式的data。  </p>
+</blockquote>
+<h3>(2) debug.stack自定义埋点信息</h3>
+<p>埋点信息的格式如下：  </p>
+<pre><code>[#序号 - 距离最初节点的执行时间ms - 节点标识]代码文件路径(文件行号)</code></pre>
+<p>示例：  </p>
+<pre><code>[#0 - 0ms]/home/apps/projects/PhalApi/Public/index.php(6)</code></pre>
+<p>表示，这是第一个埋点（由框架自行添加），执行时间为0毫秒，所在位置是文件<code>/home/apps/projects/PhalApi/Public/index.php</code>的第6行。即第一条的埋点发生在框架初始化时：  </p>
+<pre><code>// $ vim ./Public/init.php
+
+if (DI()-&gt;debug) {
+    // 启动追踪器
+    DI()-&gt;tracer-&gt;mark();
+}</code></pre>
+<p>与SQL语句的调试信息不同的是，自定义埋点则需要开发人员根据需要自行纪录，可以使用全球追踪器<code>DI()-&gt;tracer</code>进行纪录，其使用如下：  </p>
+<pre><code>// 添加纪录埋点
+DI()-&gt;tracer-&gt;mark();
+
+// 添加纪录埋点，并指定节点标识
+DI()-&gt;tracer-&gt;mark('DO_SOMETHING');</code></pre>
+<p>通过上面方法，可以对执行经过的路径作标记。你可以指定节点标识，也可以不指定。对一些复杂的接口，可以在业务代码中添加这样的埋点，追踪接口的响应时间，以便进一步优化性能。当然，更专业的性能分析工具推荐使用XHprof。  </p>
+<blockquote>
+<p>参考资料：<a href="http://git.oschina.net/dogstar/PhalApi-Library/tree/master/Xhprof">XHprof扩展类库</a>  </p>
+</blockquote>
+<p>继续上面的示例，在进行数据库操作前后，我们添加相应的操作埋点。  </p>
+<pre><code>    public function amount() {
+        DI()-&gt;tracer-&gt;mark('开始读取数据库');
+
+        $rs = DI()-&gt;notorm-&gt;user-&gt;count('id');
+
+        DI()-&gt;tracer-&gt;mark('读取完毕');
+
+        return $rs;
+    }  </code></pre>
+<p>再次请求，会看到类似以下的返回结果。  </p>
+<pre><code>{
+    "ret": 200,
+    "data": "49",
+    "msg": "",
+    "debug": {
+        "stack": [
+            "[#0 - 0ms]/home/apps/projects/PhalApi/Public/index.php(6)",
+            "[#1 - 5.5ms - 开始读取数据库]/home/apps/projects/PhalApi/Demo/Api/User.php(74)",
+            "[#2 - 6.4ms - 读取完毕]/home/apps/projects/PhalApi/Demo/Api/User.php(78)"
+        ],
+        "sqls": [
+            "[1 - 0.3ms]SELECT COUNT(id) FROM tbl_user;"
+        ]
+    }
+}</code></pre>
+<p>可以看出，在“开始读取数据库”前消耗了5.5毫秒，以及相关的代码位置。  </p>
+<h3>(3) debug.exception异常堆栈信息</h3>
+<p>当有未能捕捉的接口异常时，开启调试模式后，框架会把对应的异常转换成对应的返回结果，而不是像最初那样直接500，页面空白。这些是由框架自动处理的。  </p>
+<p>继续上面的示例，让我们故意制造一些麻烦，手动抛出一个异常。  </p>
+<pre><code>    public function amount() {
+        ... ... 
+
+        throw new Exception('这是一个演示异常调试的示例', 501);
+
+        return $rs;
+    }</code></pre>
+<p>再次请求后，除了上面的SQL语句和自定义埋点信息外，还会看到这样的异常堆栈信息。  </p>
+<pre><code>{
+    "ret": 501,
+    "data": [],
+    "msg": "这是一个演示异常调试的示例",
+    "debug": {
+        "exception": [
+            {
+                "function": "amount",
+                "class": "Api_User",
+                "type": "-&amp;gt;",
+                "args": []
+            },
+            ... ...
+        ],
+        "stack": [
+            ... ...
+        ],
+        "sqls": [
+            ... ...
+        ]
+    }
+}</code></pre>
+<p>然后便可根据返回的异常信息进行排查定位问题。  </p>
 <h2>2.13.3 一个错误的接口开发</h2>
 <p>有时，在进行接口开发时，会需要进行批量获取的功能，如列表。但很多开发的同学可能会因为时间赶或者没有意识去对SQL查询进行优化，或者甚至不知道自己的接口背后隐藏着多少问题。下面是一个错误的开发示例。  </p>
 <h3>(1)新增的批量获取接口</h3>
@@ -156,15 +289,20 @@ INSERT INTO `tbl_user` VALUES ('2', 'Tom', 'USA');
 INSERT INTO `tbl_user` VALUES ('3', 'King', 'game');</code></pre>
 <h3>(3)这样的问题？</h3>
 <p>这样的问题，在对外黑盒调用的客户端同学是发现不了的，对于测试人员来说也是无法感知的。但所犯的错误也是显然易见的，就是没有进行SQL的批量查询优化，造成了很多不必要的重复查询。<br />
-这里，根据后台接口开发人员提供的调试参数（假设为：&amp;debug=1），则我们可以快速发现存在的问题：</p>
-<pre><code>http://dev.phalapi.com/demo/?service=User.GetMultiBaseInfo&amp;user_ids=1,2,3&amp;debug=1</code></pre>
+这里，根据前面学习的调试方式，则我们可以快速发现存在的问题：</p>
+<pre><code>http://dev.phalapi.com/demo/?service=User.GetMultiBaseInfo&amp;user_ids=1,2,3&amp;__debug__=1</code></pre>
 <p>如下返回，我们看到了很多重复类似的查询语句。</p>
-<pre><code class="language-javascript">[1 - 0.0005s]SELECT * FROM tbl_user WHERE (id = ?); -- 1
-[2 - 0.00042s]SELECT * FROM tbl_user WHERE (id = ?); -- 2
-[3 - 0.00038s]SELECT * FROM tbl_user WHERE (id = ?); -- 3
-{"ret":200,"data":{"code":0,"msg":"","list":[{"id":"1","name":"dogstar","note":"oschina"},{"id":"2","name":"Tom","note":"USA"},{"id":"3","name":"King","note":"game"}]},"msg":""}</code></pre>
-<p>上面输出的调试信息，简单补充一个格式：</p>
-<pre><code class="language-javascript">[序号 - 所耗时间]SQl语句 -- [参数1, 参数2]</code></pre>
+<pre><code class="language-javascript">{
+    ... ...
+    "debug": {
+        .... ...
+        "sqls": [
+            "[1 - 0.34ms]SELECT * FROM tbl_user WHERE (id = ?); -- 1",
+            "[2 - 0.16ms]SELECT * FROM tbl_user WHERE (id = ?); -- 2",
+            "[3 - 0.16ms]SELECT * FROM tbl_user WHERE (id = ?); -- 3"
+        ]
+    }
+}</code></pre>
 <h3>(4)如何改进？</h3>
 <p>这是一个很基本的问题，当然在实际项目中不会普通存在，这里只是作为一个示例加以说明。但让人失望的是，实际项目确实存在为数不少的这样的情况。可能是新人的技术和意识问题，也有可能是老同学的态度问题。所以，优化这么一个接口的批量SQL查询不难，难的是如何才能让新、老同学都注重这块的SQL查询优化呢？而不是等到线上服务器异常崩溃后再来推托责任。<br />
 具体的代码改进，留给读者自己实践了。毕竟，看了，实践了，才会真正深刻地掌握。</p>
@@ -178,40 +316,6 @@ INSERT INTO `tbl_user` VALUES ('3', 'King', 'game');</code></pre>
 <li>使用关联查询，而不是粗暴地类似：where uid IN (... 这里是成千上W个用户ID ...)；</li>
 <li>针对单条SQL语句执行时间超过1秒的，重点优化；</li>
 </ul>
-<h2>2.13.5 最后最后</h2>
-<p>奉上我们坚持TDD开发下的单元测试代码：</p>
-<pre><code class="language-javascript">    public function testGetMultiBaseInfo()
-    {
-        $str = 'service=User.GetMultiBaseInfo&amp;user_ids=1,2,3';
-        parse_str($str, $params);
-
-        DI()-&gt;request = new PhalApi_Request($params);
-
-        $api = new Api_User();
-        //自己进行初始化
-        $api-&gt;init();
-        $rs = $api-&gt;getMultiBaseInfo();
-
-        $this-&gt;assertNotEmpty($rs);
-        $this-&gt;assertArrayHasKey('code', $rs);
-        $this-&gt;assertArrayHasKey('msg', $rs);
-        $this-&gt;assertArrayHasKey('list', $rs);
-
-        foreach ($rs['list'] as $item) {
-            $this-&gt;assertArrayHasKey('id', $item);
-            $this-&gt;assertArrayHasKey('name', $item);
-            $this-&gt;assertArrayHasKey('note', $item);
-        }
-    }</code></pre>
-<p>执行单元测试的效果：</p>
-<pre><code class="language-javascript">dogstar@ubuntu:Tests$ phpunit --filter testGetMultiBaseInfo ./Api/Api_User_Test.php 
-PHPUnit 4.3.4 by Sebastian Bergmann.
-
-.
-
-Time: 23 ms, Memory: 6.25Mb
-
-OK (1 test, 13 assertions)</code></pre>
 <p>搞定，收工，开饭！</p>
 <hr />
 <h4><a href="/wikis/%5B2.12%5D-%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%EF%BC%9A%E5%8F%AF%E9%85%8D%E7%BD%AE%E7%9A%84%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.14%5D-%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%EF%BC%9A%E6%84%8F%E5%9B%BE%E5%AF%BC%E5%90%91%E7%BC%96%E7%A8%8B%E4%B8%8B%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91.html">下一章</a></h4>
