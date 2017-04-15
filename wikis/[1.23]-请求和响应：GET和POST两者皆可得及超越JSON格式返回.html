@@ -66,13 +66,13 @@
 <p>对于请求，正如前面所看到的，我们可以使用$_GET，也可以使用$_POST，也可以两者都使用，还可以在测试时自己指定模拟的请求数据包。  </p>
 <p>或者，在实际项目开发中，我们还需要根据自身的需求，跟我们自己的客户端作一些约定。如通常地，我们会要求客户端 <strong>service参数必须用GET方式</strong> ，以便服务器返回500时定位接口服务位置。对此，简单的我们把$_POST['service']去掉即可，如在入口文件前面添加：</p>
 <pre><code class="language-javascript">unset($_POST['service']);   //只接收GET方式的service参数</code></pre>
-<h3>(1)在index.php入口处指定数据源</h3>
+<h3>(1) 在index.php入口处指定数据源</h3>
 <p>很多时间，不同的项目对数据接收有不同的需求。如简单地，如果客户端是通过JSON后再传递的话，我们可以这样在入口处进行代码调整：</p>
 <pre><code class="language-javascript">//vim ./index.php
 
 $HTTP_RAW_POST_DATA = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : "{}";
 DI()-&gt;request = new PhalApi_Request(array_merge($_GET,json_decode($HTTP_RAW_POST_DATA, true))); </code></pre>
-<h3>(2)单元测试时指定数据源</h3>
+<h3>(2) 单元测试时指定数据源</h3>
 <p>在进行单元测试时，我们需要模拟接口的请求动作，也需要提供接口参数。这时的参数的指定更为灵活。可通过以下代码来实现，即：  </p>
 <pre><code class="language-javascript">//数据源
 $data = array(...);
@@ -88,7 +88,7 @@ DI()-&gt;request = new PhalApi_Request($data);</code></pre>
         //Step 2. 执行请求  
         $rs = PhalApi_Helper_TestRunner::go($url, $params);
     }</code></pre>
-<h3>(3)接口数据的加密传送</h3>
+<h3>(3) 接口数据的加密传送</h3>
 <p>有时，出于安全性的考虑，项目需要对请求的接口参数进行对称加密传送。这时可以通过重载PhalApi_Request::genData()来轻松实现。<br />
 假设，我们现在需要把全部的参数base64编码序列化后通过$_POST['data']来传递，则相应的解析代码如下。  </p>
 <p>第一步，先定义自己的扩展请求类，在里面完成对称解析的动作：  </p>
@@ -109,9 +109,69 @@ class Common_Request extends PhalApi_Request {
 DI()-&gt;request = 'Common_Request'; </code></pre>
 <p>然后，就可以轻松实现了接口参数的对称加密传送。<br />
 至此，你也许已经发现：指定数据源和对称加密是可以结合来使用的。  </p>
+<h3>(4) 接口参数级别的数据源</h3>
+<p>除了可以指定全局的接口数据源外，还可以进行更细致的配置，即为某个接口参数指定使用$GET、$_POST、$_COOKIE、$_SERVER、$_REQUEST或头部等其他数据源。  </p>
+<p>其使用方式是在配置接口参数规则时，使用source配置来指定当前参数的数据源，如指定用户在登录时，用户名使用$_GET、密码使用$_POST。  </p>
+<pre><code>public function getRules() {
+    return array(
+        'login' =&gt; array(
+            'username' =&gt; array('name' =&gt; 'username', 'source' =&gt; 'get'),
+            'password' =&gt; array('name' =&gt; 'password', 'source' =&gt; 'post'),
+        ),  
+    );
+}</code></pre>
+<p>这样，PhalApi框架就会从$_GET中提取<code>username</code>参数，从$_POST中提取<code>password</code>参数。  </p>
+<p>除此之外，若需要使用post_raw数据，则可以继承<code>PhalApi_Request</code>实现相应的数据源解析。如：  </p>
+<pre><code>class My_Request extend PhalApi_Request{
+    public function __construct($data = NULL) {
+        parent::__construct($data);
+
+        // json处理
+        $this-&gt;post = json_decode(file_get_contents('php://input'), TRUE);    
+
+        // 普通xml处理
+        $this-&gt;post = simplexml_load_string (
+            file_get_contents('php://input'),
+            'SimpleXMLElement',
+            LIBXML_NOCDATA
+        );
+        $this-&gt;post = json_decode(json_encode($this-&gt;post), TRUE);
+    }  
+}</code></pre>
+<p>目前支持的source与对应的数据源映射关系如下：  </p>
+<p>|----|----|
+| post     | $_POST              |
+| get      | $_GET               |
+| cookie   | $_COOKIE            |
+| server   | $_SERVER            |
+| requset  | $_REQUEST           |
+| header   | $_SERVER['HTTP_X']  |</p>
+<p>因此，这样就可以轻松、更自由获取不同来源的参数。以下是一些常用的配置示例。  </p>
+<pre><code>// 获取HTTP请求方法，判断是POST还是GET
+'method' =&gt; array('name' =&gt; 'REQUEST_METHOD', 'source' =&gt; 'server'),
+
+// 获取COOKIE中的标识
+'is_new_user' =&gt; array('name' =&gt; 'is_new_user', 'source' =&gt; 'cookie'),
+
+// 获取HTTP头部中的编码，判断是否为utf-8
+'charset' =&gt; array('name' =&gt; 'Accept-Charset', 'source' =&gt; 'header'),</code></pre>
+<p>若需要扩展项目自定义的映射关系，则可以重载<code>PhalApi_Request::getDataBySource($source)</code>方法，如：  </p>
+<pre><code>class My_Request extends PhalApi_Request {
+    protected function &amp;getDataBySource($source) {
+        if (strtoupper($source) == 'POST') {
+            return $this-&gt;post;
+        }
+
+        return parent::getDataBySource($source);
+    }
+}
+</code></pre>
+<blockquote>
+<p>温馨提示：以上功能需要PhalApi 1.4.0 及以上版本支持。  </p>
+</blockquote>
 <h2>1.23.2 响应</h2>
 <p>当前默认使用JSON的格式返回，但项目需要其他返回格式也是可以的。只需要实现PhalApi_Response抽象中的formatResult($result)格式化返回结果，然后也是重新注册DI()-&gt;response服务即可。如：  </p>
-<h3>(1)JSONP的返回</h3>
+<h3>(1) JSONP的返回</h3>
 <p>在H5页面中，我们可能会需要用到JSONP的返回，所以这里默认提供了这种格式的支持。  </p>
 <p>在入口文件中，添加：</p>
 <pre><code class="language-javascript">//支持JsonP的返回
@@ -126,7 +186,7 @@ if (!empty($_GET['callback'])) {
         return in_array($callback, array('fun1', 'func2', 'func3')) ? $callback : '';
     }
 }</code></pre>
-<h3>(2)其他格式返回</h3>
+<h3>(2) 其他格式返回</h3>
 <p>如上面所述，当需要返回一种当前PhalApi没提供的格式时，可以：</p>
 <ul>
 <li>1、实现PhalApi_Response抽象中的formatResult($result)格式化返回结果</li>

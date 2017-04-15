@@ -221,6 +221,20 @@ DI()-&gt;tracer-&gt;mark('DO_SOMETHING');</code></pre>
     }
 }</code></pre>
 <p>然后便可根据返回的异常信息进行排查定位问题。  </p>
+<h3>(4) 添加自定义调试信息</h3>
+<p>当需要添加其他调试信息时，可以使用<code>DI()-&gt;response-&gt;setDebug()</code>进行添加。  </p>
+<p>如： </p>
+<pre><code>$x = 'this is x';
+$y = array('this is y');
+DI()-&gt;response-&gt;setDebug('x', $x);
+DI()-&gt;response-&gt;setDebug('y', $y);</code></pre>
+<p>请求后，可以看到：  </p>
+<pre><code>    "debug": {
+        "x": "this is x",
+        "y": [
+            "this is y"
+        ]
+    }</code></pre>
 <h2>2.13.3 一个错误的接口开发</h2>
 <p>有时，在进行接口开发时，会需要进行批量获取的功能，如列表。但很多开发的同学可能会因为时间赶或者没有意识去对SQL查询进行优化，或者甚至不知道自己的接口背后隐藏着多少问题。下面是一个错误的开发示例。  </p>
 <h3>(1)新增的批量获取接口</h3>
