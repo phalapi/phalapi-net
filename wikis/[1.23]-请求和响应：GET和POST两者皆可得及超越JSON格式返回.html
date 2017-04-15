@@ -139,13 +139,40 @@ DI()-&gt;request = 'Common_Request'; </code></pre>
     }  
 }</code></pre>
 <p>目前支持的source与对应的数据源映射关系如下：  </p>
-<p>|----|----|
-| post     | $_POST              |
-| get      | $_GET               |
-| cookie   | $_COOKIE            |
-| server   | $_SERVER            |
-| requset  | $_REQUEST           |
-| header   | $_SERVER['HTTP_X']  |</p>
+<table>
+<thead>
+<tr>
+<th>source</th>
+<th>对应的数据源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>post</td>
+<td>$_POST</td>
+</tr>
+<tr>
+<td>get</td>
+<td>$_GET</td>
+</tr>
+<tr>
+<td>cookie</td>
+<td>$_COOKIE</td>
+</tr>
+<tr>
+<td>server</td>
+<td>$_SERVER</td>
+</tr>
+<tr>
+<td>requset</td>
+<td>$_REQUEST</td>
+</tr>
+<tr>
+<td>header</td>
+<td>$_SERVER['HTTP_X']</td>
+</tr>
+</tbody>
+</table>
 <p>因此，这样就可以轻松、更自由获取不同来源的参数。以下是一些常用的配置示例。  </p>
 <pre><code>// 获取HTTP请求方法，判断是POST还是GET
 'method' =&gt; array('name' =&gt; 'REQUEST_METHOD', 'source' =&gt; 'server'),
