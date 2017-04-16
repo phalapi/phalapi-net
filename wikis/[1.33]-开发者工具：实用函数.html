@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[1.33]-开发者工具：实用函数 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi/tree/release">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流群：459352221</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+					<li class="menu-item"><a href="/wikis/%5b8.1%5d-PhalApi%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b.html" class="menu-item__link events-spec" target="_blank">视频教程</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="https://zb.oschina.net/service/736cc7c075dd6d0e" class="menu-item__link products-spec" target="_blank">增值服务</a></li>
+					<li class="menu-item"><a href="/donate.html" class="menu-item__link about-us-spec" target="_blank">捐赠</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h4><a href="/wikis/[1.32]-在线接口文档：注释规范.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.11%5D-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9ADI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-%E8%AE%A9%E8%B5%84%E6%BA%90%E6%9B%B4%E5%8F%AF%E6%8E%A7.html">下一章</a></h4>
+<hr />
+<h1>1.33 PhalApi_Tool开发工具</h1>
+<p>PhalApi提供了一系列工具,方便开发人员直接使用封装好的工具进行开发作业降低工具性代码编写成本,具体工具清单使用方式如下:</p>
+<p><strong>注意:希望PhalApi能够提供其他的开发工具可以联系我们</strong></p>
+<h2>1.33.1 请求IP获取</h2>
+<p>有时需要获取用户IP做一系列操作,但是获取用户的IP又很有讲究,PhalApi_Tool提供获取用户请求IP地址getClientIp方法,失败的情况下，返回空:</p>
+<pre><code>$ip = PhalApi_Tool::getClientIp();</code></pre>
+<h2>1.33.2 随机字符生成</h2>
+<p>在验证码或token经常会用到随机字符串生成,PhalApi_Tool提供createRandStr方法生成随机字符串:</p>
+<p>createRandStr接受两个参数</p>
+<ul>
+<li>(必填)len生成随机字符串的长度</li>
+<li>(选填)生成字符串的范围默认[0~9][a~z][A~Z]</li>
+</ul>
+<pre><code>// 生成5位随机字符串
+$str = PhalApi_Tool::createRandStr(5);
+
+// 生成6位纯数字字符串
+$str = PhalApi_Tool::createRandStr(6, "0123456789");
+</code></pre>
+<h2>1.33.3 数组取值</h2>
+<p>进行数组操作的时候如果获取一个不存在的数组key的时候经常会出现<strong>PHP Notice:  Undefined index</strong> 警告,PhalApi_Tool提供arrIndex方法来解决此类异常并且可以指定默认值</p>
+<pre><code>$arr = array(
+    "test" =&gt; "test"
+);
+// 获取不存在的key默认返回空字符串
+$val = PhalApi_Tool::arrIndex($arr, "test2");
+// 指定默认值获取不到时返回默认值
+$val = PhalApi_Tool::arrIndex($arr, "test2", "test2");</code></pre>
+<h2>1.33.4 目录创建</h2>
+<p>在创建目录操作过程中很容易遇到上级目录未创建导致的创建目录失败,PhalApi_Tool提供createDir方法创建目录结构并且会对上级目录不存在的进行创建</p>
+<pre><code>// 使用相对路径会在入口index.php目录进行创建
+PhalApi_Tool::createDir("./file/images");
+// 使用绝对路径
+PhalApi_Tool::createDir("/app/file/images");</code></pre>
+<h2>1.33.4 目录删除</h2>
+<p>删除目录也很容易遇到创建目录同样的问题,需要删除的目录下有很多文件以及子目录系统是不允许删除的,PhalApi_Tool提供deleteDir方法来删除目录下的所有内容</p>
+<p><strong>注意:推荐使用在临时目录上,请注意不要删除重要目录！</strong></p>
+<pre><code>// 使用相对路径会在入口index.php目录进行删除
+PhalApi_Tool::deleteDir("./file");
+// 使用绝对路径
+PhalApi_Tool::deleteDir("/app/file");</code></pre>
+<hr />
+<h4><a href="/wikis/[1.32]-在线接口文档：注释规范.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B2.11%5D-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9ADI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5-%E8%AE%A9%E8%B5%84%E6%BA%90%E6%9B%B4%E5%8F%AF%E6%8E%A7.html">下一章</a></h4>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid__cell">
+                <!-- TODO -->
+            </div>
+        </div>
+    </div>
+
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
+		<a href="http://www.itran.cc/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/9/69/b88bc92455dc1239f9a5bf8d72929.png"></a>
+		<a href="http://web-tools.phalapi.net/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/7/d0/88f523566c482296aecc43d185ca2.png"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell">
+			<h3>PhalApi (π框架)</h3>
+            <p>
+				<font size="3px">PHP开源框架，专注于接口开发，支持HTTP/SOAP/RPC协议，可用于快速搭建微服务、RESTful接口或Web Services。</font>
+				
+				<br />
+
+				<font size="2px">
+				友情链接： <a href="https://www.phalapi.net/" class="menu-item__link" target="_blank"><strong>PhalApi</strong></a>
+				| <a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a>
+				| <a href="https://www.itran.cc/" class="menu-item__link" target="_blank">艾翻译</a>
+				| <a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a>
+				| <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a>
+				| <a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a>
+
+				<br />
+
+				&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
+				</font>
+
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+</html>
