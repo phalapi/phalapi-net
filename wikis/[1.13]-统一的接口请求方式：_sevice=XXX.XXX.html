@@ -95,8 +95,11 @@ class Common_Request extends PhalApi_Request {
         return parent::getService();
     }
 }</code></pre>
-<p>实现好自定义的请求类，需要在初始化文件<code>./Public/init.php</code>进行注册：  </p>
-<pre><code>DI()-&gt;request = new Common_Request();</code></pre>
+<p>实现好自定义的请求类，需要在入口文件<code>./Public/项目/index.php</code>进行注册：  </p>
+<pre><code>//装载你的接口
+DI()-&gt;loader-&gt;addDirs('Demo');
+
+DI()-&gt;request = new Common_Request();</code></pre>
 <p>这样，请求接口服务的方式便可以变成这样了。  </p>
 <table>
 <thead>
