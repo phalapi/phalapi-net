@@ -30,7 +30,7 @@ if (!is_dir($folder)) {
 $info = pathinfo($file);
 
 $header = file_get_contents(dirname(__FILE__) . '/header.html');
-$header = str_replace('<title>', '<title>' . $info['filename'] . ' | ', $header);
+$header = str_replace('<title>', '<title>' . ($info['filename'] != 'index' ? $info['filename'] : '官方文档') . ' | ', $header);
 $header = str_replace(',PHP接口框架">', ',PHP接口框架,phalapi文档,phalapi wiki,PhalApi文档,phalapi在线文档,phalapi官方文档">', $header);
 
 $footer = file_get_contents(dirname(__FILE__) . '/footer.html');

@@ -281,11 +281,11 @@ return array(
 </tr>
 <tr>
 <td>回调</td>
-<td>callable</td>
+<td>callable/callback</td>
 <td>true/false，默认false</td>
 <td>---</td>
 <td>---</td>
-<td>callback设置回调函数，params为回调函数的第三个参数，第一个为参数值，第二个为所配置的规则</td>
+<td>callable/callback设置回调函数，params为回调函数的第三个参数，第一个为参数值，第二个为所配置的规则</td>
 </tr>
 </tbody>
 </table>
@@ -331,7 +331,7 @@ return array(
 <td>$_SERVER</td>
 </tr>
 <tr>
-<td>requset</td>
+<td>request</td>
 <td>$_REQUEST</td>
 </tr>
 <tr>
@@ -442,7 +442,7 @@ array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1
 
 //多个后缀名 - 字符串形式（以英文逗号分割）
 'ext' =&gt; 'jpg,jpeg,png,bmp'</code></pre>
-<h3>(9)回调 callable</h3>
+<h3>(9)回调 callable / callback</h3>
 <p>当需要利用已有函数进行自定义验证时，可采用回调参数规则，如：  </p>
 <pre><code>//配置规则
 array('name' =&gt; 'version', 'type' =&gt; 'callable', 'callback' =&gt; array('Common_MyVersion', 'formatVersion'))</code></pre>
@@ -457,8 +457,12 @@ class Common_MyVersion {
     }
 }</code></pre>
 <blockquote>
-<p>温馨提示：
+<p>温馨提示：回调函数的签名为：<code>function format($value, $rule, $params)</code>，
 第一个为参数值，第二个为所配置的规则，第三个参数为配置规则中的params（可忽略）</p>
+</blockquote>
+<p>由于自 PHP 5.4 起可用 callable 类型指定回调类型 callback。所以，为了减轻记忆的负担，这里使用 callable或者callback均可，即可以配置成：<code>'type' =&gt; 'callable',</code>，也可以配置成：<code>'type' =&gt; 'callback',</code>，回调函数的选项也一样。  </p>
+<blockquote>
+<p>温馨提示：关于回调类型，更多请参考<a href="http://php.net/manual/zh/language.types.callable.php">Callback / Callable 类型</a>。  </p>
 </blockquote>
 <h2>1.12.8 关于参数设计的原则</h2>
 <h3>(1)通配的$_REQUEST</h3>
@@ -546,7 +550,7 @@ class Common_MyFormatter_Email implements PhalApi_Request_Formatter {
 		<div class="grid__cell">
 			<h3>PhalApi (π框架)</h3>
             <p>
-				<font size="3px">PHP开源框架，专注于接口开发，支持HTTP/SOAP/RPC协议，可用于快速搭建微服务、RESTful接口或Web Services。</font>
+				<font size="3px">一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</font>
 				
 				<br />
 
