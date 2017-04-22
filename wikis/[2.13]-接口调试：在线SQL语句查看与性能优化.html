@@ -71,7 +71,7 @@
 <li><strong>单次请求开启调试</strong>：默认添加请求参数<code>&amp;__debug__=1</code>  </li>
 <li><strong>全部请求开启调试</strong>：把配置文件<code>./Config/sys.php</code>文件中的配置改成<code>'debug' =&gt; true,</code>  </li>
 </ul>
-<p>请特别注意，在实际项目中，调试参数不应使用默认的调试参数，而应各自定义，使用更复杂的参数，从而减少暴露敏感或者调试信息的风险。。例如：   </p>
+<p>请特别注意，在实际项目中，调试参数不应使用默认的调试参数，而应各自定义，使用更复杂的参数，从而减少暴露敏感或者调试信息的风险。例如：   </p>
 <ul>
 <li>不推荐的做法：<code>&amp;__debug__=1</code>  </li>
 <li>一般的做法：<code>&amp;__phalapi_debug__=1</code>  </li>
@@ -81,7 +81,7 @@
 <blockquote>
 <p>温馨提示：调试信息仅有当在开启调试模式后，才会返回。  </p>
 </blockquote>
-<p>正常响应的情况下，当开启调试模式后，会返回多一个<code>debug</code>字段，里面有相关的调试信息。所下所示：  </p>
+<p>正常响应的情况下，当开启调试模式后，会返回多一个<code>debug</code>字段，里面有相关的调试信息。如下所示：  </p>
 <pre><code>{
     "ret": 200,
     "data": {

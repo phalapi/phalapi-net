@@ -70,9 +70,9 @@
 <p>很多时间，不同的项目对数据接收有不同的需求。如简单地，强制统一使用$_POST参数，我们可以这样在入口处进行代码调整：</p>
 <pre><code class="language-javascript">//vim ./index.php
 
-DI()-&gt;request = new PhalApi_Request(array_merge($_POST)); </code></pre>
+DI()-&gt;request = new PhalApi_Request($_POST); </code></pre>
 <p>对于复杂的情况，如需要使用post_raw数据，则可以继承<code>PhalApi_Request</code>实现相应的数据源解析。如：  </p>
-<pre><code>class My_Request extend PhalApi_Request{
+<pre><code>class My_Request extends PhalApi_Request{
     public function __construct($data = NULL) {
         parent::__construct($data);
 

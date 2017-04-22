@@ -111,7 +111,7 @@ sign = 35321cc43cfc1e4008bf6f1bf9b7e3b8 = md5("Default.Indexdogstar")
 5、请求时，加上签名参数
 ?service=Default.Index&amp;username=dogstar&amp;sign=35321cc43cfc1e4008bf6f1bf9b7e3b8</code></pre>
 <p>下面是两个调用示例，错误请求下（即签名失败）：  </p>
-<pre><code>http://localhost/phalapi/public/demo/?service=Default.Index&amp;username=dogstar
+<pre><code>http://localhost/phalapi/Public/demo/?service=Default.Index&amp;username=dogstar
 
 返回：
 {
@@ -211,35 +211,35 @@ class Api_Default extends PhalApi_Api
 <table>
 <thead>
 <tr>
-<th>序号</th>
-<th>配置示例</th>
-<th>分类</th>
-<th>说明</th>
+<th>类型</th>
+<th>配置格式</th>
+<th>匹配规则</th>
+<th>示例及说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>第1种</td>
+<td>全部</td>
 <td><code>*.*</code></td>
-<td>通配，全部接口服务（慎用！）</td>
+<td>匹配全部接口服务（慎用！）</td>
 <td>如果配置了此规则，即全部的接口服务都不触发过滤器。</td>
 </tr>
 <tr>
-<td>第2种</td>
+<td>方法通配</td>
 <td><code>Default.*</code></td>
-<td>某个类的全部方法</td>
+<td>匹配某个类的任何方法</td>
 <td>即Api_Default接口类的全部方法</td>
 </tr>
 <tr>
-<td>第3种</td>
+<td>类通配</td>
 <td><code>*.Index</code></td>
-<td>全部接口类的某个方法</td>
+<td>匹配全部接口类的某个方法</td>
 <td>即全部接口类的Index方法</td>
 </tr>
 <tr>
-<td>第4种</td>
+<td>具体匹配</td>
 <td><code>Default.Index</code></td>
-<td>指定某个接口服务</td>
+<td>匹配指定某个接口服务</td>
 <td>即Api_Default::Index()</td>
 </tr>
 </tbody>
@@ -252,13 +252,16 @@ class Api_Default extends PhalApi_Api
         'User.GetBaseInfo',  // Api_User::GetBaseInfo()方法
     ),</code></pre>
 <p>配置好上面的白名单后，以下这些接口服务全部不会触发过滤器：  </p>
-<pre><code>?service=Default.Index
+<pre><code>// 全部的Index方法
+?service=Default.Index
 ?service=User.Index
 
+// Api_Test的全部方法
 ?service=Test.DoSth
 ?service=Test.Hello
 ?service=Test.GOGOGO
 
+// Api_User::GetBaseInfo()方法
 ?service=User.GetBaseInfo</code></pre>
 <blockquote>
 <p>温馨揭示：以上白名单配置，需要PhalApi 1.4.0及以上版本，方可支持。</p>
