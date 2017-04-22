@@ -41,7 +41,8 @@
 				<ul id="main-menu" class="header__menu">
 					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
 					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
-					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+					<li class="menu-item"><a href="http://wiki.phalapi.net/" class="menu-item__link events-spec" target="_blank">文档(新)</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档(旧)</a></li>
 					<li class="menu-item"><a href="/wikis/%5b8.1%5d-PhalApi%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b.html" class="menu-item__link events-spec" target="_blank">视频教程</a></li>
     				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
 					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
@@ -62,8 +63,8 @@
                 <h4><a href="/wikis/%5B6.1%5D-%E5%9F%BA%E4%BA%8E%E6%8E%A5%E5%8F%A3%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80%E7%9A%84SDK%E5%8C%85.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B6.3%5D-SDK%E5%8C%85%EF%BC%88PHP%E7%89%88%EF%BC%89.html">下一章</a></h4>
 <hr />
 <h2>6.2.1 使用说明</h2>
-<p>将框架目录下的 ./SDK/JAVA/net 目录中的全部代码拷贝到项目里面即可使用。如：<br />
-<img src="http://7qnay5.com1.z0.glb.clouddn.com/qq20151017100539.jpg" alt="" />  </p>
+<p>将框架目录下的 ./SDK/JAVA/net 目录中的全部代码拷贝到项目里面即可使用。如：  </p>
+<p><img src="http://7qnay5.com1.z0.glb.clouddn.com/qq20151017100539.jpg" alt="" />  </p>
 <h2>6.2.2 代码示例</h2>
 <p>如下是使用的代码场景片段。  </p>
 <p>首先，我们需要导入SDK包：</p>
@@ -173,8 +174,8 @@ content += "msg=" + response.getMsg() + "\n";
 
 Log.v("[PhalApiClientResponse]", content);</code></pre>
 <h2>6.2.3 运行效果</h2>
-<p>运行后，查询log，可以看到：<br />
-<img src="http://7qnay5.com1.z0.glb.clouddn.com/QQ20151017154114.jpg" alt="" />  </p>
+<p>运行后，查询log，可以看到：  </p>
+<p><img src="http://7qnay5.com1.z0.glb.clouddn.com/QQ20151017154114.jpg" alt="" />  </p>
 <p>可以注意到，在调试模式时，会有接口请求的链接和返回的结果日记，如：  </p>
 <pre><code>10-17 07:40:55.268: D/[PhalApiClient requestUrl](1376): http://demo.phalapi.net/?service=User.GetBaseInfo&amp;user_id=1
 10-17 07:40:55.364: D/[PhalApiClient apiResult](1376): {"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","from":"oschina"}},"msg":""}</code></pre>
