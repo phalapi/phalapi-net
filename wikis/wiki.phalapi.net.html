@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="cn" style="">
 <head>
-	<title>navigation | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<title>wiki.phalapi.net | PhalApi(π框架) - PHP轻量级开源接口框架</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
 	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
@@ -58,17 +58,38 @@
     <div class="grid-wrapper">
         <div class="grid">
             <div class="grid__cell">
-                <h1>PhalApi 在线文档</h1>
-<p><a href="http://qa.phalapi.net">社区</a></p>
-<p><a href="http://www.phalapi.net/download.html">下载</a></p>
-<p><a href="http://wiki.phalapi.net/">文档(新)</a></p>
-<p><a href="https://www.phalapi.net/wikis/">文档(旧)</a></p>
-<p><a href="http://www.phalapi.net/docs/">类参考手册</a></p>
-<p><a href="http://demo.phalapi.net/">在线体验</a></p>
-<p><a href="https://zb.oschina.net/service/736cc7c075dd6d0e">增值服务</a></p>
-<p><a href="http://www.phalapi.net/about.html">关于</a></p>
-<p><a href="切换主题">gimmick:ThemeChooser</a></p>
-<p><a href="https://github.com/phalapi/phalapi">gimmick:forkmeongithub</a></p>
+                <p>server
+{
+listen 80;
+server_name wiki.phalapi.net;</p>
+<pre><code>index index.html index.php;
+root /path/to/wiki.phalapi.net;
+
+location ~ .*\.(php|php5)?$
+{
+    fastcgi_pass 127.0.0.1:9000;
+    fastcgi_index index.php;
+    include fastcgi.conf;
+}
+
+#rewrite ^/wikis/ http://wiki.phalapi.net/#!index.md permanent;
+#rewrite ^/wikis/$ /index.html#!index.md last;
+
+if (!-e $request_filename) {
+    #rewrite ^/wikis/(.*).html$ /#!$1.md last;
+    rewrite ^/wikis/(.*).html$ http://wiki.phalapi.net/#!$1.md permanent;
+}
+
+if (!-e $request_filename) {
+    #rewrite ^/(.*)$ /#!$1.md last;
+    rewrite ^/(.*)$ http://wiki.phalapi.net/#!$1.md permanent;
+}
+
+#rewrite ^/#!wikis/.md$ http://wiki.phalapi.net/#!index.md permanent;
+#rewrite ^/wikis/.md$ http://wiki.phalapi.net/#!index.md permanent;
+
+error_log /home/apps/logs/nginx/wiki.phalapi.net.error.log;</code></pre>
+<p>}</p>
             </div>
         </div>
 

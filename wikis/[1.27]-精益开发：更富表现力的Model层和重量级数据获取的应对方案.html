@@ -90,7 +90,7 @@
             return $rs;
     }</code></pre>
 <p>对应地，外部的调用调整成：</p>
-<pre><code class="language-javascript">    // 版本2：使用单点缓存/多级缓存 (应该移至Model层中)
+<pre><code class="language-javascript">    // 版本3：使用单点缓存/多级缓存
         $model = new Model_User();
         $rs = $model-&gt;getByUserIdWithCache($userId);</code></pre>
 <p>至此，Model层对于上层如Domain来说，负责获取源数据，而不管此数据来自于数据库，还是远程接口，抑或是缓存包装下的数据。这正是我们使用数组在Model层和Domain层通讯的原因，因为数组更加通用，不需要额外添加实体。</p>

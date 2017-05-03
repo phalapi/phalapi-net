@@ -135,9 +135,9 @@
 <h3>(3)生成并导入SQL语句</h3>
 <p>由于拆分后的数据库表数量众多，这里提供了一个快捷的脚本工具来生成所需要创建的数据库表。</p>
 <pre><code class="language-javascript">$ php ./build_sqls.php
-Usage: ./build_sqls.php &lt;table&gt; [engine=InnoDB]</code></pre>
+Usage: ./build_sqls.php &lt;dbs_config&gt; &lt;table&gt; [engine=InnoDB]</code></pre>
 <p>执行上面的脚本，输入数据库表参数后：</p>
-<pre><code class="language-javascript"> php ./build_sqls.php demo</code></pre>
+<pre><code class="language-javascript"> php ./build_sqls.php ./Config/dbs.php demo</code></pre>
 <p>将会从配置文件 里面寻找所需要创建的表，并生成类似以下的SQL语句：</p>
 <pre><code class="language-javascript">/**
  * DB: localhost  db_demo
@@ -179,7 +179,7 @@ CREATE TABLE `tpl_demo_2` (
 <pre><code class="language-javascript">DI()-&gt;notorm = new PhalApi_DB_NotORM(PhalApi_DI::one()-&gt;config-&gt;get('dbs'), true);
 
 DI()-&gt;notorm-&gt;demo-&gt;where('id', '1')-&gt;fetch();</code></pre>
-<p>用到了拆分表的代码示例，假设event表被拆分成了3个表，则客户端在调用里，需要根据（id % 3 ）来拼接合适的数据库表名，其他使用不变。</p>
+<p>用到了拆分表的代码示例，假设demo表被拆分成了3个表，则客户端在调用里，需要根据（id % 3 ）来拼接合适的数据库表名，其他使用不变。</p>
 <pre><code class="language-javascript">DI()-&gt;notorm = new PhalApi_DB_NotORM(PhalApi_DI::one()-&gt;config-&gt;get('dbs'), true);
 
 $row = DI()-&gt;notorm-&gt;demo_0-&gt;where('id', '3')-&gt;fetch();
