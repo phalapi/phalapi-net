@@ -177,7 +177,7 @@ DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime',
     PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</code></pre>
 <p>多个日记级别需要使用或运算进行组合。</p>
 <h2>1.17.4 扩展你的日记存储</h2>
-<p>普遍情况下，我们认为将日记存放在文件是比较合理的，因为便于查看、管理和统计。当然，如果你的项目需要将日记纪录在数据中，也可以快速扩展实现。如实现数据库的存储思路：  </p>
+<p>普遍情况下，我们认为将日记存放在文件是比较合理的，因为便于查看、管理和统计。当然，如果你的项目需要将日记纪录在数据库，也可以快速扩展实现。如实现数据库的存储思路：  </p>
 <pre><code class="language-javascript">//$ vim ./Apps/Common/Logger/DB.php
 
 class Common_Logger_DB extends PhalApi_Logger {
