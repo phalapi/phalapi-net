@@ -215,7 +215,10 @@ $user-&gt;where('NOT id', array(1, 2, 3))
 $user-&gt;where('(id, age)', array(array(1, 18), array(2, 20)))</code></pre>
 <h4>模糊匹配查询：</h4>
 <pre><code>// WHERE name LIKE '%dog%'
-$user-&gt;where('name LIKE ?', '%dog%')</code></pre>
+$user-&gt;where('name LIKE ?', '%dog%')
+
+// WHERE name NOT LIKE '%dog%'
+$user-&gt;where('name NOT LIKE ?', '%dog%')</code></pre>
 <h4>NULL判断查询：</h4>
 <pre><code>// WHERE (name IS NULL)
 $user-&gt;where('name', null)</code></pre>

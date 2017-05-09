@@ -70,7 +70,7 @@
 <h2>2.11.2 一个简单的例子</h2>
 <p>很多时候，类之间会存在依赖、引用、委托的关系，如A依赖B时，可以这样使用：</p>
 <pre><code class="language-javascript">class A {
-    protected $_b;
+    protected $b;
 
     public function __construct()
     {
@@ -79,7 +79,7 @@
 }</code></pre>
 <p>这种方式在A内限制约束了B的实例对象，当改用B的子类或者改变B的构建方式时，A需要作出调整。这时可以通过依赖来改善这种关系：</p>
 <pre><code class="language-javascript">class A {
-    protected $_b;
+    protected $b;
 
     public function __construct($b)
     {
@@ -101,7 +101,7 @@
 <p>这样的好处？  </p>
 <p>一方面，对于使用A的客户（指开发人员），不需要再添加一个B的成员变量，特别不是全部类的成员函数都需要使用B类服务时。另一方面在外部多次初始化A实例时，可以统一对B的构建。</p>
 <h2>2.11.3 依赖注入的使用示例</h2>
-<p>为方便使用，调用的方式有：set/get函数、魔法方法setX/getX、类变量$fdi-&gt;X、数组$fdi['X']，初始化的途径有：直接赋值、类名、匿名函数。</p>
+<p>为方便使用，调用的方式有：set/get函数、魔法方法setX/getX、类变量$di-&gt;X、数组$di['X']，初始化的途径有：直接赋值、类名、匿名函数。</p>
 <pre><code class="language-javascript">/** ------------------ 创建与设置 ------------------ **/
 //获取DI
 $di = DI();
