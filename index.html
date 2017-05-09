@@ -55,8 +55,6 @@
 </div>
 <!-- 顶部导航菜单(E) -->
 
-
-
 <!-- 焦点部分(S) -->
 <div class="grid-wrapper">
 	<div class="grid grid--center">
@@ -64,7 +62,7 @@
 			<h1 class="homepage--title">接口，从简单开始！</h1>
 		</div>
 		<div class="grid__cell unit-3-4--lap grid__cell--centered">
-			<p class="homepage--subtitle">PhalApi是一个PHP轻量级后台接口开发框架。我们致力于将PhalApi维护成像恒星一样：<br/>不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！</p>
+			<p class="homepage--subtitle">PhalApi是一个轻量级PHP开源接口框架，并承诺永久免费！<br />我们致力于将PhalApi维护成像恒星一样：<br/>不断更新，保持生气；为接口负责，为开源负责！让接口服务开发更简单！</p>
 		</div>
 	</div>
 </div>
@@ -73,7 +71,7 @@
 <!-- 快速开发(S) -->
 <div class="grid-wrapper feature_summary--background">
 	<div class="grid grid--center feature_summary--wrapper">
-		<a href="http://git.oschina.net/dogstar/PhalApi?from=phalapi.net" target="_blank" class="grid__cell unit-1-3--lap feature_summary spec-services_one">
+		<a href="/tutorial.html" target="_blank" class="grid__cell unit-1-3--lap feature_summary spec-services_one">
 			<div class="feature_summary--inside">
 				<h2 class="services_title spec-services_one_title">快速开发</h2>
 				<p class="services_description spec-services_one_description">专注于后台接口开发</p>
@@ -85,7 +83,7 @@
 				<p class="services_description spec-services_two_description">敏捷开发下的精益文档</p>
 			</div>
 		</a>
-		<a href="./solution.html" class="grid__cell unit-1-3--lap feature_summary spec-services_three">
+		<a href="./solution.html" class="grid__cell unit-1-3--lap feature_summary spec-services_three" target="_blank">
 			<div class="feature_summary--inside">
 				<h2 class="services_title spec-services_three_title">解决方案</h2>
 				<p class="services_description spec-services_three_description">移动App背后的胖子</p>
@@ -94,13 +92,23 @@
 	</div>
 </div>
 
+<!--
+
 <div id="feature-summary__learn_more" class="grid-wrapper">
+
 	<div class="grid">
+
 		<div class="grid__cell grid__cell--centered ">
-			<p><a href="http://git.oschina.net/dogstar/PhalApi/tree/release" class="button" target="_blank">免费下载</a></p>
+
+			<p><a href="http://git.oschina.net/dogstar/PhalApi/tree/release?from=phalapi" class="button" target="_blank">免费下载</a></p>
+
 		</div>
+
 	</div>
+
 </div>
+
+-->
 <!-- 快速开发(E) -->
 	
 <!-- 欢迎使用(S) -->
@@ -112,24 +120,33 @@
 			</div>
 			<div id="client-summary-row">
 				<div class="grid__cell clients-selector--description client-active">
-					<img src="http://webtools.qiniudn.com/20150211_default_index.jpg" class="clients-selector--description-image" alt="BresicWhitney Logo">
+					<img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151024155819.jpg" class="clients-selector--description-image" alt="BresicWhitney Logo">
 
 					<h3 class="clients-selector--description-title">请从release分支拉取稳定版本</h3>
 					<p class="clients-selector--description-text">
 						1、进入<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" target="_blank">Git@OSC</a>后从release分支下载，或直接：<br/>
-						gi&nbsp;clone&nbsp;https://git.oschina.net/dogstar/PhalApi.git<br/>
+						git&nbsp;clone&nbsp;https://git.oschina.net/dogstar/PhalApi.git<br/>
 						<br/>
-						2、解压到服务器，并将根目录设置为Public，如nginx：<br/>
-						root&nbsp;&nbsp;&nbsp;/.../PhalApi/Public;<br/>
+						2、上传并解压到服务器<br/>（推荐使用nginx，并将根目录设置为Public）<br/>
 						<br/>
-						3、打开浏览器，访问默认接口，XAMPP下：<br/>
+						3、打开浏览器，访问安装向导：<br/>
+						http://localhost/PhalApi/Public/install/<br/>
+						<br/>
+						4、最后运行效果：<br/>
 						http://localhost/PhalApi/Public/demo/
 						<br/>
+
+					</p>
+				</div>
+			</div>
+			<div id="client-summary-row">
+				<div class="grid__cell clients-selector--description client-active">
+					<img src="http://webtools.qiniudn.com/20150211_default_index.jpg">
 					</p>
 				</div>
 			</div>
 			<div class="grid__cell grid__cell--centered">
-				<a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B1.1%5D-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%3A-%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91%E7%A4%BA%E4%BE%8B-%E6%BA%90%E7%A0%81-%E5%9B%BE%E6%96%87" target="_blank" class="button">快速入门</a>
+				<a href="/tutorial.html" target="_blank" class="button">快速入门</a>
 			</div>
 		</div>
 	</div>
@@ -146,7 +163,7 @@
 			<div class="grid__cell unit-1-3--lap left">
 				<div class="item-summary-border">
 					<h3 class="item-head">
-						<a title="" href="http://phalapi.oschina.mopaas.com/Public/demo/?service=Default.Index" target="_blank">在线接口请求</a>
+						<a title="" href="http://demo.phalapi.net/" target="_blank">在线接口请求</a>
 					</h3>
 					<p class="narrow-text">默认返回JSON，如需返回JSONP，可加&callback=test参数</p>
 				</div>
@@ -154,17 +171,17 @@
 			<div class="grid__cell unit-1-3--lap left">
 				<div class="item-summary-border">
 					<h3 class="item-head">
-						<a title="" href="http://phalapi.oschina.mopaas.com/Public/demo/?service=User.getMultiBaseInfo&userIds=1,2,3&debug=1" target="_blank">在线接口调试</a>
+						<a title="" href="http://demo.phalapi.net/?service=User.getMultiBaseInfo&user_ids=1,2,3&__sql__=1" target="_blank">在线接口调试</a>
 					</h3>
-					<p class="narrow-text">添加&debug=1参数，可查看全部执行的SQL语句，以便进行查询优化</p>
+					<p class="narrow-text">添加&__sql__=1参数，可查看全部执行的SQL语句，以便进行查询优化</p>
 				</div>
 			</div>
 			<div class="grid__cell unit-1-3--lap left">
 				<div class="item-summary-border">
 					<h3 class="item-head">
-						<a title="" href="http://phalapi.oschina.mopaas.com/Public/demo/checkApiParams.php" target="_blank">[赞!]在线查看接口参数</a>
+						<a title="" href="http://demo.phalapi.net/listAllApis.php" target="_blank">[赞!]在线查看接口参数</a>
 					</h3>
-					<p class="narrow-text">在线实时查看接口最新的参数说明，无须另外文档维护</p>
+					<p class="narrow-text">在线实时查看接口最新的参数、返回和说明，无须手动维护文档</p>
 				</div>
 			</div>
 		</div>
@@ -173,43 +190,80 @@
             <!-- <a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="button" target="_blank">马上试试</a> -->
 		</div>
 	</div>
+
 </div>
 <!-- 在线体验(E) -->
 
 <!-- 扩展推荐(S) -->
 <div class="grid-wrapper">
+
+	<div class="grid grid--center">
+		<div class="grid__cell grid__cell--centered">
+			<h2 id="latest-news">SDK包&nbsp;(8+)</h2>
+			
+			<div class="grid__cell unit-1-3--lap left">
+				<div class="item-summary-border">
+					<h3 class="item-head">
+						<a title="" href="http://www.phalapi.net/wikis/%5B6.2%5D-SDK%E5%8C%85%EF%BC%88JAVA%E7%89%88%EF%BC%89.html" target="_blank">SDK包（JAVA版）</a>
+					</h3>
+					<p class="narrow-text">为Android客户端开发同学提供PhalApi专属的SDK包</p>
+				</div>
+			</div>
+			<div class="grid__cell unit-1-3--lap left">
+				<div class="item-summary-border">
+					<h3 class="item-head">
+						<a title="" href="http://www.phalapi.net/wikis/%5B6.4%5D-SDK%E5%8C%85%EF%BC%88object-c%E7%89%88%EF%BC%89.html" target="_blank">SDK包（OC版）</a>
+					</h3>
+					<p class="narrow-text">基于AFNetworking的二次封装，由@Aevit 提供</p>
+				</div>
+			</div>
+			<div class="grid__cell unit-1-3--lap left">
+				<div class="item-summary-border">
+					<h3 class="item-head">
+						<a title="" href="http://git.oschina.net/dogstar/PhalApi/tree/release/SDK/Go" target="_blank">SDK包（Golang版）</a>
+					</h3>
+					<p class="narrow-text">由@prettyyjnic 提供</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="grid__cell grid__cell--centered">
+            <!-- <a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="button" target="_blank">马上试试</a> -->
+		</div>
+	</div>
+
 	<div class="grid">
 		<div class="grid__cell grid__cell--centered">
-			<h2 class="insights-section__title">扩展推荐</h2>
+			<h2 class="insights-section__title">扩展推荐&nbsp;(32+)</h2>
 		</div>
 		<div class="grid__cell unit-1-2--lap unit-1-3--portable curated-blog-post spec-insight-card">
-			<a href="#" class="insight-card spec-insights-card-url insight-card--grey same-height" target="_blank">
-				<p class="insight-card__category spec-channel-name">???</p>
-				<h3 class="insight-card__title spec-curated-blog-title">期待您的扩展开源！</h3>
+			<a href="http://git.oschina.net/dogstar/PhalApi-Library/tree/master/Pay/?dir=1&filepath=Pay&oid=87c82f473c95070bf36c67a40218e29dd77ff153&sha=d4a50a79ed0ed6ac46599ba0e1835679a73ccf58" class="insight-card spec-insights-card-url insight-card--grey same-height" target="_blank">
+				<p class="insight-card__category spec-channel-name">[荐!]第三方支付Pay</p>
+				<h3 class="insight-card__title spec-curated-blog-title">支持支付宝、微信支付</h3>
 				<p class="insight-card__author">
-					<img src="http://webtools.qiniudn.com/d0045.jpg" class="spec-teaser-author-image insight-card__author-image">
-					<span class="spec-teaser-author-name insight-card__author-name">???</span>
+					<img src="http://7qnay5.com1.z0.glb.clouddn.com/96053_jon.jpeg" class="spec-teaser-author-image insight-card__author-image">
+					<span class="spec-teaser-author-name insight-card__author-name">Summer</span>
 				</p>
 			</a>
 		</div>
 		<div class="grid__cell unit-1-2--lap unit-1-3--portable curated-blog-post spec-insight-card">
-			<a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.2%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E4%B8%8Bphprpc%E5%8D%8F%E8%AE%AE%E7%9A%84%E8%BD%BB%E6%9D%BE%E6%94%AF%E6%8C%81" class="insight-card spec-insights-card-url insight-card--grey same-height" target="_blank">
-				<p class="insight-card__category spec-channel-name">phprpc协议的轻松扩展</p>
-				<h3 class="insight-card__title spec-curated-blog-title">代理模式下的轻松支持与完美切换。</h3>
+			<a href="http://git.oschina.net/dogstar/PhalApi-Library/tree/master/DB_Cluster/?dir=1&filepath=DB_Cluster&oid=a50865e4e86d8105bdc30c12a8193db1f119cdb5&sha=8c16393c1286f3921cb920dd21a4aab5eb05f8a3" class="insight-card spec-insights-card-url insight-card--grey same-height" target="_blank">
+				<p class="insight-card__category spec-channel-name">[NEW!]DB集群拓展DB_Cluster</p>
+				<h3 class="insight-card__title spec-curated-blog-title">为海量数据分析与统计提供分表分库支持</h3>
 				<p class="insight-card__author">
-					<img src="http://webtools.qiniudn.com/d0045.jpg" class="spec-teaser-author-image insight-card__author-image">
-					<span class="spec-teaser-author-name insight-card__author-name">dogstar</span>
+					<img src="http://7qnay5.com1.z0.glb.clouddn.com/mm.jpg" class="spec-teaser-author-image insight-card__author-image">
+					<span class="spec-teaser-author-name insight-card__author-name">喵了个咪</span>
 				</p>
 			</a>
 		</div>
 		<div class="grid__cell unit-1-2--lap unit-1-3--portable curated-blog-post spec-insight-card">
-			<a href="http://git.oschina.net/dogstar/PhalApi/wikis/%5B3.1%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91" class="insight-card spec-insights-card-url insight-card--grey same-height" target="_blank">
+			<a href="http://git.oschina.net/dogstar/PhalApi-Library/wikis/Auth-%E6%9D%83%E9%99%90%E6%89%A9%E5%B1%95%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3" class="insight-card spec-insights-card-url insight-card--grey same-height" target="_blank">
 				<!--<p class="insight-card__date spec-curated-blog-date">[!赞]</p>-->
-				<p class="insight-card__category spec-channel-name">[顶!]微信开发</p>
-				<h3 class="insight-card__title spec-curated-blog-title">插件式开发，便于快速开发微信服务号。</h3>
+				<p class="insight-card__category spec-channel-name">[赞!]Auth权限认证</p>
+				<h3 class="insight-card__title spec-curated-blog-title">基于用户与组的权限认证功能</h3>
 				<p class="insight-card__author">
-					<img src="http://webtools.qiniudn.com/d0045.jpg" class="spec-teaser-author-image insight-card__author-image">
-					<span class="spec-teaser-author-name insight-card__author-name">dogstar</span>
+					<img src="http://7qnay5.com1.z0.glb.clouddn.com/20150820203715.jpg" class="spec-teaser-author-image insight-card__author-image">
+					<span class="spec-teaser-author-name insight-card__author-name">黄苗笋</span>
 				</p>
 			</a>
 		</div>
@@ -221,42 +275,71 @@
 </div>
 <!-- 扩展推荐(E) -->
 
-<div id="client-summaries" class="grid-wrapper grid-wrapper--separator insights-section">
-	<div id="client-summary-logos-row-desktop" class="grid clients-selector">
-		<div class="clients-selector--logos">
-			<div class="grid__cell grid__cell--centered">
-                <!-- <h2>勿忘初心，方得始终</h2> -->
-			</div>
-			<div id="client-summary-row">
-				<div class="grid__cell clients-selector--description client-active">
-                    <div class="grid__cell grid__cell--centered">
-                        <h2>勿忘初心，方得始终</h2>
-                    </div>
-                    <p>虽然现在这个社会的节奏很快，但如果有时间时，我们不妨静下来，稍微思考一下，然后你会发现：慢慢来，比较快。</p>
-
-                    <h3>PhalApi 的初衷</h3>
-                    <p>我们之所以开源这个框架，是因为我们想致力于提供可以快速进行开发后台接口的框架，并且通过这个框架分享更多开发的最佳实践、原则和模式！这就是我们的初心，也希望我们能一直坚持下去。<br/><br/>
-                    
-                    <h3>PhalApi命名的来源</h3>
-                    得益于开源社区，现在有很多优秀的开源框架。确实有很多框架值得我们去学习和使用，其中高性能的Phalcon框架和可视化代码评审工具 Phabricator都是相当令人敬佩和认可的。前者在思想、模式和原则上有很好的文档说明；后者在包管理、命名写法等都非常好地体现了代码重用。受此 两个框架的影响，故取名为：PahlApi。
-
-                    <h3>通过PhalApi，我们希望可以:</h3>
-                    撑轻量级项目后台接口的快速开发；阐明如何进行框架设计、对应复杂领域业务、支撑海量服务等，以及分享好的思想、技巧工具和最佳实践。
-				</div>
-			</div>
+<div id="feature-summary__learn_more" class="grid-wrapper">
+	<div class="grid">
+		<div class="grid__cell grid__cell--centered ">
+			<p><a href="http://git.oschina.net/dogstar/PhalApi-Library" class="button" target="_blank">发现更多</a></p>
 		</div>
 	</div>
 </div>
+
+
+<!-- 产品和案例(S) -->
+<div class="grid-wrapper grid-wrapper--separator insights-section">
+	<div class="grid">
+		<div class="grid__cell grid__cell--centered">
+			<h2 class="insights-section__title">产品和案例&nbsp;(100+)</h2>
+		</div>
+		<div class="grid__cell unit-1-2--lap unit-1-3--portable curated-blog-post spec-insight-card">
+			<a href="http://www.famillelab.com/" class="insight-card spec-insights-card-url insight-card--blue same-height" target="_blank">
+				<!--<p class="insight-card__date spec-curated-blog-date">[!赞]</p>-->
+				<p class="insight-card__category spec-channel-name">2015年8月</p>
+				<h3 class="insight-card__title spec-curated-blog-title">凡美母婴秤</h3>
+				<p class="insight-card__author">
+					<img src="http://7qnay5.com1.z0.glb.clouddn.com/famille_logo_square100.png" class="spec-teaser-author-image insight-card__author-image">
+					<span class="spec-teaser-author-name insight-card__author-name">专为孕产婴人群服务，管理您的体重数据</span>
+				</p>
+			</a>
+		</div>
+		<div class="grid__cell unit-1-2--lap unit-1-3--portable curated-blog-post spec-insight-card">
+			<a href="https://itunes.apple.com/cn/app/slerp-cm/id1140397000?mt=8" class="insight-card spec-insights-card-url insight-card--blue same-height" target="_blank">
+				<!--<p class="insight-card__date spec-curated-blog-date">[!赞]</p>-->
+				<p class="insight-card__category spec-channel-name">2016年8月</p>
+				<h3 class="insight-card__title spec-curated-blog-title">SLERP CM</h3>
+				<p class="insight-card__author">
+					<img src="http://a3.mzstatic.com/us/r30/Purple22/v4/39/8d/9b/398d9b39-f9bd-0f72-bd2c-950b08a971f9/icon175x175.png" class="spec-teaser-author-image insight-card__author-image">
+					<span class="spec-teaser-author-name insight-card__author-name">基于MIE云平台构建的现代化企业级应用</span>
+				</p>
+			</a>
+		</div>
+		<div class="grid__cell unit-1-2--lap unit-1-3--portable curated-blog-post spec-insight-card">
+			<a href="http://www.sunmi.com" class="insight-card spec-insights-card-url insight-card--blue same-height" target="_blank">
+				<!--<p class="insight-card__date spec-curated-blog-date">[!赞]</p>-->
+				<p class="insight-card__category spec-channel-name">2017年5月</p>
+				<h3 class="insight-card__title spec-curated-blog-title">Sunmi</h3>
+				<p class="insight-card__author">
+					<img src="http://www.sunmi.com/favicon.png" class="spec-teaser-author-image insight-card__author-image">
+					<span class="spec-teaser-author-name insight-card__author-name">商米——为智能商用硬件而生</span>
+				</p>
+			</a>
+		</div>
+
+        <div class="grid__cell grid__cell--centered">
+            <!-- <a href="#" class="button">发现更多</a> -->
+        </div>
+	</div>
+</div>
+<!-- 产品和案例(E) -->
 
 <!-- 感谢以下贡献者(S) -->
 <div class="grid-wrapper">
 	<div class="grid">
 		<div class="grid__cell grid__cell--centered">
-			<h2 class="insights-section__title">感谢以下贡献者</h2>
+			<h2 class="insights-section__title">感谢以下贡献者&nbsp;(20+)</h2>
 
 			<div>
 				<a href="http://my.oschina.net/dogstar" target="_blank"><img src="http://webtools.qiniudn.com/d0045.jpg" class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
-				                <a href="http://my.oschina.net/u/2330535" target="_blank"><img src="http://webtools.qiniudn.com/201406290817306.png" class="spec-teaser-author-image insight-card__author-image" alt="火柴"></a>
+                <a href="http://my.oschina.net/u/2330535" target="_blank"><img src="http://webtools.qiniudn.com/201406290817306.png" class="spec-teaser-author-image insight-card__author-image" alt="火柴"></a>
                 <a href="http://my.oschina.net/u/2362939" target="_blank"><img src="http://webtools.qiniudn.com/George.jpg" class="spec-teaser-author-image insight-card__author-image" alt="George"></a>
                 <a href="http://ninty.cc/zz" target="_blank"><img src="http://webtools.qiniudn.com/zz.guo.jpg" class="spec-teaser-author-image insight-card__author-image" alt="zz.guo"></a>
                 <a href="http://my.oschina.net/wenzhenxi" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/mm.jpg" class="spec-teaser-author-image insight-card__author-image" alt="文振熙"></a>
@@ -277,12 +360,73 @@
 			</div>
 		</div>
 	</div>
+
+	
+	<div class="grid">
+		<div class="grid__cell grid__cell--centered ">
+			<p><a href="/wikis/%5B5.8%5D-%E8%87%B4%E6%A1%86%E6%9E%B6%E8%B4%A1%E7%8C%AE%E8%80%85%EF%BC%9A%E5%8A%A0%E5%85%A5PhalApi%E5%BC%80%E6%BA%90%E6%8C%87%E5%8D%97.html" class="button" target="_blank">我要加入</a></p>
+		</div>
+	</div>
+	
 </div>
 <!-- 感谢以下贡献者(E) -->
 
+<!--
+
+<div class="grid-wrapper">
+
+	<div class="grid">
+
+		<div class="grid__cell grid__cell--centered">
+
+			<h2 class="insights-section__title">已有XXX个项目使用PhalApi</h2>
 
 
-<!-- body end -->
+
+			<div>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+				<a href="#" target="_blank"><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=d296fc23caea15ce41eee70f8e013a25/a2cc7cd98d1001e9e8ac86a9bb0e7bec55e79780.jpg" width="100px" height="100px"  class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+-->
+
 
 <!-- 广告位 -->
 <div class="grid-wrapper desktop-only">
@@ -325,5 +469,6 @@
 <!-- footer(E) -->
 
 </body>
+
 
 </html>
