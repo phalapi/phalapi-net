@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.2]-把它玩起来 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi/tree/release">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流主群：421032344，副群：459352221</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://wiki.phalapi.net/" class="menu-item__link events-spec" target="_blank">文档(新)</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档(旧)</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="https://zb.oschina.net/service/736cc7c075dd6d0e" class="menu-item__link products-spec" target="_blank">增值服务</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-入门篇1(把它玩起来)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>这一小节主要是在搭建好的环境下,先把这个框架运行起来,和数据库交互起来(这里用的是mysql),对整个框架的结构进行最简单的一些介绍,以及点出一些新手长遇到的一些问题和一些<strong>小技巧</strong>.</p>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1. 运行起来吧PhalApi</h2>
+<p>不用说首先当然是下载项目文件咯.</p>
+<p>推荐使用<strong>git</strong>工具(如果不会使用Git 可以直接去开源中国下载源码):</p>
+<p>使用git把https://git.oschina.net/dogstar/PhalApi.git克隆下来</p>
+<p>然后切换到1.2.1分支上面(注:这里使用的是当前最新版本)</p>
+<p>现在我们能看到真正的源码了 我们先来分析一下目录结构其实在项目里面有一个文件README.md里面已经有介绍了(我在补充一点)</p>
+<pre><code>│
+├── PhalApi         //PhalApi框架，后期可以整包升级(尽量小的改动,大改动会影响框架的迭代)
+│
+│
+├── Public          //对外访问目录，建议隐藏PHP实现(增加安全性)
+│   └── demo        //Demo服务访问入口(我认为是所谓的项目名)
+│
+│
+├── Config          //项目接口公共配置，主要有：app.php, sys.php, dbs.php(配置文件不多说)
+├── Data            //项目接口公共数据(也就是从一开始的数据库sql文件以及后面结构有任何变化的sql文件都存放这里,方便自己查找,好习惯之一)
+├── Language        //项目接口公共翻译(需要国际化的话很有用,让返回更优雅高可用)
+├── Runtime         //项目接口运行文件目录，用于存放日记，可软链到别的区(主要是日记,一定要有写的权限不然会报错)
+│
+│
+└── Demo            //应用接口服务，名称自取，可多组(项目文件所谓真正实现业务的地方)
+    ├── Api             //接口响应层(主要用于接收请求,返回结果,把一块大的业务分发成一块块小的业务)
+    ├── Domain          //接口领域层(我觉得可以叫做逻辑层容易理解一点,分成的各个小的业务在这里进行处理)
+    ├── Model           //接口持久层(实现最简单的数据库操作,不要有任何逻辑因为是高可用)
+    └── Tests           //接口单元测试(不用多说)</code></pre>
+<p>然后我们把项目文件放到网站的根目录然后我们运行<a href="http://localhost/Public/">http://localhost/Public/</a>(<strong>localhost请自行替换</strong>)我们可以获得以下结果:</p>
+<p><img src="http://i.imgur.com/ImnS87Y.png" alt="" /></p>
+<p>强烈推荐使用json解析工具(这里使用的chorme插件<strong>json-handle</strong>附上下载地址<a href="http://www.chromein.com/crx_12022.html" title="json-handle">json-handle</a>)</p>
+<p>这样第一步运行PhalApi就已经完成了</p>
+<p><strong>注:</strong>有些童鞋可能运行<strong>起来是一片白</strong>(这点请大家特别注意,有很多人问我怎么自己写了一个模块调用一直是一片白,其实是php报错了只是你<strong>没有打开php报错</strong>)解决方法是修改php.ini文件中的两个参数</p>
+<pre><code>error_reporting=E_ALL
+display_errors=ON</code></pre>
+<h2>2. 他是如何运行起来的</h2>
+<p>先说说为什么会有上面这一串返回,有php基础的人都知道访问了Public目录默认是访问到了Index.php这个文件我们来看看它的代码</p>
+<pre><code>&lt;?php
+/**
+ * $APP_NAME 统一入口
+ */
+require_once dirname(__FILE__) . '/init.php';                     //引入初始化文件我们以后再讲
+//装载你的接口                        
+DI()-&gt;loader-&gt;addDirs('Demo');                                    //这个就是定义了你接口所在的目录
+/** ---------------- 响应接口请求 ---------------- **/
+$api = new PhalApi();                                             
+$rs = $api-&gt;response();                                           //执行你的接口
+$rs-&gt;output();                                                    //返回结果</code></pre>
+<p>大家要是进入到$api-&gt;response();里面就会发现有这样一条语句</p>
+<pre><code>$service = DI()-&gt;request-&gt;get('service', 'Default.Index');</code></pre>
+<p>也就是当你没有定义访问某个接口的时候,它会指向到Default模块下的Index接口</p>
+<p><strong>所以http://localhost/Public/等同于http://localhost/Public/?service=Default.Index试一试会得到一样的结果</strong></p>
+<p>机智的小伙伴一定发现了在项目中的Demo/Api里面有Default.php这样一个文件而恰巧里面有一个index方法,没错就是通过service=Default.Index找到了Default模块中的index方法</p>
+<p>实现这一机制的语句是:</p>
+<pre><code>$rs-&gt;setData(call_user_func(array($api, $action)));</code></pre>
+<p>有兴趣的童鞋可以研究研究</p>
+<h2>3. 数据库操作</h2>
+<p>Demo下面的Api文件除了上面所调用的Default.php还有一个User.php没错就是User模块里面分别有两个接口可供调用
+getBaseInfo,getMultiBaseInfo那我们直接调用getBaseInfo看看结果<a href="http://localhost/Public/?service=User.getBaseInfo">http://localhost/Public/?service=User.getBaseInfo</a></p>
+<p><img src="http://i.imgur.com/x7LGPjZ.png" alt="" /></p>
+<p>相信大家一眼就能看出来是缺少了传参我们在试试带上参数会怎么样<a href="http://localhost/Public/?service=User.getBaseInfo&amp;user_id=1">http://localhost/Public/?service=User.getBaseInfo&amp;user_id=1</a></p>
+<p><img src="http://i.imgur.com/5YR3ujW.png" alt="" /></p>
+<p>当然这个是因为没有配置数据库引起的如何配置?当然是在配置文件里面配置,大家打开Config目录下的   dbs文件key看到以下类容</p>
+<pre><code>'db_demo' =&gt; array(                             //服务器标记
+        'host'      =&gt; 'localhost',             //数据库域名
+        'name'      =&gt; 'phalapi',               //数据库名字
+        'user'      =&gt; 'root',                  //数据库用户名
+        'password'  =&gt; '',                      //数据库密码
+        'port'      =&gt; '3306',                  //数据库端口
+        'charset'   =&gt; 'UTF8',                  //数据库字符集
+    ),</code></pre>
+<p>我们把它配置好然后再运行,可能有些人还是看到的和上面的情况是一样的,要不就是数据库不通要不就是没有创建phalapi数据库(自行创建)</p>
+<p>当我们保证数据库能够联通,phalapi数据库也存在的情况下再去链接可能会出现类似于<strong>Warning: mkdir(): Permission denied in PhalApi/PhalApi/Logger/File.php on line 45</strong>这类错误,这是应为没有创建文件权限造成的,windows下面基本不会应为读写权限出问题,liunx下面要注意这点</p>
+<p>当我们给目录赋予权限之后在运行可能会出现一个很长的报错<strong>PDOException</strong>大概的意思就是找不到tbl_user表</p>
+<p>其实sql文件已经在Data文件夹里面了<strong>phalapi_test.sql</strong> </p>
+<p>我们把sql文件运行一下创建好的效果是这样的(phalapi_test库名改成phalapi)</p>
+<p><img src="http://i.imgur.com/QcStyzC.png" alt="" /></p>
+<p>让我们再次运行那么结果就出来了</p>
+<p><img src="http://i.imgur.com/z5fYh0I.png" alt="" /></p>
+<p>这样我们就已经把框架自带的例子跑了起来</p>
+<h2>4. 总结</h2>
+<p>这一小节主要是把phalapi的一些基本的机制做了一些简单的介绍,以及把框架自带的实例运行了起来,下一小节会着重介绍一下框架自带的请求验证,返回结果和自动生成的接口文档!</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+<h4><a href="/wikis/%5b7.1%5d-%e7%ae%80%e5%8d%95%e4%bb%8b%e7%bb%8d%e4%bb%a5%e5%8f%8a%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b7.3%5d-%e8%af%b7%e6%b1%82%e5%92%8c%e8%bf%94%e5%9b%9e.html">下一章</a></h4>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid__cell">
+                <!-- TODO -->
+            </div>
+        </div>
+    </div>
+
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
+		<a href="http://www.itran.cc/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/9/69/b88bc92455dc1239f9a5bf8d72929.png"></a>
+		<a href="http://web-tools.phalapi.net/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/7/d0/88f523566c482296aecc43d185ca2.png"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell">
+			<h3>PhalApi (π框架)</h3>
+            <p>
+				<font size="3px">一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</font>
+				
+				<br />
+
+				<font size="2px">
+				友情链接： <a href="https://www.phalapi.net/" class="menu-item__link" target="_blank"><strong>PhalApi</strong></a>
+				| <a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a>
+				| <a href="https://www.itran.cc/" class="menu-item__link" target="_blank">艾翻译</a>
+				| <a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a>
+				| <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a>
+				| <a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a>
+
+				<br />
+
+				&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
+				</font>
+
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+</html>

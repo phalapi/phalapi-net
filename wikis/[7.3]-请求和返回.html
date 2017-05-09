@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.3]-请求和返回 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi/tree/release">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流主群：421032344，副群：459352221</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://wiki.phalapi.net/" class="menu-item__link events-spec" target="_blank">文档(新)</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档(旧)</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="https://zb.oschina.net/service/736cc7c075dd6d0e" class="menu-item__link products-spec" target="_blank">增值服务</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-入门篇3(请求和返回)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>这一小节主要讲一下请求(参数验证),返回(怎么返回自己想要的结果),官方文档也有比较详细的说明所以在有些比较基础的地方就一笔带过,讲一点比较实用在项目开发中怎么使用phalapi框架定制出自己想要的请求和返回结果.</p>
+<p>请先通读:</p>
+<pre><code>[1.12] 参数规则：接口参数规则配置
+[1.13] 统一的接口请求方式：?sevice=XXX.XXX
+[1.14] 统一的返回格式和结构：ret data msg</code></pre>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1. 请求</h2>
+<p>稍微看过Demo代码的童鞋和读了官方文档的童鞋应该都已经知道,请求参数验证是通过模块文件中的<strong>getRules</strong>方法进行过滤校验的</p>
+<p><img src="http://i.imgur.com/xAhZscJ.png" alt="" /></p>
+<p>当然还有<strong>default</strong>默认值,默认值一般不和requie同时出现,基本上有了这些框架自带的参数过滤校验基本上可以满足大家的需求,
+在代码层面使用$this-&gt;参数名就能获取到请求的值(这里建议请求的参数名与获取的参数名,名称保持一致避免因为名称混淆导致的出错)</p>
+<p>那么具体的业务需求来了,大家都知道get请求不安全一般要是传递参数都需要使用post请求,在phalapi中自带接受请求机制是<strong>接受_REQUEST</strong>
+也就是get请求和post请求通通接受,怎么做到只接受post参数而不接受get参数呢</p>
+<p>官方文档有说:</p>
+<p><img src="http://i.imgur.com/MbkhaOh.png" alt="" /></p>
+<p>但是这样有个弊端,包括接口名称在内的service参数许必须用post请求传递才能生效,可以在init.php的最前面加上想从get获取的参数负值给post(<strong>$_POST['service'] = $_GET['service'];</strong>)但是不是很推荐这样使用,如果要从根本上解决问题就需要使用自定义的拦截器了(<strong>如何搭建使用拦截器会在后面的进阶篇的项目实践讲到</strong>)</p>
+<h2>2. 返回</h2>
+<h3>2.1 定制成功返回结果</h3>
+<p>返回我么用个最简单的例子说明,就是官方自带的默认方法</p>
+<p><img src="http://i.imgur.com/XIqJxXN.png" alt="" /></p>
+<p>大家可以看下代码层</p>
+<pre><code>public function index() {
+    return array(
+        'title' =&gt; 'Hello World!',
+        'content' =&gt; T('Hi {name}, welcome to use PhalApi!', array('name' =&gt; $this-&gt;username)),
+        'version' =&gt; PHALAPI_VERSION,
+        'time' =&gt; $_SERVER['REQUEST_TIME'],
+    );
+}</code></pre>
+<p>在接口荣return的内容是在返回值的data参数里面(这样已经是一个约定俗成的规范了)</p>
+<p>那么有的人就说了msg里面怎么没有值啊,如果是登录成功了是不是应该返回登录成功的提示?其实这些都是已经封装好的方法大家在Default.index接口的最前面加上<strong>DI()-&gt;response-&gt;setMsg('获取参数成功');</strong>就能看到如下返回:</p>
+<p><img src="http://i.imgur.com/IMOdESv.png" alt="" /></p>
+<p>这样就有了,那么又有的人说了ret和msg的名字可以修改吗(这种情况经常出现因为要兼容老业务,或者公司内部已经约定俗成)当然是能修改的,大家打开<strong>/PhalApi/Response.php</strong>这个文件里面可以看到一个<strong>getResult</strong>方法</p>
+<pre><code> public function getResult() {
+    $rs = array(
+        'ret' =&gt; $this-&gt;ret,
+        'data' =&gt; $this-&gt;data,
+        'msg' =&gt; $this-&gt;msg,
+    );
+    return $rs;
+}</code></pre>
+<p>这里就可以定义返回的key是什么我们把ret改成code就能得到如下返回</p>
+<p><img src="http://i.imgur.com/Qz28kTF.png" alt="" /></p>
+<p>那么如果成功的表示是1怎么办?在Response.php开头就有一个变量设置了成功的返回值位200大家可以根据自己的需求改成任何想要的返回值.</p>
+<pre><code>/**
+ * @var int $ret 返回状态码，其中：200成功，400非法请求，500服务器错误
+ */
+protected $ret = 200;</code></pre>
+<h3>2.2 失败了返回</h3>
+<p>讲了这么多都是围绕着成功所说的,当然我们经常会遇到失败的情况我们要如何应对呢?大家试着在<strong>Default.index</strong>接口前面加上如下一段代码:</p>
+<pre><code>throw new PhalApi_Exception_BadRequest('失败了');</code></pre>
+<p>会得到如下结果:</p>
+<p><img src="http://i.imgur.com/Ts5Yn0x.png" alt="" /></p>
+<p>这就是所谓的报错机制当然这个报错机制也是可以定制的,大家可以进入到<strong>PhalApi_Exception_BadRequest</strong>看一下</p>
+<pre><code>class PhalApi_Exception_BadRequest extends PhalApi_Exception{
+
+    public function __construct($message, $code = 0) {
+        parent::__construct(
+            T('Bad Request: {message}', array('message' =&gt; $message)), 400 + $code
+        );
+    }
+}</code></pre>
+<p>失败默认$code是0+400,如果你在'失败了'后面加上一个参数</p>
+<pre><code>throw new PhalApi_Exception_BadRequest('失败了',1);</code></pre>
+<p>那么code就会返回401,当然你也可以去掉默认的+400那么就会返回你输入的值了,具体也是看业务需求</p>
+<h2>3. 总结</h2>
+<p>从本小节可以看出phalapi框架确实很灵活完全可以按照自己定义想要的业务需求,而且报错机制也非常优雅,在本节后也希望大家能动手去尝试一下各种各样不同的请求以及返回,下一小节会讲返回结果国际化高可用以及自动生成文档.</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+<h4><a href="/wikis/%5b7.2%5d-%e6%8a%8a%e5%ae%83%e7%8e%a9%e8%b5%b7%e6%9d%a5.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b7.4%5d-%e5%9b%bd%e9%99%85%e5%8c%96%e9%ab%98%e5%8f%af%e7%94%a8%e5%92%8c%e8%87%aa%e5%8a%a8%e7%94%9f%e6%88%90%e6%96%87%e6%a1%a3.html">下一章</a></h4>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid__cell">
+                <!-- TODO -->
+            </div>
+        </div>
+    </div>
+
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
+		<a href="http://www.itran.cc/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/9/69/b88bc92455dc1239f9a5bf8d72929.png"></a>
+		<a href="http://web-tools.phalapi.net/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/7/d0/88f523566c482296aecc43d185ca2.png"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell">
+			<h3>PhalApi (π框架)</h3>
+            <p>
+				<font size="3px">一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</font>
+				
+				<br />
+
+				<font size="2px">
+				友情链接： <a href="https://www.phalapi.net/" class="menu-item__link" target="_blank"><strong>PhalApi</strong></a>
+				| <a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a>
+				| <a href="https://www.itran.cc/" class="menu-item__link" target="_blank">艾翻译</a>
+				| <a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a>
+				| <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a>
+				| <a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a>
+
+				<br />
+
+				&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
+				</font>
+
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.15]-Redis队列处理异步任务 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi/tree/release">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流主群：421032344，副群：459352221</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://wiki.phalapi.net/" class="menu-item__link events-spec" target="_blank">文档(新)</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档(旧)</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="https://zb.oschina.net/service/736cc7c075dd6d0e" class="menu-item__link products-spec" target="_blank">增值服务</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>[PhalApi实战篇(1)]Redis队列处理异步任务</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>哈喽大家好呀!之前编写的PhalApi入门篇和进阶篇已经过去了好久了,在此之间也回答了很多小伙伴各种各样的问题,这里也希望吧里面一些问的比较多的和比较有趣的以及笔者在使用PhalApi一些新的体会,都提取出来为大家带来一些能够在实际开发中可以使用的技术或思想,那么我们就开始我们实战篇中的第一节 Redis队列处理异步任务</p>
+<p><strong>大家希望喵咪在PhalApi实战推出一些什么样的内容?可以私信我邮箱wenzhenxi@vip.qq.com</strong></p>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1.为什么需要队列</h2>
+<p>为什么需要队列?其实已经是一个老生常谈的一个问题了,队列有诸多好处比如:</p>
+<p>在项目中，将一些无需即时返回且耗时的操作提取出来，进行了异步队列处理，而这种异步队列处理的方式大大的节省了服务器的请求响应时间，从而提高了系统的吞吐量。 比较通俗易懂的解释就是 一个请求处理一些事情 A 业务耗时 30ms B业务 耗时 20ms 然后发邮件 耗时 50ms ,吧其中的发送邮件 写入队列 有一个专门负责发送邮件的程序接受这个队列的消息在吧邮件发送出去,这样这个请求原来要用100ms现在只需要50ms , 借助队列可以吧很多原本很消耗时间的操作单独有序处理</p>
+<p>队列软件也很多:RabbitMQ,KafKa这两款都是非常主流的队列软件PhalApi也有提供对应的扩展程序来去使用,但是需要使用它们的成本对相对高一些需要搭建很多复杂的组件,但是相对redis,redis虽然没有那么多丰富的功能工具但是它也是队列软件中的不二之选</p>
+<h2>2.理解Redis处理队列特点</h2>
+<p>对于PHP来说对Redis支持是特别好的,redis的单线程保障了队列不会应为并发的问题导致一条消息多人获取所有也是很适合做为队列传输,PhalApi不仅仅自带简单的Redis库笔者也在它的基础上封装了一个更为完善的redis库,如下:</p>
+<p><a href="http://git.oschina.net/dogstar/PhalApi-Library/tree/master/Redis?dir=1&amp;filepath=Redis">Redis · 暗夜在火星/PhalApi Library - 码云 - 开源中国</a></p>
+<p>队列主要由两部分组成一部分是客户端一部分是消费端,客户端负责提供消息消费端负责处理队列这样的一个形式</p>
+<p>在使用redis队列主要会使用到redis队列中的List类型,List类型可以从左右两边读取和写入数据,这样的形式就可以做到先入先出或者是后入先出这种队列模式</p>
+<h2>3.具体实践(基于PhalApi-Redis扩展)</h2>
+<p>客户端的使用比较简单只需要初始化Redis链接后向左边写入数据即可:</p>
+<p>客户端:</p>
+<pre><code>//redis链接
+DI()-&gt;redis = new Redis_Lite(DI()-&gt;config-&gt;get('app.redis.servers'));
+//写入队列左边
+DI()-&gt;redis-&gt;set_lPush(队列键名,值, 库名);</code></pre>
+<p>关键是消费端的用法,怎么让消费端一直不停的处理队列呢?很多童鞋应该已经想到了利用死循环不停的读取队列处理来解决及时处理的问题,但是这样又会带来一个新的问题,如果说队列空了死循环会不会一直高额的消耗CPU资源啊?由于这点就衍生出来两种具体的用法:</p>
+<h3>用法一</h3>
+<p>有的小伙伴就说了,这个还不简单吗?当队列里面没有内容了我就关掉消费端,然后使用crontab过一段时间再启动进行处理,这就没有所谓的死循环CPU消耗的问题了,这种解法如下:</p>
+<pre><code>while (true) {
+    // 读取队列右边
+    $msg = DI()-&gt;redis-&gt;get_rPop(队列键名, 库名);
+  if( !$msg ){
+      break;
+  }
+    // 处理逻辑
+  .....
+}</code></pre>
+<p>然后通过crontab进行定时任务即可</p>
+<h3>用法二</h3>
+<p>第二种用法是通过redis队列的另外一种机制来解决这类问题,相对于get_rPop还有提供一个方法get_brPop,我们可以看一下这个方法的描述<strong>读取队列右边 如果没有读取到阻塞一定时间</strong>这个阻塞时间是通过配置文件blocking字段来配置的,使用方式如下</p>
+<pre><code>while (true) {
+    // 读取队列右边
+    $msg = DI()-&gt;redis-&gt;get_brPop(队列键名, 库名);
+    // 处理逻辑
+  .....
+}</code></pre>
+<p>这种方法相对上面那种的好处是实时性最好,如果阻塞时间设置的是5秒等待了2秒有消息进来了就里面会进入处理模式</p>
+<p><strong>上述方式可以使用Supervisor进行常驻内存执行</strong></p>
+<h2>总结</h2>
+<p>本次实战篇为大家讲述了怎么使用Redis来处理队列来处理异步任务,以及队列有什么特点为什么使用redis队列,那么后续的实战篇也会为大家带来比较使用的PhalApi各项技术,如果大家有什么希望喵咪能够加入到实战篇的内容可以@我哦!</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:①群:421032344 ②群:459352221  欢迎大家的加入!</strong></p>
+<h4><a href="/wikis/">文档首页</a></h4>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid__cell">
+                <!-- TODO -->
+            </div>
+        </div>
+    </div>
+
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
+		<a href="http://www.itran.cc/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/9/69/b88bc92455dc1239f9a5bf8d72929.png"></a>
+		<a href="http://web-tools.phalapi.net/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/7/d0/88f523566c482296aecc43d185ca2.png"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell">
+			<h3>PhalApi (π框架)</h3>
+            <p>
+				<font size="3px">一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</font>
+				
+				<br />
+
+				<font size="2px">
+				友情链接： <a href="https://www.phalapi.net/" class="menu-item__link" target="_blank"><strong>PhalApi</strong></a>
+				| <a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a>
+				| <a href="https://www.itran.cc/" class="menu-item__link" target="_blank">艾翻译</a>
+				| <a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a>
+				| <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a>
+				| <a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a>
+
+				<br />
+
+				&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
+				</font>
+
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+</html>

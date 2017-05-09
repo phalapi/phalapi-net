@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.6]-小技巧和浅谈API适用范围以及入门篇总结 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi/tree/release">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流主群：421032344，副群：459352221</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://wiki.phalapi.net/" class="menu-item__link events-spec" target="_blank">文档(新)</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档(旧)</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="https://zb.oschina.net/service/736cc7c075dd6d0e" class="menu-item__link products-spec" target="_blank">增值服务</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-入门篇6(小技巧和浅谈API适用范围以及入门篇总结)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>本篇文章的目的在于把框架自带的一些好用,封装好的一些方便开发的类库简单的说一下,灵活使用可以提高开发效率,再就是因为在交流过程中有很多童鞋提出了一些关于什么样的项目怎么用API和web端怎么使用API这类的问题,我就我的理解把我的一些想法和大家交流一下,最后是对于入门篇做一下总结,以及对后面的一些教程做一下说明.</p>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1. 小技巧</h2>
+<p>在这里介绍的是一些比较基础是比如<strong>curl,log,和tools</strong>着一些基础的,关于<strong>cache,Cookie</strong>等一些会在后面进阶篇慢慢道来</p>
+<h3>1.1 curl请求类</h3>
+<p>其实在框架内部已经提供了Curl的请求类位置是在<strong>/Phalpi/Phalapi/CUrl.php</strong></p>
+<pre><code>// 构造方法接受参数为失败重试次数默认是1可以自己指定
+$curl = new PhalApi_CUrl(2);
+
+// 进行GET 返回请求结果
+$rs = $curl-&gt;get('http://phalapi.oschina.mopaas.com/Public/demo/?service=Default.Index');
+
+// 进行POST 返回请求结果
+$data = array('username' =&gt; 'dogstar');
+$rs = $curl-&gt;post('http://phalapi.oschina.mopaas.com/Public/demo/?service=Default.Index', $data);</code></pre>
+<h3>1.2 log日记类</h3>
+<p>在大部分时候都没办法实时知道报错信息,但是如果发生了错误我们需要记录起来,来提供给自己日后分析,或者是在运营环境中有个问题但是自己不是很确定可以通过debug日记的形式写入文件进行分析,框架有提供这方面的功能,在接口init.php中已经有下面这段话了</p>
+<pre><code>//日记纪录
+DI()-&gt;logger = new PhalApi_Logger_File(API_ROOT . '/Runtime', 
+    PhalApi_Logger::LOG_LEVEL_DEBUG | PhalApi_Logger::LOG_LEVEL_INFO | PhalApi_Logger::LOG_LEVEL_ERROR);</code></pre>
+<p>这样就已经注册了日记类<strong>API_ROOT . '/Runtime'</strong>这个是表示日记存放的路径(一定要保证有写入权限才能正常使用)使用如下</p>
+<pre><code>//error 系统异常类
+DI()-&gt;logger-&gt;error('fail to insert DB', $data);
+//对应的LOG
+2015-02-07 20:37:55|ERROR|fail to insert DB|{"name":"dogstar","password":"123456"}
+
+//info 业务纪录类
+DI()-&gt;logger-&gt;info('add user exp', array('name' =&gt; 'dogstar', 'before' =&gt; 10, 'addExp' =&gt; 2, 'after' =&gt; 12, 'reason' =&gt; 'help one more phper'));
+//对应的LOG
+2015-02-07 20:48:51|INFO|add user exp|{"name":"dogstar","before":10,"addExp":2,"after":12,"reason":"help one more phper"}
+
+//debug 开发调试类
+DI()-&gt;logger-&gt;debug('just for test', array('name' =&gt; 'dogstar', 'password' =&gt; '******'));
+//对应的LOG
+2015-02-07 20:37:55|DUBUG|just for test|{"name":"dogstar","password":"******"}</code></pre>
+<p>文件存放的文件路径一般为<strong>Runtime/log/201502(年月)/20150207(年月日).log</strong></p>
+<h3>1.3 tool工具类</h3>
+<p>工具类的路径在<strong>/Phalpai/Phalapi/Tool.php</strong>中目前里面提供了两个工具(IP地址获取,随机字符串生成)使用方法入下,自己会经常使用的工具都可以放进去</p>
+<pre><code>//实例化工具类
+$PhalApi_Tool = new PhalApi_Tool();
+
+//生成一个"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"组成的一个随机字符串根据输入的值决定长度
+$PhalApi_Tool-&gt;createRandStr(5);
+
+//获取请求的IP这里的IP是外网IP
+$PhalApi_Tool-&gt;getClientIp();</code></pre>
+<h2>2. 浅谈API适用范围</h2>
+<p>其实想谈谈这个的原因是应为有人有疑问,Api适用范围是不是只局限于APP,还有就是如果是用 phalapi 提供一个后台管理的web项目的话要怎么去做,在这里根据一些笔者本人的一些肤浅的了解谈一谈我的认为,分一下几个场景进行说明.</p>
+<h3>2.1 移动端</h3>
+<p>我认为排在第一位的应该是移动应用比如<strong>Android和IOS上面的应用通讯肯定是需要使用到API通讯</strong>的(基本上是首选,很少有看到其他非接口形式的).</p>
+<h3>2.1 提供服务(主要是平台类)</h3>
+<p>提供服务(主要是平台类)比如银行来说,提供的支付接口,付款接口等,还有就是一些外卖平台,团购平台都有自己的一套接入API接受数据(这一些可能会偏向高端一点)</p>
+<h3>2.1 长周期web项目</h3>
+<p>长周期web项目,为什么要叫做长周期web项目,因为短期的项目比如5天的一个抽奖活动我是觉得实在没有必要去做成接口通讯的形式,这种短周期的项目直接拿着静态页面加上MVC框架去实现来的是划算一点(因为API和web通讯成本还是比较大的),对于长周期的项目来说使用API是有好处的如下:</p>
+<p>1.前后端分离,后端提供API服务,前端进行请求展示,让前端专注做前端的事情,让后端专注做后端的事情.</p>
+<p>2.升级迭代可以有效的减小维护成本,当迭代升级的时候,如果是后端没有变动,只是前端进行变动了可以很好的分开工作量.(前端一样)</p>
+<p>3.分离之后规范更加清晰,API有API的一套完整的开发规范,前端也一样,就不会和MVC框架一样代码堆积在一个地方</p>
+<p>4.高并发web项目优化目标准确,优化空间大,对于API来说就是可以单点优化.</p>
+<p>当前也有他的缺点,前期工作量会有所增加,沟通成本增加,但是我认为他带来的好处是持续的</p>
+<p>还有一个重点就是怎么实现通讯,我现在在项目中前端是使用js进行请求通讯的,这是比较常用的,还有一种设想PHP提供接口,然后node.js或者其他语言进行请求然后渲染出html代码给到前端进行展示,这样可以解决安全问题,而且node.js不需要进行数据操作性能也是非常好的.</p>
+<h2>3. 入门篇总结</h2>
+<p>经过了一个月交流入门篇也就在这里结束了,在入门篇里面吧一些关于Phalapi的基本使用方式都过了一遍,我也希望大家能动手都操作一遍,当如入门篇讲的是比较基础的东西,经验老到的童鞋过一过就行了,在后面的进阶篇里面跟过的会讲到概念和思想性的东西,比如DI思想单例模式,三层的好处等,而在实战篇中会着重讲解如何运用到实际开发中,怎么多项目共用框架等一些比较实际的一些教程,也希望大家能够进一步关注,再一次感谢喜欢Phalapi框架的你们,你们的关注就是我的动力!</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+<h4><a href="/wikis/%5b7.5%5d-%e6%95%b0%e6%8d%ae%e5%ba%93%e6%93%8d%e4%bd%9c%e5%92%8cModel%e5%b1%82.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b7.7%5d-%e4%b8%89%e5%b1%82%e7%bb%93%e6%9e%84Api%2cDomain%2c%e5%92%8cModel.html">下一章</a></h4>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid__cell">
+                <!-- TODO -->
+            </div>
+        </div>
+    </div>
+
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
+		<a href="http://www.itran.cc/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/9/69/b88bc92455dc1239f9a5bf8d72929.png"></a>
+		<a href="http://web-tools.phalapi.net/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/7/d0/88f523566c482296aecc43d185ca2.png"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell">
+			<h3>PhalApi (π框架)</h3>
+            <p>
+				<font size="3px">一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</font>
+				
+				<br />
+
+				<font size="2px">
+				友情链接： <a href="https://www.phalapi.net/" class="menu-item__link" target="_blank"><strong>PhalApi</strong></a>
+				| <a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a>
+				| <a href="https://www.itran.cc/" class="menu-item__link" target="_blank">艾翻译</a>
+				| <a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a>
+				| <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a>
+				| <a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a>
+
+				<br />
+
+				&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
+				</font>
+
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+</html>

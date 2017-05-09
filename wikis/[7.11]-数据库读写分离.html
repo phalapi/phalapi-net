@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.11]-数据库读写分离 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi/tree/release">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流主群：421032344，副群：459352221</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://wiki.phalapi.net/" class="menu-item__link events-spec" target="_blank">文档(新)</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档(旧)</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="https://zb.oschina.net/service/736cc7c075dd6d0e" class="menu-item__link products-spec" target="_blank">增值服务</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-进阶篇5(数据库读写分离以及多库使用)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>读写分离是我们常用的一种解决方案,它可以解决大量读操作的时候数据库瓶颈的问题,我们在真正开发一个项目的过程中可能会遇一个接口或者一个操作中需要用到多个数据库操作的时候怎么办,今天的教程就从这个两个问题出来,来聊聊使用phalapi怎么解决这个问题.</p>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1. 读写分离</h2>
+<p>在我们的生活中无时无刻不面临着并发的问题,比如下班高峰交通问题,人们用了红绿灯来解决的一部分问题<strong>(但是很痛苦这个就和查询的时候阻塞一样的,10秒做update操作,10秒做select操作一样的)</strong>,那么人们有想到了一个方法高架,高架的路线是和正常的路线一致的<strong>(数据相同)</strong> ,高架分两条路而且一条路上的车不能到另外一条路上<strong>(读写分离)</strong> 这样就解决了我们这类常规并发的问题</p>
+<p>其实看起来上面这种解决方案是比较好的其实并不是这样的,有两条路但是其实它的宽度是不一样的,我们这里把一个叫做写路,一个叫做读路,我们如果要做一个读路并且把他成倍的变宽是一件很简单的事情(也就是多从库),但是我们要建立一条写路可以,但是我们要把这条写路变宽是比较困难的,我们一般不这样做.</p>
+<h3>1.1 mysql主从配置</h3>
+<p>我是使用了阿里云的多读库服务,这里引用一下<strong>百度经验</strong>的mysql主从处理</p>
+<p><strong>----------------------------------------------------------------------------------------------------</strong></p>
+<p>MYSQL【一台主机多个实例的主从配置】</p>
+<p>1、建立账号</p>
+<p>进入mysql数据库，创建一个用于从库备份的账号</p>
+<pre><code>mysql&gt;GRANT REPLICATION SLAVE ON *.* TO 'slave_test'@'10.19.194.57' IDENTIFIED BY 'Password@123456';
+
+mysql&gt;FLUSH PRIVILEGES;   ---刷新</code></pre>
+<p>该命令详情参考grant创建用户命令</p>
+<p>2、如果已经有一个实例在运行（因为开始已经安装了mysql，所以有一个默认的），那么再启动一个实例，方法如下：</p>
+<pre><code>（1）shell&gt;cd /usr/local/mysql/
+
+（2）shell&gt;mkdir -pv /data/mysql2
+
+（3）shell&gt;chown -R mysql.mysql /data/mysql2
+
+（4）shell&gt;./scripts/mysql_install_db  --user=mysql  --datadir=/data/mysql2  这个为另外一个目录，该步骤意味初始化目录，并创建一个实例</code></pre>
+<p>3、配置/etc/my.cnf，配置方法如下</p>
+<pre><code>[mysqld_multi]
+
+mysqld = /usr/local/mysql/bin/mysqld_safe
+
+mysqladmin = /usr/local/mysql/bin/mysqladmin
+
+user = root
+
+[mysqld] ## 本来mysql配置
+
+server-id = 1
+
+port = 3306
+
+socket = /data/mysql/mysql.sock
+
+datadir = /data/mysql
+
+pid-file = /data/mysql/wzj.pid
+
+log-error = /data/mysql/wzj.err
+
+log-bin = /data/mysql/log/bin-log
+
+log-bin-index = /data/mysql/log/mysql-bin.index
+
+user = mysql
+
+[mysqld2]  ##创建实例配置
+
+server-id = 2
+
+port = 3307
+
+socket = /tmp/mysql2.sock
+
+datadir = /data/mysql2/                         //mysql2存储数据库的地方，也就是实例
+
+pid-file = /data/mysql2/mysql2.pid       //mysql2的pid文件记录
+
+log-error = /data/mysql2/mysql2.err     //为错误日记文件的地方
+
+user = mysql
+
+#master-host =10.19.194.57
+
+#master-user ='wzj_slave_test'
+
+#master-pass ='Password@123456'
+
+#master-port =3306
+
+#master_connect_retry=60
+
+#replicate-do-db =mysql_wzj
+
+#replicate-ignore-db=mysql--------该段已注释，因为新版本中，需要用CHANGE MASTER TO 命令去设置</code></pre>
+<p>【注意】：以上文件的目录，皆为系统创建，并非手动去创建，设置配置文件后，重启mysql，文件就会自动创建</p>
+<p>4、重启，然后可以使用msyql_multi命令启动实例，再查看一下master主库的状态，其中Binlog_Do_DB表示要备份的数据库，Binlog_Ignore_DB表示不备份的数据库</p>
+<pre><code>shell&gt;/etc/rc.d/init.d/mysqld start/stop/restart
+
+shell&gt;/usr/local/mysql/bin/mysqld_multi start 1-2  启动实例 （1-2表示启动1、2两个实例）
+
+shell&gt;mysql master： mysql -P 3306 -u root -p -S /data/mysql/mysql.sock (密码：1)
+
+mysql&gt;show master status; or show master status \G;   显示主库的状态，其中File 和Position 数值要记住，下面的mysql语句要用到，用于设置从库</code></pre>
+<p>5、进入从库，并设置从库的一些参数</p>
+<pre><code>shell&gt;slave:mysql -P 3307 -u root -p -S /tmp/mysql2.sock （密码：回车）   ---另外开个远程
+
+mysql&gt;CHANGE MASTER TO
+
+mysql&gt; MASTER_HOST='10.19.194.57',  ---主库的地址
+
+mysql&gt;MASTER_USER='wzj_slave_test',  ---主库用户
+
+mysql&gt;MASTER_PASSWORD='Password@123456',   ---主库的密码
+
+mysql&gt;MASTER_LOG_FILE='bin-log.000013' ,  ---此参数为master status中的File值
+
+mysql&gt;MASTER_LOG_POS=120;   ---此数值为Position数值</code></pre>
+<p>6、设置好后，运行start slave，如果下图红线地方是YES，则成功，否则，查看配置文件是否有错或有误。</p>
+<pre><code>slave_io_running  ：yes
+
+slave_sql_running :yes</code></pre>
+<p>7、可以查看从库下mysql进程信息</p>
+<pre><code>mysql&gt;show processlist;</code></pre>
+<p>8、测试</p>
+<p>在主库上面建新的数据库，然后在从库中查看是否有同步~</p>
+<p><strong>----------------------------------------------------------------------------------------------------</strong></p>
+<h3>1.2 开始实现</h3>
+<p>思想我们已经讲完了相信大家已经多多少少的理解了,但是我们要如何在phalapi去实现读写分离的操作</p>
+<p>1.首先我们要在初始化一个数据库连接,我们需要建立一个配置文件read.php和dbs.php一样只是连接这读库的配置项,并且注册</p>
+<pre><code>//读库
+DI()-&gt;read = function (){
+    $debug = !empty($_GET['__sql__']) ? true : false;
+    return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('read'), $debug);
+};</code></pre>
+<p>2.对PhalApi_Model_NotORM文件中的getORM进行修改</p>
+<pre><code>/**
+ * 快速获取ORM实例，注意每次获取都是新的实例
+ */
+protected function getORM($id = NULL){
+    $table = $this-&gt;getTableName($id);
+    if($id == 'read'){
+        return DI()-&gt;read-&gt;$table;
+    }
+    return DI()-&gt;notorm-&gt;$table;
+}</code></pre>
+<p>3.当我们在model层使用<strong>$this-&gt;getORM('read')</strong> 的时候就会使用读库,使用<strong>$this-&gt;getORM()</strong> 会默认使用写库</p>
+<pre><code>//select操作
+$this-&gt;getORM('read')-&gt;select('*')-&gt;where('aId', $aId)-&gt;fetchAll();
+//insert,update,delete操作
+$this-&gt;getORM()-&gt;insert();</code></pre>
+<h2>2. 多库处理</h2>
+<p>有些人会问,为什么需要进行多库处理,所有的表放到一个库不就好了吗?</p>
+<p>在原来重构别人外包项目是遇到过一个库100来张表,没有备注没有文档,几乎没法看,在我自己做一个比较大的项目的时候我也是做了一些考虑把库根据业务分解成一个一个子库,可以很好的避免表太多结构混乱的问题,而且我们可以随时把任何一个子库移植出去,当我一个mysql承载了很多压力,我可以把这个mysql上面的子库分解到多个mysql上面来实现压力分流.</p>
+<p>看了上面的这一段介绍相信大家不言而喻的了解了这样做的好处,但是如何实现呢,聪明的大家可能在想不久和上面一样在多注册一个数据库连接嘛,其实大家说对了一半,我们是需要注册一个连接,但是我们需要一种统一的规范来使用这类操作</p>
+<p>1.初始化数据库连接,一样的复制一份dbs.php为developers.php配置连接开发者库</p>
+<pre><code>//开发者库
+DI()-&gt;developers = function (){
+    $debug = !empty($_GET['__sql__']) ? true : false;
+    return new PhalApi_DB_NotORM(DI()-&gt;config-&gt;get('developers'), $debug);
+};</code></pre>
+<p>2.对PhalApi_Model_NotORM文件中的getORM进行修改</p>
+<pre><code>/**
+ * 快速获取ORM实例，注意每次获取都是新的实例
+ */
+protected function getORM($id = NULL){
+    $table = $this-&gt;getTableName($id);
+    if($id == 'developers'){
+        return DI()-&gt;developers-&gt;$table;
+    }
+    return DI()-&gt;notorm-&gt;$table;
+}</code></pre>
+<p>3.在之前我们不是建立了我们的公用<strong>General</strong>文件我们在构建这样的结构</p>
+<pre><code>--General                   //公用目录
+    --developers                //通用项目库目录
+        --Domain                //项目库Domain层
+        --Model             //项目库Model层</code></pre>
+<p>然后我们在这里的Model进行的操作都是使用<strong>$this-&gt;getORM('developers')</strong>进行操作</p>
+<p>这样规范的好处就是在与<strong>共享</strong>和<strong>模块化</strong> 让正常的一个Model层不会使用到任何不同库的操作,我们多个项目用到其他的一个库可以进行代码复用,</p>
+<h2>3. 总结</h2>
+<p>其实实现今天介绍的两种解决问题的方案还有很多很多,不同的业务可能需求不同实现也就不一样希望今天的介绍对大家有帮助,后面两篇教程将基于我写的两个拓展分别介绍分表分库操作和redis实际的使用,希望大家进一步关注!</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+<h4><a href="/wikis/%5b7.10%5d-notorm%e8%bf%9b%e9%98%b6%e4%bb%a5%e5%8f%8a%e4%ba%8b%e5%8a%a1%e6%93%8d%e4%bd%9c.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b7.12%5d-%e8%a7%a3%e5%86%b3%e5%a4%a7%e9%87%8f%e6%95%b0%e6%8d%ae%e5%ad%98%e5%82%a8%e6%95%b0%e6%8d%ae%e5%ba%93%e5%88%86%e8%a1%a8%e5%88%86%e5%ba%93%e6%8b%93%e5%b1%95.html">下一章</a></h4>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid__cell">
+                <!-- TODO -->
+            </div>
+        </div>
+    </div>
+
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
+		<a href="http://www.itran.cc/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/9/69/b88bc92455dc1239f9a5bf8d72929.png"></a>
+		<a href="http://web-tools.phalapi.net/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/7/d0/88f523566c482296aecc43d185ca2.png"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell">
+			<h3>PhalApi (π框架)</h3>
+            <p>
+				<font size="3px">一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</font>
+				
+				<br />
+
+				<font size="2px">
+				友情链接： <a href="https://www.phalapi.net/" class="menu-item__link" target="_blank"><strong>PhalApi</strong></a>
+				| <a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a>
+				| <a href="https://www.itran.cc/" class="menu-item__link" target="_blank">艾翻译</a>
+				| <a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a>
+				| <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a>
+				| <a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a>
+
+				<br />
+
+				&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
+				</font>
+
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.7]-三层结构Api,Domain,和Model | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi/tree/release">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流主群：421032344，副群：459352221</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://wiki.phalapi.net/" class="menu-item__link events-spec" target="_blank">文档(新)</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档(旧)</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="https://zb.oschina.net/service/736cc7c075dd6d0e" class="menu-item__link products-spec" target="_blank">增值服务</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-进阶篇1(Api,Domain,和Model)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>本小节已经步入了进阶篇,在进阶篇中会着重谈论一些框架中运用的一些好的思想并且进行解读,本小节主要是讲解在Phalapi框架中推荐使用的三层结构Api+Domain+Model将从各个角度和整体角度进行讲解.</p>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1. Api+Domain+Model</h2>
+<p>其实这样的三层结构和java中的web+service+dao比较像只是说web和api一个进行页面显示一个不进行页面显示这个区别,在着重讲一下这三层在Phalapi中分工是怎么样的,他们分别担当者什么样的角色,需要做什么样的事情.</p>
+<h3>1.1 Api层</h3>
+<p>为什么说Api层像java中的web层呢,因为他们有一个共同的特性就是接受请求和返回结果.只不过java中没有表现得那么强烈,它会通过控制器把请求转发到service层作处理,并将处理结果在页面展示,所以Api更像担当控制器的作用.</p>
+<p>Api层中需要做的事情如下:</p>
+<ol>
+<li>
+<p>注册接口/定义接口和控制请求参数</p>
+<p>这是首先要做的事情,和在web中的url一样,就是添加需要接受的参数以及对参数进行验证,如下:</p>
+<pre><code>public function getRules(){
+    return array(
+        'index' =&gt; array(   //定义接口名
+            //添加参数验证机制
+            'username' =&gt; array('name' =&gt; 'username', 'default' =&gt; 'PHPer',),
+        ),
+);</code></pre>
+<p>}</p>
+</li>
+<li>
+<p>进行业务/逻辑的拼接</p>
+<p>在这里进行业务/逻辑拼接,比如说是查询列表接口需要做两件事情,第一验证用户(是否存在或是否有权限),第二查询出应该返回的列表,应该是如下样式:</p>
+<pre><code>//验证用户
+$Domain_Developers = new Domain_Developers();
+$Domain_Developers-&gt;checkDev($this-&gt;dId);
+//获取用户的APP列表
+$Domain_App = new Domain_App();
+$Domain_App-&gt;getMyAppList($this-&gt;dId);</code></pre>
+</li>
+<li>
+<p>返回结果</p>
+<p>返回结果就比较简单了,就是把你经过上面拼接处理后获得的数据返回,如下:</p>
+<pre><code> return $data;</code></pre>
+</li>
+</ol>
+<h3>1.2 Domain层</h3>
+<p>Domain层主要负责的是具体的业务实现,如用户验证,一个Domain方法就是一个小的业务具体实现(注意尽量把业务划分得细一点方便通用)</p>
+<pre><code>/**
+* 用户验证
+*/
+public function checkDev($dId){
+    //通过ID 获取用户
+    $Model_Developers = new Model_Developers();
+    $dev              = $Model_Developers-&gt;checkDevdId($dId);
+    //用户不存在处理
+    if(!$dev){
+        throw new PhalApi_Exception_BadRequest(T('No Dev'), -1);
+    }
+}</code></pre>
+<h3>1.3 Model层</h3>
+<p>Model层其实无需多讲,也就是把数据库操作单独提炼出来统一处理,如下:</p>
+<pre><code>/**
+ * 验证用户存不存在
+ */
+public function checkDevdId($dId){
+    return $this-&gt;getORM()-&gt;select('dId')-&gt;where('dId', $dId)-&gt;fetch();
+}</code></pre>
+<h2>2. 三层结合使用的好处</h2>
+<ol>
+<li>
+<p>结构清晰,互不干扰</p>
+<p>就我个人感觉来说,在实际开发中使用这样的三层结构带来的最大的好处在于结构清晰,为什么这么说呢,因为每一层需要做的事情都是非常独立的,你永远不会在API层中看到数据操作的代码,所以在排查问题的时候,如果是数据出了问题,肯定不会去API层里面去找,这样就非常方便错误的定位,再者就是代码可读性非常高,相对于mvc框架来说这样的好处是非常明显的.</p>
+</li>
+<li>
+<p>高度解耦,灵活高可用</p>
+<p>带来的第二个很重要的好处就是解耦和高可用,高可用体现在Api可以重复利用Domain,Domain可以重复利用Model,这样可以减少很多不必要的代码量.如果相互的关系仅仅只是拼接(除非是结果会互相影响)的情况下就实现了解耦.</p>
+</li>
+<li>
+<p>分工合作,提高效率</p>
+<p>在有这样的一套规范之后在分工合用时,对方不需要去看你的代码具体实现了什么,只需要看你这个方法干了什么,直接拿起来用就可以了,当然是在业务划分成小块的情况下,而且可以很明确的划分出来模块,当你需要用到对方的模块的时候只需要让对方提供即可,这样可以增加模块的专注性,从而提高合作开发的效率.</p>
+</li>
+</ol>
+<h2>3. 总结</h2>
+<p>其实在刚刚接触这个框架的时候,我也是特别不能理解这样划分的作用,在后面的开发和别人的交流中进行了一些尝试后,发现这样用起来确实有很多的好处,希望今天的教程能让大家理解这样的一种规范可以带来很多的好处,并且自己去尝试和使用.</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+<h4><a href="/wikis/%5b7.6%5d-%e5%b0%8f%e6%8a%80%e5%b7%a7%e5%92%8c%e6%b5%85%e8%b0%88API%e9%80%82%e7%94%a8%e8%8c%83%e5%9b%b4%e4%bb%a5%e5%8f%8a%e5%85%a5%e9%97%a8%e7%af%87%e6%80%bb%e7%bb%93.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b7.8%5d-DI%e4%be%9d%e8%b5%96%e6%b3%a8%e5%85%a5%e5%92%8c%e5%8d%95%e4%be%8b%e6%a8%a1%e5%bc%8f.html">下一章</a></h4>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid__cell">
+                <!-- TODO -->
+            </div>
+        </div>
+    </div>
+
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
+		<a href="http://www.itran.cc/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/9/69/b88bc92455dc1239f9a5bf8d72929.png"></a>
+		<a href="http://web-tools.phalapi.net/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/7/d0/88f523566c482296aecc43d185ca2.png"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell">
+			<h3>PhalApi (π框架)</h3>
+            <p>
+				<font size="3px">一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</font>
+				
+				<br />
+
+				<font size="2px">
+				友情链接： <a href="https://www.phalapi.net/" class="menu-item__link" target="_blank"><strong>PhalApi</strong></a>
+				| <a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a>
+				| <a href="https://www.itran.cc/" class="menu-item__link" target="_blank">艾翻译</a>
+				| <a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a>
+				| <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a>
+				| <a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a>
+
+				<br />
+
+				&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
+				</font>
+
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+</html>

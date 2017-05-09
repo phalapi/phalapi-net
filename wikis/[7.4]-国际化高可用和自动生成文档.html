@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.4]-国际化高可用和自动生成文档 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi/tree/release">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流主群：421032344，副群：459352221</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://wiki.phalapi.net/" class="menu-item__link events-spec" target="_blank">文档(新)</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档(旧)</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="https://zb.oschina.net/service/736cc7c075dd6d0e" class="menu-item__link products-spec" target="_blank">增值服务</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-入门篇4(国际化高可用和自动生成文档)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>在本小节主要讲解如何使用phalapi框架自带的国际化和文档自动生成,以及这样做可以的优点和好处和能解决哪方面的问题</p>
+<p>附上:</p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1. 国际化</h2>
+<p>说道国际化大家应该不陌生,对于显示端(web,andorid,ios)来说就是对显示的内容可以任意切换语言,</p>
+<p>但对于服务端来说就是对于返回值可以任意切换语言,来达到给国外友人去使用这种业务,</p>
+<p>虽然说这种需求是少数,但是在框架内部有提供良好处理国际化这种业务的工具,让我们先看看具体是什么样子的</p>
+<p>大家在init.php下面可以看到这样一句话</p>
+<pre><code>//翻译语言包设定
+SL('zh_cn');</code></pre>
+<p>这句话是指向了<strong>/Language/zh_cn/common.php</strong>文件,打开这个文件可以发现这样一组对照关系</p>
+<pre><code>return array(
+    'Hi {name}, welcome to use PhalApi!' =&gt; '{name}您好，欢迎使用PhalApi！',
+    'user not exists' =&gt; '用户不存在',
+);</code></pre>
+<p>我们看看自带的Demo例子里面有使用到第一个,使用方法是这样的</p>
+<pre><code> 'content' =&gt; T('Hi {name}, welcome to use PhalApi!', array('name' =&gt; $this-&gt;username)),</code></pre>
+<p>大家是不是感觉突然之间发现了什么,对的就是使用T方法我们看一下T方法的注释</p>
+<pre><code>/**
+ * 快速翻译
+ * @param string $msg 待翻译的内容
+ * @param array $params 动态参数
+ */</code></pre>
+<p>这里的$msg 也就是在common.php中的key比如<strong>user not exists</strong></p>
+<p>$params参数是用来替换key里面用{name}括弧括起来的参数的传递一个数组key就和括弧里面的参数相同value就是你需要显示的类容</p>
+<p>是不是感觉简单易用啊,那我们动手实验一下我们把zh_cn/common.php加入一条对照</p>
+<pre><code>'Login success'                      =&gt; '登录成功',</code></pre>
+<p>在en/common.php也加入一条数据</p>
+<pre><code>'Login success'                      =&gt; 'Login success1',</code></pre>
+<p>我们修改Default.index接口如下</p>
+<pre><code>public function index() {
+    return T('Login success');
+}</code></pre>
+<p>我们看能得到什么结果</p>
+<p><img src="http://i.imgur.com/hmTSNn5.png" alt="" /></p>
+<p>那我们把init.php中的<strong>SL('zh_cn');</strong>改成<strong>SL('en');</strong>会有什么结果呢</p>
+<p><img src="http://i.imgur.com/uTICMSq.png" alt="" /></p>
+<p>就能得到我们在<strong>en/common.php</strong>中写下的<strong>Login success1</strong>这样就可以轻易的切换返回语言从而实现国际化</p>
+<p>但是它带来的好处不仅如此,还有易于修改和高可用这两点好处</p>
+<p>先说第一点易于修改:我在原来刚刚开始做项目的时候每个接口里面返回值全是写死的,比如<strong>用户不存在</strong>这种等等的错误返回,当要修改的时候我们面临了一个问题全局替换,这样是很不可取的所以后面就统一成了一个统一的文件来存放返回结果,当我们需要把<strong>用户不存在</strong>修改成<strong>请确认用户的真实性</strong>这样的业务的时候,我们只需要修改一个统一的文件</p>
+<p>好处之二就是高可用,高可用的表现又有两种一种是上面所说的项目内的复用,第二种就是新项目的复用,当你开始一个新项目的时候其实已经有很多返回是通用的了,那么你就可以直接使用或者是拷贝过来,很多重复的工作量就可以省去</p>
+<h2>2. 文档自动生成</h2>
+<p>大家可以发现和index.php以及init.php并行的还有一个checkApiParams.php一直没有用到,当我们试着去访问一下</p>
+<p><img src="http://i.imgur.com/etj5eHV.png" alt="" /></p>
+<p>看到了这样的页面,访问这个文件的时候和访问接口一样的默认访问了Default.index的文档页面也有说明</p>
+<p><img src="http://i.imgur.com/8qak4AZ.png" alt="" /></p>
+<p>它的机制是通过接口文件上的注释生成的返回结果</p>
+<pre><code>/**
+ * 默认接口服务
+ * @return string title 标题
+ * @return string content 内容
+ * @return string version 版本，格式：X.X.X
+ * @return int time 当前时间戳
+ */</code></pre>
+<p>剖析一下<strong>@return string title</strong> 标题 第一个是必要参数<strong>@return</strong>后面接着一个空格(千万不能多空格否则会失效)返回类型在接着一个空格返回名称</p>
+<p>请求参数会按照接口文档中的<strong>getRules</strong>生成一些限定条件会自动生成说明需要加上<strong>'desc' =&gt; 说明就能生成</strong>大家可以试着访问一下user.getBaseInfo接口文档就能看到请求参数是有说明的</p>
+<p>使用自动生成文档的好处在于会时时更新不必在开发过程中要取维护接口文档而烦恼,还有一点就是容错高因为是事实的所以不会出现请求参数接口和文档不同步的情况所以很推荐使用,但是对于返回结果来说需要手工维护不过也比维护文档来的方便,而且不用下载网上直接看,</p>
+<p>其实大家看到/Public/demo/listAllApis.php里面这个相当于一个导航访问<a href="http://localhost/Public/demo/listAllApis.php" title="http://localhost/Public/demo/listAllApis.php"><a href="http://localhost/Public/demo/listAllApis.php">http://localhost/Public/demo/listAllApis.php</a></a>可以看到以下结果</p>
+<p><img src="http://i.imgur.com/GjXtt3P.png" alt="" /></p>
+<p>对于这个文件可以自定义成自己的文档入口文件,可以自己划分模块然后把接口文档的地址写上去名称和说明这样也不需要手动在url里面去输入接口名称了</p>
+<p><strong>注:</strong>在这里有一个坑,如果要使用自动生成文档的话需要关掉一些PHP缓存拓展,因为这些拓展在缓存的时候会<strong>去除掉注释之后在缓存</strong>会导致返回结果无法生成,比如opcache.xcache这类的拓展都会导致此类问题</p>
+<h2>3. 总结</h2>
+<p>本小节主要讲解了一下如何使用国际化使用的好处,以及运用官方工具生成及时文档,在下一章节我们会讲解激动人心的数据库操作希望大家能持续关注!</p>
+<p>注:笔者能力有限有说的不对的地方希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid__cell">
+                <!-- TODO -->
+            </div>
+        </div>
+    </div>
+
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
+		<a href="http://www.itran.cc/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/9/69/b88bc92455dc1239f9a5bf8d72929.png"></a>
+		<a href="http://web-tools.phalapi.net/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/7/d0/88f523566c482296aecc43d185ca2.png"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell">
+			<h3>PhalApi (π框架)</h3>
+            <p>
+				<font size="3px">一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</font>
+				
+				<br />
+
+				<font size="2px">
+				友情链接： <a href="https://www.phalapi.net/" class="menu-item__link" target="_blank"><strong>PhalApi</strong></a>
+				| <a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a>
+				| <a href="https://www.itran.cc/" class="menu-item__link" target="_blank">艾翻译</a>
+				| <a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a>
+				| <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a>
+				| <a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a>
+
+				<br />
+
+				&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
+				</font>
+
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+</html>

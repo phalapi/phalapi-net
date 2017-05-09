@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.8]-DI依赖注入和单例模式 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi/tree/release">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流主群：421032344，副群：459352221</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="http://wiki.phalapi.net/" class="menu-item__link events-spec" target="_blank">文档(新)</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档(旧)</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="https://zb.oschina.net/service/736cc7c075dd6d0e" class="menu-item__link products-spec" target="_blank">增值服务</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-进阶篇2(DI依赖注入和单例模式)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar,为我们提供了这样一个优秀的开源框架.</em></strong></p>
+<p>离上一次更新过去了快两周,在其中编写了一个关于DB分表分库解决大数据量的拓展,有兴趣的童鞋可以了解了解.废话不多说,本小节在于解释一下在PhalApi框架中两个比较好的思想,单例模式和依赖注入.</p>
+<p>附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1. 单例模式</h2>
+<p>单例模式对于长期进行过面向对象编程的童鞋应该不算陌生,对学习php的童鞋也应该有听过,这里简单的聊一聊单例模式它到底是一个怎么样的东东,解决了怎么样的问题,并且在PhalApi中它是如何实现的.</p>
+<p>单例单例,所谓单例也就是保证一个类仅有一个实例，并提供一个访问它的全局访问点,这就是单例,不难看出他的好处：资源利用少，因为只有一个,大家都是知道要使用一个类必须要实例他，也就是new，在每次new一个对象的时候都会在内存中生成一块区域来存放这个实例,如果在程序一次运行中使用了很多的new实例化了同一个对象,那就比较消耗资源了,但是如果是通用一个使用全局变量<strong>global</strong>程序又会显得不那么优雅而且会很乱,在这种情况下，单例模式就产生了.</p>
+<p>单例模式是一个很好的解决方案，既可以全局通用,又不必担心占用过多的资源,且非常优雅。我们来一起看看在PhalApi中是如何实现单例模式的:</p>
+<pre><code>//大家看到我们常用的DI方法内部实现的是PhalApi_DI中的静态方法one方法
+function DI() {
+    return PhalApi_DI::one();
+}</code></pre>
+<p>然后我们看向one方法内部</p>
+<p>每当请求过来时先验证静态变量instance是否已被类初始化赋值，若无，则会在内部去实例化<strong>PhalApi_DI</strong>类，然后赋值给<strong>$instance</strong>并返回,若有，则当下次请求过来时，直接返回已实例化的对象。简言之，PhalApi框架所有的地方使用的DI方法，其实都是返回同一个对象实例,在内存中只存在一块区域,代码如下:</p>
+<pre><code>public static function one(){
+    if(self::$instance == NULL){
+        self::$instance = new PhalApi_DI();
+        self::$instance-&gt;onConstruct();
+    }
+
+    return self::$instance;
+}</code></pre>
+<h2>2. 依赖注入</h2>
+<p>依赖注入又称之为<strong>&quot;控制反转&quot;</strong>,如果是熟悉javaweb开发的<strong>spring</strong>框架应该有比较深的感触,在这里也不往深的讲,就简单讲解一下PhalApi中DI依赖注入的实现，以便让大家了解这种设计模式实现原理以及自此基础上实现的惰性加载机制.</p>
+<h3>2.1 DI依赖注入实现</h3>
+<p>大家在PhalApi中常用的<strong>DI()</strong>方法,也就是采用我们上面所谓的单例模式,我们每次使用DI()就是在使用<strong>PhalApi_DI</strong>类,其实我们依赖注入的关键也就是在PhalApi_DI之中</p>
+<p>先来讲一下他的一个实现方式再来讲具体实现,这里举个例子:</p>
+<pre><code>//配置
+DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');</code></pre>
+<p>其实在内部有一个数组,它把<strong>config</strong>作为了key,把<strong>new PhalApi_Config_File(API_ROOT . '/Config')</strong>作为了value，然后保存了起来。当我们下一次使用<strong>DI-&gt;config-&gt;get()</strong>的时候，它就会根据key值config拿出开始new好的类,所以可以说<strong>config操作是依赖于DI()</strong>,而且在使用DI()-&gt;config的时候永远都是在使用同一个实例,减少资源的消耗.</p>
+<p>有的童鞋就好奇了为什么DI()-&gt;config会存到数组里而在需要的时候会拿出来？感兴趣的童鞋可以百度一下魔法方法<strong><strong>set和</strong>get</strong></p>
+<pre><code>/**大家可以看到这是PhalApi_DI中的魔法方法__set
+ * 也就是当使用DI()-&gt;config = new PhalApi_Config_File(API_ROOT . '/Config');的时候
+ * 获得的name值就是config,获得的value也就是new PhalApi_Config_File(API_ROOT . '/Config');
+ */get同理,在内部实现都是调用了内部get和set方法
+public function __set($name, $value){
+    $this-&gt;set($name, $value);
+}
+
+public function __get($name){
+    return $this-&gt;get($name, NULL);
+}</code></pre>
+<p>看完之后大家是不是觉得很简单啊,大家以后也可以在设计自己的类的时候采用这种灵活的魔法方法实现.</p>
+<h3>2.2 惰性加载</h3>
+<p>在PhalApi中的DI()方法也提供惰性加载,惰性加载如字意也就是当类没有被使用到的时候不会被加载,这样的操作也是为了避免浪费不必要的资源,当我们不使用的时候永远不会去实例化，只有当你使用到的时候才会去实例化。接下来，我们来看看是如何实现的.</p>
+<pre><code>//当我们执行以下语句的时候,在依赖注入的时候存的是value值是字符串的test
+DI()-&gt;test = 'test';
+
+//使用DI()-&gt;test-&gt;test();的时候会使用到PhalApi中的get方法,在get方法中有一段代码
+$this-&gt;data[$key] = $this-&gt;initService($this-&gt;data[$key]);
+
+//在initService方法内部验证了value是字符串就实例化了再返回
+
+if($config instanceOf Closure){
+    $rs = $config();
+}elseif(is_string($config) &amp;&amp; class_exists($config)){
+    $rs = new $config();
+    if(is_callable(array($rs, 'onInitialize'))){
+        call_user_func(array($rs, 'onInitialize'));
+    }
+}else{
+    $rs = $config;
+}</code></pre>
+<h2>3. 总结</h2>
+<p>在本节中简单的讲解了关于单例模式,依赖注入以及惰性加载,这几种设计模式都是常用的，能够减少资源利用率,希望大家看了这篇介绍能够亲自地去体验一下PhalApi中的这几种模式。在下一小节就讲解如何构建自己的拦截器,希望大家能够继续关注!</p>
+<p>注:笔者能力有限，有说的不对的地方，希望大家能够指出,也希望多多交流!</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+<h4><a href="/wikis/%5b7.7%5d-%e4%b8%89%e5%b1%82%e7%bb%93%e6%9e%84Api%2cDomain%2c%e5%92%8cModel.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b7.9%5d-%e8%87%aa%e5%8a%a8%e5%8a%a0%e8%bd%bd%e5%92%8c%e6%8b%a6%e6%88%aa%e5%99%a8.html">下一章</a></h4>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid__cell">
+                <!-- TODO -->
+            </div>
+        </div>
+    </div>
+
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
+		<a href="http://www.itran.cc/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/9/69/b88bc92455dc1239f9a5bf8d72929.png"></a>
+		<a href="http://web-tools.phalapi.net/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/7/d0/88f523566c482296aecc43d185ca2.png"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell">
+			<h3>PhalApi (π框架)</h3>
+            <p>
+				<font size="3px">一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</font>
+				
+				<br />
+
+				<font size="2px">
+				友情链接： <a href="https://www.phalapi.net/" class="menu-item__link" target="_blank"><strong>PhalApi</strong></a>
+				| <a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a>
+				| <a href="https://www.itran.cc/" class="menu-item__link" target="_blank">艾翻译</a>
+				| <a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a>
+				| <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a>
+				| <a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a>
+
+				<br />
+
+				&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
+				</font>
+
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+</html>
