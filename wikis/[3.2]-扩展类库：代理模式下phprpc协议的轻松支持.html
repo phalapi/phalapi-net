@@ -44,7 +44,7 @@
 					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
     				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
 					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
-					<li class="menu-item"><a href="https://zb.oschina.net/service/736cc7c075dd6d0e" class="menu-item__link products-spec" target="_blank">增值服务</a></li>
+					<li class="menu-item"><a href="/donate.html" class="menu-item__link about-us-spec" target="_blank">捐赠</a></li>
 					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
 				</ul>
 			</div>
@@ -65,7 +65,7 @@
 <p>在需要使用phprpc协议进行接口调用的项目中，我们可以快速利用此扩展类库。并且你会发现，服务端的接口已有的代码不需要做任何改动，只需要增加此扩展包和添加一个新入口便可完美切换。特别在项目中途BOSS说我们要提高接口调用的安全性而改用phprpc协议时。  </p>
 <h2>3.2.2 安装</h2>
 <h3>(1)扩展包下载</h3>
-<p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>PHPRPC</strong> 微信包，如使用：</p>
+<p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>PHPRPC</strong>，如使用：</p>
 <pre><code class="language-javascript">git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
 <p>然后把 <strong>PHPRPC</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
 <pre><code class="language-javascript">cp ./PhalApi-Library/PHPRPC/ ./PhalApi/Library/ -R</code></pre>
@@ -138,7 +138,7 @@ array(3) {
 <h3>(1)调用方式的改变</h3>
 <p>首当其冲的就是调用方式的改变，但值得开心的是，phprpc对很多语言都有支持。具体可以查看phprpc官网。</p>
 <h3>(2)POST参数传递方式的改变</h3>
-<p>其实对POST参数传递的改变。考虑到phprpc协议中对POST的数据有一定的复杂性，这里统一作了简化。
+<p>其次对POST参数传递的改变。考虑到phprpc协议中对POST的数据有一定的复杂性，这里统一作了简化。
 正如我们下面的代码所示：</p>
 <pre><code class="language-javascript">    public function response($params = NULL) {
         $paramsArr = json_decode($params, TRUE);
