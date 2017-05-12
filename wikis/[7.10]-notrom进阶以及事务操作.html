@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="cn" style="">
+<head>
+	<title>[7.10]-notrom进阶以及事务操作 | PhalApi(π框架) - PHP轻量级开源接口框架</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架。我们致力于将PhalApi维护成像恒星一样：不断更新，保持生气；为接口负责，为开源负责！让后台接口开发更简单！">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发框架,后台接口开发,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架">
+	<meta name="author" content="dogstar">
+
+	<link rel="stylesheet" type="text/css" href="./../css/screen.css?20150211" />
+</head>
+
+<body>
+<a href="https://github.com/phalapi/phalapi/tree/release">
+	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
+</a>
+
+<!-- 最顶部的语言(S) -->
+<div class="grid-wrapper navbar desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<ul id="language-switchers" class="navbar__links navbar--left">
+				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
+				<li class="menu-item"><a title="English version of PhalApi website" href="/wikis/en/" class="menu-item__link">English</a></li>
+			</ul>
+			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
+				<li class="menu-item"><a href="#" class="menu-item__link contact-us-spec">官方交流主群：421032344，副群：459352221</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 最顶部的语言(E) -->
+
+<!-- 顶部导航菜单(S) -->
+<div class="grid-wrapper desktop-only">
+	<div class="grid">
+		<div class="grid__cell">
+			<div class="header__header-wrapper">
+				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
+				<ul id="main-menu" class="header__menu">
+					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
+					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
+					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
+    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
+					<li class="menu-item"><a href="http://phalapi.oschina.mopaas.com/Public/demo/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
+					<li class="menu-item"><a href="/donate.html" class="menu-item__link about-us-spec" target="_blank">捐赠</a></li>
+					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 顶部导航菜单(E) -->
+
+
+    <div class="grid-wrapper">
+        <div class="grid">
+            <div class="grid__cell">
+                <h1>phalapi-进阶篇4(notrom进阶以及事务操作)</h1>
+<p><img src="http://webtools.qiniudn.com/master-LOGO-20150410_50.jpg" alt="" /></p>
+<h2>前言</h2>
+<p><strong><em>先在这里感谢phalapi框架创始人@dogstar为我们提供了这样一个优秀的开源框架。</em></strong></p>
+<p>写本篇教程的起因是因为在交流的时候有位童鞋提出了fetchPairs有BUG，之前一直没有仔细了解过notorm的细节，借此机会把notorm中的一些方便快捷的操作，以及notorm中有关事务的操作和使用，具体地作一下分析。
+附上:</p>
+<p>喵了个咪的博客:<a href="w-blog.cn">w-blog.cn</a></p>
+<p>官网地址:<a href="http://www.phalapi.net/" title="PhalApi官网"><a href="http://www.phalapi.net/">http://www.phalapi.net/</a></a></p>
+<p>开源中国Git地址:<a href="http://git.oschina.net/dogstar/PhalApi/tree/release" title="开源中国Git地址"><a href="http://git.oschina.net/dogstar/PhalApi/tree/release">http://git.oschina.net/dogstar/PhalApi/tree/release</a></a></p>
+<h2>1. 进一步了解notorm</h2>
+<p>notorm中很多操作在PhalApi官方文档中并没有非常详细的介绍，这里把一些常用到的notorm函数作一下相关的介绍。</p>
+<h3>1.1 fetchPairs</h3>
+<p>fetchPairs的使用和fetchAll相似但不尽相同，fetchPairs需要传递一个参数,这个参数是字符串类型的key值(比如：name 、id),当参数传递之后会出现这样的对比效果：</p>
+<pre><code>DI()-&gt;notorm-&gt;user-&gt;fetchPairs('name');</code></pre>
+<p><img src="http://i.imgur.com/kIBqze2.png" alt="" /></p>
+<pre><code>DI()-&gt;notorm-&gt;user-&gt;fetchAll('name');</code></pre>
+<p><img src="http://i.imgur.com/VZjpvv3.png" alt="" /></p>
+<p>大家有看到区别吗？</p>
+<p>嗯！是fetchPairs在返回的时候把在之前定义的key值放到了返回数组的key中。</p>
+<p><strong>提示:在老版本中，使用过程中 Result.php 会有一句 821行的报错，需要把</strong></p>
+<pre><code>$values = array_values(iterator_to_array($row));
+改成
+$values = array_values($row);</code></pre>
+<h3>1.2 lock</h3>
+<p>lock操作是一种锁的行为，对整表进行锁定，在当前用户释放锁之前此表不能再被操作。lock接受一个bool参数，默认是true，即锁表，使用如下：</p>
+<pre><code>$userdb = DI()-&gt;notorm-&gt;user-&gt;lock(); //锁定表
+$rs     = $userdb-&gt;fetchAll();</code></pre>
+<p>生成的sql语句如下：</p>
+<pre><code>SELECT * FROM user FOR UPDATE;</code></pre>
+<h3>1.3 加操作</h3>
+<p>在很多时候，我们会遇到数据库表里面的某个值需要+1操作，我们不能简单地在update的时候写入array('key' =&gt; 'key+1')，因为在解析sql的时候，key+1 会带上引号作为一个字符串被处理，所以，这样的操作并没有达到我们想要的效果，当然，这是有解决方法的。具体操作如下：</p>
+<pre><code>DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;update(array('sum' =&gt; new NotORM_Literal("sum + 1")));</code></pre>
+<p>这样就可以生成不带引号的操作了：</p>
+<pre><code>UPDATE user SET phone = sum + 1 WHERE (id = 1);</code></pre>
+<h3>1.4 group</h3>
+<p>group是去重操作，在notorm里面也有封装，我们可以使用group来统计比如有多少同名的用户等一些统计操作，或者是找出库里面不重复的城市名等。</p>
+<pre><code>DI()-&gt;notorm-&gt;user-&gt;select('name , count(*) as count')-&gt;group('name')-&gt;fetchAll();</code></pre>
+<p>会获得如下结果</p>
+<p><img src="http://i.imgur.com/aYJ229P.png" alt="" /></p>
+<h3>1.5 快速函数sum，count，max，min</h3>
+<p>在我们使用notorm快速函数的过程中,虽然此类函数使用频率不高，但是使用起来却是很方便：</p>
+<pre><code>  return DI()-&gt;notorm-&gt;user-&gt;sum('id');  //做加法
+  return DI()-&gt;notorm-&gt;user-&gt;max('id');  //获取这个key中最大的值
+  return DI()-&gt;notorm-&gt;user-&gt;min('id');  //获取这个key中最小的值
+  return DI()-&gt;notorm-&gt;user-&gt;count();    //统计一共几条数据</code></pre>
+<h2>2. 事务操作</h2>
+<p>其实，很大一部分使用事务的原因是因为害怕在并发的情况下导致对数据库造成的重复操作，比如如下场景：</p>
+<p>两个管理者对同一应用进行审核。他们同一时间查询到应用的状态都是未审核，然后都进行了审核操作，这时，返回的审核操作状态是成功的。但这时，会有一个管理者会发现审核状态和自己的审核结果不同，这就有问题了。大部分在解决此类问题时，都会考虑使用数据库的事务操作。其实，对于事务操作，我的建议是：能不用尽量不用。我简单聊一下我的几个观点：</p>
+<ol>
+<li>
+<p>是否真的那么重要？对于上面的问题，也许乍一看觉得：这怎么可能呢？但是仔细一想，这两个操作都是属于两个管理者的正常操作。对于业务来说，我认为是没有问题的。当然这是因为影响不大；如果是付款，一个订单从两个地方同时付款，然后都发现是未付款，然后都进行了付款，这种业务就必须有处理方式了，所以是否使用事务要看业务是否非常重要。</p>
+</li>
+<li>
+<p>概率是怎么样的？对于一个程序来说，两个请求刚好通过了查询过程，并一同到了修改的操作，不管是什么场景，发生这种并发冲突的可能性是极其微小的，我觉得几乎可以忽略(当然前提是重要性没有那么的高，我们不能 <strong>以偏概全</strong> )。</p>
+</li>
+<li><strong>曲线救国</strong>，其实，我们可以使用其他方式避免这类问题。我们可以把我们需要验证条件加入到Update的条件中，这样两条语句终归会有一条语句执行失败。</li>
+</ol>
+<p>notorm中使用到的事务操作方式：</p>
+<p>notorm提供了常规的事务操作如下：</p>
+<pre><code> //第一步：先指定待进行事务的数据库（通过获取一个notorm表实例来指定；否则会提示：PDO There is no active transaction）
+ $user = DI()-&gt;notorm-&gt;user;
+ //第二步：开启事务开关（此开关会将当前全部打开的数据库都进行此设置）
+ DI()-&gt;notorm-&gt;transaction = 'BEGIN';
+
+ //第三步：进行数据库操作
+ $user-&gt;insert(array('name' =&gt; 'test3',));
+ $user-&gt;insert(array('name' =&gt; 'test4',));
+
+ //第四：提交/回滚
+ DI()-&gt;notorm-&gt;transaction = 'COMMIT';
+ //DI()-&gt;notorm-&gt;transaction = 'ROLLBACK';</code></pre>
+<p>还有一种处理方式就是在操作之前进行lock锁表</p>
+<pre><code>$user = DI()-&gt;notorm-&gt;user;
+$user-&gt;lock();                                                  
+$user-&gt;insert(array('name' =&gt; 'test3',));
+$user-&gt;insert(array('name' =&gt; 'test4',));</code></pre>
+<p>这两种方式大家可以自行取舍。</p>
+<p>注:在phalapiV1.31版本后有自带提供事务操作可参考文档。</p>
+<h2>3. 总结</h2>
+<p>在本小节中，对于notorm中的一些特别的封装函数进行了介绍，对于事务提出了自己的看法和观点以及使用notorm的解决方案。希望看了这篇教程的童鞋，在日常开发中对你有所帮助。</p>
+<p>注：笔者能力有限，有说的不对的地方，希望大家能够指出，也希望多多交流！</p>
+<p><strong>官网QQ交流群:421032344  欢迎大家的加入!</strong></p>
+<h4><a href="/wikis/%5b7.9%5d-%e8%87%aa%e5%8a%a8%e5%8a%a0%e8%bd%bd%e5%92%8c%e6%8b%a6%e6%88%aa%e5%99%a8.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5b7.11%5d-%e6%95%b0%e6%8d%ae%e5%ba%93%e8%af%bb%e5%86%99%e5%88%86%e7%a6%bb.html">下一章</a></h4>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid__cell">
+                <!-- TODO -->
+            </div>
+        </div>
+    </div>
+
+ <!-- 广告位 -->
+<div class="grid-wrapper desktop-only">
+	<p align="center">
+		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
+		<a href="http://www.itran.cc/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/9/69/b88bc92455dc1239f9a5bf8d72929.png"></a>
+		<a href="http://web-tools.phalapi.net/" target="blank"><img width="950" height="100" src="http://7xslqv.com1.z0.glb.clouddn.com/images/7/d0/88f523566c482296aecc43d185ca2.png"></a>
+	</p>
+</div>
+
+<!-- footer(S) -->
+<div class="grid-wrapper footer">
+	<div id="footer" class="grid">	
+
+		<div class="grid__cell">
+			<h3>PhalApi (π框架)</h3>
+            <p>
+				<font size="3px">一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</font>
+				
+				<br />
+
+				<font size="2px">
+				友情链接： <a href="https://www.phalapi.net/" class="menu-item__link" target="_blank"><strong>PhalApi</strong></a>
+				| <a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a>
+				| <a href="https://www.itran.cc/" class="menu-item__link" target="_blank">艾翻译</a>
+				| <a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a>
+				| <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a>
+				| <a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a>
+
+				<br />
+
+				&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
+				</font>
+
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+			</p>
+		</div>	
+	</div>
+</div>
+<!-- footer(E) -->
+
+</body>
+
+</html>
