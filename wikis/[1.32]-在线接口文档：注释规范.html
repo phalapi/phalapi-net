@@ -166,6 +166,18 @@ class Api_User extends PhalApi_Api {</code></pre>
 <blockquote>
 <p>温馨提示：公共的<code>@exception</code>和<code>@return</code>注释需要PhalApi 1.4.0及以上版本</p>
 </blockquote>
+<h2>1.32.4 生成离线文档</h2>
+<p>除了使用访问在线文档，也可以生成熟线文档。在命令行，通过CLI方式访问上面的listAllApis.php文件即可生成离线文档到相应的项目目录下。  </p>
+<p>以Demo项目为例，先执行listAllApis.php脚本生成离线文档。  </p>
+<pre><code>$ php /path/to/Public/demo/listAllApis.php</code></pre>
+<p>生成完毕后，可以看到类似这样的输出：  </p>
+<pre><code>脚本执行完毕！离线文档保存路径为：/path/to/PhalApi/Public/demo/doc</code></pre>
+<p>随后，在浏览器打开并访问：  </p>
+<pre><code>http://localhost/PhalApi/Public/demo/doc/index.html</code></pre>
+<p>便可看到生成好的离线文档了。  </p>
+<blockquote>
+<p>温馨提示：生成离线功能需要 PhalApi 1.4.1 及以上版本支持。  </p>
+</blockquote>
 <hr />
 <h4><a href="/wikis/%5B1.31%5D-%E6%96%B0%E5%9E%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%9A%E4%BB%A5%E6%8E%A5%E5%8F%A3%E5%BD%A2%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/[1.33]-开发者工具：实用函数.html">下一章</a></h4>
             </div>
