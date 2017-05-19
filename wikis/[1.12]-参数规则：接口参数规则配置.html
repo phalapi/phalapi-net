@@ -453,11 +453,13 @@ class Common_MyVersion {
         if (count(explode('.', $value)) &lt; 3) {
             throw new PhalApi_Exception_BadRequest('版本号格式错误');
         }
+
+        return $value; // 最后要返回参数值
     }
 }</code></pre>
 <blockquote>
 <p>温馨提示：回调函数的签名为：<code>function format($value, $rule, $params)</code>，
-第一个为参数值，第二个为所配置的规则，第三个参数为配置规则中的params（可忽略）</p>
+第一个为参数值，第二个为所配置的规则，第三个参数为配置规则中的params（可忽略）。通过验证后，最后必须返回参数值。</p>
 </blockquote>
 <p>由于自 PHP 5.4 起可用 callable 类型指定回调类型 callback。所以，为了减轻记忆的负担，这里使用 callable或者callback均可，即可以配置成：<code>'type' =&gt; 'callable',</code>，也可以配置成：<code>'type' =&gt; 'callback',</code>，回调函数的选项也一样。  </p>
 <blockquote>
