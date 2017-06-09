@@ -243,14 +243,15 @@ body {
 
 
 @media (max-width: 600px) {
-
     .contribution img {
         cursor: pointer;
         transition: all 0.6s;
         width: 25% !important;
         height: 100px;
         margin-right: -5px;
+        
     }
+    #gitHub_fllow{z-index: 999 !important}
 }
 
 
