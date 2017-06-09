@@ -1,88 +1,72 @@
 <!DOCTYPE html>
-<html lang="cn" style="">
+<html lang="en">
 <head>
-	<title>捐赠明细及使用登记 - PhalApi(π框架) - PHP轻量级开源接口框架 - 助你创造价值！</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+	<meta charset="UTF-8">
+	<title>捐赠 - PhalApi(π框架) - 助你创造价值！</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="black" name="apple-mobile-web-app-status-bar-style">
+	<meta content="telephone=no" name="format-detection">
+	<meta content="email=no" name="format-detection">
+	<meta name="Author" content="Phalapi,ecitlm">
 	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架，致力于快速开发接口服务。支持HTTP/SOAP/RPC等协议，可用于搭建接口/微服务/RESTful接口/Web Services。我们不断更新，保持生气；为接口负责，为开源负责！并承诺永久免费！">
-	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发,后台接口开发框架,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架">
-	<meta name="author" content="dogstar">
+	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发,后台接口开发框架,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架,π框架,π开发框架,π接口框架,π接口开发框架">
 
-	<link rel="stylesheet" type="text/css" href="./css/screen.css?20150211" />
+	<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" media="screen">
+	<link rel="stylesheet" href="./css/main.css" />
+	<link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
 </head>
-
 <body>
-<a href="https://github.com/phalapi/phalapi/tree/release">
-	<img alt="Fork me on GitHub" data-canonical-src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" src="http://7xslqv.com1.z0.glb.clouddn.com/images/2/2d/9e69c0ebaff22a24e241a0244532e.png" style="position: absolute; top: 0; right: 0; border: 0;">
-</a>
 
-<!-- 最顶部的语言(S) -->
-<div class="grid-wrapper navbar desktop-only">
-	<div class="grid">
-		<div class="grid__cell">
-			<ul id="language-switchers" class="navbar__links navbar--left">
-				<li class="menu-item"><a title="PhalApi官方网站中文版" href="./" class="menu-item__link">中文版</a></li>
-				<li class="menu-item"><a title="English version of PhalApi website" href="#" class="menu-item__link">English</a></li>
-			</ul>
-			<ul id="util-menu" class="navbar__links navbar--right navbar--vertical-separator">
-				<li class="menu-item"><a href="mailto:fuemoshi@gmail.com" class="menu-item__link contact-us-spec">2018年650 RMB服务器费用期待您的支持！</a></li>
-			</ul>
-		</div>
-	</div>
-</div>
-<!-- 最顶部的语言(E) -->
-
-<!-- 顶部导航菜单(S) -->
-<div class="grid-wrapper desktop-only">
-	<div class="grid">
-		<div class="grid__cell">
-			<div class="header__header-wrapper">
-				<a title="PhalApi" href="http://www.phalapi.net" class="header__logo"><img src="http://webtools.qiniudn.com/master-LOGO-20150410_33.jpg" id="tw-logo" alt="PhalApi"></a>
-				<ul id="main-menu" class="header__menu">
-					<li class="menu-item"><a href="http://qa.phalapi.net/" class="menu-item__link insights-spec" target="_blank">社区</a></li>
-					<li class="menu-item"><a href="/download.html" class="menu-item__link insights-spec" target="_blank">下载</a></li>
-					<li class="menu-item"><a href="/wikis/" class="menu-item__link events-spec" target="_blank">文档</a></li>
-					<li class="menu-item"><a href="http://www.ituring.com.cn/book/2405" class="menu-item__link events-spec" target="_blank">书籍</a></li>
-					<li class="menu-item"><a href="/wikis/%5b8.1%5d-PhalApi%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b.html" class="menu-item__link events-spec" target="_blank">视频教程</a></li>
-    				<li class="menu-item"><a href="/docs/" class="menu-item__link events-spec" target="_blank">类参考手册</a></li>
-					<li class="menu-item"><a href="http://demo.phalapi.net/" class="menu-item__link products-spec" target="_blank">在线体验</a></li>
-					<li class="menu-item"><a href="/about.html" class="menu-item__link about-us-spec" target="_blank">关于</a></li>
+	<!-- navbar start -->
+	<div class="navbar navbar-default navbar-fixed-top " id="mainnav" role="navigation">
+		<div class="container" >
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand website_name" href="/"><!-- <span>PhalApi</span> --><strong>PhalApi</strong></a>
+			</div>
+			<div class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+				<ul class="nav navbar-nav navbar-right" id="nav_bar">
+					<li ><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
+					<li><a href="http://qa.phalapi.net/">社区</a></li>
+					<li><a href="download.html">下载</a></li>
+					<li><a href="/wikis/">文档</a></li>
+					<li><a href="http://www.ituring.com.cn/book/2405">书籍</a></li>
+					<li><a href="http://demo.phalapi.net/">体验</a></li>
+					<li ><a href="about.html">关于</a></li>
+					<li class="active"><a href="donate.html">贡献</a></li>
 				</ul>
 			</div>
+			<!--/.nav-collapse -->
 		</div>
 	</div>
-</div>
-<!-- 顶部导航菜单(E) -->
+	<!-- navbar end -->
 
-<!-- 焦点部分(S) -->
-<!--
-<div class="grid-wrapper">
-	<div class="grid grid--center">
-		<div class="grid__cell grid__cell--centered">
-			<h1 class="homepage--title">关于我们</h1>
-		</div>
-		<div class="grid__cell unit-3-4--lap grid__cell--centered">
-			<p class="homepage--subtitle">PhalApi是一个开源的框架，包括代码开源、产品开源、思想开源；<br/>可用于个人、商业用途等，请放心使用。</p>
-		</div>
-	</div>
-</div>
--->
-<!-- 焦点部分(E) -->
+	<div class="container mt_50" id="donation_content">
+		<div class="col-md-12  col-md-offset-0" >
+			<div class="docs-inner markdown-body text-center" id="donation">
+				<h1 id="-">赞助</h1>
+				<strong>PhalApi官方指定捐赠途径:</strong>
+				<p><br>Phalapi 发布三周年,致力于快速开发接口服务，您的帮助是对我们最大的支持和动力，框架的发展与提升离不开你的支持与赞赏</p>
+				<div class="row">
+					<br>
+					<div class="col-md-12">
+						支付宝
+						<strong class="donate-desc">(请把您希望在赞助列表中展示的昵称和个人网址在支付留言中标注)</strong>：
+						<p class="alipay-img"><img src="./images/alipay.png" width="200" alt="Alipay 支付码"></p>
+					</div>
+				</div>
+			</div>
 
-<!-- 更多 -->
-<div class="grid-wrapper">
-	<div class="grid">
-		<div class="grid__cell">
-			<h3>PhalApi官方指定捐赠途径</h3>
-			<p>支付宝账号：chanzonghuang@gmail.com </p>
-			<p><img src="http://7xslqv.com1.z0.glb.clouddn.com/images/1/b0/894fde762850cb11250253f7d5ede.png" /></p>
-			<br/>
 
-			<h3>捐赠明细及使用登记</h3>
-			<p>感谢大家对PhalApi的肯定、信任与支持，我们会将接受到的捐赠与对获得资源的使用情况汇总于此，按日期降序排序，方便大家查阅。  </p>
-			<br/>
-
-		<table>
+			<h2>捐赠列表</h2>
+			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th>日期</th>
@@ -90,250 +74,231 @@
 						<th>余额</th>
 						<th>备注</th>
 					</tr>
-			</thead>
-			<tbody>
+				</thead>
+				<tbody>
 
-				<tr>
-					<td></td>
-					<td></td>
-					<td>当前余额：<br/> 17.48 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20160529</td>
-					<td>感谢@Alfred 为PhalApi捐赠了10块大洋！</td>
-					<td>+10 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20160518</td>
-					<td>@dogstar 使用了632.40块大洋为官网服务器续费一年(有效期到2018年06月)</td>
-					<td>-632.40 块大洋</td>
-					<td><a href="http://7xiz2f.com1.z0.glb.clouddn.com/alipay_20170518213343.jpg" target="_blank">查看更多</a></td>
-				</tr>
-				<tr>
-					<td>20160518</td>
-					<td>感谢@dogstar 为PhalApi捐赠了250块大洋！</td>
-					<td>250 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20170516</td>
-					<td>PhalApi三周年文化衫全部费用：1657块大洋！</td>
-					<td>-1657 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20170508</td>
-					<td>感谢广州昊朗信息科技有限公司独家赞助PhalApi三周年文化衫活动全部经费：1800块大洋！</td>
-					<td>1800 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20170506</td>
-					<td>感谢@Zhao  为PhalApi捐赠了50块大洋！</td>
-					<td>50 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20170401</td>
-					<td>感谢@esCape  为PhalApi捐赠了19块大洋！</td>
-					<td>19 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20170329</td>
-					<td>感谢@半世半仙  为PhalApi捐赠了10块大洋！</td>
-					<td>10 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20170304</td>
-					<td>感谢@uwin  为PhalApi捐赠了100块大洋！</td>
-					<td>100 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20170119</td>
-					<td>感谢@东方未明  为PhalApi捐赠了20块大洋！</td>
-					<td>20 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20160701</td>
-					<td>感谢@橙子  为PhalApi捐赠了1块大洋！</td>
-					<td>1 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20160526</td>
-					<td>感谢@姚志远 为PhalApi捐赠了3块大洋！</td>
-					<td>3 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20160509</td>
-					<td>感谢@Aaron 为PhalApi捐赠了30块大洋！</td>
-					<td>30 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20160429</td>
-					<td>@dogstar 使用了620块大洋为官网服务器续费一年(2017年06月)</td>
-					<td>- 620 块大洋</td>
-					<td><a href="http://7xiz2f.com1.z0.glb.clouddn.com/20160429215525.jpg" target="_blank">查看更多</a></td>
-				</tr>
-				<tr>
-					<td>20160429</td>
-					<td>感谢@dogstar 为PhalApi捐赠了100块大洋！</td>
-					<td>100 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20160312</td>
-					<td>感谢@若虚无 为PhalApi捐赠了100块大洋！</td>
-					<td>100 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20160220</td>
-					<td>感谢@加油 为PhalApi捐赠了100块大洋！</td>
-					<td>100 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20160113</td>
-					<td>感谢@A西瓜妹子 为PhalApi捐赠了10块大洋！</td>
-					<td>10 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20151202</td>
-					<td>感谢@上帝保佑小菜 为PhalApi捐赠了100块大洋！</td>
-					<td>100 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20151202</td>
-					<td>感谢@Summer 为PhalApi捐赠了88.88块大洋！</td>
-					<td>88.88 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20150814</td>
-					<td>感谢@喵了个咪 为PhalApi捐赠了100块大洋！</td>
-					<td>100 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20150711</td>
-					<td>@dogstar 使用了110块大洋为phalapi.net域名续费两年(2020年)</td>
-					<td>- 110 块大洋</td>
-					<td><a href="http://7qnay5.com1.z0.glb.clouddn.com/QQ截图20150711105336.jpg" target="_blank">查看更多</a></td>
-				</tr>
-				<tr>
-					<td>20150506</td>
-					<td>感谢@WeiBing 为PhalApi捐赠了100块大洋！</td>
-					<td>100 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20150604</td>
-					<td>感谢@dogstar 为PhalApi捐赠一年服务器（578块大洋）</td>
-					<td>0 块大洋</td>
-					<td><a href="http://7qnay5.com1.z0.glb.clouddn.com/server-0604.png" target="_blank">查看更多</a></td>
-				</tr>
-				<tr>
-					<td>20150508</td>
-					<td>@dogstar 使用了55块大洋为phalapi.net域名续费一年</td>
-					<td>- 55 块大洋</td>
-					<td><a href="http://webtools.qiniudn.com/20150508.png" target="_blank">查看更多</a></td>
-				</tr>
-				<tr>
-					<td>20150506</td>
-					<td>感谢@囧囧有神 为PhalApi捐赠了100块大洋！</td>
-					<td>100 块大洋</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>20150301</td>
-					<td>感谢@SIMBA 为PhalApi官网捐赠了服务器！</td>
-					<td>0 块大洋</td>
-					<td></td>
-				</tr>
-			</tbody>
-		</table>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>总余额：17.48 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20160529</td>
+						<td>感谢@Alfred 为PhalApi捐赠了10元！</td>
+						<td>+10 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20160518</td>
+						<td>@dogstar 使用了632.40元为官网服务器续费一年(有效期到2018年06月)</td>
+						<td>-632.40 元</td>
+						<td><a href="http://7xiz2f.com1.z0.glb.clouddn.com/alipay_20170518213343.jpg" target="_blank">明细</a></td>
+					</tr>
+					<tr>
+						<td>20160518</td>
+						<td>感谢@dogstar 为PhalApi捐赠了250元！</td>
+						<td>250 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20170516</td>
+						<td>PhalApi三周年文化衫全部费用：1657元！</td>
+						<td>-1657 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20170508</td>
+						<td>感谢广州昊朗信息科技有限公司独家赞助PhalApi三周年文化衫活动全部经费：1800元！</td>
+						<td>1800 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20170506</td>
+						<td>感谢@Zhao  为PhalApi捐赠了50元！</td>
+						<td>50 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20170401</td>
+						<td>感谢@esCape  为PhalApi捐赠了19元！</td>
+						<td>19 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20170329</td>
+						<td>感谢@半世半仙  为PhalApi捐赠了10元！</td>
+						<td>10 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20170304</td>
+						<td>感谢@uwin  为PhalApi捐赠了100元！</td>
+						<td>100 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20170119</td>
+						<td>感谢@东方未明  为PhalApi捐赠了20元！</td>
+						<td>20 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20160701</td>
+						<td>感谢@橙子  为PhalApi捐赠了1元！</td>
+						<td>1 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20160526</td>
+						<td>感谢@姚志远 为PhalApi捐赠了3元！</td>
+						<td>3 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20160509</td>
+						<td>感谢@Aaron 为PhalApi捐赠了30元！</td>
+						<td>30 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20160429</td>
+						<td>@dogstar 使用了620元为官网服务器续费一年(2017年06月)</td>
+						<td>- 620 元</td>
+						<td><a href="http://7xiz2f.com1.z0.glb.clouddn.com/20160429215525.jpg" target="_blank">明细</a></td>
+					</tr>
+					<tr>
+						<td>20160429</td>
+						<td>感谢@dogstar 为PhalApi捐赠了100元！</td>
+						<td>100 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20160312</td>
+						<td>感谢@若虚无 为PhalApi捐赠了100元！</td>
+						<td>100 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20160220</td>
+						<td>感谢@加油 为PhalApi捐赠了100元！</td>
+						<td>100 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20160113</td>
+						<td>感谢@A西瓜妹子 为PhalApi捐赠了10元！</td>
+						<td>10 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20151202</td>
+						<td>感谢@上帝保佑小菜 为PhalApi捐赠了100元！</td>
+						<td>100 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20151202</td>
+						<td>感谢@Summer 为PhalApi捐赠了88.88元！</td>
+						<td>88.88 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20150814</td>
+						<td>感谢@喵了个咪 为PhalApi捐赠了100元！</td>
+						<td>100 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20150711</td>
+						<td>@dogstar 使用了110元为phalapi.net域名续费两年(2020年)</td>
+						<td>- 110 元</td>
+						<td><a href="http://7qnay5.com1.z0.glb.clouddn.com/QQ截图20150711105336.jpg" target="_blank">明细</a></td>
+					</tr>
+					<tr>
+						<td>20150506</td>
+						<td>感谢@WeiBing 为PhalApi捐赠了100元！</td>
+						<td>100 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20150604</td>
+						<td>感谢@dogstar 为PhalApi捐赠一年服务器（578元）</td>
+						<td>0 元</td>
+						<td><a href="http://7qnay5.com1.z0.glb.clouddn.com/server-0604.png" target="_blank">明细</a></td>
+					</tr>
+					<tr>
+						<td>20150508</td>
+						<td>@dogstar 使用了55元为phalapi.net域名续费一年</td>
+						<td>- 55 元</td>
+						<td><a href="http://webtools.qiniudn.com/20150508.png" target="_blank">明细</a></td>
+					</tr>
+					<tr>
+						<td>20150506</td>
+						<td>感谢@囧囧有神 为PhalApi捐赠了100元！</td>
+						<td>100 元</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>20150301</td>
+						<td>感谢@SIMBA 为PhalApi官网捐赠了服务器！</td>
+						<td>0 元</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
 
-			<br/>
+			<div class="append_desc">
+				<h3>这里补充几点说明：</h3>
+				<ul>
+					<li>1、此明细不是了竞价排名，而是以公开、透明的制度说明所捐赠资源的使用情况和去处；</li>
+					<li>2、所捐赠的资源不属于任何个人，而应作为项目或者开发团队的所需开销；</li>
+					<li>3、当我们的余额还有节余时，请不要再对我们进行捐赠，且每次捐赠的数额不应过多；</li>
+					<li>4、如果捐赠了却不希望您的名字出现在这里，可以联系我们进行相应处理。</li>
+				</ul>
+			</div>
 
-			<p>这里补充几点说明：  </p>
-			<ul>
-			<li>1、此明细不是了竞价排名，而是以公开、透明的制度说明所捐赠资源的使用情况和去处；</li>
-			<li> 2、所捐赠的资源不属于任何个人，而应作为项目或者开发团队的所需开销；</li>
-			<li> 3、当我们的余额还有节余时，请不要再对我们进行捐赠，且每次捐赠的数额不应过多；</li>
-			<li> 4、如果捐赠了却不希望您的名字出现在这里，可以联系我们进行相应处理。</li>
-			</ul>
+
+
 		</div>
 	</div>
-</div>
-<!-- 更多 -->
 
-<!-- 广告位 -->
-<div class="grid-wrapper desktop-only">
-	<p align="center">
-		<a href="http://7xiz2f.com1.z0.glb.clouddn.com/%E6%88%91%E7%9A%84%E5%90%8D%E5%AD%97%E5%8F%AB%EF%BC%9A%CF%80%E6%A1%86%E6%9E%B6%20-%20PhalApi%202016%E5%B9%B4%E5%BA%A6%E5%BC%80%E6%BA%90%E6%80%BB%E7%BB%93%20-%20%E5%AE%98%E6%96%B9%E5%87%BA%E5%93%81.pdf" target="blank"><img width="950" height="100" src="http://7xiz2f.com1.z0.glb.clouddn.com/ad_20170104.png"></a>
-		<a href="http://qa.phalapi.net" target="blank"><img width="950" height="100" src="http://7qnay5.com1.z0.glb.clouddn.com/qa_ad_20150615.jpg"></a>
-	</p>
-</div>
 
-<!-- footer(S) -->
-<div class="grid-wrapper footer">
-	<div id="footer" class="grid">	
+	<!-- footer -->
+	<div class="footer">
+		<div class="link container ">
+			<div class=" col-xs-7 col-sm-7 col-md-7 col-lg-7 ">
+				<h3>PhalApi (π框架)</h3>
+				<p>一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</p>
+				<!-- <p>:</p> -->
+				<span>友情链接:</span>
+				<a href=""> PhalApi </a>
+				<a href=""> 开源中国 </a>
+				<a href="">艾翻译</a>
+				<a href="">Phalcon</a>
+				<a href="">PHPUnit</a>
+				<a href="">ThoughtWorks</a>
+				<a href="">友链交换</a>
 
-		<div class="grid__cell unit-1-2--lap">
-			<h3>PhalApi (π框架)</h3>
-            <p>
-				<font size="3px">一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</font>
-			</p>
-		</div>	
-
-		<div class="grid__cell unit-1-2--lap">
-			<h3>与我们互动</h3>
-			<!-- http://www.easyicon.net/iconsearch/iconset:nviconslib-icons/1/ -->
-			<p>
-			<a target="_blank" class="footer__icon" href="https://github.com/phalapi/phalapi"><img alt="GitHub" id="GitHube" src="http://7xiz2f.com1.z0.glb.clouddn.com/GitHub.png"></a>
-			<a target="_blank" class="footer__icon" href="http://weibo.com/p/100808d236e99beb645bfb56ed1c37dde9b8bd?k=phalapi%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6&from=501&_from_=huati_topic"><img alt="微博互动" id="GitHube" src="http://7xiz2f.com1.z0.glb.clouddn.com/sina_weibo.png"></a>
-			<a target="_blank" class="footer__icon" href="http://7xslqv.com1.z0.glb.clouddn.com/images/1/b0/894fde762850cb11250253f7d5ede.png"><img alt="支付宝捐赠" id="QQ" src="http://7xiz2f.com1.z0.glb.clouddn.com/Alibabai_Alipay_65.11528150134px_1188640_easyicon.net.png"></a>
-			<a target="_blank" class="footer__icon" href="https://jq.qq.com/?_wv=1027&k=4A6reum"><img alt="PhalApi交流群" id="QQ" src="http://7xiz2f.com1.z0.glb.clouddn.com/tencent.png"></a>
-			</p>
+			</div>
+			<div class=" col-xs-5 col-sm-5 col-md-5 col-lg-5 contact_us ">
+				<h3>联系我们</h3>
+				<a href=""><img src="./images/github.png" alt="github" /></a>
+				<a href=""><img src="./images/weibo.png"  alt="weibo" /></a>
+				<a href=""><img src="images/zfb.png"  alt="zfb" /></a>
+				<a href=""><img src="images/qq.png"  alt="qq" /></a>
+			</div>
+			<div class="cls"></div>
+			<div class="text-center copy_right"> ©2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
+			</div>
 		</div>
-
-
-		<div class="grid__cell">
-            <p>
-				<font size="2px">
-				友情链接： <a href="https://www.phalapi.net/" class="menu-item__link" target="_blank"><strong>PhalApi</strong></a>
-				| <a href="http://www.oschina.net/" class="menu-item__link" target="_blank">开源中国</a>
-				| <a href="https://www.itran.cc/" class="menu-item__link" target="_blank">艾翻译</a>
-				| <a href="http://www.phalconphp.com/en/" class="menu-item__link" target="_blank">Phalcon</a>
-				| <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" class="menu-item__link" target="_blank">PHPUnit</a>
-				| <a href="http://www.thoughtworks.com/cn/" class="menu-item__link" target="_blank">ThoughtWorks</a>
-				| <a href="mailto:chanzonghuang@gmail.com" class="menu-item__link" target="_blank">友链交换</a>
-
-				<br />
-
-				&copy;2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
-				</font>
-
-				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255326144'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1255326144%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-			</p>
-		</div><!-- grid__cell -->	
 	</div>
-</div>
-<!-- footer(E) -->
 
+
+	<a href="https://github.com/phalapi"><img style="position: fixed; top: 0; right: 0; border: 0;z-index:9999" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+
+
+	<script src="./js/jquery-1.11.1.min.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
 </body>
-
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254743218'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1254743218' type='text/javascript'%3E%3C/script%3E"));</script>
-
 </html>
