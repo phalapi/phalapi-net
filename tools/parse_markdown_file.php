@@ -38,34 +38,19 @@ $footer = file_get_contents(dirname(__FILE__) . '/footer.html');
 $_ds_id = md5($info['filename']);
 $_ds_title = $info['filename'];
 $_ds_url = 'http://www.phalapi.net/wikis/' . urlencode($info['filename']) . '.html';
-// 多说，换友言
-$duoshuoComment = <<<EOT
-<!-- UY BEGIN -->
-<div id="uyan_frame"></div>
-<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2128651"></script>
-<!-- UY END -->
-EOT;
-$duoshuoComment = '<!-- TODO -->';
 
 $content = sprintf(
     "%s
-
-    <div class=\"grid-wrapper\">
-        <div class=\"grid\">
-            <div class=\"grid__cell\">
-                %s
-            </div>
-        </div>
-
-        <div class=\"grid\">
-            <div class=\"grid__cell\">
+    <div id=\"content\">
+        <div class=\"container\">
+            <div class=\"row row-md-flex row-md-flex-wrap\">
                 %s
             </div>
         </div>
     </div>
 
  %s",
-    $header, $rs , $duoshuoComment, $footer 
+    $header, $rs , $footer 
 );
 
 file_put_contents($folder . '/' . $info['filename'] . '.html', $content);
