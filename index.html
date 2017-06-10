@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-	<title>PhalApi(π框架) - PHP轻量级开源接口框架 - 助你创造价值！</title>
+    <title>PhalApi(π框架) - PHP轻量级开源接口框架 - 助你创造价值！</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta content="email=no" name="format-detection">
     <meta name="Author" content="Phalapi,ecitlm">
-	<meta name="description" content="PhalApi是一个PHP轻量级开源接口框架，致力于快速开发接口服务。支持HTTP/SOAP/RPC等协议，可用于搭建接口/微服务/RESTful接口/Web Services。我们不断更新，保持生气；为接口负责，为开源负责！并承诺永久免费！">
-	<meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发,后台接口开发框架,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架,π框架,π开发框架,π接口框架,π接口开发框架">
+    <meta name="description" content="PhalApi是一个PHP轻量级开源接口框架，致力于快速开发接口服务。支持HTTP/SOAP/RPC等协议，可用于搭建接口/微服务/RESTful接口/Web Services。我们不断更新，保持生气；为接口负责，为开源负责！并承诺永久免费！">
+    <meta name="keywords" content="PhalApi,phalapi,phalapi接口开发,后台接口开发,后台接口开发框架,接口开发,接口框架,开源接口框架,PHP后台接口开发,PHP接口开发,PHP接口框架,PHP后台接口框架,phalapi官网,PHP接口框架,php接口开发框架,php接口开发,php web框架,π框架,π开发框架,π接口框架,π接口开发框架">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen">
     <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" media="screen">
     <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/loading_bar.css" />
     <link rel="icon" href="http://webtools.qiniudn.com/dog_catch.png" type="image/x-icon" />
+    <script src="./js/pace.min.js"></script>
+    
 </head>
+
 <body>
     <!-- navbar start -->
     <div class="navbar navbar-default navbar-fixed-top" id="mainnav" role="navigation">
@@ -56,266 +61,310 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                 <h1>助你创造价值！</h1>
-                <p>PhalApi是一个PHP轻量级开源接口框架，致力于快速开发接口服务。
-                    支持HTTP/SOAP/RPC等协议，可用于搭建接口/微服务/RESTful接口/Web Services。
-                    我们不断更新，保持生气；为接口负责，为开源负责！并承诺永久免费！</p>
-                    <div class="text-left">
-                        <iframe src="https://ghbtns.com/github-btn.html?user=phalapi&repo=phalapi&type=watch&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30"></iframe>
-                        <iframe src="https://ghbtns.com/github-btn.html?user=phalapi&amp;repo=phalapi&amp;type=fork&amp;count=true&amp;size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe>
-                        <iframe src="https://ghbtns.com/github-btn.html?user=phalapi&type=follow&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="280px" height="30px"></iframe>
+                <p>PhalApi是一个PHP轻量级开源接口框架，致力于快速开发接口服务。 支持HTTP/SOAP/RPC等协议，可用于搭建接口/微服务/RESTful接口/Web Services。 我们不断更新，保持生气；为接口负责，为开源负责！并承诺永久免费！
+                </p>
+                <div class="text-left">
+                    <iframe src="https://ghbtns.com/github-btn.html?user=phalapi&repo=phalapi&type=watch&count=true&size=large" frameborder="0"
+                        scrolling="0" width="170" height="30"></iframe>
+                    <iframe src="https://ghbtns.com/github-btn.html?user=phalapi&amp;repo=phalapi&amp;type=fork&amp;count=true&amp;size=large"
+                        allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe>
+                    <iframe src="https://ghbtns.com/github-btn.html?user=phalapi&type=follow&size=large" allowtransparency="true" frameborder="0"
+                        scrolling="0" width="280px" height="30px"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner end -->
+    <div id="content">
+        <div class="container">
+            <div class="row row-md-flex row-md-flex-wrap">
+                <div class="col-sm-6 col-md-4 col-lg-4">
+                    <div class="well text-center">
+                        <div class="stat-icon">
+                            <!--  <span class="glyphicon glyphicon-download"></span> -->
+                            <img src="./images/kuaisu.png" alt="" />
+                        </div>
+                        <div class="stat-number">
+                            <a href="https://www.phalapi.net/tutorial.html">快速开发</a>
+                        </div>
+                        <div>专注于后台接口API开发</div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="well text-center">
+                        <div class="stat-icon">
+                            <img src="./images/docs.png" alt="" />
+                        </div>
+                        <div class="stat-number">
+                            <a href="https://www.phalapi.net/wikis/">在线文档</a>
+                        </div>
+                        <div>敏捷开发下的精益文档</div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="well text-center">
+                        <div class="stat-icon">
+                            <img src="./images/solution.png" alt="" />
+                        </div>
+                        <div class="stat-number">
+                            <a href="https://www.phalapi.net/solution.html">解决方案</a>
+                        </div>
+                        <div>移动App背后的胖子</div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- banner end -->
-        <div id="content">
+        <!-- end -->
+        <div class="frame_start bgcolor padding_t_b_40">
             <div class="container">
                 <div class="row row-md-flex row-md-flex-wrap">
-                    <div class="col-sm-6 col-md-4 col-lg-4">
-                        <div class="well text-center">
-                            <div class="stat-icon">
-                                <!--  <span class="glyphicon glyphicon-download"></span> -->
-                                <img src="./images/kuaisu.png"  alt="" />
-                            </div>
-                            <div class="stat-number">
-                                <a href="https://www.phalapi.net/tutorial.html">快速开发</a>
-                            </div>
-                            <div>专注于后台接口API开发</div>
-                        </div>
+                    <h2 class="text-center step_1_title">快速使用 PhalApi</h2>
+                    <div class="col-sm-6 col-md-6 col-lg-6 step_1">
+                        <img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151024155819.jpg" alt="" />
                     </div>
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <div class="well text-center">
-                            <div class="stat-icon">
-                                <img src="./images/docs.png"  alt="" />
-                            </div>
-                            <div class="stat-number">
-                                <a href="https://www.phalapi.net/wikis/">在线文档</a>
-                            </div>
-                            <div>敏捷开发下的精益文档</div>
-                        </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <ul class="desc_ul">
+                            <li> 1、进入Github后从release分支下载，或直接：<br />
+                                <code>git clone https://github.com/phalapi/phalapi.git</code></li>
+                            <li> 2、上传并解压到服务器 （推荐使用nginx，并将根目录设置为Public）
+                            </li>
+                            <li> 3、打开浏览器，访问安装向导：<br>
+                                <code>http://localhost/PhalApi/Public/install/</code>
+                            </li>
+                            <li>4、最后运行效果：<br>
+                                <code>http://localhost/PhalApi/Public/demo/</code></li>
+                        </ul>
                     </div>
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <div class="well text-center">
-                            <div class="stat-icon">
-                                <img src="./images/solution.png"  alt="" />
-                            </div>
-                            <div class="stat-number">
-                                <a href="https://www.phalapi.net/solution.html">解决方案</a>
-                            </div>
-                            <div>移动App背后的胖子</div>
-                        </div>
-                    </div>
+                    <div class="cls"></div>
+                    <div class="quick_start"><a href="https://www.phalapi.net/tutorial.html" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-share"></span>快速入门</a></div>
                 </div>
             </div>
-            <!-- end -->
-            <div class="frame_start bgcolor padding_t_b_40">
-                <div class="container">
-                    <div class="row row-md-flex row-md-flex-wrap">
-                        <h2 class="text-center step_1_title">快速使用 PhalApi</h2>
-                        <div class="col-sm-6 col-md-6 col-lg-6 step_1">
-                            <img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ20151024155819.jpg" alt="" />
+        </div>
+        <!-- 在线体验 -->
+        <div class="container experience_online padding_t_b_40">
+            <h2 class="text-center step_1_title">在线体验</h2>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="text-center">
+                    <img src="./images/case.png" alt="" />
+                    <h3><a href="http://demo.phalapi.net/">接口服务示例</a></h3>
+                    <p>默认返回JSON，如需返回JSONP，可加&callback=test参数</p>
+                </div>
+            </div>
+            <div class=" col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="text-center">
+                    <img src="images/debug.png" alt="" />
+                    <h3><a href="http://demo.phalapi.net/?service=User.getMultiBaseInfo&user_ids=1,2,3&__debug__=1">调试模式</a></h3>
+                    <p>添加&__debug__=1参数，可开启强大的调试模式</p>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="text-center">
+                    <img src="./images/online.png" alt="" />
+                    <h3><a href="http://demo.phalapi.net/listAllApis.php">在线接口文档</a></h3>
+                    <p>自动生成的在线接口文档，包括列表文档和详情文档</p>
+                </div>
+            </div>
+        </div>
+        <!-- 在线体验end -->
+        <div class="section bgcolor padding_t_b_40">
+            <div class="container">
+                <h2 class="text-center step_1_title">扩展推荐 (32+)</h2>
+                <div class="row">
+                    <!-- Testimonial -->
+                    <div class="testimonial col-md-4 col-sm-6">
+                        <!-- Author Photo -->
+                        <div class="author-photo">
+                            <img src="http://7qnay5.com1.z0.glb.clouddn.com/96053_jon.jpeg" title="Summer" alt="Summer">
+                            <p class="author-name">Summer</p>
                         </div>
-                        <div class="col-sm-6 col-md-6 col-lg-6">
-                            <ul class="desc_ul">
-                                <li> 1、进入Github后从release分支下载，或直接：<br />
-                                    <code>git clone https://github.com/phalapi/phalapi.git</code></li>
-                                    <li> 2、上传并解压到服务器
-                                        （推荐使用nginx，并将根目录设置为Public）</li>
-                                        <li> 3、打开浏览器，访问安装向导：<br>
-                                            <code>http://localhost/PhalApi/Public/install/</code>
-                                        </li>
-                                        <li>4、最后运行效果：<br>
-                                            <code>http://localhost/PhalApi/Public/demo/</code></li>
-                                        </ul>
-                                    </div>
-                                    <div class="cls"></div>
-                                    <div class="quick_start"><a href="https://www.phalapi.net/tutorial.html" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-share"></span>快速入门</a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 在线体验 -->
-                        <div class="container experience_online padding_t_b_40">
-                            <h2 class="text-center step_1_title">在线体验</h2>
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                <div class="text-center">
-                                    <img src="./images/case.png"  alt="" />
-                                    <h3><a href="http://demo.phalapi.net/">接口服务示例</a></h3>
-                                    <p>默认返回JSON，如需返回JSONP，可加&callback=test参数</p>
-                                </div>
-                            </div>
-                            <div class=" col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                <div class="text-center">
-                                    <img src="images/debug.png"  alt="" />
-                                    <h3><a href="http://demo.phalapi.net/?service=User.getMultiBaseInfo&user_ids=1,2,3&__debug__=1">调试模式</a></h3>
-                                    <p>添加&__debug__=1参数，可开启强大的调试模式</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                <div class="text-center">
-                                    <img src="./images/online.png"  alt="" />
-                                    <h3><a href="http://demo.phalapi.net/listAllApis.php">在线接口文档</a></h3>
-                                    <p>自动生成的在线接口文档，包括列表文档和详情文档</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 在线体验end -->
-                        <div class="section bgcolor padding_t_b_40">
-                            <div class="container">
-                                <h2 class="text-center step_1_title">扩展推荐 (32+)</h2>
-                                <div class="row">
-                                    <!-- Testimonial -->
-                                    <div class="testimonial col-md-4 col-sm-6">
-                                        <!-- Author Photo -->
-                                        <div class="author-photo">
-                                            <img src="http://7qnay5.com1.z0.glb.clouddn.com/96053_jon.jpeg" title="Summer" alt="Summer">
-                                            <p class="author-name">Summer</p>
-                                        </div>
-                                        <div class="testimonial-bubble">
-                                            <blockquote>
-                                                <!-- Quote -->
-                                                <p class="quote">
-                                                    支持支付宝、微信支付SDK开发集成
-                                                </p>
-                                                <!-- Author Info -->
-                                                <cite class="author-info">
-                                                    <a href="#"> [荐!]第三方支付Pay </a>
+                        <div class="testimonial-bubble">
+                            <blockquote>
+                                <!-- Quote -->
+                                <p class="quote">
+                                    支持支付宝、微信支付SDK开发集成
+                                </p>
+                                <!-- Author Info -->
+                                <cite class="author-info">
+                                                    <a href="http://git.oschina.net/dogstar/PhalApi-Library/tree/master/Pay/?dir=1&filepath=Pay&oid=87c82f473c95070bf36c67a40218e29dd77ff153&sha=d4a50a79ed0ed6ac46599ba0e1835679a73ccf58"> [荐!]第三方支付Pay </a>
                                                 </cite>
-                                            </blockquote>
-                                            <div class="sprite arrow-speech-bubble"></div>
-                                        </div>
-                                    </div>
-                                    <!-- End Testimonial -->
-                                    <div class="testimonial col-md-4 col-sm-6">
-                                        <div class="author-photo">
-                                            <img src="http://7qnay5.com1.z0.glb.clouddn.com/mm.jpg" title="喵了个咪" alt="喵了个咪">
-                                            <p class="author-name">喵了个咪</p>
-                                        </div>
-                                        <div class="testimonial-bubble">
-                                            <blockquote>
-                                                <p class="quote">
-                                                    为海量数据分析与统计提供分表分库支持
-                                                </p>
-                                                <cite class="author-info">
-                                                    <a href="#">[NEW!]DB集群拓展DB_Cluster</a>
-                                                </cite>
-                                            </blockquote>
-                                            <div class="sprite arrow-speech-bubble"></div>
-                                        </div>
-                                    </div>
-                                    <div class="testimonial col-md-4 col-sm-6">
-                                        <div class="author-photo">
-                                            <img src="http://7qnay5.com1.z0.glb.clouddn.com/20150820203715.jpg" title="黄苗笋" alt="黄苗笋">
-                                            <p class="author-name">黄苗笋</p>
-                                        </div>
-                                        <div class="testimonial-bubble">
-                                            <blockquote>
-                                                <p class="quote">
-                                                    基于用户与组的权限管理认证功能
-                                                </p>
-                                                <cite class="author-info">
-                                                    <a href="#">[赞!]Auth权限认证</a>
-                                                </cite>
-                                            </blockquote>
-                                            <div class="sprite arrow-speech-bubble"></div>
-                                        </div>
-                                    </div>
-                                    <div class="cls"></div>
-                                    <div class="quick_start"><a href="" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-share"></span>发现更多</a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end -->
-                        <!-- SDK包 (8+) -->
-                        <div class="container experience_online padding_t_b_40">
-                            <h2 class="text-center step_1_title">SDK包 (8+)</h2>
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                <div class="text-center">
-                                    <img src="./images/Java.png"  alt="" />
-                                    <h3><a href="http://demo.phalapi.net/">SDK包（JAVA版）</a></h3>
-                                    <p>为Android客户端PhalApi专属的SDK包</p>
-                                </div>
-                            </div>
-                            <div class=" col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                <div class="text-center">
-                                    <img src="./images/oc.jpg"  alt="" />
-                                    <h3><a href="http://demo.phalapi.net/?service=User.getMultiBaseInfo&user_ids=1,2,3&__debug__=1">SDK包（OC版）</a></h3>
-                                    <p> 基于AFNetworking的二次封装，由@Aevit 提供 </p>
-                                </div>
-                            </div>
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                <div class="text-center">
-                                    <img src="./images/Go.png"  alt="" />
-                                    <h3><a href="http://demo.phalapi.net/listAllApis.php">SDK包（Golang版）</a></h3>
-                                    <p> 基于Golang语言SDK包集成 由@prettyyjnic 提供</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 贡献者 -->
-                        <div class="bgcolor contribution">
-                            <div class="container experience_online padding_t_b_40">
-                                <h2 class="text-center step_1_title">感谢以下贡献者 (20+)</h2>
-                                <div>
-                                    <a href="http://my.oschina.net/dogstar" target="_blank"><img src="http://webtools.qiniudn.com/d0045.jpg" class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
-                                    <a href="http://my.oschina.net/u/2330535" target="_blank"><img src="http://webtools.qiniudn.com/201406290817306.png" class="spec-teaser-author-image insight-card__author-image" alt="火柴"></a>
-                                    <a href="http://my.oschina.net/u/2362939" target="_blank"><img src="http://webtools.qiniudn.com/George.jpg" class="spec-teaser-author-image insight-card__author-image" alt="George"></a>
-                                    <a href="http://ninty.cc/zz" target="_blank"><img src="http://webtools.qiniudn.com/zz.guo.jpg" class="spec-teaser-author-image insight-card__author-image" alt="zz.guo"></a>
-                                    <a href="http://my.oschina.net/wenzhenxi" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/mm.jpg" class="spec-teaser-author-image insight-card__author-image" alt="文振熙"></a>
-                                    <a href="http://my.oschina.net/hms" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/20150820203715.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="黄苗笋"></a>
-                                    <a href="https://zxblog.our-dream.cn/" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/QQ-20151015222826.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="爱编程的小逗比"></a>
-                                    <a href="http://aevit.xyz" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/head_small_square100x100.JPG" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="Aevit"></a>
-                                    <a href="http://git.oschina.net/jon" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/96053_jon.jpeg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="Summer"></a>
-                                    <a href="https://github.com/phpforlan" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/20160106221129.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="冰霜"></a>
-                                    <a href="http://xs3c.co/" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/xs3c.co.png" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="大蝉"></a>
-                                    <a href="https://github.com/xieguo/" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/head.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="小艾"></a>
-                                    <a href="https://github.com/xiaolovecai" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/xiaos.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="xiaos"></a>
-                                    <a href="#" target="_blank"><img src="http://7xiz2f.com1.z0.glb.clouddn.com/PITC_1ZH4%605X952JUBVIZJT.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="ダSimVlove辉"></a>
-                                    <a href="#" target="_blank"><img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ%E5%9B%BE%E7%89%8720160312103328.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="o(∩_∩)o"></a>
-                                    <a href="https://github.com/hanqiuss" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/442.png" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="442484396"></a>
-                                    <a href="https://github.com/xcorp1986" target="_blank"><img src="http://7xiz2f.com1.z0.glb.clouddn.com/3236975.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="大脚鸭(kwan)"></a>
-                                    <a href="http://git.oschina.net/Naff" target="_blank"><img src="http://7xiz2f.com1.z0.glb.clouddn.com/731646_Naff.png" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="高一平"></a>
-                                    <a href="http://git.oschina.net/slgz" target="_blank"><img src="http://7xslqv.com1.z0.glb.clouddn.com/images/3/6f/52d28eeacf8ced08f53b56f635373.png" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="初学者（slgz）"></a>
-									<a href="https://git.oschina.net/PlatttBoy/" target="_blank"><img src="http://7xslqv.com1.z0.glb.clouddn.com/images/0/b1/65e82d7401af89e7d86d87b6aabde.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="小学弟"></a>
-                                </div>
-                                <div class="cls"></div>
-                                <div class="quick_start"><a href="" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-share"></span>加入我们</a></div>
-                            </div>
-                        </div>
-                        <!-- footer -->
-                        <div class="footer">
-                            <div class="link container ">
-                                <div class=" col-xs-7 col-sm-7 col-md-7 col-lg-7 ">
-                                    <h3>PhalApi (π框架)</h3>
-                                    <p>一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web Services。</p>
-                                    <!-- <p>:</p> -->
-                                    <span>友情链接:</span>
-                                    <a href=""> PhalApi </a>
-                                    <a href=""> 开源中国 </a>
-                                    <a href="">艾翻译</a>
-                                    <a href="">Phalcon</a>
-                                    <a href="">PHPUnit</a>
-                                    <a href="">ThoughtWorks</a>
-                                    <a href="">友链交换</a>
-
-                                </div>
-                                <div class=" col-xs-5 col-sm-5 col-md-5 col-lg-5 contact_us ">
-                                    <h3>联系我们</h3>
-                                    <a href=""><img src="./images/github.png" alt="github" /></a>
-                                    <a href=""><img src="./images/weibo.png"  alt="weibo" /></a>
-                                    <a href=""><img src="images/zfb.png"  alt="zfb" /></a>
-                                    <a href=""><img src="images/qq.png"  alt="qq" /></a>
-                                </div>
-                                <div class="cls"></div>
-                                <div class="text-center copy_right"> ©2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank" >粤ICP备15028808号</a>
-                                </div>
-                            </div>
+                            </blockquote>
+                            <div class="sprite arrow-speech-bubble"></div>
                         </div>
                     </div>
+                    <!-- End Testimonial -->
+                    <div class="testimonial col-md-4 col-sm-6">
+                        <div class="author-photo">
+                            <img src="http://7qnay5.com1.z0.glb.clouddn.com/mm.jpg" title="喵了个咪" alt="喵了个咪">
+                            <p class="author-name">喵了个咪</p>
+                        </div>
+                        <div class="testimonial-bubble">
+                            <blockquote>
+                                <p class="quote">
+                                    为海量数据分析与统计提供分表分库支持
+                                </p>
+                                <cite class="author-info">
+                                                    <a href=http://git.oschina.net/dogstar/PhalApi-Library/tree/master/DB_Cluster/?dir=1&filepath=DB_Cluster&oid=a50865e4e86d8105bdc30c12a8193db1f119cdb5&sha=8c16393c1286f3921cb920dd21a4aab5eb05f8a3">[NEW!]DB集群拓展DB_Cluster</a>
+                                                </cite>
+                            </blockquote>
+                            <div class="sprite arrow-speech-bubble"></div>
+                        </div>
+                    </div>
+                    <div class="testimonial col-md-4 col-sm-6">
+                        <div class="author-photo">
+                            <img src="http://7qnay5.com1.z0.glb.clouddn.com/20150820203715.jpg" title="黄苗笋" alt="黄苗笋">
+                            <p class="author-name">黄苗笋</p>
+                        </div>
+                        <div class="testimonial-bubble">
+                            <blockquote>
+                                <p class="quote">
+                                    基于用户与组的权限管理认证功能
+                                </p>
+                                <cite class="author-info">
+                                                    <a href="http://git.oschina.net/dogstar/PhalApi-Library/wikis/Auth-%E6%9D%83%E9%99%90%E6%89%A9%E5%B1%95%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3">[赞!]Auth权限认证</a>
+                                                </cite>
+                            </blockquote>
+                            <div class="sprite arrow-speech-bubble"></div>
+                        </div>
+                    </div>
+                    <div class="cls"></div>
+                    <div class="quick_start"><a href="" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-share"></span>发现更多</a></div>
+                </div>
+            </div>
+        </div>
+        <!-- end -->
+        <!-- SDK包 (8+) -->
+        <div class="container experience_online padding_t_b_40">
+            <h2 class="text-center step_1_title">SDK包 (8+)</h2>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="text-center">
+                    <img src="./images/Java.png" alt="" />
+                    <h3><a href="http://www.phalapi.net/wikis/%5B6.2%5D-SDK%E5%8C%85%EF%BC%88JAVA%E7%89%88%EF%BC%89.html">SDK包（JAVA版）</a></h3>
+                    <p>为Android客户端PhalApi专属的SDK包</p>
+                </div>
+            </div>
+            <div class=" col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="text-center">
+                    <img src="./images/oc.jpg" alt="" />
+                    <h3><a href="http://www.phalapi.net/wikis/%5B6.4%5D-SDK%E5%8C%85%EF%BC%88object-c%E7%89%88%EF%BC%89.html">SDK包（OC版）</a></h3>
+                    <p> 基于AFNetworking的二次封装，由@Aevit 提供 </p>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="text-center">
+                    <img src="./images/Go.png" alt="" />
+                    <h3><a href="http://git.oschina.net/dogstar/PhalApi/tree/release/SDK/Go">SDK包（Golang版）</a></h3>
+                    <p> 基于Golang语言SDK包集成 由@prettyyjnic 提供</p>
+                </div>
+            </div>
+        </div>
+        <!-- 贡献者 -->
+        <div class="bgcolor contribution">
+            <div class="container experience_online padding_t_b_40">
+                <h2 class="text-center step_1_title">感谢以下贡献者 (20+)</h2>
+                <div>
+                    <a href="http://my.oschina.net/dogstar" target="_blank"><img src="http://webtools.qiniudn.com/d0045.jpg" class="spec-teaser-author-image insight-card__author-image" alt="dogstar"></a>
+                    <a href="http://my.oschina.net/u/2330535" target="_blank"><img src="http://webtools.qiniudn.com/201406290817306.png" class="spec-teaser-author-image insight-card__author-image" alt="火柴"></a>
+                    <a href="http://my.oschina.net/u/2362939" target="_blank"><img src="http://webtools.qiniudn.com/George.jpg" class="spec-teaser-author-image insight-card__author-image" alt="George"></a>
+                    <a href="http://ninty.cc/zz" target="_blank"><img src="http://webtools.qiniudn.com/zz.guo.jpg" class="spec-teaser-author-image insight-card__author-image" alt="zz.guo"></a>
+                    <a href="http://my.oschina.net/wenzhenxi" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/mm.jpg" class="spec-teaser-author-image insight-card__author-image" alt="文振熙"></a>
+                    <a href="http://my.oschina.net/hms" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/20150820203715.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="黄苗笋"></a>
+                    <a href="https://zxblog.our-dream.cn/" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/QQ-20151015222826.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="爱编程的小逗比"></a>
+                    <a href="http://aevit.xyz" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/head_small_square100x100.JPG" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="Aevit"></a>
+                    <a href="http://git.oschina.net/jon" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/96053_jon.jpeg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="Summer"></a>
+                    <a href="https://github.com/phpforlan" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/20160106221129.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="冰霜"></a>
+                    <a href="http://xs3c.co/" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/xs3c.co.png" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="大蝉"></a>
+                    <a href="https://github.com/xieguo/" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/head.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="小艾"></a>
+                    <a href="https://github.com/xiaolovecai" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/xiaos.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="xiaos"></a>
+                    <a href="#" target="_blank"><img src="http://7xiz2f.com1.z0.glb.clouddn.com/PITC_1ZH4%605X952JUBVIZJT.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="ダSimVlove辉"></a>
+                    <a href="#" target="_blank"><img src="http://7xiz2f.com1.z0.glb.clouddn.com/QQ%E5%9B%BE%E7%89%8720160312103328.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="o(∩_∩)o"></a>
+                    <a href="https://github.com/hanqiuss" target="_blank"><img src="http://7qnay5.com1.z0.glb.clouddn.com/442.png" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="442484396"></a>
+                    <a href="https://github.com/xcorp1986" target="_blank"><img src="http://7xiz2f.com1.z0.glb.clouddn.com/3236975.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="大脚鸭(kwan)"></a>
+                    <a href="http://git.oschina.net/Naff" target="_blank"><img src="http://7xiz2f.com1.z0.glb.clouddn.com/731646_Naff.png" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="高一平"></a>
+                    <a href="http://git.oschina.net/slgz" target="_blank"><img src="http://7xslqv.com1.z0.glb.clouddn.com/images/3/6f/52d28eeacf8ced08f53b56f635373.png" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="初学者（slgz）"></a>
+                    <a href="https://git.oschina.net/PlatttBoy/" target="_blank"><img src="http://7xslqv.com1.z0.glb.clouddn.com/images/0/b1/65e82d7401af89e7d86d87b6aabde.jpg" width="100px" height="100px" class="spec-teaser-author-image insight-card__author-image" alt="小学弟"></a>
+                </div>
+                <div class="cls"></div>
+                <div class="quick_start"><a href="" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-share"></span>加入我们</a></div>
+            </div>
+        </div>
+
+        <!--Application-->
+
+        	<section class="content-wrapper">
+                
+			<div class="container padding_t_b_40">
+				<div class="title">
+				 <h2 class="text-center step_1_title">已知应用 (353+)</h2>
+				</div>
+				<div class="row">
+					<div class="col-md-3 gallery-item">
+						<a href="#">
+                            <img class="img-responsive center-block" src="./images/shop_sys.jpg" alt=""></a>
+					</div>
+
+                    <div class="col-md-3 gallery-item">
+						<a href="#">
+                            <img class="img-responsive center-block" src="./images/yl.png" alt=""></a>
+					</div>
+
+                    <div class="col-md-3 gallery-item">
+						<a href="#">
+                            <img class="img-responsive center-block" src="./images/video_sys.png" alt=""></a>
+					</div>
+
+                    <div class="col-md-3 gallery-item">
+						<a href="#">
+                            <img class="img-responsive center-block" src="./images/game_sys.png" alt=""></a>
+					</div>
 
 
-                    <a href="https://github.com/phalapi"><img style="position: fixed; top: 0; right: 0; border: 0;z-index:9999" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+                  
+
+				
+				
+				</div>
+			</div>
 
 
-                    <script src="./js/jquery-1.11.1.min.js"></script>
-                    <script src="./js/bootstrap.min.js"></script>
-                </body>
-                </html>
+
+        <!-- footer -->
+        <div class="footer">
+            <div class="link container ">
+                <div class=" col-xs-7 col-sm-7 col-md-7 col-lg-7 ">
+                    <h3>PhalApi (π框架)</h3>
+                    <p>一个轻量级PHP开源接口框架，专注于接口服务开发，支持HTTP/SOAP/RPC协议，拥有自动生成的在线文档、多种开发语言的客户端SDK包以及可重用的扩展类库，可用于快速搭建微服务、RESTful接口或Web
+                        Services。</p>
+                    <!-- <p>:</p> -->
+                    <span>友情链接:</span>
+                    <a href="https://www.phalapi.net/" target="_blank"> PhalApi </a>
+                    <a href="http://www.oschina.net/" target="_blank"> 开源中国 </a>
+                    <a href="https://www.itran.cc/" target="_blank">艾翻译</a>
+                    <a href="http://www.phalconphp.com/en/" target="_blank">Phalcon</a>
+                    <a href="https://phpunit.de/manual/3.7/zh_cn/automating-tests.html" target="_blank">PHPUnit</a>
+                    <a href="http://www.thoughtworks.com/cn/" target="_blank">ThoughtWorks</a>
+                    <a href="mailto:chanzonghuang@gmail.com">友链交换</a>
+
+                </div>
+                <div class=" col-xs-5 col-sm-5 col-md-5 col-lg-5 contact_us ">
+                    <h3>联系我们</h3>
+                    <a href="https://github.com/phalapi/phalapi"><img src="./images/github.png" alt="github" /></a>
+                    <a href="http://weibo.com/p/100808d236e99beb645bfb56ed1c37dde9b8bd?k=phalapi%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6&from=501&_from_=huati_topic"><img src="./images/weibo.png"  alt="weibo" /></a>
+                    <a href="http://7xslqv.com1.z0.glb.clouddn.com/images/1/b0/894fde762850cb11250253f7d5ede.png"><img src="images/zfb.png"  alt="zfb" /></a>
+                    <a href="https://jq.qq.com/?_wv=1027&k=4A6reum"><img src="images/qq.png"  alt="qq" /></a>
+                </div>
+                <div class="cls"></div>
+                <div class="text-center copy_right"> ©2015-2017 PhalApi All Rights Reserved. <a href="http://www.miitbeian.gov.cn" target="_blank">粤ICP备15028808号</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <a href="https://github.com/phalapi"><img id="gitHub_fllow" style="position: fixed; top: 0; right: 0; border: 0;z-index:9999" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+
+
+    <script src="./js/jquery-1.11.1.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+</body>
+
+</html>
