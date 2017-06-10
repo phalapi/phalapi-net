@@ -175,6 +175,15 @@ class Api_User extends PhalApi_Api {</code></pre>
 <p>随后，在浏览器打开并访问：  </p>
 <pre><code>http://localhost/PhalApi/Public/demo/doc/index.html</code></pre>
 <p>便可看到生成好的离线文档了。  </p>
+<p>自 PhalApi 1.4.1 版本开始，在线接口列表文档有两种主题风格，分别是折叠版和展开版。折叠版是指带有左侧分类菜单的方式，展开版则是一次性罗列全部接口服务，便于搜索。在生成离线文档时，可以通过第二个参数，指定主题风格。如：  </p>
+<ul>
+<li>
+<p>生成展开版</p>
+<pre><code>$ php /path/to/Public/demo/listAllApis.php expand</code></pre>
+</li>
+<li>生成折叠版
+<pre><code>$ php /path/to/Public/demo/listAllApis.php fold</code></pre></li>
+</ul>
 <blockquote>
 <p>温馨提示：生成离线功能需要 PhalApi 1.4.1 及以上版本支持。  </p>
 </blockquote>
