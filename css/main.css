@@ -317,8 +317,12 @@ body {
 
 /* Gallery Page
 -----------------------------------------------------------------------------*/
+.content-wrapper{overflow: hidden}
 .gallery-item{
 	margin-bottom:50px;
+    box-sizing: border-box;
+    padding: 0
+
 }
 .gallery-item a{
 	width:100%;
@@ -397,3 +401,4 @@ body {
 }
 
 
+#content {margin-top:50px;}
