@@ -250,7 +250,7 @@ $user-&gt;group('note')</code></pre>
 <pre><code>// GROUP BY note HAVING age &gt; 10
 $user-&gt;group('note', 'age &gt; 10')</code></pre>
 <h2>1.20.3 CURD之查询类（Retrieve）</h2>
-<table>
+<table class="table table-bordered">
 <thead>
 <tr>
 <th>操作</th>
@@ -473,7 +473,7 @@ var_dump($user-&gt;sum('age'));
 // 输出
 string(3) "139"</code></pre>
 <h2>1.20.4 CURD之插入类（Create）</h2>
-<table>
+<table class="table table-bordered">
 <thead>
 <tr>
 <th>操作</th>
@@ -537,7 +537,7 @@ $update = array('age' =&gt; 2);
 $rs = $user-&gt;insert_update($unique, $insert, $update);
 var_dump($rs); //输出影响的行数</code></pre>
 <h2>1.20.5 CURD之更新类（Update）</h2>
-<table>
+<table class="table table-bordered">
 <thead>
 <tr>
 <th>操作</th>
@@ -572,7 +572,7 @@ boolean(false) //更新异常、失败</code></pre>
 $rs = $user-&gt;where('name', 'PhalApi')-&gt;update(array('age' =&gt; new NotORM_Literal("age + 1")));
 var_dump($rs); //输出影响的行数</code></pre>
 <h2>1.20.6 CURD之删除类（Delete）</h2>
-<table>
+<table class="table table-bordered">
 <thead>
 <tr>
 <th>操作</th>

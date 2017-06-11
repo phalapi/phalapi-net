@@ -879,6 +879,7 @@ class Parsedown
                 'element' => array(
                     'name' => 'table',
                     'handler' => 'elements',
+                    //'text' => array('attributes' => array('class' => 'table table-bordered')), // @dogstar 20170612 table TODO
                 ),
             );
 

@@ -22,6 +22,9 @@ $Parsedown = new Parsedown();
 
 $rs = $Parsedown->text(file_get_contents($file));
 
+// 样式调整
+$rs = str_replace('<table>', '<table class="table table-bordered">', $rs);
+
 $folder = trim($argv[2]);
 if (!is_dir($folder)) {
     mkdir($folder, 0777, true);
