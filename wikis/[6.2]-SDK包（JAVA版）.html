@@ -70,10 +70,10 @@
 <h2>6.2.2 代码示例</h2>
 <p>如下是使用的代码场景片段。  </p>
 <p>首先，我们需要导入SDK包：</p>
-<pre><code class="language-javascript">//FullscreenActivity.java
+<pre><code class="language-java">//FullscreenActivity.java
 import net.phalapi.sdk.*;</code></pre>
 <p>然后，准备一个子线程调用，并在此线程中实现接口请求：</p>
-<pre><code class="language-javascript">    /**
+<pre><code class="language-java">    /**
      * 网络操作相关的子线程
      */  
     Runnable networkTask = new Runnable() {  
@@ -116,7 +116,7 @@ import net.phalapi.sdk.*;</code></pre>
         }  
     }; </code></pre>
 <p>接着，实现线程回调的hander：</p>
-<pre><code class="language-javascript">    Handler handler = new Handler() {  
+<pre><code class="language-java">    Handler handler = new Handler() {  
         @Override  
         public void handleMessage(Message msg) {  
             super.handleMessage(msg);  
@@ -128,7 +128,7 @@ import net.phalapi.sdk.*;</code></pre>
         }  
     }; </code></pre>
 <p>最后，在我们需要的地方启动：</p>
-<pre><code class="language-javascript">    View.OnClickListener mDummyBtnClickListener = new View.OnClickListener() {
+<pre><code class="language-java">    View.OnClickListener mDummyBtnClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View arg0) {
@@ -140,7 +140,7 @@ import net.phalapi.sdk.*;</code></pre>
     };</code></pre>
 <h3>再一次调用和异常请求</h3>
 <p>当我们需要再次使用同一个接口实例进行请求时，需要先进行重置，以便清空之前的接口参数，如：</p>
-<pre><code class="language-javascript">//再一次请求
+<pre><code class="language-java">//再一次请求
 response = client.reset() //重置
         .withService("User.GetBaseInfo")
         .withParams("user_id", "1")
@@ -164,7 +164,7 @@ content += "msg=" + response.getMsg() + "\n";
 
 Log.v("[PhalApiClientResponse]", content);</code></pre>
 <p>异常情况下，即ret != 200时，将返回错误的信息，如：</p>
-<pre><code class="language-javascript">//再来试一下异常的请求
+<pre><code class="language-java">//再来试一下异常的请求
 response = client.reset()
         .withService("XXX.XXXX")
         .withParams("user_id", "1")
@@ -185,14 +185,14 @@ Log.v("[PhalApiClientResponse]", content);</code></pre>
 <h3>(1)扩展过滤器</h3>
 <p>当服务端接口需要接口签名验证，或者接口参数加密传送，或者压缩传送时，可以实现此过滤器，以便和服务端操持一致。  </p>
 <p>当需要扩展时，分两步。首先，需要实现过滤器接口：  </p>
-<pre><code class="language-javascript">class MyFilter implements PhalApiClientFilter {
+<pre><code class="language-java">class MyFilter implements PhalApiClientFilter {
 
         public void filter(String service, Map&lt;String, String&gt; params) {
             //TODO ...
         }
 }</code></pre>
 <p>然后设置过滤器：</p>
-<pre><code class="language-javascript">PhalApiClientResponse response = PhalApiClient.create()
+<pre><code class="language-java">PhalApiClientResponse response = PhalApiClient.create()
            .withHost("http://demo.phalapi.net/")
            .withFilter(new MyFilter())
            // ...

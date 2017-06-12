@@ -69,13 +69,13 @@
 <h2>3.11.2 安装和配置</h2>
 <h3>(1)扩展包下载</h3>
 <p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>FastRoute</strong> 扩展包，如使用：</p>
-<pre><code class="language-javascript">git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<pre><code class="language-bash">$ git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
 <p>然后把 <strong>FastRoute</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
-<pre><code class="language-javascript">cp ./PhalApi-Library/FastRoute/ ./PhalApi/Library/ -R</code></pre>
+<pre><code class="language-bash">$ cp ./PhalApi-Library/FastRoute/ ./PhalApi/Library/ -R</code></pre>
 <p>到此安装完毕！接下是插件的配置。</p>
 <h3>(2)扩展包配置</h3>
 <p>我们需要在 <strong>./Config/app.php</strong> 配置文件中追加以下配置：</p>
-<pre><code class="language-javascript">    /**
+<pre><code class="language-php">    /**
      * 扩展类库 - 快速路由配置
      */
     'FastRoute' =&gt; array(
@@ -94,7 +94,7 @@
 </code></pre>
 <h3>(3)nginx的协助配置（省略index.php）</h3>
 <p>如果是使用nginx的情况下，需要添加以下配置：</p>
-<pre><code class="language-javascript">    # 最终交由index.php文件处理
+<pre><code>    # 最终交由index.php文件处理
     location / {
         try_files $uri $uri/ $uri/index.php;
     }
@@ -106,7 +106,7 @@
 <p>然后重启nginx。  </p>
 <h2>3.11.3 入门使用</h2>
 <h3>(1)入口注册</h3>
-<pre><code class="language-javascript">//$ vim ./Public/index.php
+<pre><code class="language-php">//$ vim ./Public/index.php
 
 $loader-&gt;addDirs('Library');
 
@@ -131,11 +131,11 @@ $rs-&gt;output();</code></pre>
   等效于：http://library.phalapi.com/?service=User.GetMultiBaseInfo&amp;user_ids=1,2</code></pre>
 <h3>(2)非法访问</h3>
 <p>当请求的HTTP方法与配置的不符合时，就会返回405错误，如我们配置了：</p>
-<pre><code class="language-javascript">array('POST', '/user/{id:\d+}/{name}', 'handler2'),</code></pre>
+<pre><code class="language-php">array('POST', '/user/{id:\d+}/{name}', 'handler2'),</code></pre>
 <p>但是通过GET方式来访问，即：</p>
-<pre><code class="language-javascript">http://library.phalapi.com/user/123/name</code></pre>
+<pre><code>http://library.phalapi.com/user/123/name</code></pre>
 <p>则会返回：</p>
-<pre><code class="language-javascript">{
+<pre><code>{
     "ret": 405,
     "data": [],
     "msg": "快速路由的HTTP请求方法错误，应该为：POST"
@@ -144,14 +144,14 @@ $rs-&gt;output();</code></pre>
 <p>当在./Config/app.php的文件里配置错误的路由时，会直接抛出FastRoute\BadRouteException异常，以及时提示开发人员修正。</p>
 <h3>(4)异常错误处理器</h3>
 <p>我们也可以实现FastRoute_Handler接口来自定义我们自己的错误异常处理回调函数。如：</p>
-<pre><code class="language-javascript">class FastRoute_Handler_App implements FastRoute_Handler {
+<pre><code class="language-php">class FastRoute_Handler_App implements FastRoute_Handler {
 
     public function excute(PhalApi_Response $response) {
         // ... ...
     }
 }</code></pre>
 <p>然后，在分发时指定handler：</p>
-<pre><code class="language-javascript">DI()-&gt;fastRoute-&gt;dispatch(new FastRoute_Handler_App());</code></pre>
+<pre><code class="language-php">DI()-&gt;fastRoute-&gt;dispatch(new FastRoute_Handler_App());</code></pre>
 <h3>3.11.4 更多路由配置说明</h3>
 <p>请访问 <a href="https://github.com/nikic/FastRoute">FastRoute</a> ，查看其官方说明。</p>
 <h4><a href="#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="#">下一章</a></h4>

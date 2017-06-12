@@ -69,7 +69,7 @@
 <p><strong>注意:希望PhalApi能够提供其他的开发工具可以联系我们</strong></p>
 <h2>1.33.1 请求IP获取</h2>
 <p>有时需要获取用户IP做一系列操作,但是获取用户的IP又很有讲究,PhalApi_Tool提供获取用户请求IP地址getClientIp方法,失败的情况下，返回空:</p>
-<pre><code>$ip = PhalApi_Tool::getClientIp();</code></pre>
+<pre><code class="language-php">$ip = PhalApi_Tool::getClientIp();</code></pre>
 <h2>1.33.2 随机字符生成</h2>
 <p>在验证码或token经常会用到随机字符串生成,PhalApi_Tool提供createRandStr方法生成随机字符串:</p>
 <p>createRandStr接受两个参数</p>
@@ -77,7 +77,7 @@
 <li>(必填)len生成随机字符串的长度</li>
 <li>(选填)生成字符串的范围默认[0~9][a~z][A~Z]</li>
 </ul>
-<pre><code>// 生成5位随机字符串
+<pre><code class="language-php">// 生成5位随机字符串
 $str = PhalApi_Tool::createRandStr(5);
 
 // 生成6位纯数字字符串
@@ -85,7 +85,7 @@ $str = PhalApi_Tool::createRandStr(6, "0123456789");
 </code></pre>
 <h2>1.33.3 数组取值</h2>
 <p>进行数组操作的时候如果获取一个不存在的数组key的时候经常会出现<strong>PHP Notice:  Undefined index</strong> 警告,PhalApi_Tool提供arrIndex方法来解决此类异常并且可以指定默认值</p>
-<pre><code>$arr = array(
+<pre><code class="language-php">$arr = array(
     "test" =&gt; "test"
 );
 // 获取不存在的key默认返回空字符串
@@ -94,14 +94,14 @@ $val = PhalApi_Tool::arrIndex($arr, "test2");
 $val = PhalApi_Tool::arrIndex($arr, "test2", "test2");</code></pre>
 <h2>1.33.4 目录创建</h2>
 <p>在创建目录操作过程中很容易遇到上级目录未创建导致的创建目录失败,PhalApi_Tool提供createDir方法创建目录结构并且会对上级目录不存在的进行创建</p>
-<pre><code>// 使用相对路径会在入口index.php目录进行创建
+<pre><code class="language-php">// 使用相对路径会在入口index.php目录进行创建
 PhalApi_Tool::createDir("./file/images");
 // 使用绝对路径
 PhalApi_Tool::createDir("/app/file/images");</code></pre>
 <h2>1.33.4 目录删除</h2>
 <p>删除目录也很容易遇到创建目录同样的问题,需要删除的目录下有很多文件以及子目录系统是不允许删除的,PhalApi_Tool提供deleteDir方法来删除目录下的所有内容</p>
 <p><strong>注意:推荐使用在临时目录上,请注意不要删除重要目录！</strong></p>
-<pre><code>// 使用相对路径会在入口index.php目录进行删除
+<pre><code class="language-php">// 使用相对路径会在入口index.php目录进行删除
 PhalApi_Tool::deleteDir("./file");
 // 使用绝对路径
 PhalApi_Tool::deleteDir("/app/file");</code></pre>

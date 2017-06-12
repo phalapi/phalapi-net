@@ -72,14 +72,14 @@
 <h2>1.12.2 参数解析的配置规则</h2>
 <p>熟悉Yii的同学，对于以下的规则配置应该倍感亲切，但是不熟悉的同学也可以同样快速上手。因为，你会慢慢发现，这样的规则很符合我们PHP开发的规范，如果没有，我们继续努力改进。</p>
 <p>格式如下：</p>
-<pre><code class="language-javascript">array(
+<pre><code class="language-php">array(
     '参数名' =&gt; array('name' =&gt; '接口参数名称', 'type' =&gt; '类型', 'default' =&gt; '默认值', ...),
     ... ...
 )</code></pre>
 <h2>1.12.3 示例</h2>
 <h3>(1)简单的示例</h3>
 <p>假设这样的业务场景，我们需要提供一个用户登录的接口，其中需要用户名和密码，因此：</p>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 
 class Api_User extends PhalApi_Api
 {
@@ -101,24 +101,24 @@ class Api_User extends PhalApi_Api
 <p>当我们这样调用接口时：</p>
 <pre><code>/?service=User.Login&amp;username=test&amp;password=123456</code></pre>
 <p>就可以获取到需要的参数：</p>
-<pre><code class="language-javascript">{"ret":0,"data":{"username":"test","password":"123456"},"msg":""}</code></pre>
+<pre><code>{"ret":0,"data":{"username":"test","password":"123456"},"msg":""}</code></pre>
 <p>从中，可以很容易理解：参数规则需要统一配置在接口实现类里面的 <strong>getRules()</strong> 函数，随后即可以通过类成员属性方式获取，如： <strong>$this-&gt;username</strong> 。</p>
 <h3>(2)更完善的示例</h3>
 <p>很多时候我们都会对用户名和密码作一些验证，如是否必须、长度、最值，以及默认值等。  </p>
 <p>继续上面的业务场景，我们登录下用户名和密码必须，且密码长度至少为6个字符，则可以调整参数规则：</p>
-<pre><code class="language-javascript">'login' =&gt; array(
+<pre><code class="language-php">'login' =&gt; array(
    'username' =&gt; array('name' =&gt; 'username', 'require' =&gt; true),
    'password' =&gt; array('name' =&gt; 'password', 'require' =&gt; true, 'min' =&gt; 6),
 ),</code></pre>
 <p>尝试一下非法的参数请求，如无任何参数的情况下，访问/?service=User.Login，返回：</p>
-<pre><code class="language-javascript">{"ret":400,"data":[],"msg":"Illegal Param: wrong param: username"}</code></pre>
+<pre><code>{"ret":400,"data":[],"msg":"Illegal Param: wrong param: username"}</code></pre>
 <p>再尝试一下密码长不对的情况，访问/?service=User.Login&amp;username=test&amp;password=123，返回：</p>
-<pre><code class="language-javascript">{"ret":400,"data":[],"msg":"Illegal Param: password.len should &gt;= 6, but now password.len = 3"}</code></pre>
+<pre><code>{"ret":400,"data":[],"msg":"Illegal Param: password.len should &gt;= 6, but now password.len = 3"}</code></pre>
 <h2>1.12.4 三级参数</h2>
 <h3>(1)系统参数</h3>
 <p>已被系统固定占有的参数，目前只有一个，即：service，为需要调用的服务，类型为字符串，格式为：XXX.XXX，首字母不区分大小写，建议统一以大写开头。  </p>
 <p>以下是一些示例：  </p>
-<pre><code class="language-javascript">#推荐写法
+<pre><code>#推荐写法
 /?service=User.GetBaseInfo
 
 #正确写法（开头小写）
@@ -134,7 +134,7 @@ class Api_User extends PhalApi_Api
 /?service=User|GetBaseInfo</code></pre>
 <h3>(2)应用参数</h3>
 <p>应用参数是指在一个项目中，全部接口都需要的参数，或者通用的参数规则。假如我们的项目中全部需要签名sign参数，且必须；以及非必须的版本号，则可以在./Config/app.php中的apiCommonRules配置：</p>
-<pre><code class="language-javascript">//$vim ./Config/app.php
+<pre><code class="language-php">//$vim ./Config/app.php
 &lt;?php
 
 return array(
@@ -155,7 +155,7 @@ return array(
     ... ...</code></pre>
 <h3>(3)接口参数</h3>
 <p>接口参数即为上面在各个接口子类中配置的规则，为特定接口所持有。同时，为了方便同一套接口的规则重用，可以使用下标为 '*' 表示是本接口通用规则，如我们为了加强安全性，为全部的用户接口操作都加上4位的验证码：</p>
-<pre><code class="language-javascript">    public function getRules()
+<pre><code class="language-php">    public function getRules()
     {
         return array(
             '*' =&gt; array(
@@ -168,7 +168,7 @@ return array(
         );
     }</code></pre>
 <p>在完成对上面的应用参数规则、接口通用规则和指定规则的参数进行配置后，对用户登录的接口进行请求时就需要这样访问：</p>
-<pre><code class="language-javascript">/?service=User.login&amp;sign=77f81c17d512302383e5f26b99dae4d9&amp;username=test&amp;password=123456&amp;code=abcd</code></pre>
+<pre><code>/?service=User.login&amp;sign=77f81c17d512302383e5f26b99dae4d9&amp;username=test&amp;password=123456&amp;code=abcd</code></pre>
 <blockquote>
 <p>温馨提示：
 在Api类里面配置规则时，下标不区分大小写。因为框架会自动将请求的函数名和全部的规则下标转换成小写进行匹配。</p>
@@ -185,7 +185,7 @@ return array(
 </ul>
 <h2>1.12.5 在线接口参数查询工具</h2>
 <p>为了便于理解上面全部的参数规则，对于具体接口调用的要求，这里可以使用在线接口参数查询工具在浏览器访问查看：</p>
-<pre><code class="language-javascript">/demo/checkApiParams.php?service=User.Login</code></pre>
+<pre><code>/demo/checkApiParams.php?service=User.Login</code></pre>
 <p>可以看到：<br />
 <img src="http://webtools.qiniudn.com/20150411005257_9059c8a741f03da3b099f9042ced8678" alt="show" />  </p>
 <p>此工具同时也可以方便客户端实时查看接口文档时，进行辅助的接口规则说明。</p>
@@ -299,7 +299,7 @@ return array(
 </blockquote>
 <h3>使用source配置为单个参数指定数据源</h3>
 <p>此外，还有一个特殊的配置，可以用于指定当前单个参数的数据来源。即：<code>source</code>配置。如指定用户在登录时，用户名使用$_GET、密码使用$_POST。  </p>
-<pre><code>public function getRules() {
+<pre><code class="language-php">public function getRules() {
     return array(
         'login' =&gt; array(
             'username' =&gt; array('name' =&gt; 'username', 'source' =&gt; 'get'),
@@ -349,13 +349,13 @@ return array(
 <p>下面是对各类型的示例说明。</p>
 <h3>(1)字符串 string</h3>
 <p>当一个参数规则 未指定类型时，默认为string。一个完整的写法可以为：</p>
-<pre><code class="language-javascript">array('name' =&gt; 'username', 'type' =&gt; 'string', 'require' =&gt; true, 'default' =&gt; 'nobody', 'min' =&gt; 1, 'max' =&gt; 10)</code></pre>
+<pre><code class="language-php">array('name' =&gt; 'username', 'type' =&gt; 'string', 'require' =&gt; true, 'default' =&gt; 'nobody', 'min' =&gt; 1, 'max' =&gt; 10)</code></pre>
 <p>若传递的参数长度过长，如&amp;username=alonglonglonglongname，则会异常失败返回：</p>
-<pre><code class="language-javascript">{"ret":400,"data":[],"msg":"Illegal Param: username.len should &lt;= 10, but now username.len = 21"}</code></pre>
+<pre><code class="language-php">{"ret":400,"data":[],"msg":"Illegal Param: username.len should &lt;= 10, but now username.len = 21"}</code></pre>
 <p>但是当需要验证的是类型是中文的话会出现一点问题一个中文字符会占用3个字节所以在min和max验证的时候会出现一些问题,PhalApi提供了format方式对你需要验证长度的string进行指定格式可以排除此问题</p>
-<pre><code class="language-javascript">array('name' =&gt; 'username', 'type' =&gt; 'string','format' =&gt; 'utf8', 'min' =&gt; 1, 'max' =&gt; 10)</code></pre>
+<pre><code class="language-php">array('name' =&gt; 'username', 'type' =&gt; 'string','format' =&gt; 'utf8', 'min' =&gt; 1, 'max' =&gt; 10)</code></pre>
 <p>对于正则表达式的验证，一个邮箱的例子是：  </p>
-<pre><code>'email' =&gt; array(
+<pre><code class="language-php">'email' =&gt; array(
     'name' =&gt; 'email',
     'require' =&gt; true,
     'min' =&gt; '1',
@@ -364,39 +364,39 @@ return array(
 ),</code></pre>
 <h3>(2)整型 int</h3>
 <p>如通常数据库中的id，即可配置成：</p>
-<pre><code class="language-javascript">array('name' =&gt; 'id', 'type' =&gt; 'int', 'require' =&gt; true, 'min' =&gt; 1 )</code></pre>
+<pre><code class="language-php">array('name' =&gt; 'id', 'type' =&gt; 'int', 'require' =&gt; true, 'min' =&gt; 1 )</code></pre>
 <p>当传递的参数，不在其配置的范围内时，如&amp;id=0，则会异常失败返回：</p>
-<pre><code class="language-javascript">{"ret":400,"data":[],"msg":"Illegal Param: id should &gt;= 1, but now id = 0"}</code></pre>
+<pre><code>{"ret":400,"data":[],"msg":"Illegal Param: id should &gt;= 1, but now id = 0"}</code></pre>
 <h3>(3)浮点 float</h3>
 <p>浮点型，类似整型的配置，此处略。</p>
 <h3>(4)布尔值 boolean</h3>
 <p>布尔值，主要是可以对一些字符串转换成布尔值，如ok, true, success, on, yes, 以及会被PHP解析成true的字符串，都会转换成true，方便调用。如通常的是否记住我：</p>
-<pre><code class="language-javascript">array('name' =&gt; 'isRememberMe', 'type' =&gt; 'boolean', 'default' =&gt; true)</code></pre>
+<pre><code class="language-php">array('name' =&gt; 'isRememberMe', 'type' =&gt; 'boolean', 'default' =&gt; true)</code></pre>
 <h3>(5)日期 date</h3>
 <p>日期可以按自己约定的格式传递，可以这样配置：</p>
-<pre><code class="language-javascript">array('name' =&gt; 'registerData', 'type' =&gt; 'date')</code></pre>
+<pre><code class="language-php">array('name' =&gt; 'registerData', 'type' =&gt; 'date')</code></pre>
 <p>对应地，risterData=2015-01-31 10:00:00则会被获取到为：&quot;2015-01-31 10:00:00&quot;。</p>
 <p>当需要将字符串的日期转换成timestamp时，则配置成：</p>
-<pre><code class="language-javascript">array('name' =&gt; 'registerData', 'type' =&gt; 'date', 'format' =&gt; 'timestamp')</code></pre>
+<pre><code class="language-php">array('name' =&gt; 'registerData', 'type' =&gt; 'date', 'format' =&gt; 'timestamp')</code></pre>
 <p>则上面的参数再请求时，则会被转换成：1422669600。</p>
 <h3>(6)数组 array</h3>
 <p>很多时候在接口进行批量获取时，都需要提供一组参数，所以这时可以使用数组来进行配置。如：</p>
-<pre><code class="language-javascript">array('name' =&gt; 'uids', 'type' =&gt; 'array', 'format' =&gt; 'explode', 'separator' =&gt; ',')</code></pre>
+<pre><code class="language-php">array('name' =&gt; 'uids', 'type' =&gt; 'array', 'format' =&gt; 'explode', 'separator' =&gt; ',')</code></pre>
 <p>对应&amp;uids=1,2,3则会被转换成：</p>
-<pre><code class="language-javascript">array ( 0 =&gt; '1', 1 =&gt; '2', 2 =&gt; '3', )</code></pre>
+<pre><code class="language-php">array ( 0 =&gt; '1', 1 =&gt; '2', 2 =&gt; '3', )</code></pre>
 <p>又如接口需要使用JSON来传递整块参数时，可以这样配置：</p>
-<pre><code class="language-javascript">array('name' =&gt; 'params', 'type' =&gt; 'array', 'format' =&gt; 'json')</code></pre>
+<pre><code class="language-php">array('name' =&gt; 'params', 'type' =&gt; 'array', 'format' =&gt; 'json')</code></pre>
 <p>对应&amp;params={&quot;username&quot;:&quot;test&quot;,&quot;password&quot;:&quot;123456&quot;}则会被转换成：</p>
-<pre><code class="language-javascript">array ( 'username' =&gt; 'test', 'password' =&gt; '123456', )</code></pre>
+<pre><code class="language-php">array ( 'username' =&gt; 'test', 'password' =&gt; '123456', )</code></pre>
 <p>特别地，当配置成了数组，却未指定格式format时，会转换成一个元素的数组，如：&amp;name=test，会转换成：array('test')。</p>
 <h3>(7)枚举 enum</h3>
 <p>在需要对接口参数进行范围限制时，可以使用此枚举型。如对于性别的参数，可以这样配置：</p>
-<pre><code class="language-javascript">array('name' =&gt; 'sex', 'type' =&gt; 'enum', 'range' =&gt; array('female', 'male'))</code></pre>
+<pre><code class="language-php">array('name' =&gt; 'sex', 'type' =&gt; 'enum', 'range' =&gt; array('female', 'male'))</code></pre>
 <p>当传递的参数不合法时，如&amp;sex=unknow，则会被拦截，返回失败：</p>
-<pre><code class="language-javascript">{"ret":400,"data":[],"msg":"Illegal Param: sex should be in female\/male, but now sex = unknow"}</code></pre>
+<pre><code class="language-php">{"ret":400,"data":[],"msg":"Illegal Param: sex should be in female\/male, but now sex = unknow"}</code></pre>
 <p>关于枚举类型的配置，这里需要特别注意配置时，应尽量使用字符串的值。<br />
 因为通常而言，接口通过GET/POST方式获取到的参数都是字符串的，而如果配置规则时指定范围用了整型，会导致底层规则验证时误判。如：  </p>
-<pre><code class="language-javascript">//接口参数为： &amp;type=N
+<pre><code class="language-php">//接口参数为： &amp;type=N
 
 //接口参数规则为：
 array('name' =&gt; 'type', 'type' =&gt; 'enum', 'range' =&gt; array(0, 1, 2))
@@ -404,11 +404,11 @@ array('name' =&gt; 'type', 'type' =&gt; 'enum', 'range' =&gt; array(0, 1, 2))
 //误判，因为：
 var_dump(in_array('N', array(0, 1, 2))); //结果为true，因为 'N' == 0</code></pre>
 <p>为了避免这类情况发生，应该这样配置：  </p>
-<pre><code class="language-javascript">//接口参数规则为（使用字符串）：
+<pre><code class="language-php">//接口参数规则为（使用字符串）：
 array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1`, `2`))</code></pre>
 <h3>(8)文件 file</h3>
 <p>在需要对上传的文件进行过滤、接收和处理时，可以使用文件类型，如：</p>
-<pre><code class="language-javascript">array(
+<pre><code class="language-php">array(
     'name' =&gt; 'upfile', 
     'type' =&gt; 'file', 
     'min' =&gt; 0, 
@@ -418,7 +418,7 @@ array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1
 )</code></pre>
 <p>其中，min和max分别对应文件大小的范围，单位为字节；range为允许的文件类型，使用数组配置，且不区分大小写。 </p>
 <p>如果成功，返回的值对应的是$_FILES[&quot;upfile&quot;]，即会返回：</p>
-<pre><code class="language-javascript">array(
+<pre><code class="language-php">array(
      'name' =&gt; '',
      'type' =&gt; '',
      'size' =&gt; '',
@@ -434,7 +434,7 @@ array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1
 </ul>
 <p>若需要配置默认值default选项，则也应为一数组，且其格式应类似如上。</p>
 <p>其中,ext是对文件后缀名进行验证,当如果上传文件后缀名不匹配时将抛出异常。文件扩展名的过滤可以类似这样进行配置：</p>
-<pre><code>//单个后缀名 - 数组形式
+<pre><code class="language-php">//单个后缀名 - 数组形式
 'ext' =&gt; array('jpg')
 
 //单个后缀名 - 字符串形式
@@ -447,10 +447,10 @@ array('name' =&gt; '&amp;type', 'type' =&gt; 'enum', 'range' =&gt; array(`0`, `1
 'ext' =&gt; 'jpg,jpeg,png,bmp'</code></pre>
 <h3>(9)回调 callable / callback</h3>
 <p>当需要利用已有函数进行自定义验证时，可采用回调参数规则，如：  </p>
-<pre><code>//配置规则
+<pre><code class="language-php">//配置规则
 array('name' =&gt; 'version', 'type' =&gt; 'callable', 'callback' =&gt; array('Common_MyVersion', 'formatVersion'))</code></pre>
 <p>然后，回调时将调用下面这个函数：</p>
-<pre><code>//新增一个自定义的版本检测函数
+<pre><code class="language-php">//新增一个自定义的版本检测函数
 class Common_MyVersion {
 
     public static function formatVersion($value, $rule) {
@@ -475,11 +475,11 @@ class Common_MyVersion {
 <h3>(2)更自由的名称映射</h3>
 <p>之所以没把规则配置的下标默认成与客户端传递的name一致，是为了更自由的名称映射；<br />
 如可能我们PHP后台开发喜欢用驼峰法来表示，但客户端想用下划线来分割，则通过这样配置：</p>
-<pre><code class="language-javascript">array(
+<pre><code class="language-php">array(
     'isRememberMe' =&gt; array('name' =&gt; 'is_remember_me', 'type' =&gt; 'boolean', 'default' =&gt; true),
 )</code></pre>
 <p>更重要的是，有时我们希望能缩短客户端请求的参数名称以节省流量时，可以这样配置：</p>
-<pre><code class="language-javascript">array(
+<pre><code class="language-php">array(
     'isRememberMe' =&gt; array('name' =&gt; 're', 'type' =&gt; 'boolean', 'default' =&gt; true),
 )</code></pre>
 <h3>(3)异常返回</h3>
@@ -493,7 +493,7 @@ class Common_MyVersion {
 </ul>
 <p>下面以大家所熟悉的邮件类型为例，说明扩展的步骤。  </p>
 <p>首先，我们需要一个实现了邮件类型验证的功能类：  </p>
-<pre><code>&lt;?php
+<pre><code class="language-php">&lt;?php
 
 class Common_MyFormatter_Email implements PhalApi_Request_Formatter {
 
@@ -506,7 +506,7 @@ class Common_MyFormatter_Email implements PhalApi_Request_Formatter {
     }
 }  </code></pre>
 <p>然后，注册一下：  </p>
-<pre><code>DI()-&gt;_formatterEmail = 'Common_MyFormatter_Email';</code></pre>
+<pre><code class="language-php">DI()-&gt;_formatterEmail = 'Common_MyFormatter_Email';</code></pre>
 <blockquote>
 <p>温馨提示：
 在DI中手动注册服务时，名称的格式为： 下划线(&quot;_&quot;) + 统一前缀（&quot;formatter&quot;) + 参数类型（全部小写后，首字母大写）；<br />
@@ -526,7 +526,7 @@ class Common_MyFormatter_Email implements PhalApi_Request_Formatter {
 <li>_formatterString 字符串格式化服务</li>
 </ul>
 <p>至此，便可使用自己定制的类型规则了，  </p>
-<pre><code>array('name' =&gt; 'user_email', 'type' =&gt; 'email')</code></pre>
+<pre><code class="language-php">array('name' =&gt; 'user_email', 'type' =&gt; 'email')</code></pre>
 <hr />
 <h4><a href="/wikis/%5B1.11%5D-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%28backup%29.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.13%5D-%E7%BB%9F%E4%B8%80%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%EF%BC%9A_sevice=XXX.XXX.html">下一章</a></h4>
             </div>

@@ -81,12 +81,12 @@
 <p>下面以大家熟悉的缓存为例，分别说明这三个层面的演进使用。  </p>
 <h3>(1)基本使用</h3>
 <p>在./Public/init.php初始化文件中，我们可以去掉对Memcache的注释，从而在项目启用cache这一资源服务。</p>
-<pre><code class="language-javascript">//缓存 - Memcache/Memcached
+<pre><code class="language-php">//缓存 - Memcache/Memcached
 DI()-&gt;cache = function () {
     return new PhalApi_Cache_Memcache(DI()-&gt;config-&gt;get('sys.mc'));
 };</code></pre>
 <p>或者，我们还需要根据配置的MC不同，稍微更改一下./Config/sys.php中对应的配置：</p>
-<pre><code class="language-javascript">    /**
+<pre><code class="language-php">    /**
      * MC缓存服务器参考配置
      */
      'mc' =&gt; array(
@@ -94,7 +94,7 @@ DI()-&gt;cache = function () {
            'port' =&gt; 11211,
      ),</code></pre>
 <p>然后，就可以在项目中如前面说的那样使用cache进行对缓存进行操作。</p>
-<pre><code class="language-javascript">//设置缓存
+<pre><code class="language-php">//设置缓存
 DI()-&gt;cache-&gt;set($key, $value, $expireTime);
 
 //读取缓存
@@ -102,11 +102,11 @@ $rs = DI()-&gt;cache-&gt;get($key);</code></pre>
 <h3>(2)高级应用</h3>
 <p>但是我们都知道，缓存的实现方案以及存储的方式多种多样，包括但不限于：数据库缓存、文件缓存、COOKIE/session缓存、Redis缓存、APC缓存。  </p>
 <p>假设我们需要切换到Redis缓存，则可以在init.php初始化中，把DI()-&gt;cache注册成Redis缓存即可。</p>
-<pre><code class="language-javascript">DI()-&gt;cache = function () {
+<pre><code class="language-php">DI()-&gt;cache = function () {
     return new PhalApi_Cache_Redis(DI()-&gt;config-&gt;get('sys.redis'));
 };</code></pre>
 <p>同时，在./Config/sys.php中添加对应的配置：</p>
-<pre><code class="language-javascript">     'redis' =&gt; array(
+<pre><code class="language-php">     'redis' =&gt; array(
            'host' =&gt; '127.0.0.1',
            'port' =&gt; 9527,
      ),</code></pre>
@@ -116,7 +116,7 @@ $rs = DI()-&gt;cache-&gt;get($key);</code></pre>
 <h4>实现资源服务接口</h4>
 <p>很多通常的资源服务，我们都统一了接口规约。在[1.19]-DI服务速查：各资源服务一览表 中可以查到每个资源服务所需要实现的接口。  </p>
 <p>如这次的缓存接口类是：</p>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 
 interface PhalApi_Cache {
 
@@ -145,13 +145,13 @@ interface PhalApi_Cache {
     public function delete($key);
 }</code></pre>
 <p>我们可以先在项目中，实现此接口，如：</p>
-<pre><code class="language-javascript">class Common_MyCache implements PhalApi_Cache {
+<pre><code class="language-php">class Common_MyCache implements PhalApi_Cache {
      // ... ...
 }</code></pre>
 <p>具体的实现，这里不再举例。  </p>
 <h4>再注册</h4>
 <p>当实现好子类后，我们便可以在init.php初始化文件中，切换到我们自己的定制类。</p>
-<pre><code class="language-javascript">DI()-&gt;cache = 'Common_MyCache';</code></pre>
+<pre><code class="language-php">DI()-&gt;cache = 'Common_MyCache';</code></pre>
 <h2>2.18.3 实现、定制化你的资源服务</h2>
 <p>正如《项目百态》书中隐藏的美模式一节中写道的“恰恰相反，只有减少特性才能提升设计的美感。最好的设计都是功能明确又留有答题，也是易于测试的，即使要作修改，也不会带来新的麻烦。”  </p>
 <p>是以，作为一个框架，我们应当以发散的方式去设计；但为了能为应用提供可用的功能，我们又应当以收敛的方式去实现。如果我们提供的功能不足以满足大部分主流的业务场景，那么我们至少需要提供可扩展的空间。  </p>

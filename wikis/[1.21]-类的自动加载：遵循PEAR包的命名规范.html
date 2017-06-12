@@ -73,11 +73,11 @@
 <p><img src="http://webtools.qiniudn.com/20150411005257_cec1c175fa70c8bc904389be30712bc3" alt="0215" /><br />
 或者查看（里面有很好的代码风格编写说明）： <a href="http://www.php-fig.org/psr/psr-0/">Autoloading Standard</a>  </p>
 <p>而PhalApi则更简单，我们暂时还不使用命名空间，所以namespace这一块省去。例如：  </p>
-<pre><code class="language-javascript">Api_User
+<pre><code>Api_User
 Domain_User
 Model_User</code></pre>
 <p>对应以下路径的文件：</p>
-<pre><code class="language-javascript">.
+<pre><code class="language-bash">.
 |-- Api
 |   `-- User.php
 |-- Domain
@@ -85,20 +85,20 @@ Model_User</code></pre>
 |-- Model
 |   `-- User.php</code></pre>
 <p>再举一个模拟的示例，如类Api_Game_User_Equitment对应以下文件路径：</p>
-<pre><code class="language-javascript">./Api/Game/User/Equitment.php</code></pre>
+<pre><code class="language-bash">./Api/Game/User/Equitment.php</code></pre>
 <p>此外，还需注意区分大小写。  </p>
 <h2>1.21.3 挂靠式自动加载</h2>
 <p>然后在我们准备了这些类和文件后，我们怎么才能让这些类被框架所自动加载呢？  </p>
 <p>我们提供的方式是：  <strong>挂靠式自动加载</strong> 。  </p>
 <p>熟悉Linux系统的同学可能很容易明白，还没接触到Linux的同学也是可以很快理解的。这里稍微说明一下。  </p>
 <p>所谓的 <strong>挂靠</strong> 就是把你代码的目录放在项目的目录下（或者其他任何一个地方），随后简单地将此目录添加到自动加载器即可。如上面的：</p>
-<pre><code class="language-javascript">DI()-&gt;loader-&gt;addDirs('Demo');</code></pre>
+<pre><code class="language-php">DI()-&gt;loader-&gt;addDirs('Demo');</code></pre>
 <p>当有多个目录时，可以这样：</p>
-<pre><code class="language-javascript">DI()-&gt;loader-&gt;addDirs(array('Demo', 'Demo1', 'Demo2'));</code></pre>
+<pre><code class="language-php">DI()-&gt;loader-&gt;addDirs(array('Demo', 'Demo1', 'Demo2'));</code></pre>
 <p>需要注意的是，上面相对路径的都需要放置在应用项目的目录API_ROOT下面。如果是单个文件的引入，则可以使用绝对路径。下面分别简单说明。  </p>
 <h3>(1)相对路径的目录路径挂靠</h3>
 <p>通过PhalApi_Loader::addDirs()方式挂靠的路径，都是强制在目录API_ROOT下面，即下面的三种方式是等效的（在Linux系统上）：  </p>
-<pre><code>//路径：API_ROOT/Demo
+<pre><code class="language-php">//路径：API_ROOT/Demo
 DI()-&gt;loader-&gt;addDirs('Demo');
 
 //路径：API_ROOT/./Demo
@@ -109,7 +109,7 @@ DI()-&gt;loader-&gt;addDirs('/Demo');</code></pre>
 <p>如果需要挂靠的目录不在项目目录下，在Linux可以通过软链来解决。  </p>
 <h3>(2)单个文件允许绝对路径引入</h3>
 <p>对于单个文件的引入，可以通过PhalApi_Loader::loadFile()来引入。注意以下两种写法的区别：  </p>
-<pre><code>//路径：API_ROOT/Demo/Tool.php
+<pre><code class="language-php">//路径：API_ROOT/Demo/Tool.php
 DI()-&gt;loader-&gt;loadFile('Demo/Tool.php');
 
 //路径：/path/to/Demo/Tool.php

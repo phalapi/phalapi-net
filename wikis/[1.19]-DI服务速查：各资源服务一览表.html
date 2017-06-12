@@ -236,17 +236,17 @@
 <h2>1.19.2 DI服务是否已注册的判断误区</h2>
 <h3>(1)错误的判断方法</h3>
 <p>当需要判断一个DI服务是否已被注册，出于常识会这样判断：  </p>
-<pre><code>if (isset(DI()-&gt;cache)) {</code></pre>
+<pre><code class="language-php">if (isset(DI()-&gt;cache)) {</code></pre>
 <p>但这样的判断永远为false，不管注册与否。  </p>
 <p>追其原因在于，DI类使用了魔法方法的方式来提供类成员属性，并存放于PhalApi_DI::$data中。  </p>
 <p>这就导致了如果直接使用isset(DI()-&gt;cache)的话，首先不会触发魔法方法 PhalApi_DI::__get($name)的调用，其次也确实没有PhalApi_DI::$cache这个成员属性，最终判断是否存在时都为false。  </p>
 <p>简单来说，以下两种判断，永远都为false：  </p>
-<pre><code>//永远为false
+<pre><code class="language-php">//永远为false
 var_dump(isset(DI()-&gt;XXX));
 var_dump(!empty(DI()-&gt;XXX));</code></pre>
 <h3>(2)正确判断的写法：先获取，再判断</h3>
 <p>正确的用法应该是：  </p>
-<pre><code>//先获取，再判断
+<pre><code class="language-php">//先获取，再判断
 $XXX = DI()-&gt;XXX;
 var_dump(isset($XXX));
 var_dump(!empty($XXX));</code></pre>

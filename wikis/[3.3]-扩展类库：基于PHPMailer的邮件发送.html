@@ -68,13 +68,13 @@
 <p>此扩展可用于发送邮件。</p>
 <h2>3.3.2 安装和配置</h2>
 <p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>PHPMailer</strong> 包，如使用：</p>
-<pre><code class="language-javascript">git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<pre><code class="language-bash">$ git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
 <p>然后把 <strong>PHPMailer</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
-<pre><code class="language-javascript">cp ./PhalApi-Library/PHPMailer/ ./PhalApi/Library/ -R</code></pre>
+<pre><code class="language-bash">$ cp ./PhalApi-Library/PHPMailer/ ./PhalApi/Library/ -R</code></pre>
 <p>到此安装完毕！接下是插件的配置。</p>
 <h3>(1)邮箱配置</h3>
 <p>需要在 <strong>./Config/app.php</strong> 配置文件中追加以下配置：</p>
-<pre><code class="language-javascript">  'PHPMailer' =&gt; array(
+<pre><code class="language-php">  'PHPMailer' =&gt; array(
     'email' =&gt; array(
         'host' =&gt; 'smtp.gmail.com',
         'username' =&gt; 'XXX@gmail.com',
@@ -86,7 +86,7 @@
   ),</code></pre>
 <h2>3.3.3 使用</h2>
 <p>如下代码示例：</p>
-<pre><code class="language-javascript">require_once './init.php';
+<pre><code class="language-php">require_once './init.php';
 
 DI()-&gt;loader-&gt;addDirs('Library');
 
@@ -95,7 +95,7 @@ $mailer-&gt;send('chanzonghuang@gmail.com', 'Test PHPMailer Lite', 'something he
 <p>稍候将会收到：</p>
 <p><img src="http://webtools.qiniudn.com/20150411005257_6e6c7a610357cf80e4513557a110d86d" alt="123123" /></p>
 <p>如果需要发送邮件给多个邮箱时，可以使用数组，如：  </p>
-<pre><code>$addresses = array('chanzonghuang@gmail.com', 'test@phalapi.com');
+<pre><code class="language-php">$addresses = array('chanzonghuang@gmail.com', 'test@phalapi.com');
 $mailer-&gt;send($addresses, 'Test PHPMailer Lite', 'something here ...');</code></pre>
 <hr />
 <h4><a href="/wikis/%5B3.2%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E4%B8%8Bphprpc%E5%8D%8F%E8%AE%AE%E7%9A%84%E8%BD%BB%E6%9D%BE%E6%94%AF%E6%8C%81.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B3.4%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%BC%98%E9%85%B7%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8.html">下一章</a></h4>

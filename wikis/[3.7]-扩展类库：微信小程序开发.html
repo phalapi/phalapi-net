@@ -74,13 +74,13 @@
 <h2>安装与配置</h2>
 <h3>(1) 扩展的安装</h3>
 <p>从<a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>扩展库中下载获取<strong>WechatMini</strong>扩展包，如使用：</p>
-<pre><code class="language-javascript">git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<pre><code class="language-bash">$ git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
 <p>然后把<strong>WechatMini</strong>目录复制到项目<strong>./PhalApi/Library/</strong>目录下，即：</p>
-<pre><code class="language-javascript">cp ./PhalApi-Library/WechatMini/ ./PhalApi/Library/ -R</code></pre>
+<pre><code class="language-bash">$ cp ./PhalApi-Library/WechatMini/ ./PhalApi/Library/ -R</code></pre>
 <p>到此安装完毕！接下是扩展的配置。</p>
 <h3>(2) 扩展的配置</h3>
 <p>我们需要在<strong>./Config/app.php</strong>配置文件中追加以下配置： </p>
-<pre><code>    /**
+<pre><code class="language-php">    /**
      * 扩展类库 - 微信小程序
      */
     'WechatMini'  =&gt; array(
@@ -92,7 +92,7 @@
 <p>其中，appid和secret根据自己的小程序配置，相应更新。url和grant_type则不需要更改。  </p>
 <h3>(3) 扩展的注册</h3>
 <p>可以在初始化文件./Public/init.php或者项目入口文件如./Public/demo/index.php注册此微信小程序扩展。</p>
-<pre><code>DI()-&gt;wechatMini = new WechatMini_Lite();</code></pre>
+<pre><code class="language-php">DI()-&gt;wechatMini = new WechatMini_Lite();</code></pre>
 <p>这里需要使用显式初始化，WechatMini扩展完成一些内部初始化工作。</p>
 <p>注册好后，便可以开始使用了。</p>
 <h2>接口服务介绍</h2>
@@ -197,7 +197,7 @@
 <li><strong>小程序使用示例</strong></li>
 </ul>
 <p>在小程序中，可以这样调用此接口。  </p>
-<pre><code>wx.login({
+<pre><code class="language-javascript">wx.login({
       success: function(res) {
         if (res.code) {
           //发起网络请求

@@ -118,7 +118,7 @@
 <pre><code>[1 - 0.32ms]SELECT * FROM tbl_user WHERE (id = ?); -- 1</code></pre>
 <p>表示是第一条执行的SQL语句，消耗了0.32毫秒，SQL语句是<code>SELECT * FROM tbl_user WHERE (id = ?);</code>，其中参数是1。  </p>
 <p>又如，假设我们编写一个这样获取用户总人数的示例接口。  </p>
-<pre><code>// $ vim ./Demo/Api/User.php
+<pre><code class="language-php">// $ vim ./Demo/Api/User.php
 class Api_User extends PhalApi_Api {
     public function amount() {
         return DI()-&gt;notorm-&gt;user-&gt;count('id');
@@ -147,14 +147,14 @@ class Api_User extends PhalApi_Api {
 <p>示例：  </p>
 <pre><code>[#0 - 0ms]/home/apps/projects/PhalApi/Public/index.php(6)</code></pre>
 <p>表示，这是第一个埋点（由框架自行添加），执行时间为0毫秒，所在位置是文件<code>/home/apps/projects/PhalApi/Public/index.php</code>的第6行。即第一条的埋点发生在框架初始化时：  </p>
-<pre><code>// $ vim ./Public/init.php
+<pre><code class="language-php">// $ vim ./Public/init.php
 
 if (DI()-&gt;debug) {
     // 启动追踪器
     DI()-&gt;tracer-&gt;mark();
 }</code></pre>
 <p>与SQL语句的调试信息不同的是，自定义埋点则需要开发人员根据需要自行纪录，可以使用全球追踪器<code>DI()-&gt;tracer</code>进行纪录，其使用如下：  </p>
-<pre><code>// 添加纪录埋点
+<pre><code class="language-php">// 添加纪录埋点
 DI()-&gt;tracer-&gt;mark();
 
 // 添加纪录埋点，并指定节点标识
@@ -164,7 +164,7 @@ DI()-&gt;tracer-&gt;mark('DO_SOMETHING');</code></pre>
 <p>参考资料：<a href="http://git.oschina.net/dogstar/PhalApi-Library/tree/master/Xhprof">XHprof扩展类库</a>  </p>
 </blockquote>
 <p>继续上面的示例，在进行数据库操作前后，我们添加相应的操作埋点。  </p>
-<pre><code>    public function amount() {
+<pre><code class="language-php">    public function amount() {
         DI()-&gt;tracer-&gt;mark('开始读取数据库');
 
         $rs = DI()-&gt;notorm-&gt;user-&gt;count('id');
@@ -193,7 +193,7 @@ DI()-&gt;tracer-&gt;mark('DO_SOMETHING');</code></pre>
 <h3>(3) debug.exception异常堆栈信息</h3>
 <p>当有未能捕捉的接口异常时，开启调试模式后，框架会把对应的异常转换成对应的返回结果，而不是像最初那样直接500，页面空白。这些是由框架自动处理的。  </p>
 <p>继续上面的示例，让我们故意制造一些麻烦，手动抛出一个异常。  </p>
-<pre><code>    public function amount() {
+<pre><code class="language-php">    public function amount() {
         ... ... 
 
         throw new Exception('这是一个演示异常调试的示例', 501);
@@ -227,7 +227,7 @@ DI()-&gt;tracer-&gt;mark('DO_SOMETHING');</code></pre>
 <h3>(4) 添加自定义调试信息</h3>
 <p>当需要添加其他调试信息时，可以使用<code>DI()-&gt;response-&gt;setDebug()</code>进行添加。  </p>
 <p>如： </p>
-<pre><code>$x = 'this is x';
+<pre><code class="language-php">$x = 'this is x';
 $y = array('this is y');
 DI()-&gt;response-&gt;setDebug('x', $x);
 DI()-&gt;response-&gt;setDebug('y', $y);</code></pre>
@@ -243,7 +243,7 @@ DI()-&gt;response-&gt;setDebug('y', $y);</code></pre>
 <h3>(1)新增的批量获取接口</h3>
 <p>假设我们在开发一个国际的项目，并且运行良好，BOSS说因业务需要，要加多一个接口以支持批量获取用户的基本信息，提供给国外某知名的社交平台调用。</p>
 <p>于是乎，我们很快就根据原来的单个获取接口实现了新的接口：</p>
-<pre><code class="language-javascript">//$vim ./Demo/Api/User.php
+<pre><code class="language-php">//$vim ./Demo/Api/User.php
 &lt;?php
 
 class Api_User extends PhalApi_Api {
@@ -275,7 +275,7 @@ class Api_User extends PhalApi_Api {
 <p>显然，我们可以很清楚地调用新增的接口：</p>
 <pre><code>http://dev.phalapi.com/demo/?service=User.GetMultiBaseInfo&amp;user_ids=1,2,3</code></pre>
 <p>可返回：</p>
-<pre><code class="language-javascript">{
+<pre><code>{
     "ret": 200,
     "data": {
         "code": 0,
@@ -301,7 +301,7 @@ class Api_User extends PhalApi_Api {
     "msg": ""
 }</code></pre>
 <p>假设我们已经有了这样的数据库表数据：</p>
-<pre><code class="language-javascript">INSERT INTO `tbl_user` VALUES ('1', 'dogstar', 'oschina');
+<pre><code class="language-sql">INSERT INTO `tbl_user` VALUES ('1', 'dogstar', 'oschina');
 INSERT INTO `tbl_user` VALUES ('2', 'Tom', 'USA');
 INSERT INTO `tbl_user` VALUES ('3', 'King', 'game');</code></pre>
 <h3>(3)这样的问题？</h3>
@@ -309,7 +309,7 @@ INSERT INTO `tbl_user` VALUES ('3', 'King', 'game');</code></pre>
 这里，根据前面学习的调试方式，则我们可以快速发现存在的问题：</p>
 <pre><code>http://dev.phalapi.com/demo/?service=User.GetMultiBaseInfo&amp;user_ids=1,2,3&amp;__debug__=1</code></pre>
 <p>如下返回，我们看到了很多重复类似的查询语句。</p>
-<pre><code class="language-javascript">{
+<pre><code>{
     ... ...
     "debug": {
         .... ...

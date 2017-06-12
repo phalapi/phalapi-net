@@ -106,15 +106,15 @@
 <h3>(1)使用phalapi-buildapp脚本</h3>
 <p>phalapi-buildapp脚本用于创建项目，进入 ./PhalApi/PhalApi/ 后，可以看到这个脚本。  </p>
 <p>不过，首先，需要为这个脚本添加执行权限：</p>
-<pre><code class="language-javascript">$ chmod +x ./phalapi-buildapp</code></pre>
+<pre><code class="language-bash">$ chmod +x ./phalapi-buildapp</code></pre>
 <p>然后，调用脚本创建一个MyApp的项目：</p>
-<pre><code class="language-javascript">$ ./phalapi-buildapp MyApp
+<pre><code class="language-php">$ ./phalapi-buildapp MyApp
 
 OK!
 </code></pre>
 <h3>(2)查看生成的项目及访问</h3>
 <p>回到 /path/to/PhalApi 目录，你会发现生成了一个MyApp目录，并且里面的文件如下：  </p>
-<pre><code class="language-javascript">$ cd MyApp/
+<pre><code class="language-bash">$ cd MyApp/
 $ tree
 .
 ├── Api
@@ -134,7 +134,7 @@ $ tree
 9 directories, 4 files
 </code></pre>
 <p>在Public目录下，则会有myapp的访问入口：</p>
-<pre><code class="language-javascript">└── myapp
+<pre><code class="language-bash">└── myapp
     ├── checkApiParams.php
     └── index.php</code></pre>
 <p>在浏览器访问：</p>
@@ -146,7 +146,7 @@ http://dev.phalapi.com/Public/myapp/</code></pre>
 <p>可以看到接口结果输出。</p>
 <h3>(3)执行单元测试</h3>
 <p>如果安装了PHPUnit，执行一下单元测试，也是通过的！</p>
-<pre><code class="language-javascript">$ phpunit ./Tests/
+<pre><code class="language-bash">$ phpunit ./Tests/
 PHPUnit 4.3.4 by Sebastian Bergmann.
 
 ...
@@ -160,7 +160,7 @@ OK (3 tests, 13 assertions)
 <p>请确保日记目录Runtime拥有写入的权限，可以给0777 。</p>
 <h3>(2)脚本加执行权限和软链</h3>
 <p>对于脚本命令，需要添加执行权限和软链，便于日后使用：</p>
-<pre><code class="language-javascript">$ cd /pah/to/PhalApi/PhalApi
+<pre><code class="language-bash">$ cd /pah/to/PhalApi/PhalApi
 
 $ chmod +x ./phalapi-buildapp
 $ sudo ln -s /path/to/phalapi-buildapp /usr/bin/phalapi-buildapp
@@ -173,15 +173,15 @@ $ sudo ln -s /path/to/phalapi-buildtest /usr/bin/phalapi-buildtest</code></pre>
 <h3>(3)No such file or directory的解决方案</h3>
 <h4>解决方案一：增加 /usr/bin/php软链</h4>
 <p>可以将php的执行路径追加到/usr/bin下，即类似：</p>
-<pre><code>ln -s /usr/local/php/bin/php /usr/bin/php</code></pre>
+<pre><code class="language-bash">ln -s /usr/local/php/bin/php /usr/bin/php</code></pre>
 <h4>解决方案二：使用alias起别名</h4>
 <p>或者通过使用别名 alias 的方式来注册脚本命令：</p>
-<pre><code class="language-javascript"># vim /etc/bashrc 
+<pre><code class="language-bash"># vim /etc/bashrc 
 
 #PhalApi - 自动生成SQL语句
 alias phalapi-buildsqls='/usr/local/php/bin/php /path/to/PhalApi/phalapi-buildsqls'</code></pre>
 <p>需要注意的是，保存后，需要source一下，即：</p>
-<pre><code class="language-javascript"># source /etc/bashrc
+<pre><code class="language-bash"># source /etc/bashrc
 
 $ source /etc/bashrc</code></pre>
 <hr />
@@ -201,7 +201,7 @@ $ source /etc/bashrc</code></pre>
 </ul>
 <p>通常，可以先写好类名以及相应的接口，然后再使用此脚本生成单元测试骨架代码。<br />
 以Default.Index默认接口服务为例，需要为此生成测试骨架代码，可以依次这样操作：  </p>
-<pre><code>$ cd /path/to/PhalApi
+<pre><code class="language-bash">$ cd /path/to/PhalApi
 $ cd ./Demo/Tests
 $ ../../PhalApi/phalapi-buildtest ../Api/Default.php Api_Default ./test_env.php &gt; ./Api/Api_Default_Test.php</code></pre>
 <p>最后，需要将生成好的代码，重定向保存到你要保存的位置。通常与产品代码对齐，并以“{类名} + _Test.php”方式命名。  </p>
@@ -218,16 +218,16 @@ $ ../../PhalApi/phalapi-buildtest ../Api/Default.php Api_Default ./test_env.php 
 <p>温馨提示：需要提前先将建表的SQL语句（除主键id和ext_data字段外）放置到./Data/目录下，文件名为：{表名}.sql。  </p>
 </blockquote>
 <p>如，我们需要生成10用户user_session表的的建表语句，那么需要添加数据文件./Data/user_session.sql（除主键id和ext_data字段外）：  </p>
-<pre><code>      `user_id` bigint(20) DEFAULT '0' COMMENT '用户id',
+<pre><code class="language-sql">      `user_id` bigint(20) DEFAULT '0' COMMENT '用户id',
       `token` varchar(64) DEFAULT '' COMMENT '登录token',
       `client` varchar(32) DEFAULT '' COMMENT '客户端来源',
       `times` int(6) DEFAULT '0' COMMENT '登录次数',
       `login_time` int(11) DEFAULT '0' COMMENT '登录时间',
       `expires_time` int(11) DEFAULT '0' COMMENT '过期时间',</code></pre>
 <p>然后，进入到项目根目录，执行命令：  </p>
-<pre><code>$ php ./PhalApi/phalapi-buildsqls ./Config/dbs.php user_session</code></pre>
+<pre><code class="language-bash">$ php ./PhalApi/phalapi-buildsqls ./Config/dbs.php user_session</code></pre>
 <p>就会看到生成好的SQL语句了，类似：  </p>
-<pre><code>CREATE TABLE `phalapi_user_session_0` (
+<pre><code class="language-sql">CREATE TABLE `phalapi_user_session_0` (
       `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
       ... ...
       PRIMARY KEY (`id`)
@@ -306,7 +306,7 @@ CREATE TABLE `phalapi_user_session_9` (
 <li>第四个参数overwrite：（可选）是否覆盖已有的代码文件，默认为否</li>
 </ul>
 <p>例如，我们要为Demo项目生成一个新的接口文件./AA/BB/CC.php，则可以：  </p>
-<pre><code>$ cd /path/to/PhalApi
+<pre><code class="language-bash">$ cd /path/to/PhalApi
 $ ./PhalApi/phalapi-buildcode Demo AA/BB/CC dogstar
 Start to create folder /mnt/hgfs/F/PHP/PhalApi/PhalApi/../Demo/Api/AA/BB ...
 Start to create folder /mnt/hgfs/F/PHP/PhalApi/PhalApi/../Demo/Domain/AA/BB ...

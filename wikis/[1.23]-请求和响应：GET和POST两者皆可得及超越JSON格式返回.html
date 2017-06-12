@@ -68,10 +68,10 @@
 <p>把我们后台的API想象成一个函数，那么请求的参数就是我们的参数列表；而接口响应的数据则对应函数返回的结果。  </p>
 <p>对于请求，正如前面所看到的，我们可以使用$_GET，也可以使用$_POST，也可以两者都使用，还可以在测试时自己指定模拟的请求数据包。  </p>
 <p>或者，在实际项目开发中，我们还需要根据自身的需求，跟我们自己的客户端作一些约定。如通常地，我们会要求客户端 <strong>service参数必须用GET方式</strong> ，以便服务器返回500时定位接口服务位置。对此，简单的我们把$_POST['service']去掉即可，如在入口文件前面添加：</p>
-<pre><code class="language-javascript">unset($_POST['service']);   //只接收GET方式的service参数</code></pre>
+<pre><code class="language-php">unset($_POST['service']);   //只接收GET方式的service参数</code></pre>
 <h3>(1) 在index.php入口处指定数据源</h3>
 <p>很多时间，不同的项目对数据接收有不同的需求。如简单地，强制统一使用$_POST参数，我们可以这样在入口处进行代码调整：</p>
-<pre><code class="language-javascript">//vim ./index.php
+<pre><code class="language-php">//vim ./index.php
 
 DI()-&gt;request = new PhalApi_Request($_POST); </code></pre>
 <p>对于复杂的情况，如需要使用post_raw数据，则可以继承<code>PhalApi_Request</code>实现相应的数据源解析。如：  </p>
@@ -94,7 +94,7 @@ DI()-&gt;request = new PhalApi_Request($_POST); </code></pre>
 <p>然后在子类实现对各类参数的数据源的准备。可以说，<code>PhalApi_Request::__construct()</code>构造函数用于初始化各类辅助侯选的数据源，而<code>PhalApi_Request::getData()</code>则用于生成主要默认的数据源。  </p>
 <h3>(2) 单元测试时指定数据源</h3>
 <p>在进行单元测试时，我们需要模拟接口的请求动作，也需要提供接口参数。这时的参数的指定更为灵活。可通过以下代码来实现，即：  </p>
-<pre><code class="language-javascript">//数据源
+<pre><code class="language-php">//数据源
 $data = array(...);
 
 DI()-&gt;request = new PhalApi_Request($data);</code></pre>
@@ -112,7 +112,7 @@ DI()-&gt;request = new PhalApi_Request($data);</code></pre>
 <p>有时，出于安全性的考虑，项目需要对请求的接口参数进行对称加密传送。这时可以通过重载PhalApi_Request::genData()来轻松实现。<br />
 假设，我们现在需要把全部的参数base64编码序列化后通过$_POST['data']来传递，则相应的解析代码如下。  </p>
 <p>第一步，先定义自己的扩展请求类，在里面完成对称解析的动作：  </p>
-<pre><code>&lt;?php
+<pre><code class="language-php">&lt;?php
 
 class Common_Request extends PhalApi_Request {
 
@@ -125,14 +125,14 @@ class Common_Request extends PhalApi_Request {
     }
 }</code></pre>
 <p>第二步，在index.php入口文件中重新注册请求类（即添加以下代码）：  </p>
-<pre><code>//重新注册request
+<pre><code class="language-php">//重新注册request
 DI()-&gt;request = 'Common_Request'; </code></pre>
 <p>然后，就可以轻松实现了接口参数的对称加密传送。<br />
 至此，你也许已经发现：指定数据源和对称加密是可以结合来使用的。  </p>
 <h3>(4) 接口参数级别的数据源</h3>
 <p>除了可以指定全局的接口数据源外，还可以进行更细致的配置，即为某个接口参数指定使用$GET、$_POST、$_COOKIE、$_SERVER、$_REQUEST或头部等其他数据源。  </p>
 <p>其使用方式是在配置接口参数规则时，使用source配置来指定当前参数的数据源，如指定用户在登录时，用户名使用$_GET、密码使用$_POST。  </p>
-<pre><code>public function getRules() {
+<pre><code class="language-php">public function getRules() {
     return array(
         'login' =&gt; array(
             'username' =&gt; array('name' =&gt; 'username', 'source' =&gt; 'get'),
@@ -177,7 +177,7 @@ DI()-&gt;request = 'Common_Request'; </code></pre>
 </tbody>
 </table>
 <p>因此，这样就可以轻松、更自由获取不同来源的参数。以下是一些常用的配置示例。  </p>
-<pre><code>// 获取HTTP请求方法，判断是POST还是GET
+<pre><code class="language-php">// 获取HTTP请求方法，判断是POST还是GET
 'method' =&gt; array('name' =&gt; 'REQUEST_METHOD', 'source' =&gt; 'server'),
 
 // 获取COOKIE中的标识
@@ -196,11 +196,11 @@ DI()-&gt;request = 'Common_Request'; </code></pre>
     }
 }</code></pre>
 <p>然后，便可在项目中这样配置使用二进制流的数据源。  </p>
-<pre><code>// 从二进制流中获取密码
+<pre><code class="language-php">// 从二进制流中获取密码
 'password' =&gt; array('name' =&gt; 'password', 'source' =&gt; 'stream'),</code></pre>
 <p>若配置的source为无效或非法时，则会抛出异常。<br />
 如故意配置一个错误的数据源source为NOT_FOUND。 </p>
-<pre><code>'password' =&gt; array('name' =&gt; 'password', 'source' =&gt; 'NOT_FOUND'),</code></pre>
+<pre><code class="language-php">'password' =&gt; array('name' =&gt; 'password', 'source' =&gt; 'NOT_FOUND'),</code></pre>
 <p>在请求接口时，会遇到这样的异常提示返回。  </p>
 <pre><code>{
     "ret": 500,
@@ -215,13 +215,13 @@ DI()-&gt;request = 'Common_Request'; </code></pre>
 <h3>(1) JSONP的返回</h3>
 <p>在H5页面中，我们可能会需要用到JSONP的返回，所以这里默认提供了这种格式的支持。  </p>
 <p>在入口文件中，添加：</p>
-<pre><code class="language-javascript">//支持JsonP的返回
+<pre><code class="language-php">//支持JsonP的返回
 if (!empty($_GET['callback'])) {
     DI()-&gt;response = new PhalApi_Response_JsonP($_GET['callback']);
 }</code></pre>
 <p>在接口访问时再带上&amp;callback=XXX参数即可。  </p>
 <p>这里在创建响应服务时，可以看到是用了回调函数的名字进行初始化。考虑到会存在XSS（跨站脚本攻击），对回调函数要进行相应的过滤，可以用黑名单或者白名单的方式。黑名单方式暂时还没提供，白名单相对简单但需要项目自己实现，如：</p>
-<pre><code class="language-javascript">class Common_JsonP extends PhalApi_Response_JsonP {
+<pre><code class="language-php">class Common_JsonP extends PhalApi_Response_JsonP {
 
     protected function clearXss($callback) {
         return in_array($callback, array('fun1', 'func2', 'func3')) ? $callback : '';
@@ -235,7 +235,7 @@ if (!empty($_GET['callback'])) {
 </ul>
 <p>这里以扩展XML返回格式为例，简单说明。  </p>
 <p>首先，添加实现一个XML响应子类：</p>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 
 class Common_Response_XML extends PhalApi_Response {
 
@@ -245,7 +245,7 @@ class Common_Response_XML extends PhalApi_Response {
 }</code></pre>
 <p>关于ArrayToXML，请查看： <a href="http://www.oschina.net/code/snippet_54100_1548">将PHP数组转成XML</a>  </p>
 <p>然后，重新注册：</p>
-<pre><code class="language-javascript">DI()-&gt;response = new Common_Response_XML();</code></pre>
+<pre><code class="language-php">DI()-&gt;response = new Common_Response_XML();</code></pre>
 <p>done!</p>
 <hr />
 <h4><a href="/wikis/%5B1.22%5D-%E7%AD%BE%E5%90%8D%E9%AA%8C%E8%AF%81%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AD%BE%E5%90%8D%E8%A7%84%E5%88%99.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B1.24%5D-%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5%EF%BC%9A%E6%9B%B4%E7%81%B5%E6%B4%BB%E5%9C%B0%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%8C%96%E7%9A%84%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98.html">下一章</a></h4>

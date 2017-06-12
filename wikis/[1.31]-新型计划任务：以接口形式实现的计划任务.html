@@ -121,7 +121,7 @@
 而且，为了支持 <strong>单个添加，批量处理</strong>，第三方缓存应该很好地支持队列的操作。<br />
 所以，redis是一个不错的选择。  </p>
 <p>如下，是redis简单的队列操作：</p>
-<pre><code class="language-javascript">$redis = new Redis();
+<pre><code class="language-php">$redis = new Redis();
 $redis-&gt;connect('127.0.0.1', 6300);
 
 $redis-&gt;lpush('test_key', 'www');
@@ -176,7 +176,7 @@ echo $redis-&gt;lpop('test_key'), "\n";</code></pre>
 <p>如下：
 <img src="http://webtools.qiniudn.com/task_3.jpg" alt="a pic" /> </p>
 <p>这样以后，我们可以这样根据创建不同的MQ队列：</p>
-<pre><code class="language-javascript">//Redis MQ队列
+<pre><code class="language-php">//Redis MQ队列
 $mq = Task_MQ_Redis();
 //或
 $mq = Task_MQ_Redis(new PhalApi_Cache_Redis(array('host' =&gt; '127.0.0.1', 'port' =&gt; 6379)));
@@ -216,7 +216,7 @@ $mq = new Task_MQ_Array();</code></pre>
 <p>我们在考虑是否需要提供工厂方法来创建计划任务调度器，或者MQ。<br />
 但我们发现，设计是如此明了，不必要再引入工厂方法来增加使用的复杂性，因为存在组合的情况。而且，对于后期客户端进行扩展也不利。  </p>
 <p>当我们需要启动一个计划任务时，可以这样写：</p>
-<pre><code class="language-javascript">$mq = new Task_MQ_Redis();
+<pre><code class="language-php">$mq = new Task_MQ_Redis();
 $runner = new Task_Runner_Local($mq);
 
 $runner-&gt;go('MyTask.DoSth');</code></pre>
@@ -230,7 +230,7 @@ $runner-&gt;go('MyTask.DoSth');</code></pre>
 而是把这种需要的实现移交给了客户端。因为加锁会使得计划任务更为复杂，而且有时不一定需要使用，如一个计划任务只有一个进程时，也就是单个死循环的脚本进程的情况。  </p>
 <h3>(7)客户端的使用</h3>
 <p>最后，客户端的使用就很简单了：</p>
-<pre><code class="language-javascript">$mq = new Task_MQ_Redis();
+<pre><code class="language-php">$mq = new Task_MQ_Redis();
 $taskLite = new Task_Lite();
 
 $taskLite-&gt;add('MyTask.DoSth', array('id' =&gt; 888));</code></pre>

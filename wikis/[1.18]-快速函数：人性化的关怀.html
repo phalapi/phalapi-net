@@ -72,20 +72,20 @@
 <h3>(1)获取全局DI实例的函数：DI()</h3>
 <p>为了定位获得全部服务资源，我们需要一个统一的入口，在这里即为PhalApi_DI的全局实例。<br />
 我们可以这样原始获取：</p>
-<pre><code class="language-javascript">$di = PhalApi_DI::one();</code></pre>
+<pre><code class="language-php">$di = PhalApi_DI::one();</code></pre>
 <p>也可以这样快速获取：</p>
-<pre><code class="language-javascript">$di = DI();</code></pre>
+<pre><code class="language-php">$di = DI();</code></pre>
 <p>也就是说：</p>
-<pre><code class="language-javascript">function DI() {
+<pre><code class="language-php">function DI() {
     return PhalApi_DI::one();
 }</code></pre>
 <h3>(2)国际化翻译函数：T()</h3>
 <p>在真正需要进行翻译的项目中，翻译函数的调用显然会到处可见。为了方便编写代码，这里取Translator的首写字母T作为快速函数的名字，在需要进行翻译时只需要调用T()，即可：</p>
-<pre><code class="language-javascript">$msg = T('hello world');
+<pre><code class="language-php">$msg = T('hello world');
 
 $msg = T('hello {name}', array('name' =&gt; 'dogstar'));</code></pre>
 <p>对应地：</p>
-<pre><code class="language-javascript">function T($msg, $params = array()) {
+<pre><code class="language-php">function T($msg, $params = array()) {
     return PhalApi_Translator::get($msg, $params);
 }</code></pre>
 <hr />

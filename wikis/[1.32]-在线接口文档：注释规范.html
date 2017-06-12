@@ -88,7 +88,7 @@ http://localhost/Public/demo/listAllApis.php</code></pre>
 <li>更多说明：对应@desc 注释，注释内容中不能带有空格</li>
 </ul>
 <p>与上面接口列表对应的注释，以<code>User.GetBaseInfo</code>为例，其注释为：  </p>
-<pre><code>class Api_User extends PhalApi_Api {
+<pre><code class="language-php">class Api_User extends PhalApi_Api {
 
     /**
      * 获取用户基本信息
@@ -124,7 +124,7 @@ http://localhost/Public/demo/checkApiParams.php?service=User.GetBaseInfo</code><
 <p>温馨提示：@exception 注释需要PhalApi 1.3.6及以上版本</p>
 </blockquote>
 <p>上面示例中，<code>User.GetBaseInfo</code>接口文档对应的注释为：  </p>
-<pre><code>class Api_User extends PhalApi_Api {
+<pre><code class="language-php">class Api_User extends PhalApi_Api {
 
     public function getRules() {
         return array(
@@ -160,7 +160,7 @@ http://localhost/Public/demo/checkApiParams.php?service=User.GetBaseInfo</code><
 <h3>公共的<code>@exception</code>和<code>@return</code>注释</h3>
 <p>对于当前类函数成员公共的<code>@exception</code>异常情况注释和<code>@return</code>返回结果注释，可在类注释中统一放置。而对于多个类公共的@exception<code>和</code>@return```注释，则可以在父类的类注释中统一放置。</p>
 <p>例如，对于上面的Api_User类，可以添加全部函数成员都适用的注释。例如，Api_User类的全部接口都返回code字段，且都返回400和500异常，则可以：  </p>
-<pre><code>&lt;?php
+<pre><code class="language-php">&lt;?php
 /**
  * @return int code 操作码，0表示成功
  * @exception 400 参数传递错误
@@ -174,7 +174,7 @@ class Api_User extends PhalApi_Api {</code></pre>
 <h2>1.32.4 生成离线文档</h2>
 <p>除了使用访问在线文档，也可以生成熟线文档。在命令行，通过CLI方式访问上面的listAllApis.php文件即可生成离线文档到相应的项目目录下。  </p>
 <p>以Demo项目为例，先执行listAllApis.php脚本生成离线文档。  </p>
-<pre><code>$ php /path/to/Public/demo/listAllApis.php</code></pre>
+<pre><code class="language-bash">$ php /path/to/Public/demo/listAllApis.php</code></pre>
 <p>生成完毕后，可以看到类似这样的输出：  </p>
 <pre><code>脚本执行完毕！离线文档保存路径为：/path/to/PhalApi/Public/demo/doc</code></pre>
 <p>随后，在浏览器打开并访问：  </p>
@@ -184,10 +184,10 @@ class Api_User extends PhalApi_Api {</code></pre>
 <ul>
 <li>
 <p>生成展开版</p>
-<pre><code>$ php /path/to/Public/demo/listAllApis.php expand</code></pre>
+<pre><code class="language-bash">$ php /path/to/Public/demo/listAllApis.php expand</code></pre>
 </li>
 <li>生成折叠版
-<pre><code>$ php /path/to/Public/demo/listAllApis.php fold</code></pre></li>
+<pre><code class="language-bash">$ php /path/to/Public/demo/listAllApis.php fold</code></pre></li>
 </ul>
 <blockquote>
 <p>温馨提示：生成离线功能需要 PhalApi 1.4.1 及以上版本支持。  </p>

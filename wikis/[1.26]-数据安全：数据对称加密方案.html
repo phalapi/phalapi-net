@@ -72,7 +72,7 @@
 <p>在PhalApi中，同样也是使用了mcrypt作为底层的数据加密技术方案。请查看： <a href="http://php.net/manual/zh/book.mcrypt.php">PHP 手册 函数参考 加密扩展</a>  </p>
 <h2>1.26.3 加解密的使用</h2>
 <p>在单元测试中，我们可以快速找到加密和解密的使用，这里再简单举一例：</p>
-<pre><code class="language-javascript">$mcrypt = new PhalApi_Crypt_Mcrypt('12345678');
+<pre><code class="language-php">$mcrypt = new PhalApi_Crypt_Mcrypt('12345678');
 
 $data = 'The Best Day of My Life';
 $key = 'phalapi';
@@ -92,7 +92,7 @@ var_dump($decryptData);</code></pre>
 </ul>
 <p>为此， 我们提供了更富弹性和便于存储的加密方案，即：序列化 + base64 + mcrypt的多重加密方案。  </p>
 <p>以下是上面的示例-多重加密版：</p>
-<pre><code class="language-javascript">$mcrypt = new PhalApi_Crypt_MultiMcrypt('12345678');
+<pre><code class="language-php">$mcrypt = new PhalApi_Crypt_MultiMcrypt('12345678');
 
 $data = 'The Best Day of My Life';
 $key = 'phalapi';
@@ -103,7 +103,7 @@ var_dump($encryptData);
 $decryptData = $mcrypt-&gt;decrypt($encryptData, $key);
 var_dump($decryptData);</code></pre>
 <p>对应的输出（这里使用了文字结果输出，是因为没了乱码）：</p>
-<pre><code class="language-javascript">string(44) "rmFMdhvszAkHhOdzwt/APBACk/Mn/SqhV1Ahp1xT0Gk="
+<pre><code class="language-php">string(44) "rmFMdhvszAkHhOdzwt/APBACk/Mn/SqhV1Ahp1xT0Gk="
 string(23) "The Best Day of My Life"</code></pre>
 <h2>1.26.5 RSA的支持与超长字符串的应对方案</h2>
 <p>基于项目有使用RSA进行加密和解密的需求，这里特扩展对RSA的支持。同时针对到RSA对字符串长度的限制，提供了分段处理的方案。RSA加密模块的静态类结构UML如下：<br />
@@ -120,7 +120,7 @@ string(23) "The Best Day of My Life"</code></pre>
 <h4>支持：PhalApi项目A  &lt;--&gt; PhalApi项目B，PhalApi项目C，PhalApi项目D，...</h4>
 <h4>不支持：PhalApi项目 &lt;--&gt; 非PhalApi项目的PHP项目</h4>
 <p>解决方案：将以下RSA模块相关的代码以包的形式拷贝到需要的PHP项目。  </p>
-<pre><code class="language-javascript">.
+<pre><code class="language-bash">.
 ├── Crypt
 │   └── RSA
 │       ├── KeyGenerator.php
@@ -139,7 +139,7 @@ string(23) "The Best Day of My Life"</code></pre>
 <p>这是一个有趣的故事，发生在我一个很好的朋友身上。   </p>
 <p>在去年暑假的时候，有位师妹通过几层关系找到我朋友，想他帮她支付回家的火车票。本着“调试”（调戏）的精神，我朋友爽快地答应了并让她把支付宝帐号发过来。然后，不一会，我朋友收到了一条有支付宝帐号的短信，立马打了2.22元过去，并附言： <strong>别问我是谁，请叫我雷锋！</strong> 后来证实师妹没发来过短信，原来收到的那条是诈骗的短信。。。。你能想象得到骗子收到这2.22元和看到这条留言时的表情么，哈哈~~      </p>
 <p>以下测试代码，以上面故事为背景，并演示了RSA的使用示例：</p>
-<pre><code class="language-javascript">    public function testDecryptAfterEncrypt()
+<pre><code class="language-php">    public function testDecryptAfterEncrypt()
     {
         $keyG = new PhalApi_Crypt_RSA_KeyGenerator();
         $privkey = $keyG-&gt;getPriKey();
@@ -167,7 +167,7 @@ string(23) "The Best Day of My Life"</code></pre>
 <p>尤其对于加密方案和算法，我们在项目开发决策时，更应该优先考虑使用现在行业内成熟公认的加密方案和算法，而不是自己去从头研发。  </p>
 <p>但如果你项目确实有此需要，或者需要在mcrypt的基础上再作一些变通，也是可以很快地实现和注册使用。  </p>
 <p>首先，请先实现下面的加密接口：</p>
-<pre><code class="language-javascript">// $vim ./PhalApi/PhalApi/Crypt.php
+<pre><code class="language-php">// $vim ./PhalApi/PhalApi/Crypt.php
 
 interface PhalApi_Crypt {
 

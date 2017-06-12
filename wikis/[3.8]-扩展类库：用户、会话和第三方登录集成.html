@@ -88,12 +88,12 @@
 <h2>3.8.2 安装</h2>
 <h3>(1)扩展包下载</h3>
 <p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>User</strong> 用户包，如使用：</p>
-<pre><code class="language-javascript">git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<pre><code class="language-bash">$ git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
 <p>然后把 <strong>User</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
-<pre><code class="language-javascript">cp ./PhalApi-Library/User ./PhalApi/Library/ -R</code></pre>
+<pre><code class="language-bash">$ cp ./PhalApi-Library/User ./PhalApi/Library/ -R</code></pre>
 <h3>(2)数据库表导入</h3>
 <p>默认下，User类库会使用默认的数据库配置，但有追加一些需要用到的表。因此需要导入以下表：</p>
-<pre><code class="language-javascript">$ cd /Library/User
+<pre><code class="language-bash">$ cd /Library/User
 $ tree
 
 ├── Data
@@ -109,7 +109,7 @@ $ tree
 </blockquote>
 <h3>(3)数据库配置</h3>
 <p>将 PhalApi-Library/User/Config/dbs.php 里面的配置拷贝到你的项目配置：</p>
-<pre><code class="language-javascript">    //请将以下配置拷贝到 ./Config/dbs.php 文件对应的位置中
+<pre><code class="language-php">    //请将以下配置拷贝到 ./Config/dbs.php 文件对应的位置中
 
         //10张表，可根据需要，自行调整表前缀、主键名和路由
         'user_session' =&gt; array(
@@ -121,14 +121,14 @@ $ tree
             ),
         ),</code></pre>
 <h3>(4)入口注册</h3>
-<pre><code class="language-javascript">//必须显式注册，以便可以让服务自行初始化
+<pre><code class="language-php">//必须显式注册，以便可以让服务自行初始化
 DI()-&gt;userLite = new User_Lite();</code></pre>
 <h3>(5)其他可选配置</h3>
 <ul>
 <li>为了体现高效缓存的好处，建议先注册DI()-&gt;cache</li>
 <li>为了接口更明朗的参数规则说明，建议将下而规则追加到配置文件./Config/app.php中：</li>
 </ul>
-<pre><code class="language-javascript">return array(
+<pre><code class="language-php">return array(
 
     /**
      * 应用接口层的统一参数
@@ -147,7 +147,7 @@ DI()-&gt;userLite = new User_Lite();</code></pre>
     ),</code></pre>
 <h3>(6)checkApiParams.php的初始化</h3>
 <p>同样，需要在checkApiParams.php文件显式注册，才能让User这个扩展类库完成自我的必要初始化：</p>
-<pre><code class="language-javascript">//装载你的接口
+<pre><code class="language-php">//装载你的接口
 DI()-&gt;loader-&gt;addDirs(array('Demo', 'Library'));
 DI()-&gt;userLite = new User_Lite();</code></pre>
 <p>否则会导致service不存在。</p>
@@ -220,7 +220,7 @@ DI()-&gt;userLite = new User_Lite();</code></pre>
 </tbody>
 </table>
 <h5>结果示例</h5>
-<pre><code class="language-javascript">{
+<pre><code class="language-php">{
     "ret": 200,
     "data": {
         "code": 0,  //0正常登录
@@ -302,7 +302,7 @@ DI()-&gt;userLite = new User_Lite();</code></pre>
 </tbody>
 </table>
 <h5>结果示例</h5>
-<pre><code class="language-javascript">{
+<pre><code>{
     "ret": 200,
     "data": {
         "code": 0,  //0正常登录
@@ -384,7 +384,7 @@ DI()-&gt;userLite = new User_Lite();</code></pre>
 </tbody>
 </table>
 <h5>结果示例</h5>
-<pre><code class="language-javascript">{
+<pre><code>{
     "ret": 200,
     "data": {
         "code": 0,  //0正常登录
@@ -461,7 +461,7 @@ DI()-&gt;userLite = new User_Lite();</code></pre>
 </tbody>
 </table>
 <h5>结果示例</h5>
-<pre><code class="language-javascript">{
+<pre><code>{
     "ret": 200,
     "data": {
         "code": 0,
@@ -479,19 +479,19 @@ DI()-&gt;userLite = new User_Lite();</code></pre>
 <p>/service=User_User_Info.getUserInfo&amp;other_user_id=1</p>
 <h3>(2)对于服务端</h3>
 <h4>(1)温柔式检测登录态</h4>
-<pre><code class="language-javascript">$isLogin = DI()-&gt;userLite-&gt;check();</code></pre>
+<pre><code class="language-php">$isLogin = DI()-&gt;userLite-&gt;check();</code></pre>
 <h4>(2)强制式检测登录态</h4>
-<pre><code class="language-javascript">DI()-&gt;userLite-&gt;check(true);</code></pre>
+<pre><code class="language-php">DI()-&gt;userLite-&gt;check(true);</code></pre>
 <h4>(3)更多操作</h4>
 <p>当需要对用户进行退出登录时，可以在接口中执行：  </p>
-<pre><code>DI()-&gt;userLite-&gt;logout();</code></pre>
+<pre><code class="language-php">DI()-&gt;userLite-&gt;logout();</code></pre>
 <p>当需要为用户新建一个会话时，可以在接口中执行：  </p>
-<pre><code>DI()-&gt;userLite-&gt;generateSession(1); //假设用户ID为1</code></pre>
+<pre><code class="language-php">DI()-&gt;userLite-&gt;generateSession(1); //假设用户ID为1</code></pre>
 <p>当需要为用户延长登录态有效时间时（默认为一个月），可以在接口进行心跳操作，从而再延长一个月有效时间：  </p>
-<pre><code>DI()-&gt;userLite-&gt;heartbeat();</code></pre>
+<pre><code class="language-php">DI()-&gt;userLite-&gt;heartbeat();</code></pre>
 <h2>3.8.4 示例</h2>
 <h3>(1)假设在我们的应用的接口中：</h3>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 
 class Api_Test extends PhalApi_Api {
 
@@ -505,7 +505,7 @@ class Api_Test extends PhalApi_Api {
 <h3>(2)先调用微信的登录：</h3>
 <pre><code>/user/?service=User_User_Login.Weixin&amp;wx_openid=wx_122348561111&amp;wx_token=ASDF&amp;wx_expires_in=130000000&amp;name=weixinName&amp;avatar=phpunit.png</code></pre>
 <p>返回：</p>
-<pre><code class="language-javascript">{
+<pre><code class="language-php">{
     "ret": 200,
     "data": {
         "code": 0,
@@ -521,9 +521,9 @@ class Api_Test extends PhalApi_Api {
 <h3>(3)再调用我们应用 的接口：</h3>
 <pre><code>/user/?service=Test.go&amp;user_id=94&amp;token=CE1218493B3A441FCF630E24E98FD3640133EBA6D734C90A620A11C07CE35323</code></pre>
 <p>返回：</p>
-<pre><code class="language-javascript">{"ret":200,"data":"ok","msg":""}</code></pre>
+<pre><code class="language-php">{"ret":200,"data":"ok","msg":""}</code></pre>
 <h3>(4)未登录下，返回：</h3>
-<pre><code class="language-javascript">{"ret":401,"data":[],"msg":"\u975e\u6cd5\u8bf7\u6c42\uff1auser not login"}</code></pre>
+<pre><code class="language-php">{"ret":401,"data":[],"msg":"\u975e\u6cd5\u8bf7\u6c42\uff1auser not login"}</code></pre>
 <hr />
 <h4><a href="#">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B3.9%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9Aswoole%E6%94%AF%E6%8C%81%E4%B8%8B%E7%9A%84%E9%95%BF%E9%93%BE%E6%8E%A5%E5%92%8C%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E5%AE%9E%E7%8E%B0.html">下一章</a></h4>
             </div>

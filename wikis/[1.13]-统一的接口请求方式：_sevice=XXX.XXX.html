@@ -73,11 +73,11 @@
 如：
 http://dev.phalapi.com   +   /demo/  +  ?service=User.GetBaseInfo</code></pre>
 <p>当我们在浏览器以GET方式请求时，可以在nignx看到这样的日记：</p>
-<pre><code class="language-javascript">127.0.0.1 - - [07/Feb/2015:22:46:46 -0800] "GET /demo/?service=User.GetBaseInfo&amp;sign=&amp;user_id=1 HTTP/1.1" 200 107 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:11.0) Gecko/20100101 Firefox/11.0"</code></pre>
+<pre><code class="language-php">127.0.0.1 - - [07/Feb/2015:22:46:46 -0800] "GET /demo/?service=User.GetBaseInfo&amp;sign=&amp;user_id=1 HTTP/1.1" 200 107 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:11.0) Gecko/20100101 Firefox/11.0"</code></pre>
 <p>如果通过接口用POST方式请求，则会看到：</p>
-<pre><code class="language-javascript">127.0.0.1 - - [07/Feb/2015:19:32:05 -0800] "POST /demo/?service=User.GetBaseInfo&amp;sign= HTTP/1.1" 200 135 "-" "-"</code></pre>
+<pre><code class="language-php">127.0.0.1 - - [07/Feb/2015:19:32:05 -0800] "POST /demo/?service=User.GetBaseInfo&amp;sign= HTTP/1.1" 200 135 "-" "-"</code></pre>
 <p>这里service的名称，开头不区分大小写，建议统一以大写开头，以显得专业。对应的接口是：</p>
-<pre><code class="language-javascript">class Api_User extends PhalApi_Api {
+<pre><code class="language-php">class Api_User extends PhalApi_Api {
 
     public function getBaseInfo() {
     }
@@ -85,7 +85,7 @@ http://dev.phalapi.com   +   /demo/  +  ?service=User.GetBaseInfo</code></pre>
 <h3>其他传递接口服务名称的方式</h3>
 <p>虽然在这里，我们统一使用<code>?service=XXX.XXX</code>的格式来传递接口服务名称，但如果项目有需要，也可以采用其他方式来传递，如使用熟悉的斜杠分割：<code>?service=XXX/XXX</code>，或者使用省略方法名的方式而在服务端自动补全默认方法，又或者使用其他参数名称，如使用<code>?s=XXX.XXX</code>。  </p>
 <p>如果需要采用其他传递接口服务名称的方式，则可以重载<code>PhalApi_Request::getService()</code>方法。以下是改用斜杠分割、并换用<code>r</code>参数名字的实现示例：  </p>
-<pre><code>&lt;?php
+<pre><code class="language-php">&lt;?php
 class Common_Request extends PhalApi_Request {
 
     public function getService() {
@@ -99,7 +99,7 @@ class Common_Request extends PhalApi_Request {
     }
 }</code></pre>
 <p>实现好自定义的请求类，需要在入口文件<code>./Public/项目/index.php</code>进行注册：  </p>
-<pre><code>//装载你的接口
+<pre><code class="language-php">//装载你的接口
 DI()-&gt;loader-&gt;addDirs('Demo');
 
 DI()-&gt;request = new Common_Request();</code></pre>
@@ -144,22 +144,22 @@ DI()-&gt;request = new Common_Request();</code></pre>
 </ul>
 <h2>1.13.4 获取Header头信息</h2>
 <p>每个请求都有自己的Header头,获取Header头信息可以判断请求来源或者是把一些敏感的内容存放到Header头信息中(如:加密后的参数),框架也提供了方便快捷获取Header的方法:</p>
-<pre><code class="language-javascript">DI()-&gt;request-&gt;getHeader("Host");</code></pre>
+<pre><code class="language-php">DI()-&gt;request-&gt;getHeader("Host");</code></pre>
 <h2>1.13.5 测试下的模拟参数</h2>
 <p>默认地，PhalApi框架会将$_REQUEST作为接口参数的来源：</p>
-<pre><code class="language-javascript">DI()-&gt;request = 'PhalApi_Request';</code></pre>
+<pre><code class="language-php">DI()-&gt;request = 'PhalApi_Request';</code></pre>
 <p>当我们需要统一强制用$_GET，可以在init.php文件中这样简单定制：</p>
-<pre><code class="language-javascript">DI()-&gt;request = new PhalApi_Request($_GET);</code></pre>
+<pre><code class="language-php">DI()-&gt;request = new PhalApi_Request($_GET);</code></pre>
 <p>同样，也可以在init.php文件中强制用$_POST：</p>
-<pre><code class="language-javascript">DI()-&gt;request = new PhalApi_Request($_POST);</code></pre>
+<pre><code class="language-php">DI()-&gt;request = new PhalApi_Request($_POST);</code></pre>
 <p>在测试环境下，为了模拟接口请求，我们需要人工提供接口参数，因此可以这样轻松模拟：</p>
-<pre><code class="language-javascript">$str = 'service=User.GetBaseInfo&amp;user_id=1';
+<pre><code class="language-php">$str = 'service=User.GetBaseInfo&amp;user_id=1';
 
 parse_str($str, $params);
 DI()-&gt;request = new PhalApi_Request($params);</code></pre>
 <h2>1.13.6 PHP接口客户端示例</h2>
 <p>先看下调用和使用的代码示例：</p>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 require_once './PhalApiClient.php';
 
 $config = array(
@@ -177,7 +177,7 @@ if ($client-&gt;getRet() == PhalApiClient::RET_OK) {
     var_dump($client-&gt;getUrl());
 }</code></pre>
 <p>附调用接口的客户端源代码：</p>
-<pre><code class="language-javascript">//$ vim ./PhalApiClient.php
+<pre><code class="language-php">//$ vim ./PhalApiClient.php
 &lt;?php
 
 class PhalApiClient

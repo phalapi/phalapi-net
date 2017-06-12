@@ -71,7 +71,7 @@
 <h2>6.6.2 代码示例</h2>
 <p>如下是使用的代码场景片段。  </p>
 <p>首先，我们需要导入SDK包：</p>
-<pre><code class="language-javascript">#demo.rb
+<pre><code class="language-ruby">#demo.rb
 
 require_relative './PhalApiClient/phalapi_client'
 
@@ -81,12 +81,12 @@ a_response = a_client.withService('Default.Index').withParams('username', 'dogst
 puts a_response.ret, a_response.data, a_response.msg</code></pre>
 <h2>6.6.3 运行效果</h2>
 <p>运行后，可以看到：  </p>
-<pre><code class="language-javascript">200
+<pre><code>200
 {"title"=&gt;"Hello World!", "content"=&gt;"dogstar您好，欢迎使用PhalApi！", "version"=&gt;"1.2.1", "time"=&gt;1445741092}
 </code></pre>
 <h2>6.5.4 更多调用</h2>
 <p>当需要重复调用时，需要先进行 <strong>重置操作</strong> ，如：</p>
-<pre><code class="language-javascript">#one more time
+<pre><code class="language-ruby">#one more time
 a_response = a_client.reset \
     .withService("User.GetBaseInfo") \
     .withParams("user_id", "1") \
@@ -94,12 +94,12 @@ a_response = a_client.reset \
 
 puts a_response.ret, a_response.data, a_response.msg</code></pre>
 <p>当请求有异常时，返回的 ret!= 200，如：</p>
-<pre><code class="language-javascript">#illegal request
+<pre><code class="language-ruby">#illegal request
 a_response = a_client.reset.withService('XXXX.noThisMethod').request
 
 puts a_response.ret, a_response.data, a_response.msg</code></pre>
 <p>以上的输出为： </p>
-<pre><code class="language-javascript">--------------------
+<pre><code>--------------------
 400
 非法请求：接口服务XXXX.noThisMethod不存在
 </code></pre>
@@ -107,13 +107,13 @@ puts a_response.ret, a_response.data, a_response.msg</code></pre>
 <h3>(1)扩展过滤器</h3>
 <p>当服务端接口需要接口签名验证，或者接口参数加密传送，或者压缩传送时，可以实现此过滤器，以便和服务端操持一致。  </p>
 <p>当需要扩展时，分两步。首先，需要实现过滤器接口：  </p>
-<pre><code class="language-javascript">class MyFilter &lt; PhalApi::ClientFilter 
+<pre><code class="language-ruby">class MyFilter &lt; PhalApi::ClientFilter 
         def filter(service, *params)
             #TODO ...
         end
 }</code></pre>
 <p>然后设置过滤器：</p>
-<pre><code class="language-javascript">a_response = PhalApi::Client.create.withHost('http://demo.phalapi.net') \
+<pre><code class="language-ruby">a_response = PhalApi::Client.create.withHost('http://demo.phalapi.net') \
        .withFilter(MyFilter.new) \
        # ... \
        .request</code></pre>

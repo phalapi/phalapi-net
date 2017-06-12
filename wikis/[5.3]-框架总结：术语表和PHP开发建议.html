@@ -90,7 +90,7 @@
 这里，我们将PhalApi开发中的不足罗列如下，希望为你进行框架设计或者对PhalApi的使用有更好的理解。  </p>
 <h3>(1)接口结果中msg应该改名为error</h3>
 <p>我们推荐的接口返回格式为：</p>
-<pre><code class="language-javascript">{
+<pre><code class="language-php">{
     "ret": 200,
     "data": {
         "code": 0,   //对操作码进行说明
@@ -105,7 +105,7 @@
 <h3>(2)对NotORM中limit操作的错误优化</h3>
 <p>前期，由于没有深刻留意MySql中OFFSET关键字的作用，导致了做了一些不精确的优化。  </p>
 <p>可注意以下的微妙区别：</p>
-<pre><code class="language-javascript">limit 5 OFFSET 10   #从第10个位置开始，查询前5个
+<pre><code class="language-php">limit 5 OFFSET 10   #从第10个位置开始，查询前5个
 
 limit 5, 10         #从第5个位置开始，查询前10个</code></pre>
 <p>但重点考虑到如果修复这个之前犯下的错误，会对项目升级后有很大的冲动。<br />

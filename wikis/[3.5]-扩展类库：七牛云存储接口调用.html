@@ -69,13 +69,13 @@
 <h2>3.5.2 安装和配置</h2>
 <h3>(1)扩展包下载</h3>
 <p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>Qiniu</strong> 七牛扩展包，如使用：</p>
-<pre><code class="language-javascript">git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<pre><code class="language-bash">$ git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
 <p>然后把 <strong>Qiniu</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
-<pre><code class="language-javascript">cp ./PhalApi-Library/Qiniu/ ./PhalApi/Library/ -R</code></pre>
+<pre><code class="language-bash">$ cp ./PhalApi-Library/Qiniu/ ./PhalApi/Library/ -R</code></pre>
 <p>到此安装完毕！接下是插件的配置。</p>
 <h3>(2)扩展包配置</h3>
 <p>我们需要在 <strong>./Config/app.php</strong> 配置文件中追加以下配置：</p>
-<pre><code class="language-javascript">    /**
+<pre><code class="language-php">    /**
      * 七牛相关配置
      */
     'Qiniu' =&gt;  array(
@@ -89,13 +89,13 @@
 <p>你也可以不使用配置文件，直接在初始化注册DI()-&gt;qiniu时指定配置。</p>
 <h2>3.5.3 入门使用</h2>
 <h3>(1)入口注册</h3>
-<pre><code class="language-javascript">//$ vim ./Public/init.php
+<pre><code class="language-php">//$ vim ./Public/init.php
 
 // 其他代码....
 
 DI()-&gt;qiniu = new Qiniu_Lite();</code></pre>
 <p>根据上面所说的，你可以也可以指定配置。</p>
-<pre><code class="language-javascript">//$ vim ./Public/init.php
+<pre><code class="language-php">//$ vim ./Public/init.php
 
 // 其他代码....
 
@@ -104,7 +104,7 @@ DI()-&gt;qiniu = new Qiniu_Lite($qiniuConfig);</code></pre>
 <h2>3.5.4 示例：图片上传</h2>
 <h3>(1)模拟客户端</h3>
 <p>先简单写个测试文件：</p>
-<pre><code class="language-javascript">// vim ./Public/test_qiniu.html 
+<pre><code class="language-php">// vim ./Public/test_qiniu.html 
 
 &lt;html&gt;
     &lt;form method="POST" action="/demo/?service=Qiniu_CDN.uploadFile" enctype="multipart/form-data"&gt;
@@ -119,13 +119,13 @@ DI()-&gt;qiniu = new Qiniu_Lite($qiniuConfig);</code></pre>
 <img src="http://7xslqv.com1.z0.glb.clouddn.com/images/9/65/39868592d7ef88e4e2c3a7c0c3778.png" alt="" /></p>
 <h3>(3)运行一下：</h3>
 <p>缺少上传文件时：</p>
-<pre><code class="language-javascript">{"ret":200,"data":{"code":1,"url":"","msg":"miss upload file"},"msg":""}</code></pre>
+<pre><code>{"ret":200,"data":{"code":1,"url":"","msg":"miss upload file"},"msg":""}</code></pre>
 <p>上传失败时：</p>
-<pre><code class="language-javascript">{"ret":200,"data":{"code":2,"url":"","msg":"fail to upload file"},"msg":""}</code></pre>
+<pre><code>{"ret":200,"data":{"code":2,"url":"","msg":"fail to upload file"},"msg":""}</code></pre>
 <p>可以看到对应的日记（如果不想看到此日记，可通过在初始化日记服务时去掉调试日记）：</p>
-<pre><code class="language-javascript">2015-03-18 00:07:02|DEBUG|failed to upload file to qiniu|{"Err":"bad token","Reqid":"u1EAAG73DB3PVMwT","Details":"","Code":401}</code></pre>
+<pre><code>2015-03-18 00:07:02|DEBUG|failed to upload file to qiniu|{"Err":"bad token","Reqid":"u1EAAG73DB3PVMwT","Details":"","Code":401}</code></pre>
 <p>上传成功时：</p>
-<pre><code class="language-javascript">{"ret":200,"data":{"code":0,"url":"图片链接","msg":""},"msg":""}</code></pre>
+<pre><code>{"ret":200,"data":{"code":0,"url":"图片链接","msg":""},"msg":""}</code></pre>
 <hr />
 <h4><a href="/wikis/%5B3.4%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E4%BC%98%E9%85%B7%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8.html">上一章</a>   <a href="/wikis/">文档首页</a>   <a href="/wikis/%5B3.6%5D-%E6%89%A9%E5%B1%95%E7%B1%BB%E5%BA%93%EF%BC%9A%E6%96%B0%E5%9E%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1.html">下一章</a></h4>
             </div>

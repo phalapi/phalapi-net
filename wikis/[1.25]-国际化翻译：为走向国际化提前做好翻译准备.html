@@ -67,49 +67,49 @@
 <p><em>Your new understanding has made you powerful. Please use your new powers for good.</em>    </p>
 <h2>1.25.1 固定的中文写法</h2>
 <p>一直以来，我们都是硬编码方式返回中文的文案或者提示，如：</p>
-<pre><code class="language-javascript">$rs['msg'] = '用户不存在';</code></pre>
+<pre><code class="language-php">$rs['msg'] = '用户不存在';</code></pre>
 <p>这种写法在项目根本不需要考虑国际化翻译时，是完全没问题的。</p>
 <h2>1.25.2 通用的翻译写法</h2>
 <p>当我们需要进行翻译时，可以这样进行调整：</p>
-<pre><code class="language-javascript">$rs['msg'] = T('user not exists');</code></pre>
+<pre><code class="language-php">$rs['msg'] = T('user not exists');</code></pre>
 <p>然后在对应的翻译文件中（如中文对应文件是：./Language/zh_cn/common.php）添加对应的翻译即可：</p>
-<pre><code class="language-javascript">// $vim ./Language/zh_cn/common.php
+<pre><code class="language-php">// $vim ./Language/zh_cn/common.php
 return array(
     'user not exists' =&gt; '用户不存在',
 );</code></pre>
 <h3>(1)当存在动态变量时？</h3>
 <p>有时，我们需要动态返回一些值，这里可以用 <strong>大括号</strong> 将需要动态替换的值包住并提供替换的参数即可，一如：</p>
-<pre><code class="language-javascript">echo T('hello {name}', array('name' =&gt; 'dogstar'));  </code></pre>
+<pre><code class="language-php">echo T('hello {name}', array('name' =&gt; 'dogstar'));  </code></pre>
 <p>如果对应的中文翻译是：</p>
-<pre><code class="language-javascript">'hello {name}' =&gt; '您好，{name}',</code></pre>
+<pre><code class="language-php">'hello {name}' =&gt; '您好，{name}',</code></pre>
 <p>将会看到输出：</p>
-<pre><code class="language-javascript">您好，dogstar</code></pre>
+<pre><code class="language-php">您好，dogstar</code></pre>
 <h3>(2)当多个动态变量时，还可以这样省略变量名</h3>
 <p>如果要简化动态变量的传递，可以这样：  </p>
-<pre><code class="language-javascript">echo T('{0} I love you because {1}', array('PhalApi', 'no reasons'));</code></pre>
+<pre><code class="language-php">echo T('{0} I love you because {1}', array('PhalApi', 'no reasons'));</code></pre>
 <p>如果对应的中文翻译是：</p>
-<pre><code class="language-javascript">'{0} I love you because {1}' =&gt; '{0} 我爱你因为{1}',</code></pre>
+<pre><code class="language-php">'{0} I love you because {1}' =&gt; '{0} 我爱你因为{1}',</code></pre>
 <p>将会看到输出：</p>
-<pre><code class="language-javascript">PhalApi 我爱你因为no reasons</code></pre>
+<pre><code class="language-php">PhalApi 我爱你因为no reasons</code></pre>
 <h3>(3)当翻译不存在时？</h3>
 <p>翻译不存在，有两种场景：一是指定的语言包不存在；二是语言包存在但翻译不存在。无论何种情况，找不到翻译时，都会用代码硬编码的内容返回。</p>
 <h2>1.25.3 语言的设定</h2>
 <p>当我们拥有了多种语言时，则可以在入口/初始化文件中，选择设定需要的语言。</p>
-<pre><code class="language-javascript">SL('zh_cn');    //SL()函数等效于PhalApi_Translator::setLanguage()</code></pre>
+<pre><code class="language-php">SL('zh_cn');    //SL()函数等效于PhalApi_Translator::setLanguage()</code></pre>
 <p>参数即为语言包的路径名，如下面的en, zh_cn：  </p>
-<pre><code class="language-javascript">.
+<pre><code class="language-bash">.
 |-- en
 |   `-- common.php
 `-- zh_cn
     `-- common.php</code></pre>
 <p>此处，也可以通过客户端传递参数来自行选择语言。简单地：</p>
-<pre><code class="language-javascript">SL($_GET['lan']);</code></pre>
+<pre><code class="language-php">SL($_GET['lan']);</code></pre>
 <h2>1.25.4 添加语言翻译包</h2>
 <p>有时需要手动添加语言翻译包，因为对应的翻译不一定在项目的./Language下，如扩展类库。  </p>
 <p>当需要添加额外的语言翻译包时，可以这样添加：  </p>
-<pre><code>        PhalApi_Translator::addMessage(API_ROOT . '/Library/User');</code></pre>
+<pre><code class="language-php">        PhalApi_Translator::addMessage(API_ROOT . '/Library/User');</code></pre>
 <p>在User这个目录下的翻译包类似地，为：  </p>
-<pre><code>./Language/
+<pre><code class="language-bash">./Language/
 └── zh_cn
     └── common.php
 

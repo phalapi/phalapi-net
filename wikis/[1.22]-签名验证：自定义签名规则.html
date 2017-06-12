@@ -67,7 +67,7 @@
 <h2>1.22.1 过滤器服务</h2>
 <p>正如我们核心思想DI里面所说的，我们把后台很多功能资源都称为服务，所以在PhalApi框架中我们已经系统规定了<strong>DI()-&gt;filter</strong>为过滤器服务，以实现接口请求时的一些拦截操作，一如现在要说明的签名验证。  </p>
 <p>在接口进行初始化时，会自动调用已注册的过滤器服务 <strong>DI()-&gt;filter</strong> ，关键的代码如下：</p>
-<pre><code class="language-javascript">//$vim ./PhalApi/PhalApi/Api.php
+<pre><code class="language-php">//$vim ./PhalApi/PhalApi/Api.php
     public function init()
     {
         $this-&gt;createMemberValue();
@@ -90,10 +90,10 @@
 为了给大家更好的便利性，我们提供了一个基本版的接口验证服务。  </p>
 <p>主要是基于md5进行的签名生成，这个只能作为一般性的参考。大家可以在此基础上进行调整延伸。  </p>
 <p>默认情况下，可以去掉注释开启使用PhalApi_Filter_SimpleMD5进行接口验证，即：  </p>
-<pre><code class="language-javascript">//签名验证服务
+<pre><code class="language-php">//签名验证服务
 DI()-&gt;filter = 'PhalApi_Filter_SimpleMD5';</code></pre>
 <p>其验签的算法如下（如注释所示）：  </p>
-<pre><code class="language-javascript">1、排除签名参数（默认是sign）
+<pre><code class="language-php">1、排除签名参数（默认是sign）
 2、将剩下的全部参数，按参数名字进行字典排序
 3、将排序好的参数，全部用字符串拼接起来
 4、进行md5运算</code></pre>
@@ -130,7 +130,7 @@ sign = 35321cc43cfc1e4008bf6f1bf9b7e3b8 = md5("Default.Indexdogstar")
 <p>正常请求下（带sign签名）：  </p>
 <pre><code>http://localhost/phalapi/public/demo/?service=Default.Index&amp;username=dogstar&amp;sign=35321cc43cfc1e4008bf6f1bf9b7e3b8</code></pre>
 <p>如果不想使用sign作为关键的签名参数，可以在注册时指定，如使用缩写s：  </p>
-<pre><code>DI()-&gt;filter = new PhalApi_Filter_SimpleMD5('s');</code></pre>
+<pre><code class="language-php">DI()-&gt;filter = new PhalApi_Filter_SimpleMD5('s');</code></pre>
 <h2>1.22.2 微信签名示例</h2>
 <p>所以，如果我们需要实现签名验证，只需要简单的两步即可：  </p>
 <ul>
@@ -140,7 +140,7 @@ sign = 35321cc43cfc1e4008bf6f1bf9b7e3b8 = md5("Default.Indexdogstar")
 <p>下面以大家熟悉的 <a href="http://mp.weixin.qq.com/wiki/17/2d4265491f12608cd170a95559800f2d.html">微信验签</a> 为例，进行示例说明。</p>
 <h3>(1)实现过滤器接口 PhalApi_Filter::check()</h3>
 <p>通常我们约定返回ret = 402表示验证失败，所以当签名失败时，我们可以返回ret = 402以告知客户端签名不对。根据微信的检验signature的PHP示例代码，我们可以快速实现自定义签名规则，如：</p>
-<pre><code class="language-javascript">//$ vim ./Demo/Common/SignFilter.php 
+<pre><code class="language-php">//$ vim ./Demo/Common/SignFilter.php 
 &lt;?php
 
 class Common_SignFilter implements PhalApi_Filter
@@ -164,23 +164,23 @@ class Common_SignFilter implements PhalApi_Filter
 }</code></pre>
 <h3>(2)注册过滤器服务 DI()-&gt;filter</h3>
 <p>随后，我们只需要再简单地注册一下过滤器服务即可，在init.php初始化文件最后追加：</p>
-<pre><code class="language-javascript">//$ vim ./Public/init.php 
+<pre><code class="language-php">//$ vim ./Public/init.php 
 //签名验证服务
 DI()-&gt;filter = 'Common_SignFilter';</code></pre>
 <h3>(3)运行效果</h3>
 <p>当我们再次请求接口时，如默认的服务：/demo/?service=Default.Index，即会出现以下的错误：
 <img src="http://webtools.qiniudn.com/20150411005257_2bf7d70e9a3a82cae524c03e0fcc6662" alt="apic" />   </p>
 <p>即：</p>
-<pre><code class="language-javascript">{
+<pre><code>{
     "ret": 401,
     "data": [
     ],
     "msg": "非法请求：wrong sign"
 }</code></pre>
 <p>如果符合接口签名的验证，则会正常返回我们熟悉的内容，如：</p>
-<pre><code class="language-javascript">/demo/?service=Default.Index&amp;signature=b75e0a1b574d4e111a1d6ed3c9cfbe2ccdc09404&amp;timestamp=123&amp;nonce=123</code></pre>
+<pre><code>/demo/?service=Default.Index&amp;signature=b75e0a1b574d4e111a1d6ed3c9cfbe2ccdc09404&amp;timestamp=123&amp;nonce=123</code></pre>
 <p>会返回：</p>
-<pre><code class="language-javascript">{
+<pre><code class="language-php">{
     "ret": 200,
     "data": {
         "title": "Default Api",
@@ -195,7 +195,7 @@ DI()-&gt;filter = 'Common_SignFilter';</code></pre>
 <p>在注册好统一的接口验签的过滤器拦截服务后，是会存在这样一种情况：即个别的接口不需要签名。  </p>
 <p>而这种情况，我们也是有考虑到的。所以在提供了公共的功能的情况下，我们是可以快速灵活地进行定制化和扩展。  </p>
 <p>当我们个别的接口不需要签名验证时，只需要简单地在接口子类里面重定义过滤器的检测即可，如在我们熟悉的默认服务器取消签名验证：</p>
-<pre><code class="language-javascript">//vim ./Demo/Api/Default.php 
+<pre><code class="language-php">//vim ./Demo/Api/Default.php 
 class Api_Default extends PhalApi_Api
 {
     //....
@@ -207,7 +207,7 @@ class Api_Default extends PhalApi_Api
 <h2>1.22.4 接口服务白名单配置</h2>
 <p>除了可以像上面这样编码实现，排除个别接口服务的接口验证，还可以使用接口服务白名单配置，通过框架自身实现对指定配置的接口服务排除。即调用的接口服务，如果配置了白名单，则不调用过滤器。  </p>
 <p>接口服务白名单配置是：<code>app.service_whitelist</code>，即配置文件<code>./Config/app.php</code>里面的<code>service_whitelist</code>配置，其默认值是：  </p>
-<pre><code>    'service_whitelist' =&gt; array(
+<pre><code class="language-php">    'service_whitelist' =&gt; array(
         'Default.Index',
     ),</code></pre>
 <p>如源代码里的注释所示，配置的格式有以下四种。  </p>
@@ -249,7 +249,7 @@ class Api_Default extends PhalApi_Api
 </table>
 <p>如果有多个生效的规则，按短路判断原则，即有任何一个白名单规则匹配后就跳过验证，不触发过滤器。  </p>
 <p>以下是更多的示例：  </p>
-<pre><code>    'service_whitelist' =&gt; array(
+<pre><code class="language-php">    'service_whitelist' =&gt; array(
         '*.Index',           // 全部的Index方法
         'Test.*',            // Api_Test的全部方法
         'User.GetBaseInfo',  // Api_User::GetBaseInfo()方法
@@ -279,7 +279,7 @@ class Api_Default extends PhalApi_Api
 <p>2、如果业务需要，为各个接口、各个接入方分配调用权限；</p>
 </li>
 <li>3、统一签名参数的规则，可以配置在./Config/app.php中的，如上面的签名需要的参数，我们可以追加统一的参数规则：
-<pre><code class="language-javascript">/**
+<pre><code class="language-php">/**
  * 应用接口层的统一参数
  */
 'apiCommonRules' =&gt; array(

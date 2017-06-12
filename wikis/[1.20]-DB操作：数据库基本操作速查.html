@@ -71,7 +71,7 @@
 <p><em>-- 《天真的预兆》</em></p>
 <h2>1.20.1 前提</h2>
 <p>为了让大家更为明确数据库NotORM的使用，我们假设有以下数据库表：</p>
-<pre><code>-- ----------------------------
+<pre><code class="language-sql">-- ----------------------------
 -- Table structure for `tbl_user`
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_user`;
@@ -95,7 +95,7 @@ INSERT INTO `tbl_user` VALUES ('3', 'King', '100', 'game', '2015-12-23 09:42:42'
 <li>1、使用原生态的notorm，即：$user = DI()-&gt;notorm-&gt;user  </li>
 <li>2、使用PhalApi_Model_NotORM基类的方式，即：$user = $this-&gt;getORM()，如：</li>
 </ul>
-<pre><code>&lt;?php
+<pre><code class="language-php">&lt;?php
 class Model_User extends PhalApi_Model_NotORM {
     protected function getTableName($id) {
         return 'user';
@@ -108,11 +108,11 @@ class Model_User extends PhalApi_Model_NotORM {
 <h2>写在前面的话</h2>
 <p>NotORM的实例是有内部状态的，因为在开发过程中，需要特别注意何时需要保留状态（使用同一个实例）、何时不需要保留状态。即：  </p>
 <p>保留状态的写法：  </p>
-<pre><code>$user = $notorm-&gt;user;  //获取一个新的实例
+<pre><code class="language-php">$user = $notorm-&gt;user;  //获取一个新的实例
 $user-&gt;where('age &gt; ?', 18);
 $user-&gt;where('name LIKE ?', '%dog%');  //相当于age &gt; 18 AND name LIKE '%dog%'</code></pre>
 <p>不保留状态的写法：</p>
-<pre><code>$user = $notorm-&gt;user;  //获取一个新的实例
+<pre><code class="language-php">$user = $notorm-&gt;user;  //获取一个新的实例
 $user-&gt;where('age &gt; ?', 18);
 
 $user = $notorm-&gt;user;  //重新获取新的实例
@@ -124,11 +124,11 @@ $user-&gt;where('name LIKE ?', '%dog%');  //此时只有 name LIKE '%dog%'</code
 <p>在请求接口时，当需要查看当前接口所执行的SQL语句时，可以添加参数<code>&amp;__sql__=1</code>。如请求：</p>
 <pre><code>http://demo.phalapi.net/?service=User.getBaseInfo&amp;user_id=1&amp;__sql__=1</code></pre>
 <p>会返回类似这样：</p>
-<pre><code>[1 - 0.00035s]SELECT * FROM tbl_user WHERE (id = ?); -- 1&lt;br&gt;
+<pre><code class="language-html">[1 - 0.00035s]SELECT * FROM tbl_user WHERE (id = ?); -- 1&lt;br&gt;
 {"ret":200,"data":{"code":0,"msg":"","info":{"id":"1","name":"dogstar","note":"oschina"}},"msg":""}</code></pre>
 <h4>(2)显示数据库连接错误的详细信息</h4>
 <p>普通情况下，数据库连接失败时会这样提示：</p>
-<pre><code>{
+<pre><code class="language-html">{
     "ret": 500,
     "data": [],
     "msg": "服务器运行错误: 数据库db_demo连接失败"
@@ -149,7 +149,7 @@ $user-&gt;where('name LIKE ?', '%dog%');  //此时只有 name LIKE '%dog%'</code
 <h3>默认表名与指定表名</h3>
 <p><strong>请注意：PhalApi v1.3.4 版本以上有效。</strong>  </p>
 <p>当继承PhalApi_Model_NotORM时，如编写Model_User类：  </p>
-<pre><code>&lt;?php
+<pre><code class="language-php">&lt;?php
 class Model_User extends PhalApi_Model_NotORM {
 }</code></pre>
 <p>则默认的表名为：<code>user</code>。默认表名的自动匹配规则是：取<code>Model_</code>后面部分的字符全部转小写。转化后框架会另外加上表前缀。    </p>
@@ -160,7 +160,7 @@ class Model_User extends PhalApi_Model_NotORM {
 <li>Model类名不含有Model_  </li>
 </ul>
 <p>如，当Model_User类对应的表名为：my_user表时，可使用<code>getTableName($id)</code>重新指定表名：  </p>
-<pre><code>&lt;?php
+<pre><code class="language-php">&lt;?php
 class Model_User extends PhalApi_Model_NotORM {
     protected function getTableName($id) {
         return 'my_user'; 
@@ -169,25 +169,25 @@ class Model_User extends PhalApi_Model_NotORM {
 <h2>1.20.2 基本操作</h2>
 <h3>(1)SELECT</h3>
 <h4>单个字段：</h4>
-<pre><code>// SELECT id FROM `tbl_user`
+<pre><code class="language-php">// SELECT id FROM `tbl_user`
 $user-&gt;select('id') </code></pre>
 <h4>多个字段获取：</h4>
-<pre><code>// SELECT id, name, age FROM `tbl_user`
+<pre><code class="language-php">// SELECT id, name, age FROM `tbl_user`
 $user-&gt;select('id, name, age') </code></pre>
 <h4>字段别名获取：</h4>
-<pre><code>// SELECT id, name, MAX(age) AS max_age FROM `tbl_user`
+<pre><code class="language-php">// SELECT id, name, MAX(age) AS max_age FROM `tbl_user`
 $user-&gt;select('id, name, MAX(age) AS max_age') </code></pre>
 <h4>全部字段（缺省）获取：</h4>
-<pre><code>// SELECT * FROM `tbl_user`
+<pre><code class="language-php">// SELECT * FROM `tbl_user`
 $user-&gt;select('*') </code></pre>
 <h3>(2)WHERE</h3>
 <h4>单个字段查询：</h4>
-<pre><code>// WHERE id = 1
+<pre><code class="language-php">// WHERE id = 1
 $user-&gt;where('id', 1)
 $user-&gt;where('id = ?', 1)
 $user-&gt;where(array('id', 1))</code></pre>
 <h4>多个字段查询：</h4>
-<pre><code>// WHERE id &gt; 1 AND age &gt; 18
+<pre><code class="language-php">// WHERE id &gt; 1 AND age &gt; 18
 $user-&gt;where('id &gt; ?', 1)-&gt;where('age &gt; ?', 18)
 $user-&gt;and('id &gt; ?', 1)-&gt;and('age &gt; ?', 18)
 $user-&gt;where('id &gt; ? AND age &gt; ?', 1, 18)
@@ -209,7 +209,7 @@ $user-&gt;where('(name = ? OR id = ?) AND note = ?', array('dogstar', '1', 'xxx'
 #实现方式4：只使用where，用下标为标识符的数组传参
 $user-&gt;where('(name = :name OR id = :id) AND note = :note', array(':name' =&gt; 'dogstar', ':id' =&gt; '1', ':note' =&gt; 'xxx'))</code></pre>
 <h4>IN查询：</h4>
-<pre><code>// WHERE id IN (1, 2, 3)
+<pre><code class="language-php">// WHERE id IN (1, 2, 3)
 $user-&gt;where('id', array(1, 2, 3))
 
 // WHERE id NOT IN (1, 2, 3)
@@ -218,41 +218,41 @@ $user-&gt;where('NOT id', array(1, 2, 3))
 // WHERE (id, age) IN ((1, 18), (2, 20))
 $user-&gt;where('(id, age)', array(array(1, 18), array(2, 20)))</code></pre>
 <h4>模糊匹配查询：</h4>
-<pre><code>// WHERE name LIKE '%dog%'
+<pre><code class="language-php">// WHERE name LIKE '%dog%'
 $user-&gt;where('name LIKE ?', '%dog%')
 
 // WHERE name NOT LIKE '%dog%'
 $user-&gt;where('name NOT LIKE ?', '%dog%')</code></pre>
 <h4>NULL判断查询：</h4>
-<pre><code>// WHERE (name IS NULL)
+<pre><code class="language-php">// WHERE (name IS NULL)
 $user-&gt;where('name', null)</code></pre>
 <p>对于非空的判断，则可以：  </p>
-<pre><code>// WHERE (name IS NOT ?) LIMIT 1; -- NULL
+<pre><code class="language-php">// WHERE (name IS NOT ?) LIMIT 1; -- NULL
 $user-&gt;where('name IS NOT ?', null)</code></pre>
 <h3>(3)ORDER BY</h3>
 <h4>单个字段排序：</h4>
-<pre><code>// ORDER BY age
+<pre><code class="language-php">// ORDER BY age
 $user-&gt;order('age')
 
 // ORDER BY age DESC
 $user-&gt;order('age DESC')</code></pre>
 <h4>多个字段排序：</h4>
-<pre><code>// ORDER BY id, age DESC
+<pre><code class="language-php">// ORDER BY id, age DESC
 $user-&gt;order('id')-&gt;order('age DESC')
 $user-&gt;order('id, age DESC')</code></pre>
 <h3>(4)LIMIT</h3>
 <h4>按数量限制：</h4>
-<pre><code>// LIMIT 10
+<pre><code class="language-php">// LIMIT 10
 $user-&gt;limit(10)</code></pre>
 <h4>按数量和偏移量限制（请注意：先偏移量、再数量）：</h4>
-<pre><code>// LIMIT 2,10
+<pre><code class="language-php">// LIMIT 2,10
 $user-&gt;limit(2, 10)</code></pre>
 <h3>(5)GROUP BY和HAVING</h3>
 <h4>不带HAVING：</h4>
-<pre><code>// GROUP BY note
+<pre><code class="language-php">// GROUP BY note
 $user-&gt;group('note')</code></pre>
 <h4>带HAVING：</h4>
-<pre><code>// GROUP BY note HAVING age &gt; 10
+<pre><code class="language-php">// GROUP BY note HAVING age &gt; 10
 $user-&gt;group('note', 'age &gt; 10')</code></pre>
 <h2>1.20.3 CURD之查询类（Retrieve）</h2>
 <table class="table table-bordered">
@@ -349,7 +349,7 @@ $user-&gt;group('note', 'age &gt; 10')</code></pre>
 </tbody>
 </table>
 <h4>循环获取每一行（多个字段）：</h4>
-<pre><code>// SELECT id, name FROM tbl_user WHERE (age &gt; 18);
+<pre><code class="language-php">// SELECT id, name FROM tbl_user WHERE (age &gt; 18);
 $user = $notorm-&gt;user-&gt;select('id, name')-&gt;where('age &gt; 18');
 while($row = $user-&gt;fetch()) {
      var_dump($row);
@@ -369,7 +369,7 @@ array(2) {
   string(4) "King"
 }</code></pre>
 <h4>循环获取每一行（单个字段）：</h4>
-<pre><code>// SELECT id, name FROM tbl_user WHERE (age &gt; 18);
+<pre><code class="language-php">// SELECT id, name FROM tbl_user WHERE (age &gt; 18);
 $user = $notorm-&gt;user-&gt;select('id, name')-&gt;where('age &gt; 18');
 while($row = $user-&gt;fetch('name')) { // 指定获取name这列，但此字段须在select里
      var_dump($row);
@@ -379,11 +379,11 @@ while($row = $user-&gt;fetch('name')) { // 指定获取name这列，但此字段
 string(3) "Tom"
 string(4) "King"</code></pre>
 <h4>循环获取每一行（错误的用法，注意！会死循环）：</h4>
-<pre><code>while($row = $notorm-&gt;user-&gt;select('id, name')-&gt;where('age &gt; 18')-&gt;fetch('name')) {
+<pre><code class="language-php">while($row = $notorm-&gt;user-&gt;select('id, name')-&gt;where('age &gt; 18')-&gt;fetch('name')) {
      var_dump($row);
 }</code></pre>
 <h4>只获取第一行（多个字段）：</h4>
-<pre><code>// SELECT id, name FROM tbl_user WHERE (age &gt; 18) LIMIT 1;
+<pre><code class="language-php">// SELECT id, name FROM tbl_user WHERE (age &gt; 18) LIMIT 1;
 $rs = $user-&gt;select('id, name')-&gt;where('age &gt; 18')-&gt;fetchOne();  //等同fetchRow()
 var_dump($rs);
 
@@ -395,10 +395,10 @@ array(2) {
   string(3) "Tom"
 }</code></pre>
 <h4>只获取第一行（单个字段）：</h4>
-<pre><code>var_dump($user-&gt;fetchOne('name'));  // 输出 string(3) "Tom"
+<pre><code class="language-php">var_dump($user-&gt;fetchOne('name'));  // 输出 string(3) "Tom"
 var_dump($user-&gt;fetchRow('name'));  // 等同输出 string(3) "Tom"</code></pre>
 <h4>获取键值对（多个字段）：</h4>
-<pre><code>// SELECT id, name, age FROM tbl_user LIMIT 2;
+<pre><code class="language-php">// SELECT id, name, age FROM tbl_user LIMIT 2;
 $rs = $user-&gt;select('name, age')-&gt;limit(2)-&gt;fetchPairs('id'); //指定以ID为KEY
 var_dump($rs);
 
@@ -424,7 +424,7 @@ array(2) {
   }
 }</code></pre>
 <h4>获取键值对（单个字段）：</h4>
-<pre><code>// SELECT id, name FROM tbl_user LIMIT 2
+<pre><code class="language-php">// SELECT id, name FROM tbl_user LIMIT 2
 var_dump($user-&gt;limit(2)-&gt;fetchPairs('id', 'name')); //通过第二个参数，指定VALUE的列
 
 // 输出
@@ -435,10 +435,10 @@ array(2) {
   string(3) "Tom"
 }</code></pre>
 <h4>获取全部的行：</h4>
-<pre><code>// SELECT * FROM tbl_user
+<pre><code class="language-php">// SELECT * FROM tbl_user
 var_dump($user-&gt;fetchAll());  //全部表数据输出，输出结果略，相当于$user-&gt;fetchRows()</code></pre>
 <h4>复杂查询下获取全部的行（1.3.1及以前版本默认下以主键为下标，1.3.1以后的版本则默认采用数组方式）：</h4>
-<pre><code>// SELECT name FROM tbl_user WHERE age &gt; :age LIMIT 1
+<pre><code class="language-php">// SELECT name FROM tbl_user WHERE age &gt; :age LIMIT 1
 $sql = 'SELECT name FROM tbl_user WHERE age &gt; :age LIMIT 1';
 $params = array(':age' =&gt; 18);
 $rs = $user-&gt;queryAll($sql, $params);
@@ -460,19 +460,19 @@ $rs = $user-&gt;queryRows($sql, $params); //使用queryRows()别名
 var_dump($rs);</code></pre>
 <p>请注意：使用上面这种方式进行查询，需要手动填写完整的表名字，并且需要通过某个表的实例来运行。  </p>
 <h4>取最小值：</h4>
-<pre><code>// SELECT MIN(age) FROM tbl_user
+<pre><code class="language-php">// SELECT MIN(age) FROM tbl_user
 var_dump($user-&gt;min('age'));
 
 // 输出
 string(2) "18"</code></pre>
 <h4>取最大值：</h4>
-<pre><code>// SELECT MAX(age) FROM tbl_user
+<pre><code class="language-php">// SELECT MAX(age) FROM tbl_user
 var_dump($user-&gt;max('age'));
 
 // 输出
 string(3) "100"</code></pre>
 <h4>计算总和：</h4>
-<pre><code>// SELECT SUM(age) FROM tbl_user
+<pre><code class="language-php">// SELECT SUM(age) FROM tbl_user
 var_dump($user-&gt;sum('age'));
 
 // 输出
@@ -513,7 +513,7 @@ string(3) "139"</code></pre>
 </tbody>
 </table>
 <h4>插入数据</h4>
-<pre><code>// INSERT INTO tbl_user (id, name, age, note) VALUES (4, 'PhalApi', 1, 'framework')
+<pre><code class="language-php">// INSERT INTO tbl_user (id, name, age, note) VALUES (4, 'PhalApi', 1, 'framework')
 $data = array('id' =&gt; 4, 'name' =&gt; 'PhalApi', 'age' =&gt; 1, 'note' =&gt; 'framework');
 $user-&gt;insert($data);
 $id = $user-&gt;insert_id(); //必须是同一个实例，方能获取到新插入的行ID，且表必须设置了自增
@@ -523,7 +523,7 @@ var_dump($id); //新增的ID
 $model = new Model_User();
 var_dump($model-&gt;insert($data)); //输出新增的ID</code></pre>
 <h4>批量插入：</h4>
-<pre><code>// INSERT INTO tbl_user (name, age, note) VALUES ('A君', 12, 'AA'), ('B君', 14, 'BB'), ('C君', 16, 'CC')
+<pre><code class="language-php">// INSERT INTO tbl_user (name, age, note) VALUES ('A君', 12, 'AA'), ('B君', 14, 'BB'), ('C君', 16, 'CC')
 $rows = array(
     array('name' =&gt; 'A君', 'age' =&gt; 12, 'note' =&gt; 'AA'),
     array('name' =&gt; 'B君', 'age' =&gt; 14, 'note' =&gt; 'BB'),
@@ -535,7 +535,7 @@ var_dump($rs);
 // 输出
 int(3) //成功插入的条数</code></pre>
 <h4>插入/更新：</h4>
-<pre><code>// INSERT INTO tbl_user (id, name, age, note) VALUES (8, 'PhalApi', 1, 'framework') ON DUPLICATE KEY UPDATE age = 2
+<pre><code class="language-php">// INSERT INTO tbl_user (id, name, age, note) VALUES (8, 'PhalApi', 1, 'framework') ON DUPLICATE KEY UPDATE age = 2
 $unique = array('id' =&gt; 8);
 $insert = array('id' =&gt; 8, 'name' =&gt; 'PhalApi', 'age' =&gt; 1, 'note' =&gt; 'framework');
 $update = array('age' =&gt; 2);
@@ -563,7 +563,7 @@ var_dump($rs); //输出影响的行数</code></pre>
 </tbody>
 </table>
 <h4>更新数据：</h4>
-<pre><code>// UPDATE tbl_user SET age = 2 WHERE (name = 'PhalApi');
+<pre><code class="language-php">// UPDATE tbl_user SET age = 2 WHERE (name = 'PhalApi');
 $data = array('age' =&gt; 2);
 $rs = $user-&gt;where('name', 'PhalApi')-&gt;update($data);
 var_dump($rs);
@@ -573,7 +573,7 @@ int(1) //正常影响的行数
 int(0) //无更新，或者数据没变化
 boolean(false) //更新异常、失败</code></pre>
 <h4>更新数据（+1）：</h4>
-<pre><code>// UPDATE tbl_user SET age = age + 1 WHERE (name = 'PhalApi')
+<pre><code class="language-php">// UPDATE tbl_user SET age = age + 1 WHERE (name = 'PhalApi')
 $rs = $user-&gt;where('name', 'PhalApi')-&gt;update(array('age' =&gt; new NotORM_Literal("age + 1")));
 var_dump($rs); //输出影响的行数</code></pre>
 <h2>1.20.6 CURD之删除类（Delete）</h2>
@@ -598,10 +598,10 @@ var_dump($rs); //输出影响的行数</code></pre>
 </tbody>
 </table>
 <p>按条件删除，返回影响的行数：</p>
-<pre><code>// DELETE FROM tbl_user WHERE (id = 404);
+<pre><code class="language-php">// DELETE FROM tbl_user WHERE (id = 404);
 $user-&gt;where('id', 404)-&gt;delete();</code></pre>
 <p><strong> 注意：</strong> 如果是全表删除，框架将会禁止，并抛出异常。如：</p>
-<pre><code>// Exception: sorry, you can not delete the whole table
+<pre><code class="language-php">// Exception: sorry, you can not delete the whole table
 $user-&gt;delete();</code></pre>
 <h2>参考</h2>
 <p>更多请参考 <a href="http://www.notorm.com/#api">NotORM官网接口说明</a> </p>

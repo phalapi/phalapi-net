@@ -68,13 +68,13 @@
 <p>此扩展可用于对优酷开放平台提供的接口进行快速调用，并将失败的情况以debug方式写入日记。</p>
 <h2>3.4.2 安装和配置</h2>
 <p>从  <a href="http://git.oschina.net/dogstar/PhalApi-Library">PhalApi-Library</a>  扩展库中下载获取 <strong>YoukuClient</strong> 优酷接口客户端，如使用：</p>
-<pre><code class="language-javascript">git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
+<pre><code class="language-bash">$ git clone https://git.oschina.net/dogstar/PhalApi-Library.git</code></pre>
 <p>然后把 <strong>YoukuClient</strong> 目录复制到 <strong>./PhalApi/Library/</strong> 下，即：</p>
-<pre><code class="language-javascript">cp ./PhalApi-Library/YoukuClient/ ./PhalApi/Library/ -R</code></pre>
+<pre><code class="language-bash">$ cp ./PhalApi-Library/YoukuClient/ ./PhalApi/Library/ -R</code></pre>
 <p>到此安装完毕！</p>
 <h2>3.4.3 使用</h2>
 <p>可以先在初始化文件init.php中引入扩展类库，并注册一个youkuClient的服务：</p>
-<pre><code class="language-javascript">//$ vim ./Public/init.php
+<pre><code class="language-php">//$ vim ./Public/init.php
 $loader-&gt;addDirs('Library');
 
 DI()-&gt;youkuClient = function() {
@@ -82,7 +82,7 @@ DI()-&gt;youkuClient = function() {
 };</code></pre>
 <p>然后，就可以在项目中使用youkuClient这个服务来实现对优酷平台接口的调用。  </p>
 <p>通常，我们会在Model层包装这一层数据来源的获取。但这里只是了为演示的效果，全部将代码放到Api里面，如：</p>
-<pre><code class="language-javascript">//$ vim ./Demo/Api/Youku.php 
+<pre><code class="language-php">//$ vim ./Demo/Api/Youku.php 
 
 &lt;?php
 

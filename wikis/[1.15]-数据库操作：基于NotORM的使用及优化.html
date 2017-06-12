@@ -68,7 +68,7 @@
 <h2>1.15.1 NotORM官网</h2>
 <p>这里使用了NotORM进行DB操作，具体的数据库操作使用文档请见NotORM官网： <a href="http://www.notorm.com"><a href="http://www.notorm.com">http://www.notorm.com</a></a>  </p>
 <h3>(1) 基本CURD</h3>
-<pre><code class="language-javascript">//查询
+<pre><code class="language-php">//查询
 $row = DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;fetch();
 
 //更新
@@ -92,7 +92,7 @@ DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;delete();</code></pre>
 <li>2、update失败时，如更新一个不存在的字段，返回false，即：bool(false)</li>
 </ul>
 <p>用代码表示，就是：</p>
-<pre><code class="language-javascript">$rs = DI()-&gt;notorm-&gt;user-&gt;where('id', $userId)-&gt;update($data);
+<pre><code class="language-php">$rs = DI()-&gt;notorm-&gt;user-&gt;where('id', $userId)-&gt;update($data);
 
 if ($rs &gt;= 1) {
     //成功
@@ -102,7 +102,7 @@ if ($rs &gt;= 1) {
     //更新失败
 }</code></pre>
 <p>以下单元测试代码，可以验证上面的判断：</p>
-<pre><code class="language-javascript">    public function testUpdateOk()
+<pre><code class="language-php">    public function testUpdateOk()
     {
         $userId = 87;
 
@@ -132,10 +132,10 @@ if ($rs &gt;= 1) {
 <p>如果是简单的关联查询，可以使用NotORM支持的写法，这样的好处在于我们使用了一致的开发，并且能让PhalApi框架保持分布式的操作方式（注意，关联的表仍然需要在同一个数据库）。  </p>
 <p>以下是一个简单的示例。  </p>
 <p>假设我们有这样的数据：</p>
-<pre><code class="language-javascript">INSERT INTO `phalapi_user` VALUES ('1', 'wx_edebc877070133c65161d00799e00544', 'weixinName', '******', '4CHqOhe1Jxi3X9HmRfPOXygDnU267eCA', '1431790647', 'phpunit.png');
+<pre><code class="language-php">INSERT INTO `phalapi_user` VALUES ('1', 'wx_edebc877070133c65161d00799e00544', 'weixinName', '******', '4CHqOhe1Jxi3X9HmRfPOXygDnU267eCA', '1431790647', 'phpunit.png');
 INSERT INTO `phalapi_user_session_0` VALUES ('1', '1', 'ABC', '', '0', '0', '0', null);</code></pre>
 <p>那么对应关联查询的代码如下面：</p>
-<pre><code class="language-javascript">    public function testLeftJoin()
+<pre><code class="language-php">    public function testLeftJoin()
     {
         $rs = DI()-&gt;notorm-&gt;user_session_0
             -&gt;select('expires_time, user.username, user.nickname')
@@ -146,7 +146,7 @@ INSERT INTO `phalapi_user_session_0` VALUES ('1', '1', 'ABC', '', '0', '0', '0',
     }
 </code></pre>
 <p>运行一下，我们可以看到这样的输出：</p>
-<pre><code class="language-javascript">SELECT expires_time, user.username, user.nickname FROM phalapi_user_session_0 LEFT JOIN phalapi_user AS user ON phalapi_user_session_0.user_id = user.id WHERE (token = 'ABC') LIMIT 1;
+<pre><code class="language-php">SELECT expires_time, user.username, user.nickname FROM phalapi_user_session_0 LEFT JOIN phalapi_user AS user ON phalapi_user_session_0.user_id = user.id WHERE (token = 'ABC') LIMIT 1;
 
 .[1 - 0.06318s]SELECT expires_time, user.username, user.nickname FROM phalapi_user_session_0 LEFT JOIN phalapi_user AS user ON phalapi_user_session_0.user_id = user.id WHERE (token = 'ABC') LIMIT 1;&lt;br&gt;
 array(3) {
@@ -164,9 +164,9 @@ array(3) {
 <p>-&gt;select('expires_time, user.username, user.nickname')这一行调用将会【自动产生关联操作】，而ON 的字段，则是这个字段关联你配置的【表结构】，外键默认为： 表名_id 。</p>
 <h3>(4)加1操作</h3>
 <p>NotORM已提供了NotORM_Literal，其用法如下：  </p>
-<pre><code class="language-javascript">DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;update(array('age' =&gt; new NotORM_Literal("age + 1")));</code></pre>
+<pre><code class="language-php">DI()-&gt;notorm-&gt;user-&gt;where('id', 1)-&gt;update(array('age' =&gt; new NotORM_Literal("age + 1")));</code></pre>
 <p>当需要更新为当前时间，可以：  </p>
-<pre><code class="language-javascript">$array = array(
+<pre><code class="language-php">$array = array(
     "title" =&gt; "NotORM",
     "author_id" =&gt; null,
     "created" =&gt; new NotORM_Literal("NOW()"),
@@ -176,9 +176,9 @@ array(3) {
 <h3>(1)将原来返回的结果全部从对象改成数组</h3>
 <p>对原来的大部分使用无特别影响，可按原来的方式开发。主要目的是为了更方面处理返回的数据，以及简化对结果的再解析，简单明了。<br />
 如：</p>
-<pre><code class="language-javascript">DI()-&gt;notorm-&gt;user-&gt;where('username = ?', 'dogstar')-&gt;fetch();</code></pre>
+<pre><code class="language-php">DI()-&gt;notorm-&gt;user-&gt;where('username = ?', 'dogstar')-&gt;fetch();</code></pre>
 <p>返回的将是一个数组：</p>
-<pre><code class="language-javascript">array(7) {
+<pre><code class="language-php">array(7) {
   ["id"]=&gt;
   string(3) "180"
   ["username"]=&gt;
@@ -189,33 +189,33 @@ array(3) {
 }</code></pre>
 <h3>(2)提供获取全部结果的接口 - fetchAll() / fetchRows()</h3>
 <p>如：  </p>
-<pre><code class="language-javascript">$rows = DI()-&gt;notorm-&gt;event_picurl-&gt;where('eid', $eids)-&gt;fetchAll();</code></pre>
+<pre><code class="language-php">$rows = DI()-&gt;notorm-&gt;event_picurl-&gt;where('eid', $eids)-&gt;fetchAll();</code></pre>
 <p>或：</p>
-<pre><code class="language-javascript">$rows = DI()-&gt;notorm-&gt;event_picurl-&gt;where('eid', $eids)-&gt;fetchRows();</code></pre>
+<pre><code class="language-php">$rows = DI()-&gt;notorm-&gt;event_picurl-&gt;where('eid', $eids)-&gt;fetchRows();</code></pre>
 <p>即可获取全部的数据，不再受限于分页。<br />
 这里提供了fetchAll()和fetchRows()两种等效的操作，是为了减少记忆的痛苦，下同。  </p>
 <h3>(3)提供更灵活的查询方式 - queryAll() / queryRows()</h3>
 <p>当需要进行复杂的SQL查询时，可以使用此接口，如：<br />
 (注意:limit替换值:start和:num必须使用int类型)</p>
-<pre><code class="language-javascript">$sql = 'select * from example AS ep LEFT JOIN user AS u ON ep.ui
+<pre><code class="language-php">$sql = 'select * from example AS ep LEFT JOIN user AS u ON ep.ui
 d = u.id  where ep.touid = :userId ORDER BY dateline desc LIMIT :start,:num';
 $params = array(':userId' =&gt; $userId, ':start' =&gt; $start, ':num' =&gt; $num);
 $rs= DI()-&gt;notorm-&gt;example-&gt;queryAll($sql, $params);</code></pre>
 <p>或：</p>
-<pre><code class="language-javascript">$rs= DI()-&gt;notorm-&gt;example-&gt;queryRows($sql, $params);</code></pre>
+<pre><code class="language-php">$rs= DI()-&gt;notorm-&gt;example-&gt;queryRows($sql, $params);</code></pre>
 <h3>(4)limit 操作的调整</h3>
 <p>取消了NotORM中对OFFSET关键字的使用，改用逗号的写法，修改后正确的使用方法应该是：  </p>
-<pre><code class="language-javascript">$table-&gt;limit(10);  // limit 10   # 查询前10个
+<pre><code class="language-php">$table-&gt;limit(10);  // limit 10   # 查询前10个
 
 $table-&gt;limit(5, 10); // limit 5,10   # 从第5个位置开始，查询前10个</code></pre>
 <h3>(5)禁止全表删除，防止误删</h3>
 <p>出于对数据的保护，当执行删除操作却又没有任何where条件时，将会禁止进行全表操作。如：  </p>
-<pre><code class="language-javascript">    public function testDeleteAll()
+<pre><code class="language-php">    public function testDeleteAll()
     {
         DI()-&gt;notorm-&gt;user-&gt;delete();
     }</code></pre>
 <p>可以看到：  </p>
-<pre><code class="language-javascript">$ phpunit --filter testDeleteAll ./Api/Api_User_Test.php 
+<pre><code class="language-php">$ phpunit --filter testDeleteAll ./Api/Api_User_Test.php 
 PHPUnit 4.3.4 by Sebastian Bergmann.
 
 E
@@ -230,18 +230,18 @@ Exception: sorry, you can not delete the whole table --dogstar
 <h3>(6)添加&amp; __sql__ =1请求参数，可开启HTTP调试模式</h3>
 <p>当处于debug模式时，可以输入执行的全部SQL语句，以便调试。   </p>
 <p>如：  </p>
-<pre><code class="language-javascript">SELECT times FROM tpl_user_session_10 WHERE (user_id = ?); -- '74110'
+<pre><code class="language-php">SELECT times FROM tpl_user_session_10 WHERE (user_id = ?); -- '74110'
 {"ret":0,"data":{"code":0},"msg":""}</code></pre>
 <h3>(7)关于NotORM中fetch()操作没有limit 1的处理方案 - fetchOne() / fetchRow()</h3>
 <p>之前，有开发同学提及到，为什么notorm的基类fetch为啥没用limit(1)呢。后来，我去发了下NotORM的写法，确实做得很微妙。<br />
 其实NotORM之所以没有在fetch()里面自动limit 1是因为，你可以循环地获取数据，如：</p>
-<pre><code class="language-javascript">$user = DI()-&gt;notorm-&gt;user-&gt;select('id, username, nickname')-&gt;where('id &gt; ?', 0)-&gt;limit(3);
+<pre><code class="language-php">$user = DI()-&gt;notorm-&gt;user-&gt;select('id, username, nickname')-&gt;where('id &gt; ?', 0)-&gt;limit(3);
 while(($row = $user-&gt;fetch())) {
     var_dump($row);
  }</code></pre>
 <p>但是，更多情况下，我们只需要获取某一行的数据，上面的做法会造成不必要的SQL查询。为了保留原来的写法，我特意添加扩展了一个新的操作：fetchRow()，用法同fetch()，但只会取第一条。<br />
 以下是使用示例：  </p>
-<pre><code class="language-javascript">$rs = DI()-&gt;notorm-&gt;user-&gt;select('id, username, nickname')-&gt;where('id &gt; ?', 0)-&gt;fetchRow());
+<pre><code class="language-php">$rs = DI()-&gt;notorm-&gt;user-&gt;select('id, username, nickname')-&gt;where('id &gt; ?', 0)-&gt;fetchRow());
 
 var_dump($rs);
 
@@ -258,7 +258,7 @@ array(3) {
 //对应执行的SQL语句：
 [2 - 0.06544s]SELECT id, username, nickname FROM fami_user WHERE (id &gt; ?) LIMIT 1; -- 0&lt;br&gt;</code></pre>
 <p>如果，我们只需要获取这一行的某个字段，也可以像fetch()那样使用，即：</p>
-<pre><code class="language-javascript">$rs = DI()-&gt;notorm-&gt;user-&gt;select('id, username, nickname')-&gt;where('id &gt; ?', 0)-&gt;fetchRow('nickname'));
+<pre><code class="language-php">$rs = DI()-&gt;notorm-&gt;user-&gt;select('id, username, nickname')-&gt;where('id &gt; ?', 0)-&gt;fetchRow('nickname'));
 
 var_dump($rs);
 
@@ -270,7 +270,7 @@ string(4) "test"
 <p>很多时候，在开发时，我们对数据库操作一开始会存在一些SQL语法的问题，PDO会返回false,且原来NotORM也是使用 <strong>静默方式</strong> 来处理这类错误，从而使得开发人员有时难以发现这些问题，除非将调试的SQL手动放到数据库执行才能发现问题所在。  </p>
 <p>为了能给开发同学更早、更直观的方式查看问题的所在，这里对NotORM底层进行了调整，使用了 <strong>显式方式</strong> 的策略来处理，即：直接抛出PDO异常。  </p>
 <p>如：</p>
-<pre><code class="language-javascript">$userId = 1;
+<pre><code class="language-php">$userId = 1;
 
 //OK
 $rs = DI()-&gt;notorm-&gt;user-&gt;select('username')-&gt;where('id', $userId)-&gt;fetchOne();
@@ -279,13 +279,13 @@ $rs = DI()-&gt;notorm-&gt;user-&gt;select('username')-&gt;where('id', $userId)-&
 $rs = DI()-&gt;notorm-&gt;user-&gt;select('wrong_username')-&gt;where('id', $userId)-&gt;fetchOne();
 </code></pre>
 <p>将会看到：</p>
-<pre><code class="language-javascript">[1 - 0.06437s]SELECT username FROM fami_user WHERE (id = 1) LIMIT 1;&lt;br&gt;
+<pre><code class="language-php">[1 - 0.06437s]SELECT username FROM fami_user WHERE (id = 1) LIMIT 1;&lt;br&gt;
 [2 - 0.06496s]SELECT wrong_username FROM fami_user WHERE (id = 1) LIMIT 1;&lt;br&gt;
 
 PDOException: Unknown column 'wrong_username' in 'field list'</code></pre>
 <h3>(9)复杂的关联查询</h3>
 <p>如果是复杂的关联查询，则是建议使用原生态的SQL语句，但我们仍然可以保持很好的写法，如这样一个示例：</p>
-<pre><code class="language-javascript">        $sql = 'SELECT t.id, t.team_name, v.vote_num '
+<pre><code class="language-php">        $sql = 'SELECT t.id, t.team_name, v.vote_num '
             . 'FROM phalapi_team AS t LEFT JOIN phalapi_vote AS v '
             . 'ON t.id = v.team_id '
             . 'ORDER BY v.vote_num DESC';
@@ -358,7 +358,7 @@ DI()-&gt;notorm = function() {
 <h3>(2)规约层的CURD</h3>
 <p>在明白了Model基类的背景后，再来了解其具体的操作和如何继承会更有意义。  </p>
 <p>而具体的操作则与数据表的结构相关，在“约定编程”下：即每一个表都有一个主键（通常为id，也可以自由配置）以及一个序列化LOB字段ext_data。我们很容易想到Model接口的定义（注释已移除，感兴趣的同学可查看源码）：</p>
-<pre><code class="language-javascript">interface PhalApi_Model {
+<pre><code class="language-php">interface PhalApi_Model {
 
     public function get($id, $fields = '*');
 
@@ -373,7 +373,7 @@ DI()-&gt;notorm = function() {
 <h3>(3)不使用Model基类的写法</h3>
 <p>由于我们使用了NotORM进行数据库的操作，所以这里也提供了基于NotORM的基类：PhalApi_Model_NotORM。下面以我们熟悉的获取用户的基本信息为例，说明此基类的使用。</p>
 <p>为唤醒记忆，下面贴上Model_User类原来的代码：</p>
-<pre><code class="language-javascript">// $ vim ./Demo/Model/User.php
+<pre><code class="language-php">// $ vim ./Demo/Model/User.php
 
 &lt;?php
 
@@ -384,11 +384,11 @@ class Model_User {
     }
 }</code></pre>
 <p>对应的调用：</p>
-<pre><code class="language-javascript">$model = new Model_User();
+<pre><code class="language-php">$model = new Model_User();
 $rs = $model-&gt;getByUserId($userId);</code></pre>
 <h3>(4)继承Model基类的写法</h3>
 <p>若继承于PhalApi_Model_NotORM，则是：</p>
-<pre><code class="language-javascript">// $ vim ./Demo/Model/User.php
+<pre><code class="language-php">// $ vim ./Demo/Model/User.php
 
 &lt;?php
 
@@ -399,10 +399,10 @@ class Model_User extends PhalApi_Model_NotORM {
     }
 }</code></pre>
 <p>从上面的代码可以看出，基类已经提供了基于主键的CURD操作，但我们需要钩子函数以返回对应的表名。相应地，外部调用则调整为：</p>
-<pre><code class="language-javascript">$model = new Model_User();
+<pre><code class="language-php">$model = new Model_User();
 $rs = $model-&gt;get($userId);</code></pre>
 <p>再进一步，我们可以得到其他的基本操作：</p>
-<pre><code class="language-javascript">$model = new Model_User();
+<pre><code class="language-php">$model = new Model_User();
 
 //查询
 $row = $model-&gt;get(1);
@@ -425,7 +425,7 @@ $model-&gt;delete(1);</code></pre>
 <h3>(1)LOB序列化</h3>
 <p>先是LOB序列化，考虑到有分表的存在，当发生数据库变更时（特别在线上环境）会有一定的难度和风险，因此引入了扩展字段ext_data。当然，此字段也应对数据库变更的同时，也可以作为简单明了的值对象的大对象。序列化LOB首先要考虑的问题是使用二进制（BLOB）还是文本（CLOB），出于通用性、易读性和测试性，我们目前使用了json格式的文本序列化。所以，如果考虑到空间或性能问题（在少量数据下我认为问题不大，如果数据量大，应该及时重新调整数据库表结构），可以重写formatExtData() &amp; parseExtData()。  </p>
 <p>如改成serialize序列化：</p>
-<pre><code class="language-javascript">abstract class Common_Model_NotORM extends PhalApi_Model_NotORM {
+<pre><code class="language-php">abstract class Common_Model_NotORM extends PhalApi_Model_NotORM {
 
     /**
      * 对LOB的ext_data字段进行格式化(序列化)
@@ -448,14 +448,14 @@ $model-&gt;delete(1);</code></pre>
     // ...
 }</code></pre>
 <p>将Model类继承于Common_Model_NotORM后，  </p>
-<pre><code class="language-javascript">// $ vim ./Demo/Model/User.php
+<pre><code class="language-php">// $ vim ./Demo/Model/User.php
 
 &lt;?php
 class Model_User extends Common_Model_NotORM {
    //...
 }</code></pre>
 <p>就可以轻松切换到序列化，如：  </p>
-<pre><code class="language-javascript">$model = new Model_User();
+<pre><code class="language-php">$model = new Model_User();
 
 //带有ext_data的更新
 $extData = array('level' =&gt; 3, 'coins' =&gt; 256);
@@ -465,7 +465,7 @@ $model-&gt;update(1, $data); //基于主键的快速更新
 <h3>(2)分表处理</h3>
 <p>其次是分表处理，同样考虑到分表的情况，以及不同的表可能配置不同的主键表，而基于主键的CURD又必须要先知道表的主键名才能进行SQL查询。所以，问题就演变成了如何找到表的主键名。这里可以自动匹配，也可以手工指定。自动匹配是智能的，因为当我们更改表的主键时，可以自动同步更新而不需要担心遗漏（虽然这种情况很少发生）。手工指定可以大大减少系统不必要的匹配操作，因为我们开发人员也知道数据库的主键名是什么，但需要手工编写一些代码。在这里，提供了可选的手工指定，即可重写getTableKey($table)来指定你的主键名。</p>
 <p>如，当我们的表的主键都固定为id时：</p>
-<pre><code class="language-javascript">abstract class Common_Model_NotORM extends PhalApi_Model_NotORM {
+<pre><code class="language-php">abstract class Common_Model_NotORM extends PhalApi_Model_NotORM {
 
     protected function getTableKey($table) {
         return 'id';

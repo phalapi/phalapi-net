@@ -135,7 +135,7 @@
 <p>由此看出，上面的层级其实相当于：</p>
 <pre><code>客户端初始化 --&gt; 直接使用 --&gt; 自由组合与操作 --&gt; 直接使用 --&gt; 任务服务实现</code></pre>
 <h2>2.16.4 进程配置的数据库表设计</h2>
-<pre><code class="language-javascript">CREATE TABLE `phalapi_task_progress` (
+<pre><code class="language-sql">CREATE TABLE `phalapi_task_progress` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) DEFAULT '' COMMENT '任务标题',
   `trigger_class` varchar(50) DEFAULT '' COMMENT '触发器类名',
@@ -185,7 +185,7 @@
 </tbody>
 </table>
 <p>其中，对于fire_params参数，MQ类名和runner类名可选，以下是一些示例：</p>
-<pre><code class="language-javascript">//示例1：完整的配置
+<pre><code class="language-php">//示例1：完整的配置
 //fire_params=Task_Demo.DoSth&amp;Task_MQ_DB&amp;Task_Runner_Local
 $mq = new Task_MQ_DB();
 $runner = new Task_Runner_Local($mq);
@@ -216,16 +216,16 @@ $runner = new My_Runner($mq);
 $runner-&gt;go('Task_Demo.DoSth');</code></pre>
 <h2>2.15.5 运行效果</h2>
 <p>最终的效果就是，我们通过这样两行简单的代码，即可实现一系列复杂的任务调度：</p>
-<pre><code class="language-javascript">$progress = new Task_Progress();
+<pre><code class="language-php">$progress = new Task_Progress();
 $progress-&gt;run();</code></pre>
 <p>让我们来看下这样设计的运行效果吧！看下这两行代码背后所产生的魔力。  </p>
 <p>首先，我们先添加两条计划任务：</p>
-<pre><code class="language-javascript">INSERT INTO `phalapi_task_progress` VALUES ('1', 'test demo', 'Task_Progress_Trigger_Common', 'Task_Demo.DoSth&amp;Task_MQ_File&amp;Task_Runner_Local', '300', '1', '', '0', '0');
+<pre><code class="language-sql">INSERT INTO `phalapi_task_progress` VALUES ('1', 'test demo', 'Task_Progress_Trigger_Common', 'Task_Demo.DoSth&amp;Task_MQ_File&amp;Task_Runner_Local', '300', '1', '', '0', '0');
 INSERT INTO `phalapi_task_progress` VALUES ('2', 'test ok', 'Task_Progress_Trigger_Common', 'Default.Index&amp;Task_MQ_DB&amp;Task_Runner_Local', '100', '1', '', '0', '0');</code></pre>
 <p>然后，伪造一些MQ：</p>
-<pre><code class="language-javascript">INSERT INTO `phalapi_task_mq_0` VALUES ('8', 'Default.Index', '', '0', '');</code></pre>
+<pre><code class="language-php">INSERT INTO `phalapi_task_mq_0` VALUES ('8', 'Default.Index', '', '0', '');</code></pre>
 <p>最后，生成单元测试：</p>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 class PhpUnderControl_TaskProgress_Test extends PHPUnit_Framework_TestCase
 {
     public $taskProgress;
@@ -248,7 +248,7 @@ class PhpUnderControl_TaskProgress_Test extends PHPUnit_Framework_TestCase
 }
 </code></pre>
 <p>并执行之：</p>
-<pre><code class="language-javascript">$ phpunit ./Task_Progress_Test.php
+<pre><code class="language-bash">$ phpunit ./Task_Progress_Test.php
 
 [1 - 0.06666s]SELECT id, title FROM phalapi_task_progress WHERE (state != ?) AND (last_fire_time &lt; ?) AND (enable = ?) ORDER BY last_fire_time ASC; -- 0, 1431965153, 1&lt;br&gt;
 [2 - 0.07002s]SELECT id, title, trigger_class, fire_params FROM phalapi_task_progress WHERE (state = 0) AND (interval_time + last_fire_time &lt; ?) AND (enable = ?); -- 1432051553, 1&lt;br&gt;

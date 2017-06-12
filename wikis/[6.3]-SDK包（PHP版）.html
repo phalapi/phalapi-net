@@ -69,7 +69,7 @@
 <h2>6.3.2 代码示例</h2>
 <p>如下是使用的代码场景片段。  </p>
 <p>首先，我们需要导入SDK包：</p>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 
 require_once dirname(__FILE__) . '/PhalApiClient.php';
 
@@ -89,7 +89,7 @@ echo "\n";
 var_dump($rs-&gt;getMsg());</code></pre>
 <h2>6.3.3 运行效果</h2>
 <p>运行后，可以看到：  </p>
-<pre><code class="language-javascript">int(200)
+<pre><code class="language-php">int(200)
 
 array(4) {
     ["title"]=&gt;
@@ -105,7 +105,7 @@ array(4) {
 string(0) ""</code></pre>
 <h2>6.3.4 更多调用</h2>
 <p>当需要重复调用时，需要先进行 <strong>重置操作</strong> ，如：</p>
-<pre><code class="language-javascript">//one more time
+<pre><code class="language-php">//one more time
 $rs = $client-&gt;reset()
     -&gt;withService("User.GetBaseInfo")
     -&gt;withParams("user_id", "1")
@@ -117,7 +117,7 @@ var_dump($rs-&gt;getData());
 echo "\n";
 var_dump($rs-&gt;getMsg());</code></pre>
 <p>当请求有异常时，返回的 ret!= 200，如：</p>
-<pre><code class="language-javascript">//illegal request
+<pre><code class="language-php">//illegal request
 $rs = $client-&gt;reset()
     -&gt;withService("XXX.XXXXX")
     -&gt;withParams("user_id", "1")
@@ -129,7 +129,7 @@ var_dump($rs-&gt;getData());
 echo "\n";
 var_dump($rs-&gt;getMsg());</code></pre>
 <p>以上的输出为： </p>
-<pre><code class="language-javascript">--------------------
+<pre><code class="language-php">--------------------
 int(200)
 
 array(3) {
@@ -162,7 +162,7 @@ string(45) "非法请求：接口服务XXX.XXXXX不存在"
 <h3>(1)扩展过滤器</h3>
 <p>当服务端接口需要接口签名验证，或者接口参数加密传送，或者压缩传送时，可以实现此过滤器，以便和服务端操持一致。  </p>
 <p>当需要扩展时，分两步。首先，需要实现过滤器接口：  </p>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 
 class MyFilter implements PhalApiClientFilter {
 
@@ -171,7 +171,7 @@ class MyFilter implements PhalApiClientFilter {
         }
 }</code></pre>
 <p>然后设置过滤器：</p>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 
 $rs = PhalApiClient.create()
        .withHost("http://demo.phalapi.net/")

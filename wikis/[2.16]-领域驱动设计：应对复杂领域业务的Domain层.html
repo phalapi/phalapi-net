@@ -77,7 +77,7 @@
 <h3>(1)一个第三方登录的写法</h3>
 <p>我们先以F项目来命名这个项目，在F项目中，我们跟其他App一样，需要接入第三方登录，其中包括：微信登录、微博登录和QQ登录、邮箱登录等。  </p>
 <p>以下，则是我根据 <strong>讲述故事</strong>  的方式，为微信登录编写的代码：</p>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 
 class Api_User_Login extends PhalApi_Api {
 
@@ -147,7 +147,7 @@ class Api_User_Login extends PhalApi_Api {
 <p>简单来说，释意接口会将“命令-查询”分离、会将多个操作分解成更小粒度的操作而保持同一层面的处理。根据《领域驱动设计》一书的说法：<br />
 <em>类型名、方法名和参数名一起构成了一个释意接口（Intention-Revealing Interface），以解释设计意图，避免开发人员需要考虑内部如何实现，或者猜测。</em>  </p>
 <p>如下面的家庭组成员领域业务类：</p>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 class Domain_Group_Member {
 
     public function joinGroup($userId, $groupId) {
@@ -167,7 +167,7 @@ class Domain_Group_Member {
 <p>在以往的开发中，我都很注意对这些规则统一的重构工作。这使得我可以非常相信我所提供业务的稳定性，以及在给别人解讲时的信心。<br />
 如有一次，我们有一个大型的系统中的一个页面跳转链接的生成规则，后来系统进行了调整，需要对URL生成规则作出调整。我跟另一位新来的同事说只需改一处时，他仍然很惊讶地问我怎么可能？！因为他看到是这么多场景，如此多的页面，怕会有所遗漏。然而，事实证明，我们确实只需要改动一处就可以了。  </p>
 <p>类似这样的URL拼接规则，我们可以这样表示：</p>
-<pre><code class="language-javascript">&lt;?php
+<pre><code class="language-php">&lt;?php
 class Domain_Page_Helper {
 
     public static function createUrl($userId) {
@@ -200,7 +200,7 @@ PHP是一个运行于服务端的脚本解析语言，每一个HTTP请求都会�
 <p>要明白为什么在修改前需要再创建新的对象，也是很容易理解的。首先，我们保持了和基本类型一致的处理方式；其次，我们保持了概念的一致性，如坐标A（1，2）和坐标B（1，3）是两个不同的坐标。<br />
 当坐标A发生改变，坐标A就不再是原来的坐标A，而是一个新的坐标。从哲学角度上看，这是两个不同的概念。  </p>
 <p>在PhalApi中，我们可以看到不可变值在Query对象中的应用：  </p>
-<pre><code class="language-javascript">$query1 = new PhalApi_ModelQuery();
+<pre><code class="language-php">$query1 = new PhalApi_ModelQuery();
 $query1-&gt;id = 1;
 
 $query2 = new PhalApi_ModelQuery($query1-&gt;toArray());
@@ -214,7 +214,7 @@ $query2-&gt;id = 2;</code></pre>
 关于对实体的追踪和识别，可以使用ORM进行实体与关系数据库映射，但PhalApi弱化了这种映射，取而代之的是更明朗的处理方式，即： <strong>无状态操作</strong> 。 </p>
 <p>因为PhalApi都是通过“空洞”的实体来获得数据，即实体无内部属性，对数据库的处理采用了 <strong>表数据入口模式</strong> 。<br />
 当我们需要获取两个用户的信息时，可以这样：</p>
-<pre><code class="language-javascript">$model = new Model_User();
+<pre><code class="language-php">$model = new Model_User();
 $user1 = $model-&gt;get(1);  //$user1是一个数组
 $user2 = $model-&gt;get(2);
 
@@ -234,7 +234,7 @@ $users = $model-&gt;multiGet(array(1, 2));  //$users是一个二维数组，下�
 <p>Domain层作为ADM（Api-Domain-Model）分层中的桥梁，主要负责处理业务规则。  </p>
 <p>将值对象与无状态操作引申到Domain层，同样有处于简化我们对数据和业务规则的处理。  </p>
 <p>我们可以根据上述的家庭组成员领域类来完成类似下面功能场景的业务需求：</p>
-<pre><code class="language-javascript">$domain = new Domain_Group_Member();
+<pre><code class="language-php">$domain = new Domain_Group_Member();
 
 if (!$domain-&gt;hasJoined(1, 100)) {
     $domain-&gt;joinGroup(1, 100);

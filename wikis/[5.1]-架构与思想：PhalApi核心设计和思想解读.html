@@ -112,7 +112,7 @@
 <p>在Web Service中，往往需要对服务进行注册发布后，才能开放请求。这里免去这一层，但遵循 <strong>创建和使用分离</strong> 的原则，我们将接口服务的初始化进行了封装，以便可以统一进行初始化、异常处理和一些权限ACL的控制</p>
 <p>，甚至接口访问的统计等操作，更为重要的是接口开发人员可以进行无绪开发，而不需要过多知道如何合法创建接口服务。  </p>
 <p>在1.2. 步骤中，UML时序图中的::generateService()表示对静态函数的调用，即对应代码：</p>
-<pre><code class="language-javascript">PhalApi_ApiFactory::generateService();</code></pre>
+<pre><code class="language-php">PhalApi_ApiFactory::generateService();</code></pre>
 <p>随后，可以看到（假设我们这次请求的服务为：?service=Demo.DoSth），我们创建了一个指定接口的实例（此接口类须继承于PhalApi_Api基类），并以变量a返回实例。  </p>
 <p>如果请求的服务非法，则会以 <strong>400非法请求</strong> 返回给客户端。而正确创建接口服务a后，则会进行接口的初始化，其中有接口参数规则的解析和注册了过滤器服务后的检测操作。  </p>
 <p>当这一系列的操作都成功执行后，我们将会得到一个接口服务实例a返回。<br />
@@ -135,7 +135,7 @@
 <p>当需要进行资源服务的扩展时，我们可以：</p>
 <h3>实现自己需要的服务</h3>
 <p>实现指定资源服务在规约视角约定的接口，假设我们需要用文件来当作新的缓存存储。则需：</p>
-<pre><code class="language-javascript">class MyCache_File implements PhalApi_Cache {
+<pre><code class="language-php">class MyCache_File implements PhalApi_Cache {
     public function set($key, $value, $expire = 600) {
         //...
     }
@@ -150,7 +150,7 @@
 }</code></pre>
 <h3>在入口重新注册</h3>
 <p>当实现自己的功能后，只需要简单地在入口文件重新注册即可。如：</p>
-<pre><code class="language-javascript">DI()-&gt;cache = new MyCache_File();</code></pre>
+<pre><code class="language-php">DI()-&gt;cache = new MyCache_File();</code></pre>
 <p>最后，另人兴奋的是，原来全部的调用代码都不需要改动，即可享受后期调整升级后的新功能！完全避免了曾经那种“牵一发而动全身”的痛苦。并且，定制开发出来的实现类，还可以跨越业务在其他项目中共用。  </p>
 <p>这不正是我们常常所说的代码重用吗？而如今，我们很优雅地做到了！  </p>
 <p>然而，我们在实际开发中收获到的远远不是代码重用这么简单，而是一种更好的开发实践。因为通过DI使得创建和使用分离，所以我们可以让高级的开发同学实现服务功能的开发，然后再提供给普通的开发同学使用，新手亦然，因为对他们来说：会用就行。当然，对于高级的同学，还应该遵循开发的最佳实践，坚持单元测试，以保证我们提供了可靠的接口（广义上的接口，非HTTP请求的接口）给我们的“客户端”使用。  </p>
