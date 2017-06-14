@@ -25,8 +25,10 @@ $rs = $Parsedown->text(file_get_contents($file));
 // 样式调整
 $rs = str_replace('<table>', '<table class="table table-bordered">', $rs);
 
-$rs .= '<div style="float: right">
+$rs .= '<div style="float: left">
+<h4>
 <a href="http://qa.phalapi.net/">还有疑问？请到社区！</a>
+</h4>
 </div>';
 
 $folder = trim($argv[2]);
