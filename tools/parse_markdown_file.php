@@ -25,6 +25,10 @@ $rs = $Parsedown->text(file_get_contents($file));
 // 样式调整
 $rs = str_replace('<table>', '<table class="table table-bordered">', $rs);
 
+$rs .= '<div style="float: right">
+<a href="http://qa.phalapi.net/">还有疑问？请到社区！</a>
+</div>';
+
 $folder = trim($argv[2]);
 if (!is_dir($folder)) {
     mkdir($folder, 0777, true);
