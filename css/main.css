@@ -402,3 +402,10 @@ body {
 
 
 #content {margin-top:50px;}
+.star-content .right-content{border-right: 0px !important}
+
+ .star-content .right-content,.fork-content .right-content{border: 0px !important;padding: 0 3px !important}
+ .osc_star_widget{padding: 10px 0 !important}
+ .star-content{margin-bottom: 5px !important;}
+ .img-content img{vertical-align: top !important }
+ .star-content,.fork-content{width: 110px !important;}
