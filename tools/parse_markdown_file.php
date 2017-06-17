@@ -27,7 +27,7 @@ $rs = str_replace('<table>', '<table class="table table-bordered">', $rs);
 
 $rs .= '<div style="float: left">
 <h4>
-<a href="http://qa.phalapi.net/">还有疑问？请到社区！</a>
+<a href="http://qa.phalapi.net/">还有疑问？欢迎到社区提问！</a>
 </h4>
 </div>';
 
