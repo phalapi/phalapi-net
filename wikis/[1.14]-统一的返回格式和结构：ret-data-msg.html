@@ -205,6 +205,47 @@ array是指没有下标的一个数组集合，或者有下标但下标是连续
 <p>若需要其他的头部设置，可类似这样，在<code>init.php</code>初始化文件进行设置跨域访问（但通常不建议允许全部跨域，这里仅作演示）：  </p>
 <pre><code class="language-php">DI()-&gt;response-&gt;addHeaders('Access-Control-Allow-Origin', '*');</code></pre>
 <p>后面相同的头部信息会覆盖前面的。  </p>
+<h3>(5)将ret状态码转换成相应的Http状态码输出</h3>
+<p>默认情况下，PhalApi返回的Http状态码都为200，不管ret值为多少。当需要将Http状态码与ret结果状态码时对应时，可以这样使用：  </p>
+<pre><code class="language-php">$api = new PhalApi();
+$rs = $api-&gt;response();
+
+// 在输出前，调整Http状态码
+$rs-&gt;adjustHttpStatus()-&gt;output();</code></pre>
+<p>然后，PhalApi将会根据ret值自动转换。  </p>
+<p>当抛出4xx系列异常时，如：  </p>
+<pre><code class="language-php">throw new PhalApi_Exception_BadRequest('无访问权限', 3); // 403 = 400 + 3</code></pre>
+<p>会得到以下输出： </p>
+<pre><code>HTTP/1.1 403 Forbidden
+
+{
+    "ret": 403,
+    "data": [],
+    "msg": "非法请求：无访问权限"
+}</code></pre>
+<p>若希望在状态码不为200情况下也返回业务数据data，或者不想使用抛出异常的方式但同样也能返回业务数据data，这时，可以手动设置ret状态码，例如：  </p>
+<pre><code class="language-php">class Api_Default extends PhalApi_Api {
+    public function index() {
+        DI()-&gt;response-&gt;setRet(403);
+        return array('name' =&gt; 'PhalApi');
+    }
+}</code></pre>
+<p>会得到以下输出： </p>
+<pre><code>HTTP/1.1 403 Forbidden
+
+{
+    "ret": 403,
+    "data": {
+        "name": "PhalApi"
+    },
+    "msg": ""
+}</code></pre>
+<p>若还需要追加msg错误提示信息，可以使用<code>setMsg()</code>方法，如这样：  </p>
+<pre><code class="language-php">DI()-&gt;response-&gt;setRet(403)-&gt;setMsg('缺少访问权限');</code></pre>
+<p>请注意，手动设置的状态码和错误信息，当抛出异常时，PhalApi会以所抛出异常的错误码和错误信息为准。  </p>
+<blockquote>
+<p>温馨提示：根据ret调整Http状态，需要PhalApi 1.4.1 及以上版本支持。</p>
+</blockquote>
 <h2>1.14.3 关于Exception类异常没捕捉的原因</h2>
 <p>我们没有对Exception类的异常进行捕捉，封装返回非200的形式，是因为我们出于以下的考虑：</p>
 <ul>
